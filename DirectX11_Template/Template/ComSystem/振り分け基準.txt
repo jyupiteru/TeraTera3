@@ -1,0 +1,8 @@
+
+コンポーネントクラス(behavior)の中に変数を宣言する場合はその動作を繰り返さない場合
+
+もしほかのコンポーネントでも必要になりそう（また宣言する必要がある）な場合variableにする
+
+例）PositionComponentはComponentMatrixで必要になるので宣言
+
+ComponentCameraのLookPos等は他で必要だが宣言するほどではないのでSet、Getで対応
