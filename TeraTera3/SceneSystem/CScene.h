@@ -7,9 +7,9 @@
 #define NOMINMAX
 
 #include "../Setup.h"
-#include "../Template.h"
-#include "../../GameComponents/GameComponents.h"
-#include "../Systems/CDirectInput.h"
+#include "../TeraTera.h"
+#include "../../GameComponent/GameComponents.h"
+#include "../WindowsSystem/CDirectInput.h"
 
 #pragma once
 

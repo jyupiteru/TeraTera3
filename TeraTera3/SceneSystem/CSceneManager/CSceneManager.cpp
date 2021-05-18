@@ -6,9 +6,9 @@
 #include "CSceneManager.h"
 
 #include "../../../GameScene/SceneSetter.h"
-#include "../../ComSystem/Core/ObjectGenerator.h"
-#include "../../DebugLog/DebugLog.h"
-#include "../../../Library/ImGui/imgui.h"
+//#include "../../ComSystem/Core/ObjectGenerator.h"
+#include "../..//DebugLog/CDebugLog/CDebugLog.h"
+#include "../../../ThirdParty/ImGui/imgui.h"
 
 #include "../CScene.h"
 
@@ -49,7 +49,6 @@ void CSceneManager::Update()
 	ChangeScene();
 
 	m_pNowScene->Update();
-	ObjectGenerator::Update();
 }
 
 //================================================================================================
@@ -58,7 +57,6 @@ void CSceneManager::Update()
 void CSceneManager::Draw()
 {
 	m_pNowScene->Draw();
-	ObjectGenerator::Draw();
 }
 
 //================================================================================================
@@ -128,7 +126,7 @@ void CSceneManager::ChangeScene()
 		//次のシーンを呼び出し
 		m_pNowScene = GetNextScene(m_nextScene);
 
-		ObjectGenerator::ChangeScene(m_nextScene);
+		//ObjectGenerator::ChangeScene(m_nextScene);
 
 		m_pNowScene->Init();
 		m_nextScene = "None";
