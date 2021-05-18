@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{b0291a1a-032b-4cb2-a580-4913cd15bc86}</ProjectGuid>
     <RootNamespace>TeraTera3</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -115,15 +115,15 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ASSIMP_INCLUDE)$(DX11_INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(DX11_INCLUDE);$(ASSIMP_INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ASSIMP_LIB)$(DX11_LIB_X64DEBUG);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DX11_LIB_X64DEBUG);$(ASSIMP_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,14 +143,63 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="TeraTera3\game.h" />
+    <ClInclude Include="TeraTera3\main.h" />
     <ClInclude Include="TeraTera3\SceneManager\CSceneManager.h" />
     <ClInclude Include="TeraTera3\ImGuiManager\ImGuiManager.h" />
+    <ClInclude Include="TeraTera3\Setup.h" />
+    <ClInclude Include="TeraTera3\TeraTera.h" />
     <ClInclude Include="TeraTera3\Timer\CTimer.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\CDirectInput.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\CDirectXGraphics\CDirectXGraphics.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\DX11Settransform.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Dx11util\DX11util.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Memory.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\animationdataassimp\animationdataassimp.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\ModelData\ModelData.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\utftosjisconv\utftosjisconv.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\vertexproto.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFileLoader\DatFileLoader.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\NonCopyable.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Shader\Shader.h" />
+    <ClInclude Include="ThirdParty\ImGui\imconfig.h" />
+    <ClInclude Include="ThirdParty\ImGui\imgui.h" />
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="ThirdParty\ImGui\imgui_internal.h" />
+    <ClInclude Include="ThirdParty\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ThirdParty\ImGui\imstb_textedit.h" />
+    <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TeraTera3\game.cpp" />
+    <ClCompile Include="TeraTera3\main.cpp" />
     <ClCompile Include="TeraTera3\SceneManager\CSceneManager.cpp" />
     <ClCompile Include="TeraTera3\ImGuiManager\ImGuiManager.cpp" />
     <ClCompile Include="TeraTera3\Timer\CTimer.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\CDirectXGraphics\CDirectXGraphics.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Dx11util\Dx11util.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\animationdataassimp\animationdataassimp.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\ModelData\ModelData.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\utftosjisconv\utftosjisconv.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\DatFileLoader\DatFileLoader.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\DDSTextureLoader.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Shader\Shader.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\WICTextureLoader.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
