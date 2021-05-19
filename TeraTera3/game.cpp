@@ -8,6 +8,7 @@
 #include "game.h"
 
 #include "Timer/CTimer.h"
+#include "ImGuiSystem/CImGuiManager/CImGuiManager.h"
 
 using namespace DirectX;
 
@@ -50,6 +51,14 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		return false;
 	}
 
+	//ImGuiを管理するかマネージャーの生成と初期化
+	CImGuiManager::Create();
+	CImGuiManager::GetInstance().Init(hwnd);
+
+	//ウインドウを1つ生成
+	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
+	auto windowdata = CImGuiManager::GetInstance().GetImGuiWindow(windowid);
+
 	// DIRECTINPUT初期化
 	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
 
@@ -91,6 +100,8 @@ void GameDraw()
 	// レンダリング前処理
 	DX11BeforeRender(ClearColor);
 
+	CImGuiManager::GetInstance().Draw();
+
 	// レンダリング後処理
 	DX11AfterRender();
 }
@@ -102,7 +113,8 @@ void GameUninit()
 {
 	//各種確保したポインタの解放
 	DX11SetTransform::GetInstance()->Uninit();
-	CTimer::Delete();
+	CTimer::Delete(true);
+	CImGuiManager::Delete(true);
 
 	DX11Uninit();
 }
