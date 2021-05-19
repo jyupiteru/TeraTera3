@@ -5,9 +5,24 @@
  */
 #include "CTimer.h"
 
-double CTimer::m_deltaTime;
+CTimer*CTimer::m_instance = nullptr;
 
-std::chrono::high_resolution_clock::time_point CTimer::m_lastTime;
+void CTimer::Init()
+{
+    m_lastTime = std::chrono::high_resolution_clock::now();
+    m_instance = this;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CTimer::Uninit()
+{
+    m_instance = nullptr;
+}
+
+//================================================================================================
+//================================================================================================
 
 void CTimer::Update(void)
 {

@@ -143,9 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GameScene\CSceneGame1\CSceneGame1.h" />
-    <ClInclude Include="GameScene\CSceneResult\CSceneResult.h" />
-    <ClInclude Include="GameScene\CSceneTitle\CSceneTitle.h" />
     <ClInclude Include="TeraTera3\DebugLog\CDebugLog\CDebugLog.h" />
     <ClInclude Include="GameComponent\GameComponents.h" />
     <ClInclude Include="GameComponent\Tests\Test.h" />
@@ -193,9 +190,6 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameScene\CSceneGame1\CSceneGame1.cpp" />
-    <ClCompile Include="GameScene\CSceneResult\CSceneResult.cpp" />
-    <ClCompile Include="GameScene\CSceneTitle\CSceneTitle.cpp" />
     <ClCompile Include="TeraTera3\DebugLog\CDebugLog\CDebugLog.cpp" />
     <ClCompile Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.cpp" />
     <ClCompile Include="TeraTera3\game.cpp" />

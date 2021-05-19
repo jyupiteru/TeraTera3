@@ -1,9 +1,10 @@
 ﻿/**
- * @file CTimer.h
+ * @file CTimer.cpp
  * @author jupiter ()
- * @brief CTimerクラスを記述したヘッダ
+ * @brief Timerクラスを記述したヘッダ
  */
 #include <chrono>
+
 #pragma once
 
 /**
@@ -14,21 +15,33 @@ class CTimer
 	/**
 	 * @brief このフレームが更新されたときの時間
 	 */
-	static std::chrono::high_resolution_clock::time_point m_lastTime;
+	std::chrono::high_resolution_clock::time_point m_lastTime;
+
+	/**
+	 * @brief シングルトン用のクラスの実体
+	 */
+	static CTimer* m_instance;
 
 public:
 	/**
 	 * @brief 前のフレームからの経過時間が入っている
 	 * @details 正確にはこのクラスのアップデートされてからの経過時間
 	 */
-	static double m_deltaTime;
+	double m_deltaTime;
 
 	CTimer()
 	{
-		m_lastTime = std::chrono::high_resolution_clock::now();
+		Init();
 	}
 
-	~CTimer(){};
+	~CTimer()
+	{
+		Uninit();
+	}
+
+	void Init();
+
+	void Uninit();
 
 	/**
 	 * @brief フレーム間隔を計算する
@@ -41,5 +54,10 @@ public:
 	 * @n これを2回呼ぶことで経過時間の取得が可能
 	 * @return 現在のフレーム更新後の時間
 	 */
-	static float GetProgressTime(void);
+	[[nodiscard]] float GetProgressTime(void);
+
+	static [[nodiscard]] CTimer& GetInstance()
+	{
+		return *m_instance;
+	}
 };
