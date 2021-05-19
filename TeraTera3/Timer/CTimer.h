@@ -42,9 +42,10 @@ public:
 	static void Create();
 
 	/**
-	 * @brief ポインタを削除する
-	 */
-	static void Delete();
+     * @brief クラスの実体を削除する処理
+     * @param flag 初期false 間違えて呼び出した時用の変数 削除時にtrueにすること
+     */
+	static void Delete(bool flag = false);
 
 	/**
 	 * @brief フレーム間隔を計算する

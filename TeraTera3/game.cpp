@@ -55,6 +55,10 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CImGuiManager::Create();
 	CImGuiManager::GetInstance().Init(hwnd);
 
+	//ウインドウを1つ生成
+	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
+	auto windowdata = CImGuiManager::GetInstance().GetImGuiWindow(windowid);
+
 	// DIRECTINPUT初期化
 	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
 
@@ -109,8 +113,8 @@ void GameUninit()
 {
 	//各種確保したポインタの解放
 	DX11SetTransform::GetInstance()->Uninit();
-	CTimer::Delete();
-	CImGuiManager::Delete();
+	CTimer::Delete(true);
+	CImGuiManager::Delete(true);
 
 	DX11Uninit();
 }
