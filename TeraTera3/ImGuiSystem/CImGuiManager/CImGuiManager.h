@@ -4,18 +4,20 @@
  * @brief CImGuiManagerの宣言が記載されたヘッダ
  */
 
-#include "../../../Thirdparty/ImGui/imgui.h"
-#include "../../../Thirdparty//ImGui/imgui_impl_dx11.h"
-#include "../../../Thirdparty//ImGui/imgui_impl_win32.h"
+#include "../../../ThirdParty/ImGui/imgui.h"
+#include "../../../ThirdParty/ImGui/imgui_impl_dx11.h"
+#include "../../../ThirdParty/ImGui/imgui_impl_win32.h"
 
 #include "../ImGuiHelperFunctions.h"
 #include "../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
-#include "../CiImGuiHelper/CImGuiHelper.h"
+#include "CImGuiHelper/CImGuiHelper.h"
+#include "../../System/CVector.h"
 
 #include <string>
 #include <map>
 #include <unordered_map>
 #include <functional>
+#include <Windows.h>
 
 class CImGuiWindow;
 
@@ -44,6 +46,7 @@ enum class E_TYPE_IMGUIFUNCTION
 
 /**
  * @brief ImGuiの表示を管理するマネージャー
+ * @details シングルトンです
  */
 class CImGuiManager
 {
@@ -51,60 +54,91 @@ class CImGuiManager
      * @brief メニューの順番を管理するリスト
      * @n メニューの順番、(メニュー名、string重複なんか嫌なのでアクセス用変数(生成数を使用))
      */
-    static std::multimap<int, std::pair<std::string, int>> m_listMenuName;
+    std::multimap<int, std::pair<std::string, int>> m_listMenuName;
 
     /**
      * @brief ImGuiの表示に使用するメニュー名とその中で表示させる関数ポインタアクセス名を管理するリスト
      * @n メニューアクセス変数、関数の出力順(デフォルト50)、(関数ポインタ名、関数アクセス用のid<==これをビット操作に使用する)
      */
-    static std::unordered_map<int, std::multimap<int, std::pair<std::string, int>>> m_listFunctionName;
+    std::unordered_map<int, std::multimap<int, std::pair<std::string, int>>> m_listFunctionName;
 
     /**
      * @brief 関数ポインタを管理するリスト すべて一括管理
      * @n M:+メニューアクセス変数+F:+関数ポインタ管理名、関数ポインタ
      */
-    static std::unordered_map<std::string, std::pair<E_TYPE_IMGUIFUNCTION, std::function<void(int)>>> m_listImGuiFunction;
+    std::unordered_map<std::string, std::pair<E_TYPE_IMGUIFUNCTION, std::function<void(int)>>> m_listImGuiFunction;
 
     /**
      * @brief ウインドウを管理しているリスト
      * @n ウインドウid、その詳細
      */
-    static std::map<unsigned int, std::shared_ptr<CImGuiWindow>> m_listWindow;
+    std::map<unsigned int, std::shared_ptr<CImGuiWindow>> m_listWindow;
 
     /**
      * @brief ウインドウを削除する際に使用するリスト
      */
-    static std::vector<unsigned int> m_listEraseWindow;
+    std::vector<unsigned int> m_listEraseWindow;
 
     /**
      * @brief ウインドウの総生成数を管理する変数
      */
-    static int m_windowCounter;
+    int m_windowCounter = 0;
 
     /**
      * @brief 関数表示時のヘルパー用のクラスへのポインタ
      * @n 基本子のポインタからは使用しないです
      */
-    static std::unique_ptr<CImGuiHelper> m_pHelper;
+    std::unique_ptr<CImGuiHelper> m_pHelper;
+
+    /**
+     * @brief このクラスの実体
+     */
+    static CImGuiManager *m_instance;
 
     /**
      * @brief ImGuiの破棄処理
      */
     void Uninit();
 
+    CImGuiManager(){};
+    ~CImGuiManager() { Uninit(); };
+
 public:
     friend CImGuiWindow;
 
-    CImGuiManager(){};
-    ~CImGuiManager() { Uninit(); };
+    /**
+     * @brief 生存フラグ
+     */
+    CVector<bool> m_flagSurvival;
 
     /**
      * @brief ImGuiの初期化処理
      */
     void Init(HWND hWnd);
 
+    /**
+     * @brief 描画処理
+     */
     void Draw();
 
+    /**
+     * @brief クラスの実体の作成用
+     */
+    static void Create();
+
+    /**
+     * @brief クラスの実態を削除する際の処理
+     */
+    static void Delete();
+
+    /**
+     * @brief クラスの実体を取得する際の処理
+     * @return CImGuiManager& クラスの実体
+     */
+    static [[nodiscard]] CImGuiManager &GetInstance()
+    {
+        return *m_instance;
+    }
     //メニュー系
 
     /**
@@ -114,7 +148,7 @@ public:
      * @return true 成功
      * @return false 既に存在している
      */
-    static bool CreateMenu(std::string_view _menuname, int _num);
+    bool CreateMenu(std::string_view _menuname, int _num);
 
     /**
      * @brief メニュー名が存在するか確認する処理
@@ -122,7 +156,7 @@ public:
      * @return true 成功
      * @return false 既に存在している
      */
-    static bool CheckMenuName(std::string_view _menuname);
+    bool CheckMenuName(std::string_view _menuname);
 
     //関数ポインタ系
 
@@ -138,7 +172,7 @@ public:
       * @return false 失敗
       */
     template <Has_ImGUiDraw classtype>
-    static bool SetImGuiFunction(std::string_view _functionname, classtype *classpointer, std::string_view _menuname = "CustomMenu", E_TYPE_IMGUIFUNCTION _type = E_TYPE_IMGUIFUNCTION::DRAW, int _functionorder = 50)
+    bool SetImGuiFunction(std::string_view _functionname, classtype *classpointer, std::string_view _menuname = "CustomMenu", E_TYPE_IMGUIFUNCTION _type = E_TYPE_IMGUIFUNCTION::DRAW, int _functionorder = 50)
     {
         return SetImGuiFunction(_functionname, std::bind(&classtype::ImGuiDraw, classpointer, std::placeholders::_1), _menuname, _type, _functionorder);
     }
@@ -153,7 +187,7 @@ public:
      * @return true 成功
      * @return false 失敗
      */
-    static bool SetImGuiFunction(std::string_view _functionname, std::function<void(int)> _imguifunction, std::string_view _menuname = "CustomMenu", E_TYPE_IMGUIFUNCTION _type = E_TYPE_IMGUIFUNCTION::DRAW, int _functionorder = 50);
+    bool SetImGuiFunction(std::string_view _functionname, std::function<void(int)> _imguifunction, std::string_view _menuname = "CustomMenu", E_TYPE_IMGUIFUNCTION _type = E_TYPE_IMGUIFUNCTION::DRAW, int _functionorder = 50);
 
     /**
      * @brief ImGuiの関数ポインタを削除うする処理する処理
@@ -163,7 +197,7 @@ public:
      * @return true 成功
      * @return false 失敗or存在しない
      */
-    static bool DestroyImGuiFunction(std::string_view _menuname, std::string_view _functionname);
+    bool DestroyImGuiFunction(std::string_view _menuname, std::string_view _functionname);
 
     //ウインドウの作成系
 
@@ -171,7 +205,7 @@ public:
      * @brief ImGUiのウインドウを新しく生成する処理
      * @return unsigned int ウインドウに振られるID 忘れるとアクセスはほぼ不可能
      */
-    static unsigned int CreateImGuiWindow();
+    unsigned int CreateImGuiWindow();
 
     /**
      * @brief ImGuiのウインドウの表示を行っているクラスを取得する処理
@@ -180,7 +214,7 @@ public:
      * @return CImGuiWindow* ウインドウへのポインタ
      * @details 生成時のみのアクセスを想定
      */
-    [[nodiscard]] static CImGuiWindow *GetImGuiWindow(unsigned int windowid);
+    [[nodiscard]] CImGuiWindow *GetImGuiWindow(unsigned int windowid);
 
     /**
      * @brief ウインドウを破棄する処理
@@ -189,7 +223,7 @@ public:
      * @return true 成功した
      * @return false 失敗した
      */
-    static bool DestroyWindow(unsigned int windowid);
+    bool DestroyWindow(unsigned int windowid);
 
 protected:
     /**
@@ -215,7 +249,7 @@ protected:
      * @param _menuname 取得したい対象のメニュー名
      * @return std::pair<bool, int> boolがtrueなら成功でintにidがfalseなら失敗でidに-1
      */
-    static std::pair<bool, int> GetMenuAccessId(std::string_view _menuname);
+    std::pair<bool, int> GetMenuAccessId(std::string_view _menuname);
 
     /**
      * @brief 関数のアクセスidを取得する関数
@@ -223,5 +257,5 @@ protected:
      * @param _functionname 取得したい関数ポインタの名前
      * @return std::pair<bool, int> boolがtrueなら成功でintにidがfalseなら失敗でidに-1
      */
-    static std::pair<bool, int> GetFunctionAccessId(int _menuid, std::string_view _functionname);
+    std::pair<bool, int> GetFunctionAccessId(int _menuid, std::string_view _functionname);
 };

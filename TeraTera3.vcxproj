@@ -149,7 +149,7 @@
     <ClInclude Include="GameComponent\Tests\Test2.h" />
     <ClInclude Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.h" />
     <ClInclude Include="TeraTera3\game.h" />
-    <ClInclude Include="TeraTera3\ImGuiSystem\CiImGuiHelper\CImGuiHelper.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.h" />
     <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.h" />
     <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiWindow\CImGuiWindow.h" />
     <ClInclude Include="TeraTera3\ImGuiSystem\ImGuiHeaders.h" />
@@ -193,7 +193,7 @@
     <ClCompile Include="TeraTera3\DebugLog\CDebugLog\CDebugLog.cpp" />
     <ClCompile Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.cpp" />
     <ClCompile Include="TeraTera3\game.cpp" />
-    <ClCompile Include="TeraTera3\ImGuiSystem\CiImGuiHelper\CImGuiHelper.cpp" />
+    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.cpp" />
     <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.cpp" />
     <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiWindow\CImGuiWindow.cpp" />
     <ClCompile Include="TeraTera3\main.cpp" />

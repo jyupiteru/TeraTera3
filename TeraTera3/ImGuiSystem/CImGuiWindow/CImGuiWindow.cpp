@@ -7,7 +7,7 @@
 #include "CImGuiWindow.h"
 #include "../CImGuiManager/CImGuiManager.h"
 #include "../../Setup.h"
-#include "../CiImGuiHelper/CImGuiHelper.h"
+#include "../CImGuiManager/CImGuiHelper/CImGuiHelper.h"
 
 #include <bitset>
 #include <bit>
@@ -69,14 +69,14 @@ void CImGuiWindow::Draw()
     m_nowCenterPosition.x += m_nowSize.x / 2.0f;
     m_nowCenterPosition.y += m_nowSize.y / 2.0f;
 
-    auto list_menu = &CImGuiManager::m_listMenuName;
-    auto list_func = &CImGuiManager::m_listImGuiFunction;
+    auto list_menu = &CImGuiManager::GetInstance().m_listMenuName;
+    auto list_func = &CImGuiManager::GetInstance().m_listImGuiFunction;
 
     //各メニューのぶん回し
     for (auto &itr : *list_menu)
     {
         //このメニューの登録されている関数ポインタを取得する
-        auto list_menufunc = &CImGuiManager::m_listFunctionName[itr.second.second];
+        auto list_menufunc = &CImGuiManager::GetInstance().m_listFunctionName[itr.second.second];
         for (auto &itr2 : *list_menufunc)
         {
             //この関数ポインタのフラグは立っているか?
@@ -119,7 +119,7 @@ void CImGuiWindow::Draw()
     //このウインドウは削除されたか
     if (!m_flagSurvive)
     {
-        CImGuiManager::DestroyWindow(m_windowId);
+        CImGuiManager::GetInstance().DestroyWindow(m_windowId);
     }
 }
 
@@ -128,8 +128,8 @@ void CImGuiWindow::Draw()
 
 void CImGuiWindow::SetImGuiFunction(std::string_view _menuname, std::string_view _functionname, bool _flag)
 {
-    auto menu_accessdata = CImGuiManager::GetMenuAccessId(_menuname.data());
-    auto function_accessdata = CImGuiManager::GetFunctionAccessId(menu_accessdata.first, _functionname.data());
+    auto menu_accessdata = CImGuiManager::GetInstance().GetMenuAccessId(_menuname.data());
+    auto function_accessdata = CImGuiManager::GetInstance().GetFunctionAccessId(menu_accessdata.first, _functionname.data());
 
     //メニューと対象の関数ポインタは存在したのか?
     if (function_accessdata.first)
@@ -217,8 +217,8 @@ void CImGuiWindow::DrawMenuBar()
     if (ImGui::BeginMenuBar())
     {
 
-        auto list_menufunc = &CImGuiManager::m_listFunctionName;
-        auto list_menu = &CImGuiManager::m_listMenuName;
+        auto list_menufunc = &CImGuiManager::GetInstance().m_listFunctionName;
+        auto list_menu = &CImGuiManager::GetInstance().m_listMenuName;
 
         for (auto &itr : *list_menu)
         {
@@ -226,7 +226,7 @@ void CImGuiWindow::DrawMenuBar()
             if (ImGui::BeginMenu(itr.second.first.c_str()))
             {
                 //このメニュー内で表示する一連の関数ポインタを表示
-                auto list_menufunc = &CImGuiManager::m_listFunctionName[itr.second.second];
+                auto list_menufunc = &CImGuiManager::GetInstance().m_listFunctionName[itr.second.second];
 
                 //表示する関数ポインタをぶん回し
                 for (auto &itr2 : *list_menufunc)

@@ -102,7 +102,7 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ImGuiSystem\CiImGuiHelper\CImGuiHelper.h">
+    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.h">
@@ -218,7 +218,7 @@
     <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\ImGuiSystem\CiImGuiHelper\CImGuiHelper.cpp">
+    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.cpp">

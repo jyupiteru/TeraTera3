@@ -7,28 +7,18 @@
 #include "CImGuiManager.h"
 #include "../../WindowsSystem/Dx11util/DX11util.h"
 #include "../CImGuiWindow/CImGuiWindow.h"
-#include "../CiImGuiHelper/CImGuiHelper.h"
+#include "CImGuiHelper/CImGuiHelper.h"
 #include "../../Setup.h"
 
-std::multimap<int, std::pair<std::string, int>> CImGuiManager::m_listMenuName;
-
-std::unordered_map<int, std::multimap<int, std::pair<std::string, int>>> CImGuiManager::m_listFunctionName;
-
-std::unordered_map<std::string, std::pair<E_TYPE_IMGUIFUNCTION, std::function<void(int)>>> CImGuiManager::m_listImGuiFunction;
-
-std::map<unsigned int, std::shared_ptr<CImGuiWindow>> CImGuiManager::m_listWindow;
-
-std::vector<unsigned int> CImGuiManager::m_listEraseWindow;
-
-std::unique_ptr<CImGuiHelper> CImGuiManager::m_pHelper = nullptr;
-
-int CImGuiManager::m_windowCounter = 0;
+CImGuiManager *CImGuiManager::m_instance = nullptr;
 
 void CImGuiManager::Init(HWND hWnd)
 {
     // ImGuiの初期化
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+
+    m_flagSurvival.SetValue(true);
 
     // プラットフォームごとの描画方法を設定
     if (!ImGui_ImplWin32_Init(hWnd))
@@ -92,6 +82,8 @@ void CImGuiManager::Uninit()
     m_listFunctionName.clear();
 
     m_pHelper.reset();
+
+    m_instance = nullptr;
 }
 
 //================================================================================================
@@ -99,30 +91,53 @@ void CImGuiManager::Uninit()
 
 void CImGuiManager::Draw()
 {
-    // Start the Dear ImGui frame
-    ImGui_ImplDX11_NewFrame();
-    ImGui_ImplWin32_NewFrame();
-    ImGui::NewFrame();
-
-    IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing dear imgui context. Refer to examples app!");
-
-    for (auto &itr : m_listWindow)
+    if (m_flagSurvival.GetValue())
     {
-        itr.second->Draw();
-    }
+        // Start the Dear ImGui frame
+        ImGui_ImplDX11_NewFrame();
+        ImGui_ImplWin32_NewFrame();
+        ImGui::NewFrame();
 
-    // Rendering
-    ImGui::Render();
-    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+        IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing dear imgui context. Refer to examples app!");
 
-    //ウインドウは１個以上存在しているか
-    if (m_listWindow.size() == 0)
-    { //常に１個以上生成しておく
-        auto id = CreateImGuiWindow();
-        auto windows = GetImGuiWindow(id);
-        //todo ここでデフォルトのプロパティに設定
+        for (auto &itr : m_listWindow)
+        {
+            itr.second->Draw();
+        }
+
+        // Rendering
+        ImGui::Render();
+        ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+        //ウインドウは１個以上存在しているか
+        if (m_listWindow.size() == 0)
+        { //常に１個以上生成しておく
+            auto id = CreateImGuiWindow();
+            auto windows = GetImGuiWindow(id);
+            //todo ここでデフォルトのプロパティに設定
+        }
+        EraseWindows();
     }
-    EraseWindows();
+}
+
+//================================================================================================
+//================================================================================================
+
+void CImGuiManager::Create()
+{
+    if (m_instance == nullptr)
+    {
+        m_instance = new CImGuiManager();
+    }
+}
+
+//================================================================================================
+//================================================================================================
+
+void CImGuiManager::Delete()
+{
+    delete m_instance;
+    m_instance = nullptr;
 }
 
 //================================================================================================
