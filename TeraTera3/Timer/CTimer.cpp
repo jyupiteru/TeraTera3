@@ -7,17 +7,17 @@
 
 CTimer *CTimer::m_instance = nullptr;
 
-void CTimer::Init()
+CTimer::CTimer()
 {
     m_lastTime = std::chrono::high_resolution_clock::now();
-    m_instance = this;
 }
 
 //================================================================================================
 //================================================================================================
 
-void CTimer::Uninit()
+CTimer::~CTimer()
 {
+    //newしたわけではないのでnullptrにするだけでいい
     m_instance = nullptr;
 }
 
@@ -26,10 +26,38 @@ void CTimer::Uninit()
 
 void CTimer::Update(void)
 {
+    //現在の経過時間を取得
     auto nowtime = std::chrono::high_resolution_clock::now();
-    m_deltaTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(nowtime - m_lastTime).count());
-    m_deltaTime /= 1000;
+
+    //前フレームからの経過病を計算しミリ秒へ変換
+    double deltaTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(nowtime - m_lastTime).count());
+    m_deltaTime = deltaTime / 1000;
     m_lastTime = nowtime;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CTimer::Create()
+{
+    //newされているか確認
+    if (m_instance == nullptr)
+    {
+        m_instance = new CTimer();
+    }
+    else
+    {
+        //TODO 重複生成されようとしていることを通知する
+    }
+}
+
+//================================================================================================
+//================================================================================================
+
+void CTimer::Delete()
+{
+    delete m_instance;
+    m_instance = nullptr;
 }
 
 //================================================================================================
@@ -37,19 +65,21 @@ void CTimer::Update(void)
 
 float CTimer::GetProgressTime(void)
 {
+    //現在の経過時間を取得し前フレームからの経過時間を計算
     auto nowtime = std::chrono::high_resolution_clock::now();
     float progresstime = static_cast<float>(std::chrono::duration_cast<std::chrono::milliseconds>(nowtime - m_lastTime).count());
     progresstime /= 1000;
     return progresstime;
 }
+
+//================================================================================================
+//================================================================================================
+
 CTimer &CTimer::GetInstance()
 {
-    if (m_instance != nullptr)
+    if (m_instance == nullptr)
     {
-        return *m_instance;
+        Create();
     }
-    else
-    {
-        //ToDo　エラー処理追加
-    }
+    return *m_instance;
 }

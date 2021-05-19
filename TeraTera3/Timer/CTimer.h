@@ -4,13 +4,14 @@
  * @brief Timerクラスを記述したヘッダ
  */
 #include <chrono>
+#include "../System/CVector.h"
 
 #pragma once
 
 /**
  * @brief 時間計測クラス
  */
-class CTimer
+class CTimer final
 {
 	/**
 	 * @brief このフレームが更新されたときの時間
@@ -27,25 +28,27 @@ public:
 	 * @brief 前のフレームからの経過時間が入っている
 	 * @details 正確にはこのクラスのアップデートされてからの経過時間
 	 */
-	double m_deltaTime;
+	double m_deltaTime = 0;
 
-	CTimer()
-	{
-		Init();
-	}
+private:
+	CTimer();
 
-	~CTimer()
-	{
-		Uninit();
-	}
+	~CTimer();
 
-	void Init();
+public:
+	/**
+	 * @brief シングルトンを生成する関数
+	 */
+	static void Create();
 
-	void Uninit();
+	/**
+	 * @brief ポインタを削除する
+	 */
+	static void Delete();
 
 	/**
 	 * @brief フレーム間隔を計算する
-	 * @n 呼び出さなくていい
+	 * @n 呼び出さないこと！
 	 */
 	void Update(void);
 
@@ -56,5 +59,9 @@ public:
 	 */
 	[[nodiscard]] float GetProgressTime(void);
 
+	/**
+	 * @brief このクラスの実態を取得する関数
+	 * @return CTimer& 実体
+	 */
 	static [[nodiscard]] CTimer &GetInstance();
 };

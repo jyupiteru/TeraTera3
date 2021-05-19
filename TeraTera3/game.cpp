@@ -18,8 +18,6 @@ using namespace DirectX;
 #define new new (_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
 
-std::unique_ptr<CTimer> g_pTimer;
-
 void GameMain(float fps)
 {
 	GameInput();	 // 入力
@@ -32,9 +30,7 @@ void GameMain(float fps)
 
 bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen)
 {
-	{
-		g_pTimer = std::make_unique<CTimer>();
-	}
+	CTimer::Create();
 
 	bool sts;
 
@@ -80,7 +76,8 @@ void GameInput()
 
 void GameUpdate(float fps)
 {
-	g_pTimer->Update();
+	//タイマーを更新する
+	CTimer::GetInstance().Update();
 }
 
 //================================================================================================
@@ -103,8 +100,9 @@ void GameDraw()
 
 void GameUninit()
 {
+	//各種確保したポインタの解放
 	DX11SetTransform::GetInstance()->Uninit();
-	g_pTimer.reset();
+	CTimer::Delete();
 
 	DX11Uninit();
 }
