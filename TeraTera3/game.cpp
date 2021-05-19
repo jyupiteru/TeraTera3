@@ -7,6 +7,7 @@
  */
 #include "game.h"
 
+#include "Timer/CTimer.h"
 
 using namespace DirectX;
 
@@ -17,6 +18,7 @@ using namespace DirectX;
 #define new new (_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
 
+std::unique_ptr<CTimer> g_pTimer;
 
 void GameMain(float fps)
 {
@@ -30,6 +32,9 @@ void GameMain(float fps)
 
 bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen)
 {
+	{
+		g_pTimer = std::make_unique<CTimer>();
+	}
 
 	bool sts;
 
@@ -52,10 +57,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	// DIRECTINPUT初期化
 	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
 
-
 	// アルファブレンド有効にする
 	TurnOnAlphablend();
-
 
 	return true;
 }
@@ -77,6 +80,7 @@ void GameInput()
 
 void GameUpdate(float fps)
 {
+	g_pTimer->Update();
 }
 
 //================================================================================================
@@ -90,7 +94,6 @@ void GameDraw()
 	// レンダリング前処理
 	DX11BeforeRender(ClearColor);
 
-
 	// レンダリング後処理
 	DX11AfterRender();
 }
@@ -101,9 +104,9 @@ void GameDraw()
 void GameUninit()
 {
 	DX11SetTransform::GetInstance()->Uninit();
+	g_pTimer.reset();
 
 	DX11Uninit();
-
 }
 
 //******************************************************************************

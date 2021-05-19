@@ -20,7 +20,7 @@ class CTimer
 	/**
 	 * @brief シングルトン用のクラスの実体
 	 */
-	static CTimer* m_instance;
+	static CTimer *m_instance;
 
 public:
 	/**
@@ -56,8 +56,5 @@ public:
 	 */
 	[[nodiscard]] float GetProgressTime(void);
 
-	static [[nodiscard]] CTimer& GetInstance()
-	{
-		return *m_instance;
-	}
+	static [[nodiscard]] CTimer &GetInstance();
 };

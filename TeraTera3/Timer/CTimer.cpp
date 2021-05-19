@@ -5,7 +5,7 @@
  */
 #include "CTimer.h"
 
-CTimer*CTimer::m_instance = nullptr;
+CTimer *CTimer::m_instance = nullptr;
 
 void CTimer::Init()
 {
@@ -41,4 +41,15 @@ float CTimer::GetProgressTime(void)
     float progresstime = static_cast<float>(std::chrono::duration_cast<std::chrono::milliseconds>(nowtime - m_lastTime).count());
     progresstime /= 1000;
     return progresstime;
+}
+CTimer &CTimer::GetInstance()
+{
+    if (m_instance != nullptr)
+    {
+        return *m_instance;
+    }
+    else
+    {
+        //ToDo　エラー処理追加
+    }
 }
