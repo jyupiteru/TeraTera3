@@ -7,6 +7,9 @@
  */
 #include "game.h"
 
+#include "Timer/CTimer.h"
+#include "ImGuiSystem/CImGuiManager/CImGuiManager.h"
+#include "DebugLog/CDebugLog.h"
 
 using namespace DirectX;
 
@@ -16,7 +19,6 @@ using namespace DirectX;
 #include <crtdbg.h>
 #define new new (_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
-
 
 void GameMain(float fps)
 {
@@ -30,6 +32,12 @@ void GameMain(float fps)
 
 bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen)
 {
+	//タイマーを初期化
+	CTimer::Create();
+	CTimer::GetInstance().Update();
+
+	//ログを起動
+	CDebugLog::Create();
 
 	bool sts;
 
@@ -49,13 +57,19 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		return false;
 	}
 
+	//ImGuiを管理するかマネージャーの生成と初期化
+	CImGuiManager::Create();
+	CImGuiManager::GetInstance().Init(hwnd);
+
+	//ウインドウを1つ生成
+	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
+	auto windowdata = CImGuiManager::GetInstance().GetImGuiWindow(windowid);
+
 	// DIRECTINPUT初期化
 	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
 
-
 	// アルファブレンド有効にする
 	TurnOnAlphablend();
-
 
 	return true;
 }
@@ -77,6 +91,8 @@ void GameInput()
 
 void GameUpdate(float fps)
 {
+	//タイマーを更新する
+	CTimer::GetInstance().Update();
 }
 
 //================================================================================================
@@ -90,6 +106,7 @@ void GameDraw()
 	// レンダリング前処理
 	DX11BeforeRender(ClearColor);
 
+	CImGuiManager::GetInstance().Draw();
 
 	// レンダリング後処理
 	DX11AfterRender();
@@ -100,12 +117,11 @@ void GameDraw()
 
 void GameUninit()
 {
+	//各種確保したポインタの解放
 	DX11SetTransform::GetInstance()->Uninit();
+	CTimer::Delete(true);
+	CImGuiManager::Delete(true);
+	CDebugLog::Delete(true);
 
 	DX11Uninit();
-
 }
-
-//******************************************************************************
-//	End of file.
-//******************************************************************************

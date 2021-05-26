@@ -143,11 +143,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="TeraTera3\DebugLog\CDebugLog.h" />
+    <ClInclude Include="GameComponent\GameComponents.h" />
+    <ClInclude Include="GameComponent\Tests\Test.h" />
+    <ClInclude Include="GameComponent\Tests\Test2.h" />
+    <ClInclude Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.h" />
     <ClInclude Include="TeraTera3\game.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiWindow\CImGuiWindow.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\ImGuiHeaders.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\ImGuiHelperFunctions.h" />
     <ClInclude Include="TeraTera3\main.h" />
-    <ClInclude Include="TeraTera3\SceneManager\CSceneManager.h" />
-    <ClInclude Include="TeraTera3\ImGuiManager\ImGuiManager.h" />
+    <ClInclude Include="TeraTera3\ResourceContainer\CContainer.h" />
+    <ClInclude Include="TeraTera3\ResourceContainer\CListResource.h" />
+    <ClInclude Include="TeraTera3\SceneSystem\CScene.h" />
+    <ClInclude Include="TeraTera3\SceneSystem\CSceneManager\CSceneManager.h" />
     <ClInclude Include="TeraTera3\Setup.h" />
+    <ClInclude Include="TeraTera3\System\CMatrix\CMatrix.h" />
+    <ClInclude Include="TeraTera3\System\CVector.h" />
     <ClInclude Include="TeraTera3\TeraTera.h" />
     <ClInclude Include="TeraTera3\Timer\CTimer.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\CDirectInput.h" />
@@ -176,10 +190,16 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TeraTera3\DebugLog\CDebugLog.cpp" />
+    <ClCompile Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.cpp" />
     <ClCompile Include="TeraTera3\game.cpp" />
+    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.cpp" />
+    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.cpp" />
+    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiWindow\CImGuiWindow.cpp" />
     <ClCompile Include="TeraTera3\main.cpp" />
-    <ClCompile Include="TeraTera3\SceneManager\CSceneManager.cpp" />
-    <ClCompile Include="TeraTera3\ImGuiManager\ImGuiManager.cpp" />
+    <ClCompile Include="TeraTera3\ResourceContainer\CContainer.cpp" />
+    <ClCompile Include="TeraTera3\SceneSystem\CSceneManager\CSceneManager.cpp" />
+    <ClCompile Include="TeraTera3\System\CMatrix\CMatrix.cpp" />
     <ClCompile Include="TeraTera3\Timer\CTimer.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\CDirectXGraphics\CDirectXGraphics.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.cpp" />

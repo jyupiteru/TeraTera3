@@ -8,7 +8,7 @@
 
 #include <DirectXMath.h>
 
-#include "../Dx11mathutil/Dx11mathutil.h"
+#include "../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
 
 #pragma once
 
