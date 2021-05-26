@@ -31,8 +31,11 @@ void CTimer::Update(void)
 
     //前フレームからの経過病を計算しミリ秒へ変換
     double deltaTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(nowtime - m_lastTime).count());
-    m_deltaTime = deltaTime / 1000;
+    m_deltaTime.SetValue(deltaTime / 1000);
     m_lastTime = nowtime;
+
+    //総秒数を加算
+    m_totalDeltaTime += static_cast<float>(m_deltaTime.GetValue());
 }
 
 //================================================================================================
@@ -74,6 +77,14 @@ float CTimer::GetProgressTime(void)
     float progresstime = static_cast<float>(std::chrono::duration_cast<std::chrono::milliseconds>(nowtime - m_lastTime).count());
     progresstime /= 1000;
     return progresstime;
+}
+
+//================================================================================================
+//================================================================================================
+
+float CTimer::GetTotalTime(void)
+{
+    return m_totalDeltaTime;
 }
 
 //================================================================================================

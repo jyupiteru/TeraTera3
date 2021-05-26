@@ -144,10 +144,10 @@
     <ClInclude Include="GameComponent\GameComponents.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\DebugLog\CDebugLog\CConsoleLog\CConsoleLog.h">
+    <ClInclude Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\DebugLog\CDebugLog\CDebugLog.h">
+    <ClInclude Include="TeraTera3\DebugLog\CDebugLog.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -236,10 +236,10 @@
     <ClCompile Include="TeraTera3\System\CMatrix\CMatrix.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\DebugLog\CDebugLog\CConsoleLog\CConsoleLog.cpp">
+    <ClCompile Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\DebugLog\CDebugLog\CDebugLog.cpp">
+    <ClCompile Include="TeraTera3\DebugLog\CDebugLog.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

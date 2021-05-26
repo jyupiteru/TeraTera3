@@ -23,12 +23,17 @@ class CTimer final
 	 */
 	static CTimer *m_instance;
 
+	/**
+	 * @brief 立ち上げてからの秒数が入っている
+	 */
+	float m_totalDeltaTime = 0;
+
 public:
 	/**
 	 * @brief 前のフレームからの経過時間が入っている
 	 * @details 正確にはこのクラスのアップデートされてからの経過時間
 	 */
-	double m_deltaTime = 0;
+	CVector<double> m_deltaTime;
 
 private:
 	CTimer();
@@ -36,6 +41,11 @@ private:
 	~CTimer();
 
 public:
+	/**
+	 * @brief フレーム間隔を計算する
+	 */
+	void Update(void);
+
 	/**
 	 * @brief シングルトンを生成する関数
 	 */
@@ -48,17 +58,17 @@ public:
 	static void Delete(bool flag = false);
 
 	/**
-	 * @brief フレーム間隔を計算する
-	 * @n 呼び出さないこと！
-	 */
-	void Update(void);
-
-	/**
 	 * @brief フレームが始まってからの経過時間を取得する
 	 * @n これを2回呼ぶことで経過時間の取得が可能
 	 * @return 現在のフレーム更新後の時間
 	 */
 	[[nodiscard]] float GetProgressTime(void);
+
+	/**
+	 * @brief 立ち上げから前フレームまでの総秒数を取得する処理
+	 * @return float 取得したい総秒数
+	 */
+	[[nodiscard]] float GetTotalTime(void);
 
 	/**
 	 * @brief このクラスの実態を取得する関数

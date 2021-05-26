@@ -9,6 +9,7 @@
 
 #include "Timer/CTimer.h"
 #include "ImGuiSystem/CImGuiManager/CImGuiManager.h"
+#include "DebugLog/CDebugLog.h"
 
 using namespace DirectX;
 
@@ -31,7 +32,12 @@ void GameMain(float fps)
 
 bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen)
 {
+	//タイマーを初期化
 	CTimer::Create();
+	CTimer::GetInstance().Update();
+
+	//ログを起動
+	CDebugLog::Create();
 
 	bool sts;
 
@@ -115,10 +121,7 @@ void GameUninit()
 	DX11SetTransform::GetInstance()->Uninit();
 	CTimer::Delete(true);
 	CImGuiManager::Delete(true);
+	CDebugLog::Delete(true);
 
 	DX11Uninit();
 }
-
-//******************************************************************************
-//	End of file.
-//******************************************************************************

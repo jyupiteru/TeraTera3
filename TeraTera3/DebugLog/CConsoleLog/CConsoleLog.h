@@ -5,12 +5,12 @@
  */
 #include <Windows.h>
 #include <string_view>
-#include "../Timer/Timer.h"
+#include "../../Setup.h"
 
 #pragma once
 
 /**
- * @brief デバッグ時にデバッグ用のテキストを表示するクラス
+ * @brief DEBUG時にデバッグ用のテキストを表示するクラス
  * @todo 描画時に色を設定できるようにする
  */
 class CConsoleLog
@@ -39,9 +39,9 @@ protected:
     /**
      * @brief 書き込み先のハンドル(多分アドレス)
      */
-    FILE *fp;
+    FILE* fp;
 
-    static CConsoleLog *m_instance;
+    static CConsoleLog* m_instance;
 
     CConsoleLog()
     {
@@ -58,21 +58,28 @@ protected:
     void Uninit();
 
 public:
-    void Update()
-    {
-        m_timeCounter += Timer::m_deltaTime;
-    }
+    friend CDebugLog;
+
+private:
 
     /**
      * @brief デバッグ用の文を表示するクラス
-     * @param sentence 表示させたい文
      * @n \nで改行です（入れないと改行されません）
+     * @param sentence 表示させたい文
+     * @param _color 表示する際に使用する色
      */
-    void Draw(std::string_view sentence);
+    void Draw(std::string_view _sentence, E_COLOR_INFO _color = E_COLOR_INFO::BLACK);
 
+    /**
+     * @brief 生成処理 CDebugLogで宣言するため呼べないようにしている
+     */
     static void Create();
 
-    static void Delete(bool flag = false);
+    /**
+     * @brief 破棄時処理
+     */
+    static void Delete();
 
-    CConsoleLog &GetInstance();
+public:
+    static  CConsoleLog& GetInstance();
 };

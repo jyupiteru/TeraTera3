@@ -114,7 +114,6 @@ void CImGuiManager::Draw()
         { //常に１個以上生成しておく
             auto id = CreateImGuiWindow();
             auto windows = GetImGuiWindow(id);
-            //todo ここでデフォルトのプロパティに設定
         }
         EraseWindows();
     }
