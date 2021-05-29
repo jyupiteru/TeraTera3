@@ -1,4 +1,10 @@
-﻿#include "CDebugLog.h"
+﻿/**
+ * @file CDebugLog.cpp
+ * @author jupiter ()
+ * @brief CDebugLogの実装が書かれたcpp
+ */
+
+#include "CDebugLog.h"
 #include "CConsoleLog/CConsoleLog.h"
 
 CDebugLog *CDebugLog::m_instance = nullptr;

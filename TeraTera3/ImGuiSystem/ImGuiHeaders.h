@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include "CImGuiHelper.h"
+#include "CImGuiManager/CImGuiHelper/CImGuiHelper.h"
 
-#include "CImGuiManager.h"
+#include "CImGuiManager/CImGuiManager.h"
 
-#include "CImGuiWindow.h"
+#include "CImGuiWindow/CImGuiWindow.h"
 
 #include "ImGuiHelperFunctions.h"
