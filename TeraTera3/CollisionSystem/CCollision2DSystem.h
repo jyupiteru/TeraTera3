@@ -38,6 +38,7 @@ enum class E_COLLISION2D_EVENT
 
 /**
  * @brief 2Dの当たり判定を管理するリスト
+ * @n 未完成なので注意
  */
 class CCollision2DSystem final
 {

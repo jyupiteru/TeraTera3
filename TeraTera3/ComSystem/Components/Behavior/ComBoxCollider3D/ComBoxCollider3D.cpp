@@ -8,6 +8,7 @@
 #include "../../../../System/CMatrix/CMatrix.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
 #include "../ComTransform/ComTransform.h"
+#include "../../../../CollisionSystem/CCollision3DSystem.h"
 
 void ComBoxCollider3D::Init()
 {
@@ -22,7 +23,7 @@ void ComBoxCollider3D::Init()
 
 void ComBoxCollider3D::Uninit()
 {
-    EventSystem::EraseObjectFromEvent(this->m_gameObject->m_objID, E_TYPE_EVENT::COLLISION3D);
+    CCollision3DSystem::GetInstance().EraseCollisionObject(this->m_gameObject->m_objID);
 }
 
 //================================================================================================
@@ -33,7 +34,7 @@ void ComBoxCollider3D::Ready()
     if (m_gameObject->m_typeObject == E_TYPE_OBJECT::MODEL3D)
     {
         //このオブジェクトを当たり判定リストに登録
-        EventSystem::SetObjectToEvent(this->m_gameObject, E_TYPE_EVENT::COLLISION3D, this);
+        CCollision3DSystem::GetInstance().SetCollisionObject(this->m_gameObject, this);
 
         //todo のちに解凍
         //if (!this->m_gameObject->GetComponent<ComRigidBody3D>())

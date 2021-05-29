@@ -9,6 +9,7 @@
 
 #include "Timer/CTimer.h"
 #include "ImGuiSystem/CImGuiManager/CImGuiManager.h"
+#include "CollisionSystem/CCollision3DSystem.h"
 #include "DebugLog/CDebugLog.h"
 
 using namespace DirectX;
@@ -61,6 +62,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CImGuiManager::Create();
 	CImGuiManager::GetInstance().Init(hwnd);
 
+	CCollision3DSystem::Create();
+
 	//ウインドウを1つ生成
 	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
 	auto windowdata = CImGuiManager::GetInstance().GetImGuiWindow(windowid);
@@ -93,6 +96,9 @@ void GameUpdate(float fps)
 {
 	//タイマーを更新する
 	CTimer::GetInstance().Update();
+
+	//3Dの衝突判定の更新
+	CCollision3DSystem::GetInstance().Update();
 }
 
 //================================================================================================
@@ -122,6 +128,7 @@ void GameUninit()
 	CTimer::Delete(true);
 	CImGuiManager::Delete(true);
 	CDebugLog::Delete(true);
+	CCollision3DSystem::Delete(true);
 
 	DX11Uninit();
 }
