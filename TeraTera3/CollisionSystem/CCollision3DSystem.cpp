@@ -17,15 +17,7 @@
 #include "../ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../Timer/CTimer.h"
 
-std::unordered_map<int, std::unordered_map<E_COLLISION3D_EVENT, std::unordered_map<int, std::function<void(GameObject *)>>>> CCollision3DSystem::m_ListCollisionFunction;
-
-std::unordered_map<int, std::pair<GameObject *, CCollisionBase *>> CCollision3DSystem::m_list3DCollisionObjects;
-
-unsigned int CCollision3DSystem::m_collisionCounter = 0;
-
-float CCollision3DSystem::m_collisionTime = 0.0f;
-
-unsigned int CCollision3DSystem::m_reachMax = 0;
+CCollision3DSystem* CCollision3DSystem::m_instance = nullptr;
 
 using namespace DirectX;
 
@@ -56,7 +48,7 @@ void CCollision3DSystem::Update()
 
     m_collisionCounter = 0;
 
-    m_collisionTime = Timer::GetProgressTime();
+    m_collisionTime = CTimer::GetInstance().GetProgressTime();
 
     //宣言されていたら消える
 #ifndef FLAG_STOP_COLLISION
@@ -190,11 +182,33 @@ void CCollision3DSystem::Update()
         }
     }
 
-    m_collisionTime = Timer::GetProgressTime() - m_collisionTime;
+    m_collisionTime = CTimer::GetInstance().GetProgressTime() - m_collisionTime;
 
     list_x.clear();
 
 #endif
+}
+
+//================================================================================================
+//================================================================================================
+
+void CCollision3DSystem::Create()
+{
+    m_instance = new CCollision3DSystem();
+}
+
+void CCollision3DSystem::Delete(bool _flag)
+{
+    if (_flag)
+    {
+        delete m_instance;
+        m_instance = nullptr;
+    }
+}
+
+CCollision3DSystem &CCollision3DSystem::GetInstance()
+{
+    return *m_instance;
 }
 
 //================================================================================================

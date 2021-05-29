@@ -143,7 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="TeraTera3\CollisionSystem\CollisionUtil\CCollisionSystemBase.h" />
     <ClInclude Include="TeraTera3\CollisionSystem\CollisionUtil\COBB.h" />
     <ClInclude Include="TeraTera3\CollisionSystem\CollisionUtil\CSphere.h" />
     <ClInclude Include="TeraTera3\ComSystem\ComponentPackages\DefaultPackages.h" />
@@ -237,7 +236,6 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TeraTera3\CollisionSystem\CollisionUtil\CCollisionSystemBase.cpp" />
     <ClCompile Include="TeraTera3\CollisionSystem\CollisionUtil\COBB.cpp" />
     <ClCompile Include="TeraTera3\CollisionSystem\CollisionUtil\CSphere.cpp" />
     <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com2DTexture\Com2DTexture.cpp" />

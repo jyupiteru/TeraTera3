@@ -19,7 +19,6 @@ class ComponentBase;
 class ComTransform;
 class CCollisionBase;
 
-
 enum class E_COLLISION3D_EVENT
 {
     /**
@@ -57,19 +56,21 @@ class CCollision3DSystem
      * @brief 当たり判定を管理するリスト
      * @n オブジェクトID、当たり判定の種類、各コンポーネントID、当たり判定の関数ポインタの順番
      */
-    static std::unordered_map<int, std::unordered_map<E_COLLISION3D_EVENT, std::unordered_map<int, std::function<void(GameObject *)>>>> m_ListCollisionFunction;
+    std::unordered_map<int, std::unordered_map<E_COLLISION3D_EVENT, std::unordered_map<int, std::function<void(GameObject *)>>>> m_ListCollisionFunction;
 
     /**
      * @brief 3Dの当たり判定をとるオブジェクトのリスト
      * @details オブジェクトID-tuple(オブジェクト(通知用)、サイズ取得用、当たり判定調整用)
      */
-    static std::unordered_map<int, std::pair<GameObject *, CCollisionBase *>> m_list3DCollisionObjects;
+    std::unordered_map<int, std::pair<GameObject *, CCollisionBase *>> m_list3DCollisionObjects;
 
-    static unsigned int m_collisionCounter;
+    unsigned int m_collisionCounter = 0;
 
-    static float m_collisionTime;
+    float m_collisionTime = 0.0f;
 
-    static unsigned int m_reachMax;
+    unsigned int m_reachMax = 0;
+
+    static CCollision3DSystem* m_instance;
 
 public:
     CCollision3DSystem(){};
@@ -81,6 +82,12 @@ public:
     void Uninit();
 
     void Update();
+
+    static void Create();
+
+    static void Delete(bool _flag = false);
+
+    static [[nodiscard]] CCollision3DSystem &GetInstance();
 
     void ImGuiDraw(unsigned int windowid);
 
@@ -236,37 +243,6 @@ private:
         m_ListCollisionFunction[objid][E_COLLISION3D_EVENT::COLLISION_STAY].emplace(componentid, std::bind(&type::OnCollisionStay3D, component, std::placeholders::_1));
     }
 
-    //失敗用処理
-    /**
-     * @brief OnTriggerEnter3Dがコンポーネントのなかにないときに通る処理
-     * @param ... 何が入ってもいい
-     */
-    void AddOnTriggerEnter3D(...){};
-
-    /**
-     * @brief AddOnCollisionStay3Dがコンポーネントのなかにないときに通る処理
-     * @param ... 何が入ってもいい
-     */
-    void AddOnCollisionStay3D(...){};
-
-    /**
-     * @brief OnCollisionEnter3Dがコンポーネントのなかにないときに通る処理
-     * @param ... 何が入ってもいい
-     */
-    void AddOnCollisionEnter3D(...){};
-
-    /**
-     * @brief AddOnTriggerStay3Dがコンポーネントのなかにないときに通る処理
-     * @param ... 何が入ってもいい
-     */
-    void AddOnTriggerStay3D(...){};
-
-    /**
-     * @brief SetCollisionObjectがコンポーネントのなかにないときに通る処理
-     * @param ...
-     */
-    void SetCollisionObject(...){};
-
     /**
      * @brief 当たり判定をとる処理
      * @param obj1collider 1個目のオブジェクトの当たり判定管理
@@ -314,4 +290,12 @@ private:
      */
     [[nodiscard]] bool CompareLength(const CCollisionBase &collider1, const CCollisionBase &collider2,
                                      const DirectX::XMFLOAT3 &pvecSeparate, const DirectX::XMFLOAT3 &pvecDistance);
+
+
+    //失敗用処理
+    void AddOnTriggerEnter3D(...) {};
+    void AddOnCollisionStay3D(...) {};
+    void AddOnCollisionEnter3D(...) {};
+    void AddOnTriggerStay3D(...) {};
+    void SetCollisionObject(...) {};
 };
