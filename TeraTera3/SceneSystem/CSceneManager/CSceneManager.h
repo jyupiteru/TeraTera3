@@ -35,7 +35,6 @@ class CSceneManager
 
     static CSceneManager *m_instance;
 
-public:
     /**
 	 * @brief  CSceneManagerの生成時処理
 	 */
@@ -46,6 +45,7 @@ public:
 	 */
     ~CSceneManager();
 
+public:
     /**
 	 * @brief 毎フレームする処理
 	 */
@@ -82,7 +82,7 @@ private:
 	 * @param name 変更するシーン名
 	 * @return CScene* const 変更するシーンのポインタ
 	 */
-    [[nodiscard]]  CScene *const GetNextScene(std::string name);
+    [[nodiscard]] CScene *const GetNextScene(std::string name);
 
     /**
 	 * @brief シーンを入れ替える処理

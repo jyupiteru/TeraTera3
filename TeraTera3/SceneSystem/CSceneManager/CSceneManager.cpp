@@ -45,7 +45,7 @@ void CSceneManager::Update()
     ChangeScene();
 
     m_pNowScene->Update();
-    ObjectGenerator::Update();
+    ObjectGenerator::GetInstance().Update();
 }
 
 //================================================================================================
@@ -54,7 +54,7 @@ void CSceneManager::Update()
 void CSceneManager::Draw()
 {
     m_pNowScene->Draw();
-    ObjectGenerator::Draw();
+    ObjectGenerator::GetInstance().Draw();
 }
 
 //================================================================================================
@@ -152,7 +152,7 @@ void CSceneManager::ChangeScene()
         //次のシーンを呼び出し
         m_pNowScene = GetNextScene(m_nextScene);
 
-        ObjectGenerator::ChangeScene(m_nextScene);
+        ObjectGenerator::GetInstance().ChangeScene(m_nextScene);
 
         m_pNowScene->Init();
         m_nextScene = "None";

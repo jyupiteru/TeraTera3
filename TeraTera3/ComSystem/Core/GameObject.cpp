@@ -48,7 +48,7 @@ void GameObject::Uninit()
 	{
 		itr->second->m_pParentObject = nullptr;
 		//ジェネレータから子オブジェクトを削除
-		ObjectGenerator::DestroyInGenerator(itr->second->m_objectName);
+		ObjectGenerator::GetInstance().DestroyInGenerator(itr->second->m_objectName);
 	}
 	m_pListChildObject.clear();
 
@@ -105,7 +105,7 @@ void GameObject::Draw()
 
 GameObject *const GameObject::AddChildObject(E_TYPE_OBJECT type)
 {
-	auto obj = ObjectGenerator::AddObjectInGenerator(type);
+	auto obj = ObjectGenerator::GetInstance().AddObjectInGenerator(type);
 	//きちんと生成できているかの確認
 	if (obj != nullptr)
 	{
@@ -121,7 +121,7 @@ GameObject *const GameObject::AddChildObject(E_TYPE_OBJECT type)
 
 GameObject *const GameObject::AddChildObject(std::string name, E_TYPE_OBJECT type)
 {
-	auto obj = ObjectGenerator::AddObjectInGenerator(name, type);
+	auto obj = ObjectGenerator::GetInstance().AddObjectInGenerator(name, type);
 	//きちんと生成できているかの確認
 	if (obj != nullptr)
 	{
@@ -176,7 +176,7 @@ bool GameObject::DestroyChild(const int objid)
 		m_pListChildObject.erase(objid);
 
 		//ジェネレータのほうから削除
-		return ObjectGenerator::DestroyInGenerator(objid);
+		return ObjectGenerator::GetInstance().DestroyInGenerator(objid);
 	}
 	return false;
 }
@@ -208,7 +208,7 @@ void GameObject::EraseComponent()
 
 GameObject *const GameObject::MakeNewObject(std::string_view name, E_TYPE_OBJECT type)
 {
-	return ObjectGenerator::AddObjectInGenerator(name, type);
+	return ObjectGenerator::GetInstance().AddObjectInGenerator(name, type);
 }
 
 //================================================================================================
@@ -216,7 +216,7 @@ GameObject *const GameObject::MakeNewObject(std::string_view name, E_TYPE_OBJECT
 
 GameObject *const GameObject::Find(int objid)
 {
-	return ObjectGenerator::FindInGenerator(objid);
+	return ObjectGenerator::GetInstance().FindInGenerator(objid);
 }
 
 //================================================================================================
@@ -224,7 +224,7 @@ GameObject *const GameObject::Find(int objid)
 
 GameObject *const GameObject::Find(std::string_view name)
 {
-	return ObjectGenerator::FindInGenerator(name);
+	return ObjectGenerator::GetInstance().FindInGenerator(name);
 }
 
 //================================================================================================
@@ -462,7 +462,7 @@ bool GameObject::DestroyObject(GameObject *obj)
 		{ //親オブジェクトから削除
 			return obj->m_pParentObject->DestroyChild(obj);
 		}
-		return ObjectGenerator::DestroyInGenerator(obj->m_objID);
+		return ObjectGenerator::GetInstance().DestroyInGenerator(obj->m_objID);
 	}
 	return false;
 }
@@ -472,7 +472,7 @@ bool GameObject::DestroyObject(GameObject *obj)
 
 bool GameObject::DestroyObject(int id)
 {
-	return DestroyObject(ObjectGenerator::FindInGenerator(id));
+	return DestroyObject(ObjectGenerator::GetInstance().FindInGenerator(id));
 }
 
 //================================================================================================
@@ -480,5 +480,5 @@ bool GameObject::DestroyObject(int id)
 
 bool GameObject::DestroyObject(std::string_view name)
 {
-	return DestroyObject(ObjectGenerator::FindInGenerator(name));
+	return DestroyObject(ObjectGenerator::GetInstance().FindInGenerator(name));
 }

@@ -150,15 +150,6 @@
     <ClInclude Include="TeraTera3\DebugLog\CDebugLog.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ComSystem\Core\Object.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TeraTera3\ComSystem\Core\Component.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TeraTera3\ComSystem\Core\CObjectGenerator.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\Com2DText\Com2DText.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -396,15 +387,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\DebugLog\CDebugLog.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TeraTera3\ComSystem\Core\Object.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TeraTera3\ComSystem\Core\Component.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TeraTera3\ComSystem\Core\CObjectGenerator.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com2DText\Com2DText.cpp">
