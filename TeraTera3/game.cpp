@@ -11,6 +11,9 @@
 #include "ImGuiSystem/CImGuiManager/CImGuiManager.h"
 #include "CollisionSystem/CCollision3DSystem.h"
 #include "DebugLog/CDebugLog.h"
+#include "ComSystem/Core/ObjectGenerator.h"
+#include "SceneSystem/CSceneManager/CSceneManager.h"
+#include "ResourceContainer/CContainer.h"
 
 using namespace DirectX;
 
@@ -40,6 +43,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	//ログを起動
 	CDebugLog::Create();
 
+	CContainer::Create();
+
 	bool sts;
 
 	// DX11初期処理
@@ -63,6 +68,9 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CImGuiManager::GetInstance().Init(hwnd);
 
 	CCollision3DSystem::Create();
+
+	ObjectGenerator::Create();
+	CSceneManager::Create();
 
 	//ウインドウを1つ生成
 	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();

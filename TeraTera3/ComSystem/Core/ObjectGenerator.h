@@ -41,53 +41,55 @@ class ObjectGenerator final : public ControlObjectPriority
      * @n id、オブジェクト
      * @details すべてのオブジェクトが入っている
      */
-    static std::unordered_map<int, std::unique_ptr<GameObject>> m_pListAllObject;
+    std::unordered_map<int, std::unique_ptr<GameObject>> m_pListAllObject;
 
     /**
      * @brief オブジェクト呼び出し用の名前を管理するためのコンテナ
      * @n オブジェクト名、id
      */
-    static std::unordered_map<std::string, int> m_pListObjectName;
+    std::unordered_map<std::string, int> m_pListObjectName;
 
     /**
      * @brief 削除するオブジェクトのIDを格納する
      * @details Drawのあと削除する
      */
-    static std::vector<int> m_listEraseObject;
+    std::vector<int> m_listEraseObject;
 
     /**
      * @brief タグを管理するリスト、操作を持つ変数
      */
-    static std::unique_ptr<CTagManager> m_cTagManager;
+    std::unique_ptr<CTagManager> m_cTagManager;
 
     /**
      * @brief フラスタムカリングを行う際に使用するカメラを持つクラス
      */
-    static ComCamera *m_pComCamera;
+    ComCamera* m_pComCamera;
 
     /**
      * @brief そのフレーム内で更新したオブジェクト計測用の変数
      */
-    static unsigned int m_updateCounter;
+    unsigned int m_updateCounter;
 
     /**
      * @brief そのフレーム内で描画したオブジェクトの計測用の変数
      */
-    static unsigned int m_drawCounter;
+    unsigned int m_drawCounter;
 
     /**
      * @brief 更新にかかった時間計測用の変数
      */
-    static float m_updateTime;
+    float m_updateTime;
 
     /**
      * @brief 描画にかかった時間計測用の変数
      */
-    static float m_drawTime;
+    float m_drawTime;
 
-public:
-    //GameObjectからのprivateのアクセスを許可
-    friend GameObject;
+    static ObjectGenerator* m_instance;
+
+    void Init();
+
+    void Uninit();
 
     ObjectGenerator()
     {
@@ -98,39 +100,32 @@ public:
     {
         Uninit();
     };
+public:
+    //GameObjectからのprivateのアクセスを許可
+    friend GameObject;
 
-    /**
-     * @brief   初期化処理
-     * @details これは呼び出す必要なし
-     */
-    void Init();
 
-    /**
-     * @brief オブジェクト破棄時の処理
-     */
-    void Uninit();
+    void Update();
 
-    /**
-     * @brief   アップデート処理
-     */
-    static void Update();
+    void Draw();
 
-    /**
-     * @brief   描画処理
-     */
-    static void Draw();
+    static void Create();
+
+    static void Delete(bool _flag);
+
+    [[nodiscard]] static ObjectGenerator& GetInstance();
 
     /**
      * @brief 削除待ちのオブジェクトを削除する
      */
-    static void EraseObject();
+    void EraseObject();
 
     /**
      * @brief シーンが入れ替わるときの処理
      * @param scenename 次のシーンを入れる
      * @details 消さないようにしているオブジェクト以外のすべてのオブジェクトが消されます
      */
-    static void ChangeScene(std::string_view scenename);
+    void ChangeScene(std::string_view scenename);
 
 private: //GameObjectからのみアクセス可能
     /**
@@ -139,7 +134,7 @@ private: //GameObjectからのみアクセス可能
      * @return GameObject *const 加えた子オブジェクトのポインタ
      * @details deleteできないが入れ替えはできるのでするな！
      */
-    static GameObject *const AddObjectInGenerator(E_TYPE_OBJECT type);
+    GameObject* const AddObjectInGenerator(E_TYPE_OBJECT type);
 
     /**
      * @brief オブジェクト生成処理２ 名前が必要
@@ -147,21 +142,21 @@ private: //GameObjectからのみアクセス可能
      * @param type E_TYPE_OBJECT型 オブジェクトの種類を指定する
      * @return  GameObject *const 加えた子オブジェクトのポインタ
      */
-    static GameObject *const AddObjectInGenerator(std::string_view name, E_TYPE_OBJECT type);
+    GameObject* const AddObjectInGenerator(std::string_view name, E_TYPE_OBJECT type);
 
     /**
      * @brief オブジェクトをIDから取得する処理
      * @param objid 検索したいオブジェクトのid
      * @return GameObject* const 指定したオブジェクトが返される
      */
-    [[nodiscard]] static GameObject *const FindInGenerator(int objid);
+    [[nodiscard]] GameObject* const FindInGenerator(int objid);
 
     /**
      * @brief オブジェクトを名前から取得する処理
      * @param name オブジェクトに設定した名前
      * @return GameObject* const 指定したオブジェクトが返される
      */
-    [[nodiscard]] static GameObject *const FindInGenerator(std::string_view name);
+    [[nodiscard]] GameObject* const FindInGenerator(std::string_view name);
 
     /**
      * @brief リストから指定したオブジェクトを削除する処理1
@@ -170,7 +165,7 @@ private: //GameObjectからのみアクセス可能
      * @return true 削除に成功
      * @return false 削除に失敗
      */
-    static bool DestroyInGenerator(GameObject *obj);
+    bool DestroyInGenerator(GameObject* obj);
 
     /**
      * @brief リストから指定したオブジェクトを削除する処理2
@@ -178,7 +173,7 @@ private: //GameObjectからのみアクセス可能
      * @return true 削除に成功
      * @return false 削除に失敗
      */
-    static bool DestroyInGenerator(const int objid)
+    bool DestroyInGenerator(const int objid)
     {
         return DestroyInGenerator(m_pListAllObject[objid].get());
     }
@@ -189,7 +184,7 @@ private: //GameObjectからのみアクセス可能
      * @return true 削除に成功
      * @return false 削除に失敗
      */
-    static bool DestroyInGenerator(std::string name);
+    bool DestroyInGenerator(std::string name);
 
 public:
     /**

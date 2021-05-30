@@ -44,8 +44,8 @@ public:
 	{
 		m_pListScene = std::make_shared<std::unordered_map<std::string, std::unique_ptr<CScene>>>();
 		//引数に名前をいれる
-		/*(*m_pListScene)["SceneSample"] = std::make_unique<CSceneSample>();
-		(*m_pListScene)["SceneSample2"] = std::make_unique<CSceneSample2>();*/
+		(*m_pListScene)["SceneSample"] = std::make_unique<CSceneSample>();
+		(*m_pListScene)["SceneSample2"] = std::make_unique<CSceneSample2>();
 		(*m_pListScene)["SceneTitle"] = std::make_unique<CSceneTitle>();
 		(*m_pListScene)["SceneGame1"] = std::make_unique<CSceneGame1>();
 		(*m_pListScene)["SceneResult"] = std::make_unique<CSceneResult>();
