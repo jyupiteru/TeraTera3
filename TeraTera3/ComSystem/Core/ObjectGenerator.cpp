@@ -15,24 +15,9 @@
 #include "../../WindowsSystem/CDirectInput.h"
 #include "../../Timer/CTimer.h"
 
+ObjectGenerator *ObjectGenerator::m_instance = nullptr;
 
 #include <string>
-
-std::unordered_map<int, std::unique_ptr<GameObject>> ObjectGenerator::m_pListAllObject;
-
-std::unordered_map<std::string, int> ObjectGenerator::m_pListObjectName;
-
-std::vector<int> ObjectGenerator::m_listEraseObject;
-
-std::unique_ptr<CTagManager> ObjectGenerator::m_cTagManager;
-
-unsigned int ObjectGenerator::m_updateCounter = 0;
-
-unsigned int ObjectGenerator::m_drawCounter = 0;
-
-float ObjectGenerator::m_updateTime = 0.0f;
-
-float ObjectGenerator::m_drawTime = 0.0f;
 
 void ObjectGenerator::Init()
 {
@@ -221,6 +206,34 @@ void ObjectGenerator::Draw()
 	ResetDrawList();
 
 	m_drawTime = CTimer::GetInstance().GetProgressTime() - m_drawTime;
+}
+
+//================================================================================================
+//================================================================================================
+
+void ObjectGenerator::Create()
+{
+	m_instance = new ObjectGenerator();
+}
+
+//================================================================================================
+//================================================================================================
+
+void ObjectGenerator::Delete(bool _flag)
+{
+	if (_flag)
+	{
+		delete m_instance;
+		m_instance = nullptr;
+	}
+}
+
+//================================================================================================
+//================================================================================================
+
+ObjectGenerator &ObjectGenerator::GetInstance()
+{
+	return *m_instance;
 }
 
 //================================================================================================
