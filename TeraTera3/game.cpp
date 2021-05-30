@@ -11,6 +11,7 @@
 #include "ImGuiSystem/CImGuiManager/CImGuiManager.h"
 #include "CollisionSystem/CCollision3DSystem.h"
 #include "DebugLog/CDebugLog.h"
+#include "ComSystem/ComSystem.h"
 #include "ComSystem/Core/ObjectGenerator.h"
 #include "SceneSystem/CSceneManager/CSceneManager.h"
 #include "ResourceContainer/CContainer.h"
@@ -70,7 +71,47 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CCollision3DSystem::Create();
 
 	ObjectGenerator::Create();
+
+	CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
+	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDraw_Objects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
+
+	{
+		// カメラ変換行列初期化
+		XMFLOAT3 eye = {0, 0, -30};	 // 視点
+		XMFLOAT3 lookat = {0, 0, 0}; // 注視点
+		XMFLOAT3 up = {0, 1, 0};	 // 上向きベクトル
+
+		//カメラオブジェクトを生成
+		auto camera = GameObject::MakeNewObject("camera", E_TYPE_OBJECT::NONE);
+		camera->AddComponent<ComCamera>()->SetCamera(eye, lookat, up);
+
+		camera->GetComponent<ComCamera>()->SetProjection(1.0f, 100000.0f,
+														 XM_PIDIV2, SCREEN_WIDTH, SCREEN_HEIGHT);
+		camera->DontDestroyOnLoad();
+		camera->m_objectUpdatePriority.SetValue(-20);
+
+		// 平行光源初期化
+		DirectX::XMFLOAT4 lightpos = {1, 1, -1, 0}; // 平行光源の方向をセット
+
+		//シーンに設置するライトを生成
+		auto light = GameObject::MakeNewObject("light", E_TYPE_OBJECT::NONE);
+		light->GetComponent<ComTransform>()->m_worldPosition.SetValue(lightpos.x,
+																	  lightpos.y,
+																	  lightpos.z);
+
+		light->AddComponent<ComLight>()->m_ambient.SetValue(0.0f,
+															0.0f,
+															0.0f,
+															0.0f); // 環境光
+
+		light->m_objectUpdatePriority.SetValue(-20);
+		light->DontDestroyOnLoad();
+	}
+
 	CSceneManager::Create();
+
+	CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
+	CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CSceneManager::GetInstance(), "Menu");
 
 	//ウインドウを1つ生成
 	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
@@ -107,6 +148,9 @@ void GameUpdate(float fps)
 
 	//3Dの衝突判定の更新
 	CCollision3DSystem::GetInstance().Update();
+
+	//シーンに存在しているオブジェクトのUpdateをぶん回し
+	CSceneManager::GetInstance().Update();
 }
 
 //================================================================================================
@@ -119,6 +163,8 @@ void GameDraw()
 
 	// レンダリング前処理
 	DX11BeforeRender(ClearColor);
+
+	CSceneManager::GetInstance().Draw();
 
 	CImGuiManager::GetInstance().Draw();
 
@@ -134,9 +180,12 @@ void GameUninit()
 	//各種確保したポインタの解放
 	DX11SetTransform::GetInstance()->Uninit();
 	CTimer::Delete(true);
-	CImGuiManager::Delete(true);
 	CDebugLog::Delete(true);
+	ObjectGenerator::Delete(true);
+	CSceneManager::Delete(true);
 	CCollision3DSystem::Delete(true);
+	CContainer::Delete(true);
+	CImGuiManager::Delete(true);
 
 	DX11Uninit();
 }

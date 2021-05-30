@@ -28,11 +28,11 @@ void Com3DAnimationAssimp::Init()
     if (m_listAssimpAnimation == nullptr)
     {
         //コンテナとリストへのアクセス権の作成
-        CContainer::MakePermissionToContainer(this);
-        CContainer::MakePermissionToList(this, "assimpanimationdata");
+        CContainer::GetInstance().MakePermissionToContainer(this);
+        CContainer::GetInstance().MakePermissionToList(this, "assimpanimationdata");
 
         //リストの取得とリストに登録するタイプを取得
-        m_listAssimpAnimation = CContainer::GetListResource(this, "assimpanimationdata");
+        m_listAssimpAnimation = CContainer::GetInstance().GetListResource(this, "assimpanimationdata");
         m_listAssimpAnimation->SetResourceType<taglistAssimpAnimation>();
     }
 

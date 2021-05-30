@@ -24,22 +24,23 @@ class CContainer final
      * @brief 各種リソースのリスト、ポインタを管理するためのリスト
      * @n 取得したいリスト名(重複不可)、(管理する際に付ける名前、汎用ポインタ的な)
      */
-    static std::unordered_map<std::string, std::shared_ptr<CListResource>> m_listResources;
+    std::unordered_map<std::string, std::shared_ptr<CListResource>> m_listResources;
 
     /**
      * @brief リストに安全にアクセスさせる際に使用するリスト
      * @n リストの名前、リストにアクセスできるクラスの型ID
      */
-    static std::unordered_map<std::string, int> m_listAccessData;
+    std::unordered_map<std::string, int> m_listAccessData;
 
     /**
      * @brief リストの型とそのIDを管理するリスト
      * @n 型情報、型ID
      * @details 引数の２個目にコンストラクタがないものを使用できずこうなった
      */
-    static std::unordered_map<std::type_index, int> m_listClassType;
+    std::unordered_map<std::type_index, int> m_listClassType;
 
-public:
+    static CContainer *m_instance;
+
     CContainer(){};
     ~CContainer()
     {
@@ -48,13 +49,20 @@ public:
         m_listResources.clear();
     }
 
+public:
+    static void Create();
+
+    static void Delete(bool _flag=false);
+
+    static CContainer &GetInstance();
+
     /**
      * @brief クラスのコンテナへのアクセス権を作成する
      * @tparam classtype クラスの型
      * @param type アクセス権を作成したいクラス
      */
     template <class classtype>
-    static void MakePermissionToContainer(classtype *type)
+    void MakePermissionToContainer(classtype *type)
     {
         //そのクラスのアクセス権は存在しているか
         if (!CheckPermissionToContainer(type))
@@ -72,7 +80,7 @@ public:
      * @return false 存在しない
      */
     template <class classtype>
-    [[nodiscard]] static bool CheckPermissionToContainer(classtype *type)
+    [[nodiscard]] bool CheckPermissionToContainer(classtype *type)
     {
         return m_listClassType.contains(typeid(classtype));
     }
@@ -87,7 +95,7 @@ public:
      * @return false アクセス権を持つクラスがすでにあるので失敗
      */
     template <class classtype>
-    static bool MakePermissionToList(classtype *type, std::string_view listname)
+    bool MakePermissionToList(classtype *type, std::string_view listname)
     {
         //typeはコンテナへのアクセス権を保持しているか
         if (CheckPermissionToContainer(type))
@@ -115,7 +123,7 @@ public:
      * @return false リストへのアクセス権はない or リストが存在しない or アクセス権を持つクラスが違う
      */
     template <class classtype>
-    [[nodiscard]] static bool CheckPermissionToList(classtype const *type, std::string_view listname)
+    [[nodiscard]] bool CheckPermissionToList(classtype const *type, std::string_view listname)
     {
         //そのクラスにコンテナへのアクセス権はあるか
         if (CheckPermissionToContainer(type))
@@ -148,7 +156,7 @@ public:
      * @return true 存在する
      * @return false 存在しない
      */
-    [[nodiscard]] static bool CheckList(std::string_view listname)
+    [[nodiscard]] bool CheckList(std::string_view listname)
     {
         return m_listAccessData.contains(listname.data());
     }
@@ -162,7 +170,7 @@ public:
      * @n nullptrならアクセス権はない
      */
     template <class classtype>
-    [[nodiscard]] static CListResource *GetListResource(classtype const *type, std::string_view listname)
+    [[nodiscard]] CListResource *GetListResource(classtype const *type, std::string_view listname)
     {
         //そのリストへのアクセス権はあるか
         if (CheckPermissionToList(type, listname.data()))

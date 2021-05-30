@@ -28,10 +28,10 @@ void Com3DModelAssimp::Init()
     if (m_pListModel == nullptr)
     {
         //コンテナとリストへのアクセス権の登録
-        CContainer::MakePermissionToContainer(this);
-        CContainer::MakePermissionToList(this, "assimpmodeldata");
+        CContainer::GetInstance().MakePermissionToContainer(this);
+        CContainer::GetInstance().MakePermissionToList(this, "assimpmodeldata");
         //リストの取得
-        m_pListModel = CContainer::GetListResource(this, "assimpmodeldata");
+        m_pListModel = CContainer::GetInstance().GetListResource(this, "assimpmodeldata");
         m_pListModel->SetResourceType<tagAssimpModelData>();
     }
 

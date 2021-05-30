@@ -32,8 +32,8 @@ void ComShader::Init()
         LoadPixelShader("ps.fx", true);
     }
 
-    CContainer::MakePermissionToList(this, "vertexshader");
-    CContainer::MakePermissionToList(this, "pixelshader");
+    CContainer::GetInstance().MakePermissionToList(this, "vertexshader");
+    CContainer::GetInstance().MakePermissionToList(this, "pixelshader");
 }
 
 //================================================================================================
