@@ -1,8 +1,8 @@
 ﻿#include "CSceneSample2.h"
 
-#include"../../GameComponents/Tests/Test.h"
-#include"../../GameComponents/Tests/Test2.h"
-#include "../../Template/Template.h"
+#include"../../GameComponent/Tests/Test.h"
+#include"../../GameComponent/Tests/Test2.h"
+#include "../../TeraTera3/TeraTera.h"
 
 void CSceneSample2::Init()
 {
@@ -195,7 +195,7 @@ void CSceneSample2::Update()
     if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
     {
         //シーンのロード
-        CSceneManager::LoadScene("SceneSample");
+        CSceneManager::GetInstance().LoadScene("SceneSample");
         //GameObject::Find("ui")->GetComponent<Test>()->Reset();
         //GameObject::Find("ui3")->m_transform->m_size.AddValue(1, 1, 1);
         //GameObject::Find("model2")->m_transform->m_angle.AddValue(1, 1, 0);
