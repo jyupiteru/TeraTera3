@@ -42,7 +42,6 @@ void CConsoleLog::Uninit()
 
 void CConsoleLog::Draw(std::string_view _sentence, E_COLOR_INFO _color)
 {
-#ifdef _DEBUG
     //TODO 色変更をできるようにしておく！
 
     //4桁数までのログ数を表示可能に
@@ -55,7 +54,6 @@ void CConsoleLog::Draw(std::string_view _sentence, E_COLOR_INFO _color)
     std::cout << " Msg:" << _sentence.data() << std::endl;
 
     m_count++;
-#endif
 }
 
 //================================================================================================

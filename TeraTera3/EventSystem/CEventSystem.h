@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file EventSystem.h
  * @author jupiter ()
  * @brief CheckEventクラスが記述されたヘッダ
@@ -32,8 +32,6 @@ class ComponentBase;
  */
 class CEventSystem final
 {
-    std::unique_ptr<CCollision2DSystem> m_collision2D;
-    std::unique_ptr<CCollision3DSystem> m_collision3D;
 
     CEventSystem();
 
@@ -64,7 +62,7 @@ public:
         //当たり判定システムにコンポーネント情報を登録
         //m_collision2D->SetCollisionFunction(obj, component);
 
-        m_collision3D->SetCollisionFunction(obj, component);
+        CCollision3DSystem::GetInstance().SetCollisionFunction(obj, component);
         //以下随時何かあれば追加
     }
 
@@ -80,7 +78,7 @@ public:
         //当たり判定システムにコンポーネント情報から逆残して削除
         //m_collision2D->DestroyCollisionFunction(obj, component);
 
-        m_collision3D->DestroyCollisionFunction(obj, component);
+        CCollision3DSystem::GetInstance().DestroyCollisionFunction(obj, component);
         //以下随時何かあれば追加
     }
 
@@ -100,7 +98,7 @@ public:
             break;
 
         case E_TYPE_EVENT::COLLISION3D:
-            m_collision3D->SetCollisionObject(object, component);
+            CCollision3DSystem::GetInstance().SetCollisionObject(object, component);
             break;
 
         default:

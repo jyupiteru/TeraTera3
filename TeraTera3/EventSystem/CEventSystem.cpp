@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file CEventSystem.cpp
  * @author jupiter ()
  * @brief CEventSystemの実装の書かれたcpp
@@ -11,8 +11,6 @@ CEventSystem *CEventSystem::m_instance = nullptr;
 
 CEventSystem::CEventSystem()
 {
-    m_collision2D = std::make_unique<CCollision2DSystem>();
-    m_collision3D = std::make_unique<CCollision3DSystem>();
 }
 
 //================================================================================================
@@ -20,8 +18,6 @@ CEventSystem::CEventSystem()
 
 CEventSystem::~CEventSystem()
 {
-    m_collision2D.reset();
-    m_collision3D.reset();
 }
 
 //================================================================================================
@@ -29,8 +25,7 @@ CEventSystem::~CEventSystem()
 
 void CEventSystem::Update()
 {
-    m_collision2D->Update();
-    m_collision3D->Update();
+    CCollision3DSystem::GetInstance().Update();
 }
 
 //================================================================================================
@@ -72,7 +67,7 @@ void CEventSystem::ImGuiDraw(unsigned int windowid)
 {
     if (ImGui::TreeNode("CollisionSystem3D"))
     {
-        m_collision3D->ImGuiDraw(windowid);
+        CCollision3DSystem::GetInstance().ImGuiDraw(windowid);
         ImGui::TreePop();
     }
 }
@@ -88,7 +83,7 @@ void CEventSystem::EraseObjectFromEvent(int objectid, E_TYPE_EVENT type)
         break;
 
     case E_TYPE_EVENT::COLLISION3D:
-        m_collision3D->EraseCollisionObject(objectid);
+        CCollision3DSystem::GetInstance().EraseCollisionObject(objectid);
         break;
 
     default:

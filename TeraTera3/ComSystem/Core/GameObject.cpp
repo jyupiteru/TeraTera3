@@ -195,8 +195,7 @@ void GameObject::EraseComponent()
 
 		for (auto &itr : eraselist)
 		{
-			CCollision3DSystem::GetInstance().DestroyCollisionFunction(this, m_pListComponent[itr].get());
-
+			CEventSystem::GetInstance().EraseComponentFromEvent(this, m_pListComponent[itr].get());
 			m_pListComponent[itr]->Uninit();
 			//コンポーネントの所有権を放棄（ほかでshared_ptrのままで保持しているとそっちは消えない）
 			m_pListComponent[itr].reset();
