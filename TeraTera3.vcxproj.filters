@@ -237,13 +237,13 @@
     <ClInclude Include="TeraTera3\ComSystem\ComponentPackages\PackageUITexture.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\CollisionSystem\CCollision2DSystem.h">
+    <ClInclude Include="TeraTera3\EventSystem\Events\Collision2DSystem\CCollision2DSystem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\CollisionSystem\CCollision3DSystem.h">
+    <ClInclude Include="TeraTera3\EventSystem\Events\Collision3DSystem\CCollision3DSystem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\CollisionSystem\CollisionConcept.h">
+    <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\CollisionConcept.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="TeraTera3\ComSystem\ComSystem.h">
@@ -273,10 +273,10 @@
     <ClInclude Include="TeraTera3\ComSystem\Core\PackageBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\CollisionSystem\CollisionUtil\COBB.h">
+    <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\CollisionSystem\CollisionUtil\CSphere.h">
+    <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="GameScene\SceneSetter.h">
@@ -295,6 +295,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="GameScene\CSceneTitle\CSceneTitle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -455,10 +458,10 @@
     <ClCompile Include="TeraTera3\ComSystem\Components\Util\CCollisionBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\CollisionSystem\CCollision2DSystem.cpp">
+    <ClCompile Include="TeraTera3\EventSystem\Events\Collision2DSystem\CCollision2DSystem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\CollisionSystem\CCollision3DSystem.cpp">
+    <ClCompile Include="TeraTera3\EventSystem\Events\Collision3DSystem\CCollision3DSystem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\ComSystem\Core\helper\ControlObjPriority.cpp">
@@ -476,10 +479,10 @@
     <ClCompile Include="TeraTera3\ComSystem\Core\ObjectGenerator.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\CollisionSystem\CollisionUtil\COBB.cpp">
+    <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\CollisionSystem\CollisionUtil\CSphere.cpp">
+    <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameScene\CSceneGame1\CSceneGame1.cpp">
@@ -495,6 +498,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameScene\CSceneTitle\CSceneTitle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

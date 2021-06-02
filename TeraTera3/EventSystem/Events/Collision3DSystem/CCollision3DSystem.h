@@ -8,9 +8,9 @@
 #include <functional>
 #include <DirectXMath.h>
 
-#include "CollisionConcept.h"
-#include "../ComSystem/Core/helper/ConceptIsComponent.h"
-#include "../System/CVector.h"
+#include "../CollisionUtil/CollisionConcept.h"
+#include "../../../ComSystem/Core/helper/ConceptIsComponent.h"
+#include "../../../System/CVector.h"
 
 #pragma once
 

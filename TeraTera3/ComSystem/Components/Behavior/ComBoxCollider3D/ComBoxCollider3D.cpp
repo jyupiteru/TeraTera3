@@ -8,7 +8,7 @@
 #include "../../../../System/CMatrix/CMatrix.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
 #include "../ComTransform/ComTransform.h"
-#include "../../../../CollisionSystem/CCollision3DSystem.h"
+#include "../../../../EventSystem/Events/Collision3DSystem/CCollision3DSystem.h"
 
 void ComBoxCollider3D::Init()
 {

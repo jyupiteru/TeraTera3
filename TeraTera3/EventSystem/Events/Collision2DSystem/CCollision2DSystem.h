@@ -7,9 +7,9 @@
 #include <unordered_map>
 #include <functional>
 
-#include "CollisionConcept.h"
-#include "../ComSystem/Core/helper/ConceptIsComponent.h"
-#include "../System/CVector.h"
+#include "../CollisionUtil/CollisionConcept.h"
+#include "../../../ComSystem/Core/helper/ConceptIsComponent.h"
+#include "../../../System/CVector.h"
 
 #pragma once
 

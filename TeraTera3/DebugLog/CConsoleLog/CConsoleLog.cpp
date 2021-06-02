@@ -16,8 +16,6 @@ CConsoleLog *CConsoleLog::m_instance = nullptr;
 
 void CConsoleLog::Init()
 {
-#ifdef _DEBUG
-
     //コンソールの起動
     if (!AttachConsole(ATTACH_PARENT_PROCESS))
     {
@@ -28,7 +26,6 @@ void CConsoleLog::Init()
     freopen_s(&fp, "CONIN$", "r", stdin);
     m_handleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
     m_handleInput = GetStdHandle(STD_INPUT_HANDLE);
-#endif // _DEBUG
 }
 
 //================================================================================================
@@ -36,9 +33,7 @@ void CConsoleLog::Init()
 
 void CConsoleLog::Uninit()
 {
-#ifdef _DEBUG
     FreeConsole(); //コンソールの終了
-#endif // DEBUG
 
 }
 

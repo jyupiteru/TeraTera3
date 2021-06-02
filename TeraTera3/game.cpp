@@ -9,7 +9,7 @@
 
 #include "Timer/CTimer.h"
 #include "ImGuiSystem/CImGuiManager/CImGuiManager.h"
-#include "CollisionSystem/CCollision3DSystem.h"
+#include "EventSystem/CEventSystem.h"
 #include "DebugLog/CDebugLog.h"
 #include "ComSystem/ComSystem.h"
 #include "ComSystem/Core/ObjectGenerator.h"
@@ -68,7 +68,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CImGuiManager::Create();
 	CImGuiManager::GetInstance().Init(hwnd);
 
-	CCollision3DSystem::Create();
+	CEventSystem::Create();
 
 	ObjectGenerator::Create();
 
@@ -183,7 +183,7 @@ void GameUninit()
 	CDebugLog::Delete(true);
 	ObjectGenerator::Delete(true);
 	CSceneManager::Delete(true);
-	CCollision3DSystem::Delete(true);
+	CEventSystem::Delete(true);
 	CContainer::Delete(true);
 	CImGuiManager::Delete(true);
 
