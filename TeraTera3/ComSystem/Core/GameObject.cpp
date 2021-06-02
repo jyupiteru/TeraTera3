@@ -16,6 +16,7 @@
 #include "../../ImGuiSystem/ImGuiHeaders.h"
 #include "../../ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../../WindowsSystem/CDirectInput.h"
+#include "../../EventSystem/CEventSystem.h"
 
 int GameObject::m_classCount = 0;
 
@@ -194,6 +195,7 @@ void GameObject::EraseComponent()
 
 		for (auto &itr : eraselist)
 		{
+			CEventSystem::GetInstance().EraseComponentFromEvent(this, m_pListComponent[itr].get());
 			m_pListComponent[itr]->Uninit();
 			//コンポーネントの所有権を放棄（ほかでshared_ptrのままで保持しているとそっちは消えない）
 			m_pListComponent[itr].reset();

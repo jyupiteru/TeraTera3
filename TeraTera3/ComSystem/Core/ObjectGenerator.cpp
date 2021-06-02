@@ -14,6 +14,7 @@
 #include "../../ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../../WindowsSystem/CDirectInput.h"
 #include "../../Timer/CTimer.h"
+#include "../../EventSystem/CEventSystem.h"
 
 ObjectGenerator *ObjectGenerator::m_instance = nullptr;
 
@@ -258,6 +259,8 @@ void ObjectGenerator::EraseObject()
 
 			//リストからオブジェクト番号を削除
 			m_pListObjectName.erase((*obj)->m_objectName);
+
+			CCollision3DSystem::GetInstance().EraseCollisionObject(objid);
 
 			//オブジェクトをリストから削除
 			m_pListAllObject[objid].reset();

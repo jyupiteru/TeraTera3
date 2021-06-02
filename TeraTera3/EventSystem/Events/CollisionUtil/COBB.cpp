@@ -1,6 +1,6 @@
 ﻿
 #include "COBB.h"
-#include "../../WindowsSystem/DX11Settransform.h"
+#include "../../../WindowsSystem/DX11Settransform.h"
 
 using namespace DirectX;
 

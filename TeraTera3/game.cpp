@@ -8,8 +8,8 @@
 #include "game.h"
 
 #include "Timer/CTimer.h"
-#include "ImGuiSystem/CImGuiManager/CImGuiManager.h"
-#include "CollisionSystem/CCollision3DSystem.h"
+#include "ImGuiSystem/ImGuiHeaders.h"
+#include "EventSystem/CEventSystem.h"
 #include "DebugLog/CDebugLog.h"
 #include "ComSystem/ComSystem.h"
 #include "ComSystem/Core/ObjectGenerator.h"
@@ -44,6 +44,9 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	//ログを起動
 	CDebugLog::Create();
 
+	CDebugLog::GetInstance().Draw("DebugLog is Start");
+	CDebugLog::GetInstance().Draw("Use TeraTera ver3 Framewark");
+
 	CContainer::Create();
 
 	bool sts;
@@ -64,16 +67,36 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		return false;
 	}
 
+	// DIRECTINPUT初期化
+	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
+
 	//ImGuiを管理するかマネージャーの生成と初期化
 	CImGuiManager::Create();
 	CImGuiManager::GetInstance().Init(hwnd);
 
-	CCollision3DSystem::Create();
+	//ウインドウを１個生成
+	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
+	auto windowdata = CImGuiManager::GetInstance().GetImGuiWindow(windowid);
+
+	//大きさを1/3にしたいので計算
+	int size_ = SCREEN_WIDTH / 3;
+	int sizecount = 0;
+	while (sizecount * 50 < size_)
+	{
+		sizecount++;
+	}
+	windowdata->SetImGuiFunction("Menu", "Project Property", true);
+
+	//ウインドウの座標を変更
+	windowdata->m_firstSize.x = static_cast<float>(sizecount * 50);
+	windowdata->m_firstSize.y = static_cast<float>(SCREEN_HEIGHT);
+
+	windowdata->m_firstCenterPosition.x = static_cast<float>(SCREEN_WIDTH) - windowdata->m_firstSize.x / 2.0f;
+	windowdata->m_firstCenterPosition.y = windowdata->m_firstSize.y / 2.0f;
+
+	CEventSystem::Create();
 
 	ObjectGenerator::Create();
-
-	CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDraw_Objects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
 
 	{
 		// カメラ変換行列初期化
@@ -108,20 +131,13 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		light->DontDestroyOnLoad();
 	}
 
+	// アルファブレンド有効にする
+	TurnOnAlphablend();
+
 	CSceneManager::Create();
 
 	CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CSceneManager::GetInstance(), "Menu");
-
-	//ウインドウを1つ生成
-	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
-	auto windowdata = CImGuiManager::GetInstance().GetImGuiWindow(windowid);
-
-	// DIRECTINPUT初期化
-	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
-
-	// アルファブレンド有効にする
-	TurnOnAlphablend();
+	CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CEventSystem::GetInstance(), "Menu");
 
 	return true;
 }
@@ -147,7 +163,7 @@ void GameUpdate(float fps)
 	CTimer::GetInstance().Update();
 
 	//3Dの衝突判定の更新
-	CCollision3DSystem::GetInstance().Update();
+	CEventSystem::GetInstance().Update();
 
 	//シーンに存在しているオブジェクトのUpdateをぶん回し
 	CSceneManager::GetInstance().Update();
@@ -164,6 +180,7 @@ void GameDraw()
 	// レンダリング前処理
 	DX11BeforeRender(ClearColor);
 
+	//シーンに存在しているオブジェクトのDrawをぶん回し
 	CSceneManager::GetInstance().Draw();
 
 	CImGuiManager::GetInstance().Draw();
@@ -183,7 +200,7 @@ void GameUninit()
 	CDebugLog::Delete(true);
 	ObjectGenerator::Delete(true);
 	CSceneManager::Delete(true);
-	CCollision3DSystem::Delete(true);
+	CEventSystem::Delete(true);
 	CContainer::Delete(true);
 	CImGuiManager::Delete(true);
 

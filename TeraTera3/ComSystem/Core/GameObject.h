@@ -16,6 +16,7 @@
 
 #include "Helper/ConceptIsComponent.h"
 #include "../../System/CVector.h"
+#include "../../EventSystem/CEventSystem.h"
 
 #pragma once
 
@@ -264,6 +265,9 @@ public:
 
             m_listComponentReady.push_back(typeid(component));
 
+            //イベント確認と登録の処理 ここではcom(継承後アドレス)を渡す
+            CEventSystem::GetInstance().SetComponentToEvent(this, com.get());
+
             return GetComponent<component>();
         }
         //既に存在しているのでnullptr
@@ -356,6 +360,9 @@ public:
                 itr.second->SetComponentID(itr.second.get());
 
                 m_listComponentReady.push_back(itr.first);
+
+                //イベント確認と登録の処理 ここではcom(継承後アドレス)を渡す
+                CEventSystem::GetInstance().SetComponentToEvent(this, itr.second.get());
             }
         }
         //c++17から追加機能

@@ -8,14 +8,15 @@
 #include <algorithm>
 #include <tuple>
 
-#include "../Setup.h"
-#include "../ComSystem/ComSystem.h"
-#include "../ComSystem/Components/Util/CCollisionBase.h"
-#include "../../ThirdParty/ImGui/imgui.h"
-#include "../WindowsSystem/CDirectInput.h"
-#include "../ImGuiSystem/ImGuiHeaders.h"
-#include "../ImGuiSystem/ImGuiHelperFunctions.h"
-#include "../Timer/CTimer.h"
+
+#include "../../../Setup.h"
+#include "../../../ComSystem/ComSystem.h"
+#include "../../../ComSystem/Components/Util/CCollisionBase.h"
+#include "../../../../ThirdParty/ImGui/imgui.h"
+#include "../../../WindowsSystem/CDirectInput.h"
+#include "../../../ImGuiSystem/ImGuiHeaders.h"
+#include "../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../Timer/CTimer.h"
 
 CCollision3DSystem* CCollision3DSystem::m_instance = nullptr;
 
@@ -286,9 +287,9 @@ void CCollision3DSystem::ImGuiDraw_CollisionObjects(unsigned int windowid)
     if (ImGui::BeginListBox("Collision Objects"))
     {
         //全オブジェクトぶん回し
-        for (auto &itr : m_ListCollisionFunction)
+        for (auto &itr : m_list3DCollisionObjects)
         {
-            std::string objname = m_list3DCollisionObjects[itr.first].first->m_objectName;
+            std::string objname = itr.second.first->m_objectName;
 
             //選択されているものか 同じならtrue
             const bool is_selected = (selectobject == objname);

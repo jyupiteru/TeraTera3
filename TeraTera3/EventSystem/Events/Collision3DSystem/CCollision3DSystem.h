@@ -8,9 +8,9 @@
 #include <functional>
 #include <DirectXMath.h>
 
-#include "CollisionConcept.h"
-#include "../ComSystem/Core/helper/ConceptIsComponent.h"
-#include "../System/CVector.h"
+#include "../CollisionUtil/CollisionConcept.h"
+#include "../../../ComSystem/Core/helper/ConceptIsComponent.h"
+#include "../../../System/CVector.h"
 
 #pragma once
 
@@ -60,7 +60,7 @@ class CCollision3DSystem
 
     /**
      * @brief 3Dの当たり判定をとるオブジェクトのリスト
-     * @details オブジェクトID-tuple(オブジェクト(通知用)、サイズ取得用、当たり判定調整用)
+     * @n オブジェクトID-tuple(オブジェクト(通知用)、サイズ取得用、当たり判定調整用)
      */
     std::unordered_map<int, std::pair<GameObject *, CCollisionBase *>> m_list3DCollisionObjects;
 

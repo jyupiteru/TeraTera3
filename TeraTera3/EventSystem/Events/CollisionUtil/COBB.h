@@ -1,9 +1,9 @@
 ﻿
 #pragma once
 #include <DirectXMath.h>
-#include "../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
-#include "../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
-#include "../../WindowsSystem/Model/DatFileLoader/DatFileLoader.h"
+#include "../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
+#include "../../../WindowsSystem/Model/DatFileLoader/DatFileLoader.h"
 
 class DatFileLoader;
 
