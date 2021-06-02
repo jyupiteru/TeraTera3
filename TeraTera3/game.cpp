@@ -98,6 +98,9 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 
 	ObjectGenerator::Create();
 
+	CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
+	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDraw_Objects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
+
 	{
 		// カメラ変換行列初期化
 		XMFLOAT3 eye = {0, 0, -30};	 // 視点
@@ -110,6 +113,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 
 		camera->GetComponent<ComCamera>()->SetProjection(1.0f, 100000.0f,
 														 XM_PIDIV2, SCREEN_WIDTH, SCREEN_HEIGHT);
+		camera->AddComponent<ComShader>();
 		camera->DontDestroyOnLoad();
 		camera->m_objectUpdatePriority.SetValue(-20);
 
