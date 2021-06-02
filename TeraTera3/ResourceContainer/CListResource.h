@@ -20,7 +20,7 @@ class CListResource final
 {
     /**
      * @brief リソースを保持、管理するリスト
-     * @n リソース名、リソースのポインタ(shared_ptr<void>の予定だったがエラー吐きまくったので変更)
+     * @n リソース名、リソースのポインタ
      */
     std::unordered_map<std::string, std::shared_ptr<void>> m_listResource;
 

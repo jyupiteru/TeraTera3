@@ -1,11 +1,12 @@
 ﻿#include "CSceneSample.h"
 
-#include"../../GameComponent/Tests/Test.h"
-#include"../../GameComponent/Tests/Test2.h"
+#include "../../GameComponent/Tests/Test.h"
+#include "../../GameComponent/Tests/Test2.h"
 #include "../../TeraTera3/TeraTera.h"
 
 void CSceneSample::Init()
 {
+    CDebugLog::GetInstance().Draw("init");
     { //ステージ（ドーム表示）
         auto skydome = GameObject::MakeNewObject("skydome", E_TYPE_OBJECT::NONE);
         skydome->AddPackage<Package3DModelObject>();
@@ -58,7 +59,7 @@ void CSceneSample::Init()
     //    bill->AddComponent<Test>()->FirstSet();
     //}
 
-    {//視点決定用
+    { //視点決定用
         auto model = GameObject::MakeNewObject("model", E_TYPE_OBJECT::MODEL3D);
         model->m_transform->m_worldPosition.SetValue(0, -30, -100);
         model->m_transform->m_size.SetValue(2, 2, 2);
@@ -100,38 +101,60 @@ void CSceneSample::Init()
     //    //collider->m_offsetAngle.SetValue(0, 45, 0);
     //    //collider->m_offsetPosition.SetValue(0, 30, 0);
     //}
-     { //1体目のアニメーションモデル
-         auto model2 = GameObject::MakeNewObject("animmodel", E_TYPE_OBJECT::MODEL3D);
-         model2->m_transform->m_worldPosition.SetValue(300, 50, 100);
-         model2->m_transform->m_size.SetValue(100, 100, 100);
-         model2->m_transform->m_angle.SetValue(0, 0, 0);
-         model2->m_transform->m_vector.SetValue(-1, 0, 0);
-         model2->AddComponent<Test2>();
-         auto assimp = model2->GetComponent<Com3DModelAssimp>();
-         assimp->LoadModelData("Player/Running.fbx", "Player/");
-
-         auto collider = model2->AddComponent<ComBoxCollider3D>();
-         //collider->m_draw = true;
-         collider->m_isFirstJustSize = true;
-         collider->m_isTrigger.SetValue(true);
-     }
-    { //2体目のアニメーションモデル
-        auto model2 = GameObject::MakeNewObject("animmodel2", E_TYPE_OBJECT::MODEL3D);
-        model2->m_transform->m_worldPosition.SetValue(-100, 50, 100);
+    { //1体目のアニメーションモデル
+        auto model2 = GameObject::MakeNewObject("animmodel", E_TYPE_OBJECT::MODEL3D);
+        model2->m_transform->m_worldPosition.SetValue(300, -30, 100);
         model2->m_transform->m_size.SetValue(100, 100, 100);
         model2->m_transform->m_angle.SetValue(0, 0, 0);
+        model2->m_transform->m_vector.SetValue(-1, 0, 0);
         model2->AddComponent<Test2>();
         auto assimp = model2->GetComponent<Com3DModelAssimp>();
         assimp->LoadModelData("Player/Running.fbx", "Player/");
-        Com3DAnimationAssimp *anim = model2->AddComponent<Com3DAnimationAssimp>();
-        anim->LoadAnimation("test1", "Player/Running.fbx");
-        anim->ChangeAnimation("test1", 0);
+
         auto collider = model2->AddComponent<ComBoxCollider3D>();
-        collider->m_draw = true;
+        //collider->m_draw = true;
         collider->m_isFirstJustSize = true;
-        collider->m_color.SetValue(256, 256, 0, 0.5f);
-        collider->m_offsetSize.SetValue(0, 50, 0);
+        collider->m_isTrigger.SetValue(true);
+        collider->m_draw = true;
     }
+
+     { //2体目のアニメーションモデル
+         auto model2 = GameObject::MakeNewObject("animmodel2", E_TYPE_OBJECT::MODEL3D);
+         model2->m_transform->m_worldPosition.SetValue(-100, 50, 100);
+         model2->m_transform->m_size.SetValue(100, 100, 100);
+         model2->m_transform->m_angle.SetValue(0, 0, 0);
+         model2->AddComponent<Test2>();
+         auto assimp = model2->GetComponent<Com3DModelAssimp>();
+         assimp->LoadModelData("Player/Running.fbx", "Player/");
+         Com3DAnimationAssimp *anim = model2->AddComponent<Com3DAnimationAssimp>();
+         anim->LoadAnimation("test1", "Player/Running.fbx");
+         anim->ChangeAnimation("test1", 0);
+         auto collider = model2->AddComponent<ComBoxCollider3D>();
+         collider->m_draw = true;
+         collider->m_isFirstJustSize = true;
+         collider->m_color.SetValue(256, 256, 0, 0.5f);
+         collider->m_offsetSize.SetValue(0, 50, 0);
+     }
+
+    //{
+    //    auto colliderobject = GameObject::MakeNewObject("colliderobj", E_TYPE_OBJECT::MODEL3D);
+
+    //    colliderobject->RemoveComponent<Com3DModelAssimp>();
+    //    colliderobject->AddComponent<ComBox>();
+    //    colliderobject->m_transform->m_worldPosition.SetValue(-100, 50, 100);
+    //    colliderobject->m_transform->m_size.SetValue(100, 100, 100);
+    //    colliderobject->m_transform->m_color.SetValue(0, 256, 0, 0.5f);
+    //    colliderobject->m_transform->m_angle.SetValue(0, 45, 45);
+    //    auto collider = colliderobject->AddComponent<ComBoxCollider3D>();
+    //    collider->m_draw = true;
+    //    collider->m_isFirstJustSize = true;
+    //    collider->m_offsetSize.SetValue(20, 20, 20); //少し大きくしている
+    //    collider->m_isTrigger.SetValue(true);
+    //    collider->m_color.AddValue(-50, 0, 0, 0);
+    //    // box->m_transform->m_angle.SetValue(0, 0, 0);
+
+    //    //box2->m_activeFlag.SetValue(false);
+    //}
     //{
     //    auto box2 = GameObject::MakeNewObject("box2", E_TYPE_OBJECT::MODEL3D);
     //    box2->RemoveComponent<Com3DModelAssimp>();
@@ -169,6 +192,8 @@ void CSceneSample::Init()
     //    auto test2 = GameObject::MakeNewObject("test2", E_TYPE_OBJECT::NONE);
     //    // test2->AddComponent<Test2>()->MakeChildObject(0, 0);
     //}
+    float time =  CTimer::GetInstance().GetProgressTime();
+    CDebugLog::GetInstance().Draw("init"+ std::to_string(time));
 }
 
 void CSceneSample::Uninit()
