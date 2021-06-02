@@ -39,9 +39,9 @@ protected:
     /**
      * @brief 書き込み先のハンドル(多分アドレス)
      */
-    FILE* fp;
+    FILE *fp;
 
-    static CConsoleLog* m_instance;
+    static CConsoleLog *m_instance;
 
     CConsoleLog()
     {
@@ -61,7 +61,6 @@ public:
     friend CDebugLog;
 
 private:
-
     /**
      * @brief デバッグ用の文を表示するクラス
      * @n \nで改行です（入れないと改行されません）
@@ -81,5 +80,5 @@ private:
     static void Delete();
 
 public:
-    static  CConsoleLog& GetInstance();
+    static CConsoleLog &GetInstance();
 };

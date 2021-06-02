@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../../Template/Template.h"
+#include "../../TeraTera3/TeraTera.h"
 
 /**
  * @brief テスト用のクラス
