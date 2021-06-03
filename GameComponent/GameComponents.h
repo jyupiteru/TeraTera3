@@ -5,3 +5,9 @@
  */
 
 #pragma once
+
+#include "ComGameManager/ComGameManager.h"
+
+//#include "ComMapMake/ComMapMake.h"
+
+#include "ComMapManager/ComMapManager.h"
