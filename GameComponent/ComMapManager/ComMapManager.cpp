@@ -89,9 +89,11 @@ void ComMapManager::CreateMap(int _stagenum)
             case E_MAPCHIP::FLOOR:
                 //オブジェクト作成
                 obj= m_gameObject->AddChildObject(objname, E_TYPE_OBJECT::NONE);
+                obj->m_typeObject = E_TYPE_OBJECT::MODEL3D;
                 obj->AddComponent<ComShader>();
                 obj->AddComponent<ComBox>();
                 obj->AddComponent<ComBoxCollider3D>()->m_isTrigger.SetValue(true);
+                obj->GetComponent<ComBoxCollider3D>()->m_isFirstJustSize = true;
 
                 //座標の計算
                 obj->m_transform->m_worldPosition.SetValue(pos_x, 0, pos_z);

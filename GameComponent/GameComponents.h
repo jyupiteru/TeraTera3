@@ -8,6 +8,6 @@
 
 #include "ComGameManager/ComGameManager.h"
 
-//#include "ComMapMake/ComMapMake.h"
+#include"ComPlayer/ComPlayer.h"
 
 #include "ComMapManager/ComMapManager.h"

@@ -306,6 +306,9 @@
     <ClInclude Include="GameComponent\ComGameManager\ComGameManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="GameComponent\ComPlayer\ComPlayer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeraTera3\Timer\CTimer.cpp">
@@ -513,6 +516,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameComponent\ComGameManager\ComGameManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComPlayer\ComPlayer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

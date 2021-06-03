@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponent\ComPlayer\ComPlayer.h" />
     <ClInclude Include="GameComponent\ComGameManager\ComGameManager.h" />
     <ClInclude Include="GameComponent\ComMapManager\ComMapManager.h" />
     <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h" />
@@ -242,6 +243,7 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameComponent\ComPlayer\ComPlayer.cpp" />
     <ClCompile Include="GameComponent\ComGameManager\ComGameManager.cpp" />
     <ClCompile Include="GameComponent\ComMapManager\ComMapManager.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp" />
