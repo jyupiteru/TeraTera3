@@ -59,8 +59,6 @@ ComMapManager &ComMapManager::GetInstance()
 
 void ComMapManager::CreateMap(int _stagenum)
 {
-    _stagenum--;
-
     float mapsize = 10.0f;
 
 

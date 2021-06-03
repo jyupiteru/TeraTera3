@@ -49,11 +49,11 @@ void CSceneGame1::Init()
         camera->m_objectUpdatePriority.SetValue(-1);
     }
 
-   /* {
+    {
         auto gamemanager = GameObject::MakeNewObject("GameManager", E_TYPE_OBJECT::NONE);
         gamemanager->AddComponent<ComGameManager>();
         gamemanager->AddComponent<ComMapManager>()->CreateMap(0);
-    }*/
+    }
 }
 
 void CSceneGame1::Uninit()
