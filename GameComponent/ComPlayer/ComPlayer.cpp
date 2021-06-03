@@ -27,6 +27,7 @@ void ComPlayer::Update()
     switch (m_nowstate)
     {
     case E_PLAYERFLOW::READY:
+        //落下処理
         m_gameObject->m_transform->m_vector.SetValue(0.0f, -0.5f, 0.0f);
         break;
 
@@ -53,7 +54,7 @@ void ComPlayer::OnTriggerStay3D(GameObject *obj)
 
 void ComPlayer::PlayerMove()
 {
-    float movespeed = 3.0f;
+    float movespeed = 10.0f;
     movespeed *= CTimer::GetInstance().m_deltaTime.GetValue();
 
     DirectX::XMFLOAT3 vec = {0.0f, 0.0f, 0.0f};
