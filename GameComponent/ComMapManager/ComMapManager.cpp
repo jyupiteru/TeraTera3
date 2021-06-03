@@ -97,10 +97,10 @@ void ComMapManager::CreateMap(int _stagenum)
                 obj->m_transform->m_worldPosition.SetValue(pos_x, 0, pos_z);
                 obj->m_transform->m_size.SetValue(mapsize, mapsize, mapsize);
 
-                /*if (auto color = itr2.first * itr3.first % 2; color == 0)
+                if (auto color = nowdepth  + nowwidth; color % 2 == 0)
                 {
                     obj->m_transform->m_color.SetValue(200.0f, 200.0f, 200.0f, 1.0f);
-                }*/
+                }
 
                 break;
             case E_MAPCHIP::NONE:
