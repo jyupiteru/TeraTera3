@@ -9,7 +9,7 @@
 #include "GameObject.h"
 #include "ObjectGenerator.h"
 
-//読み込みたくないけどこれ以外に循環参照を知らないので
+ //読み込みたくないけどこれ以外に循環参照を知らないので
 #include "ComponentBase.h"
 #include "../Components/Behavior/ComTransform/ComTransform.h"
 #include "../../../ThirdParty/ImGui/imgui.h"
@@ -62,8 +62,10 @@ void GameObject::Uninit()
 
 void GameObject::Update()
 {
+	auto tmpreadylist = m_listComponentReady;
+	m_listComponentReady.clear();
 	//ここ参照にしたかったけどするとmake_pairで値をとられる？のでなしに
-	for (auto &itr : m_listComponentReady)
+	for (auto& itr : tmpreadylist)
 	{
 		//Update前にRemoveで消えている可能性もあるので
 		if (m_pListComponent.contains(itr))
@@ -71,10 +73,10 @@ void GameObject::Update()
 			m_pListComponent[itr]->Ready();
 		}
 	}
-	m_listComponentReady.clear();
+	tmpreadylist.clear();
 
 	//自分のコンポーネントのUpdate回し
-	for (const auto &itr : m_pListComponent)
+	for (const auto& itr : m_pListComponent)
 	{
 		//このコンポーネントはアクティブかどうか
 		if (itr.second->m_enable.GetValue())
@@ -92,7 +94,7 @@ void GameObject::Update()
 void GameObject::Draw()
 {
 	//自分のDraw回し
-	for (auto &itr : m_pListComponent)
+	for (auto& itr : m_pListComponent)
 	{
 		if (itr.second->m_enable.GetValue())
 		{
@@ -104,7 +106,7 @@ void GameObject::Draw()
 //================================================================================================
 //================================================================================================
 
-GameObject *const GameObject::AddChildObject(E_TYPE_OBJECT type)
+GameObject* const GameObject::AddChildObject(E_TYPE_OBJECT type)
 {
 	auto obj = ObjectGenerator::GetInstance().AddObjectInGenerator(type);
 	//きちんと生成できているかの確認
@@ -120,7 +122,7 @@ GameObject *const GameObject::AddChildObject(E_TYPE_OBJECT type)
 //================================================================================================
 //================================================================================================
 
-GameObject *const GameObject::AddChildObject(std::string name, E_TYPE_OBJECT type)
+GameObject* const GameObject::AddChildObject(std::string name, E_TYPE_OBJECT type)
 {
 	auto obj = ObjectGenerator::GetInstance().AddObjectInGenerator(name, type);
 	//きちんと生成できているかの確認
@@ -136,7 +138,7 @@ GameObject *const GameObject::AddChildObject(std::string name, E_TYPE_OBJECT typ
 //================================================================================================
 //================================================================================================
 
-GameObject *const GameObject::FindChildObject(std::string key)
+GameObject* const GameObject::FindChildObject(std::string key)
 {
 	if (m_pListChildObjectName.contains(key))
 	{
@@ -149,7 +151,7 @@ GameObject *const GameObject::FindChildObject(std::string key)
 //================================================================================================
 //================================================================================================
 
-GameObject *const GameObject::FindChildObject(int objid)
+GameObject* const GameObject::FindChildObject(int objid)
 {
 	//idから検索
 	if (m_pListChildObject.contains(objid))
@@ -193,7 +195,7 @@ void GameObject::EraseComponent()
 
 		m_listEraseComponent.clear();
 
-		for (auto &itr : eraselist)
+		for (auto& itr : eraselist)
 		{
 			CEventSystem::GetInstance().EraseComponentFromEvent(this, m_pListComponent[itr].get());
 			m_pListComponent[itr]->Uninit();
@@ -208,7 +210,7 @@ void GameObject::EraseComponent()
 //================================================================================================
 //================================================================================================
 
-GameObject *const GameObject::MakeNewObject(std::string_view name, E_TYPE_OBJECT type)
+GameObject* const GameObject::MakeNewObject(std::string_view name, E_TYPE_OBJECT type)
 {
 	return ObjectGenerator::GetInstance().AddObjectInGenerator(name, type);
 }
@@ -216,7 +218,7 @@ GameObject *const GameObject::MakeNewObject(std::string_view name, E_TYPE_OBJECT
 //================================================================================================
 //================================================================================================
 
-GameObject *const GameObject::Find(int objid)
+GameObject* const GameObject::Find(int objid)
 {
 	return ObjectGenerator::GetInstance().FindInGenerator(objid);
 }
@@ -224,7 +226,7 @@ GameObject *const GameObject::Find(int objid)
 //================================================================================================
 //================================================================================================
 
-GameObject *const GameObject::Find(std::string_view name)
+GameObject* const GameObject::Find(std::string_view name)
 {
 	return ObjectGenerator::GetInstance().FindInGenerator(name);
 }
@@ -279,7 +281,7 @@ void GameObject::ImGui_DrawObjectDetails(unsigned int windowid)
 		ImGui::BulletText("isStraddle : false");
 	}
 	ImGui::SameLine();
-	HelpMarker((const char *)u8"オブジェクトはシーンをまたぐか?");
+	HelpMarker((const char*)u8"オブジェクトはシーンをまたぐか?");
 
 	if (m_pParentObject != nullptr)
 	{
@@ -313,12 +315,12 @@ void GameObject::ImGui_DrawComponents(unsigned int windowid)
 		}
 
 		//強制的にキャスト(エラー出るかも)
-		auto input_hidename = (char *)hide_componentname.c_str();
+		auto input_hidename = (char*)hide_componentname.c_str();
 
 		//描画時のフィルター用 TABを押しながら打っていることを確認
 		struct TextFilters
 		{
-			static int FilterImGuiLetters(ImGuiInputTextCallbackData *data)
+			static int FilterImGuiLetters(ImGuiInputTextCallbackData* data)
 			{
 				if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_TAB))
 					return 0;
@@ -328,10 +330,10 @@ void GameObject::ImGui_DrawComponents(unsigned int windowid)
 
 		//テキストを取得する
 		ImGui::InputText("filter", input_hidename, sizeof(input_hidename),
-						 ImGuiInputTextFlags_CallbackCharFilter, TextFilters::FilterImGuiLetters);
+			ImGuiInputTextFlags_CallbackCharFilter, TextFilters::FilterImGuiLetters);
 		//次のものを同じ行に描画する?
 		ImGui::SameLine();
-		HelpMarker((const char *)u8"検索したいコンポーネント名を入れると絞り込み可能、TABを押しながら打つこと");
+		HelpMarker((const char*)u8"検索したいコンポーネント名を入れると絞り込み可能、TABを押しながら打つこと");
 
 		//登録と取得のし直し
 		CImGuiHelper::SetWindowDisplayContent(windowid, "object" + m_objID, "hidecomponent", input_hidename);
@@ -340,7 +342,7 @@ void GameObject::ImGui_DrawComponents(unsigned int windowid)
 		unsigned int componentcount = 0;
 
 		//全オブジェクトぶん回し
-		for (auto &itr : m_pListComponent)
+		for (auto& itr : m_pListComponent)
 		{
 			std::string componentname = &itr.first.name()[6];
 
@@ -384,12 +386,12 @@ void GameObject::ImGui_DrawChiObjects(unsigned int windowid)
 		}
 
 		//強制的にキャスト(エラー出るかも)
-		auto input_hidename = (char *)hide_objectname.c_str();
+		auto input_hidename = (char*)hide_objectname.c_str();
 
 		//描画時のフィルター用 TABを押しながら打っていることを確認
 		struct TextFilters
 		{
-			static int FilterImGuiLetters(ImGuiInputTextCallbackData *data)
+			static int FilterImGuiLetters(ImGuiInputTextCallbackData* data)
 			{
 				if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_TAB))
 					return 0;
@@ -399,10 +401,10 @@ void GameObject::ImGui_DrawChiObjects(unsigned int windowid)
 
 		//テキストを取得する
 		ImGui::InputText("filter", input_hidename, sizeof(input_hidename),
-						 ImGuiInputTextFlags_CallbackCharFilter, TextFilters::FilterImGuiLetters);
+			ImGuiInputTextFlags_CallbackCharFilter, TextFilters::FilterImGuiLetters);
 		//次のものを同じ行に描画する?
 		ImGui::SameLine();
-		HelpMarker((const char *)u8"検索したいオブジェクト名を入れると絞り込み可能、TABを押しながら打つこと");
+		HelpMarker((const char*)u8"検索したいオブジェクト名を入れると絞り込み可能、TABを押しながら打つこと");
 
 		//登録と取得のし直し
 		CImGuiHelper::SetWindowDisplayContent(windowid, "object" + m_objID, "hideobject", input_hidename);
@@ -414,7 +416,7 @@ void GameObject::ImGui_DrawChiObjects(unsigned int windowid)
 		if (ImGui::BeginListBox("ChildObjects"))
 		{
 			//全オブジェクトぶん回し
-			for (auto &itr : m_pListChildObjectName)
+			for (auto& itr : m_pListChildObjectName)
 			{
 				//選択されているものか 同じならtrue
 				const bool is_selected = (selectobject == itr.first);
@@ -423,7 +425,7 @@ void GameObject::ImGui_DrawChiObjects(unsigned int windowid)
 				if (itr.first.find(hide_objectname) != std::string::npos || hide_objectname == "")
 				{
 					//1コメの引数が表示する内容、２個目が選択されたか？
-					if (ImGui::Selectable((const char *)itr.first.c_str(), is_selected))
+					if (ImGui::Selectable((const char*)itr.first.c_str(), is_selected))
 					{
 						//登録内容の更新
 						CImGuiHelper::SetWindowDisplayContent(windowid, "object" + m_objID, "select_objectchildobject", itr.first);
@@ -454,7 +456,7 @@ void GameObject::ImGui_DrawChiObjects(unsigned int windowid)
 //================================================================================================
 //================================================================================================
 
-bool GameObject::DestroyObject(GameObject *obj)
+bool GameObject::DestroyObject(GameObject* obj)
 {
 	//アドレスが無効じゃないか確認
 	if (obj != nullptr)
