@@ -60,6 +60,7 @@ void ObjectGenerator::Update()
 				m_updateCounter++;
 				(*obj)->Update();
 			}
+			(*obj)->EraseComponent();
 
 			{ //描画用の情報をセットする場所
 				//todo ここの処理が重いようなら計算場所、方法を見直し
