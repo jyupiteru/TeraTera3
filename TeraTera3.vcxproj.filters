@@ -312,10 +312,13 @@
     <ClInclude Include="GameComponent\ComTimer\ComTimer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComEnemyManager\ComEnemyManager.h">
+    <ClInclude Include="GameComponent\ComShotManager\ComEnemyManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComEnemy\ComEnemy.h">
+    <ClInclude Include="GameComponent\ComShot\ComShot.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComShotManager\ComShotManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -533,10 +536,13 @@
     <ClCompile Include="GameComponent\ComTimer\ComTimer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponent\ComEnemyManager\ComEnemyManager.cpp">
+    <ClCompile Include="GameComponent\ComShotManager\ComEnemyManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponent\ComEnemy\ComEnemy.cpp">
+    <ClCompile Include="GameComponent\ComShot\ComShot.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComShotManager\ComShotManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
