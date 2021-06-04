@@ -1,4 +1,5 @@
 ﻿#include "ComMapManager.h"
+#include "../ComShotManager/ComShotManager.h"
 
 ComMapManager *ComMapManager::m_instance = nullptr;
 
@@ -8,12 +9,24 @@ void ComMapManager::Init()
 
     m_listMapMaxNum[0] = {10, 10};
 
+    //手前から奥
     for (int i = 0; i < 10; i++)
     {
+        //左から右
         for (int k = 0; k < 10; k++)
         {
             m_listMapData[0][i][k] = E_MAPCHIP::FLOOR;
         }
+        //生成可能個所をセット 左右の手前から奥
+        m_listShotFirstPos.push_back(std::make_pair(0, i));
+        m_listShotFirstPos.push_back(std::make_pair(9, i));
+    }
+
+    for (int i = 1; i < 9; i++)
+    {
+        //手前、奥の左から右
+        m_listShotFirstPos.push_back(std::make_pair(i, 9));
+        m_listShotFirstPos.push_back(std::make_pair(i, 0));
     }
 
     m_listMapData[0][4][4] = E_MAPCHIP::ENEMY_GOAL;
@@ -35,6 +48,7 @@ void ComMapManager::Uninit()
 
 void ComMapManager::Ready()
 {
+    ComShotManager::GetInstance().SetShotFirstPos(m_listShotFirstPos);
 }
 
 //================================================================================================

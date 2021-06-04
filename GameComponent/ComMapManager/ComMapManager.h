@@ -25,6 +25,8 @@ class ComMapManager : public ComponentBase
 	 */
 	std::unordered_map<int, std::pair<int, int>> m_listMapMaxNum;
 
+	std::vector<std::pair<float, float>> m_listShotFirstPos;
+
 	static ComMapManager *m_instance;
 
 	int m_stageWidthMax = 20;

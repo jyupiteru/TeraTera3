@@ -14,6 +14,6 @@
 
 #include "ComTimer/ComTimer.h"
 
-#include"ComEnemyBase/ComEnemyBase.h"
+#include"ComShot/ComShot.h"
 
-#include"ComEnemyManager/ComEnemyManager.h"
+#include"ComShotManager/ComShotManager.h"

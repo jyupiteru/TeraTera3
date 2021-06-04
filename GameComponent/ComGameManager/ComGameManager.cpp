@@ -5,7 +5,7 @@ ComGameManager *ComGameManager::m_instance = nullptr;
 void ComGameManager::Init()
 {
     m_instance = this;
-    m_nowGameState = E_GAMEFLOW::READY;
+    m_nowGameState.SetValue(E_GAMEFLOW::READY);
 }
 
 //================================================================================================
@@ -38,7 +38,7 @@ ComGameManager &ComGameManager::GetInstance()
 void ComGameManager::UpdateFlow()
 {
     //現在のゲームのフローごとに各種処理
-    switch (e_m_nowGameState)
+    switch (m_nowGameState.GetValue())
     {
     case E_GAMEFLOW::READY:
         break;

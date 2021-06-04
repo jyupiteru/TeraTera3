@@ -16,6 +16,9 @@ void ComShotManager::Init()
 
 void ComShotManager::Uninit()
 {
+    m_listFirstPos.clear();
+    m_listShotList.clear();
+    m_listWaitCreate.clear();
     m_instance = nullptr;
 }
 
@@ -33,7 +36,7 @@ void ComShotManager::Ready()
 
         //各コンポーネントの設定
         shot->RemoveComponent<Com3DModelAssimp>();
-        shot->AddComponent<ComBox>();
+        shot->AddComponent<ComSphere>();
         shot->m_transform->m_color.SetValue(255, 0, 255, 1.0f);
         shot->m_activeFlag.SetValue(false);
         ComShot *comshot = shot->AddComponent<ComShot>();
