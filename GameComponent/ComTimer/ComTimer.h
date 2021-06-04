@@ -8,8 +8,11 @@ class ComTimer : public ComponentBase
 
     Com2DText *m_comText = nullptr;
 
+    int m_timeCount = 0;
+
+    float m_milliCount = 0.0f;
 public:
-    float m_maxCount = 60.0f;
+    float m_maxTimeCount = 60.0f;
 
     ComTimer(){};
     ~ComTimer(){};

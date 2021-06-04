@@ -73,7 +73,12 @@
     "locale": "cpp",
     "xlocbuf": "cpp",
     "xlocmes": "cpp",
-    "bitset": "cpp"
+    "bitset": "cpp",
+    "array": "cpp",
+    "charconv": "cpp",
+    "format": "cpp",
+    "forward_list": "cpp",
+    "optional": "cpp"
   },
   "cSpell.words": [
     "backto",

@@ -59,10 +59,13 @@ void CSceneGame1::Init()
     {
         auto timer = GameObject::MakeNewObject("Timer", E_TYPE_OBJECT::SYSTEM);
         timer->m_transform->m_worldPosition.SetValue(-SCREEN_WIDTH / 2 + 60, SCREEN_HEIGHT / 2 - 20.0f, 0.0f);
-        timer->m_transform->m_size.SetValue(150.0f, 180.0f, 1.0f);
+        timer->m_transform->m_size.SetValue(50.0f, 80.0f, 1.0f);
         timer->m_transform->m_color.SetValue(0.0f, 0.0f, 0.0f, 1.0f);
         auto comtimer = timer->AddComponent<ComTimer>();
-        comtimer->m_maxCount = 60;
+        comtimer->m_maxTimeCount = 60;
+    }
+
+    {
     }
 }
 
