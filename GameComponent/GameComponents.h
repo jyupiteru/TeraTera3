@@ -8,6 +8,8 @@
 
 #include "ComGameManager/ComGameManager.h"
 
-#include"ComPlayer/ComPlayer.h"
+#include "ComPlayer/ComPlayer.h"
 
 #include "ComMapManager/ComMapManager.h"
+
+#include "ComTimer/ComTimer.h"

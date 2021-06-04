@@ -16,7 +16,8 @@ void CSceneGame1::Init()
             skydome->AddPackage<Package3DModelObject>();
             skydome->GetComponent<Com3DModel>()->LoadModelData("skydome.x.dat");
             skydome->GetComponent<ComShader>()->LoadPixelShader("psskydome.fx", true);
-            skydome->m_transform->m_size.SetValue(10, 10, 10);
+            skydome->m_transform->m_worldPosition.SetValue(0, -500, 0);
+            skydome->m_transform->m_size.SetValue(1, 1, 1);
             skydome->DontDestroyOnLoad();
             skydome->m_drawLayer.SetValue(-1);
         }
@@ -53,6 +54,15 @@ void CSceneGame1::Init()
         auto gamemanager = GameObject::MakeNewObject("GameManager", E_TYPE_OBJECT::NONE);
         gamemanager->AddComponent<ComGameManager>();
         gamemanager->AddComponent<ComMapManager>()->CreateMap(0);
+    }
+
+    {
+        auto timer = GameObject::MakeNewObject("Timer", E_TYPE_OBJECT::SYSTEM);
+        timer->m_transform->m_worldPosition.SetValue(-SCREEN_WIDTH / 2 + 60, SCREEN_HEIGHT / 2 - 20.0f, 0.0f);
+        timer->m_transform->m_size.SetValue(150.0f, 180.0f, 1.0f);
+        timer->m_transform->m_color.SetValue(0.0f, 0.0f, 0.0f, 1.0f);
+        auto comtimer = timer->AddComponent<ComTimer>();
+        comtimer->m_maxCount = 60;
     }
 }
 

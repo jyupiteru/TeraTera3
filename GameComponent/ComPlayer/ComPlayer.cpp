@@ -1,4 +1,4 @@
-
+﻿
 #include "ComPlayer.h"
 
 void ComPlayer::Init()
@@ -54,8 +54,8 @@ void ComPlayer::OnTriggerStay3D(GameObject *obj)
 
 void ComPlayer::PlayerMove()
 {
-    float movespeed = 10.0f;
-    movespeed *= CTimer::GetInstance().m_deltaTime.GetValue();
+    float movespeed = m_playerSpeed;
+    movespeed *= static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
     DirectX::XMFLOAT3 vec = {0.0f, 0.0f, 0.0f};
 

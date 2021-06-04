@@ -65,7 +65,7 @@ void GameObject::Update()
 	auto tmpreadylist = m_listComponentReady;
 	m_listComponentReady.clear();
 	//ここ参照にしたかったけどするとmake_pairで値をとられる？のでなしに
-	for (auto& itr : tmpreadylist)
+	for (auto &itr : tmpreadylist)
 	{
 		//Update前にRemoveで消えている可能性もあるので
 		if (m_pListComponent.contains(itr))

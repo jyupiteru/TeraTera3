@@ -50,7 +50,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -119,6 +119,7 @@
       <AdditionalIncludeDirectories>$(DX11_INCLUDE);$(ASSIMP_INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,15 +135,22 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(DX11_INCLUDE);$(ASSIMP_INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ASSIMP_LIB);$(DX11_LIB_X64RELEASE);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponent\ComEnemy\ComEnemy.h" />
+    <ClInclude Include="GameComponent\ComEnemyManager\ComEnemyManager.h" />
+    <ClInclude Include="GameComponent\ComTimer\ComTimer.h" />
     <ClInclude Include="GameComponent\ComPlayer\ComPlayer.h" />
     <ClInclude Include="GameComponent\ComGameManager\ComGameManager.h" />
     <ClInclude Include="GameComponent\ComMapManager\ComMapManager.h" />
@@ -243,6 +251,9 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameComponent\ComEnemy\ComEnemy.cpp" />
+    <ClCompile Include="GameComponent\ComEnemyManager\ComEnemyManager.cpp" />
+    <ClCompile Include="GameComponent\ComTimer\ComTimer.cpp" />
     <ClCompile Include="GameComponent\ComPlayer\ComPlayer.cpp" />
     <ClCompile Include="GameComponent\ComGameManager\ComGameManager.cpp" />
     <ClCompile Include="GameComponent\ComMapManager\ComMapManager.cpp" />

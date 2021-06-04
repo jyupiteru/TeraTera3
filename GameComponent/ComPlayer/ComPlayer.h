@@ -1,4 +1,4 @@
-
+﻿
 #include "../../TeraTera3/TeraTera.h"
 
 #pragma once
@@ -13,6 +13,8 @@ class ComPlayer : public ComponentBase
 {
 
     E_PLAYERFLOW m_nowstate = E_PLAYERFLOW::READY;
+
+    float m_playerSpeed = 10.0f;
 
 public:
     ComPlayer(){};
