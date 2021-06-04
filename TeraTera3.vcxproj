@@ -148,7 +148,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GameComponent\ComEnemy\ComEnemy.h" />
+    <ClInclude Include="GameComponent\ComEnemyBase\ComEnemyBase.h" />
+    <ClInclude Include="GameComponent\ComShotManager\ComEnemyManager.h" />
     <ClInclude Include="GameComponent\ComEnemyManager\ComEnemyManager.h" />
     <ClInclude Include="GameComponent\ComTimer\ComTimer.h" />
     <ClInclude Include="GameComponent\ComPlayer\ComPlayer.h" />
@@ -251,7 +252,8 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameComponent\ComEnemy\ComEnemy.cpp" />
+    <ClCompile Include="GameComponent\ComEnemyBase\ComEnemyBase.cpp" />
+    <ClCompile Include="GameComponent\ComShotManager\ComEnemyManager.cpp" />
     <ClCompile Include="GameComponent\ComEnemyManager\ComEnemyManager.cpp" />
     <ClCompile Include="GameComponent\ComTimer\ComTimer.cpp" />
     <ClCompile Include="GameComponent\ComPlayer\ComPlayer.cpp" />

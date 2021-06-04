@@ -13,3 +13,7 @@
 #include "ComMapManager/ComMapManager.h"
 
 #include "ComTimer/ComTimer.h"
+
+#include"ComEnemyBase/ComEnemyBase.h"
+
+#include"ComEnemyManager/ComEnemyManager.h"

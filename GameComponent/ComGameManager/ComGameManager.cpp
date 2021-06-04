@@ -1,7 +1,11 @@
 #include "ComGameManager.h"
 
+ComGameManager *ComGameManager::m_instance = nullptr;
+
 void ComGameManager::Init()
 {
+    m_instance = this;
+    m_nowGameState = E_GAMEFLOW::READY;
 }
 
 //================================================================================================
@@ -9,6 +13,7 @@ void ComGameManager::Init()
 
 void ComGameManager::Uninit()
 {
+    m_instance = nullptr;
 }
 
 //================================================================================================
@@ -16,4 +21,32 @@ void ComGameManager::Uninit()
 
 void ComGameManager::Update()
 {
+    UpdateFlow();
+}
+
+//================================================================================================
+//================================================================================================
+
+ComGameManager &ComGameManager::GetInstance()
+{
+    return *m_instance;
+}
+
+//================================================================================================
+//================================================================================================
+
+void ComGameManager::UpdateFlow()
+{
+    //現在のゲームのフローごとに各種処理
+    switch (e_m_nowGameState)
+    {
+    case E_GAMEFLOW::READY:
+        break;
+
+    case E_GAMEFLOW::GAME:
+        break;
+
+    case E_GAMEFLOW::END:
+        break;
+    }
 }

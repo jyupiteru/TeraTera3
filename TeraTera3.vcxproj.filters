@@ -315,7 +315,10 @@
     <ClInclude Include="GameComponent\ComEnemyManager\ComEnemyManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComEnemy\ComEnemy.h">
+    <ClInclude Include="GameComponent\ComShotManager\ComEnemyManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComEnemyBase\ComEnemyBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -536,7 +539,10 @@
     <ClCompile Include="GameComponent\ComEnemyManager\ComEnemyManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponent\ComEnemy\ComEnemy.cpp">
+    <ClCompile Include="GameComponent\ComShotManager\ComEnemyManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComEnemyBase\ComEnemyBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
