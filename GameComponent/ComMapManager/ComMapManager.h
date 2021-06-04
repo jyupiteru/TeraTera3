@@ -7,6 +7,7 @@ enum class E_MAPCHIP
 {
 	FLOOR,
 	NONE,
+	ENEMY_GOAL
 };
 
 class ComMapManager : public ComponentBase
@@ -47,4 +48,7 @@ public:
 	static [[nodiscard]] ComMapManager &GetInstance();
 
 	void CreateMap(int _stagenum);
+
+private:
+	GameObject *MakeMapObj(std::string_view _objname);
 };
