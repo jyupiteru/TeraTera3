@@ -64,17 +64,21 @@ void CCollision3DSystem::Update()
 
     for (auto &itr : m_list3DCollisionObjects)
     {
-        float halfsize = itr.second.second->m_biggetSize * 0.5f;
+        //このオブジェクトは生きているか?
+        if (itr.second.first->m_activeFlag.GetValue())
+        {
+            float halfsize = itr.second.second->m_biggetSize * 0.5f;
 
-        //回転していた場合に取りうる最小の半径？
-        halfsize *= colliderjudgerate;
+            //回転していた場合に取りうる最小の半径？
+            halfsize *= colliderjudgerate;
 
-        //各当たり判定の一番小さい(座標的に左手前？)のxの大きさを格納する
-        list_x.push_back(std::make_pair(itr.second.second->m_colliderMatrix._41 - halfsize,
-                                        std::make_tuple(itr.second.second->m_colliderMatrix._42 - halfsize,
-                                                        itr.second.second->m_colliderMatrix._43 - halfsize,
-                                                        halfsize,
-                                                        itr.first)));
+            //各当たり判定の一番小さい(座標的に左手前？)のxの大きさを格納する
+            list_x.push_back(std::make_pair(itr.second.second->m_colliderMatrix._41 - halfsize,
+                std::make_tuple(itr.second.second->m_colliderMatrix._42 - halfsize,
+                    itr.second.second->m_colliderMatrix._43 - halfsize,
+                    halfsize,
+                    itr.first)));
+        }
     }
 
     sort(list_x.begin(), list_x.end());
@@ -403,6 +407,8 @@ void CCollision3DSystem::RunCollisionDetection(GameObject *obj1, GameObject *obj
 {
     for (auto itr : m_ListCollisionFunction[obj1->m_objID][type])
     {
+
+        //TODO ここでコンポーネントを参照してコンポーネントは生きているか確認する処理がいる
         itr.second(obj2);
     }
 }
