@@ -1,4 +1,4 @@
-#include "ComGameManager.h"
+﻿#include "ComGameManager.h"
 
 ComGameManager *ComGameManager::m_instance = nullptr;
 

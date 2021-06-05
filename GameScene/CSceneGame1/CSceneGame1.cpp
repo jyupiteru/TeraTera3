@@ -53,8 +53,15 @@ void CSceneGame1::Init()
     {
         auto gamemanager = GameObject::MakeNewObject("GameManager", E_TYPE_OBJECT::NONE);
         gamemanager->AddComponent<ComGameManager>();
-        gamemanager->AddComponent<ComMapManager>()->CreateMap(0);
-        gamemanager->AddComponent<ComShotManager>();
+        auto mapmanager = gamemanager->AddComponent<ComMapManager>();
+        mapmanager->m_MaphalfSize.SetValue(5);
+        mapmanager->m_mapMax.SetValue(10, 10);
+        mapmanager->CreateMap(0);
+
+        auto shotmanager = gamemanager->AddComponent<ComShotManager>();
+        shotmanager->m_shotMax.SetValue(10);
+        shotmanager->m_shotRandNum.SetValue(10);
+        shotmanager->m_shotSpeed.SetValue(5, 10);
     }
 
     {
