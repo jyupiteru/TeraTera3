@@ -50,7 +50,10 @@ void ObjectGenerator::Update()
 	auto [camera_x, camera_y, camera_z] = m_pCameraObject->m_transform->m_worldPosition.GetValue();
 
 	//非アクティブからアクティブになったオブジェクトを移動
-	UpdateNonActiveList();
+	UpdateListNonActive();
+
+	//追加待ちリストからUpdateリストへ移動
+	UpdateListObjectUpdate();
 
 	for (auto &itr : m_listObjectForUpdate)
 	{
@@ -63,15 +66,13 @@ void ObjectGenerator::Update()
 				m_updateCounter++;
 				(*obj)->Update();
 
-				(*obj)->EraseComponent();
-
 				{ //描画用の情報をセットする場所
 					//todo ここの処理が重いようなら計算場所、方法を見直し
 					auto [r, g, b, a] = (*obj)->m_transform->m_color.GetValue();
 					auto [pos_x, pos_y, pos_z] = (*obj)->m_transform->m_worldPosition.GetValue();
 					auto distance = (camera_x - pos_x) * (camera_x - pos_x) +
-									(camera_y - pos_y) * (camera_y - pos_y) +
-									(camera_z - pos_z) * (camera_z - pos_z);
+						(camera_y - pos_y) * (camera_y - pos_y) +
+						(camera_z - pos_z) * (camera_z - pos_z);
 					distance = sqrt(distance);
 					SetObjectDrawingOrder(**obj, distance);
 				}
@@ -79,8 +80,9 @@ void ObjectGenerator::Update()
 			else
 			{
 				//非アクティブなのでリストから隔離
-				SetObjectNonActive(obj->get());
+				SetObjectNonActive((*obj)->m_objID);
 			}
+			(*obj)->EraseComponent();
 		}
 	}
 
@@ -272,7 +274,7 @@ void ObjectGenerator::EraseObject()
 
 			CCollision3DSystem::GetInstance().EraseCollisionObject(objid);
 
-			EraseObjectFromListNonActive(obj->get());
+			EraseObjectFromListNonActive(objid);
 
 			//オブジェクトをリストから削除
 			m_pListAllObject[objid].reset();
@@ -392,11 +394,8 @@ GameObject *const ObjectGenerator::AddObjectInGenerator(std::string_view name, E
 		//リストに名前とIDを登録
 		m_pListObjectName[name.data()] = objid;
 
-		//Updateリストに登録
-		//SetObjectUpdateOrder(*m_pListAllObject[objid].get());
-
 		//NonActiveリストに登録 こうしないとUpdate内で生成した場合バグが起きるはず
-		SetObjectNonActive(m_pListAllObject[objid].get());
+		SetObjectToWaitList(objid);
 
 		if (name == "camera")
 		{
@@ -478,6 +477,8 @@ void ObjectGenerator::ImGuiDraw(int windowid)
 
 	ImGui::BulletText("ObjectDrawTotal : %u", m_drawCounter);
 	ImGui::BulletText("DrawTime : %0.7f", m_drawTime);
+
+	ImGui::BulletText("NonActiveObjectTotal : %u", m_listObjectNonActive.size());
 }
 
 //================================================================================================
