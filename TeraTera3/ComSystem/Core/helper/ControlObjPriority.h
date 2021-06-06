@@ -28,6 +28,8 @@ public:
     {
         m_listObjectForUpdate.clear();
         ResetDrawList();
+        m_listObjectNonActive.clear();
+        m_listObjectWaitAddUpdate.clear();
     }
 
 protected:
@@ -53,10 +55,15 @@ protected:
     std::map<int, std::map<int, std::map<float, std::multimap<int, int>>>> m_listObjectForDraw;
 
     /**
+     * @brief 生成されUpdateリストに追加を待っているオブジェクトのリスト
+     */
+    std::vector<int> m_listObjectWaitAddUpdate;
+
+    /**
      * @brief 非アクティブなオブジェクトを格納するリスト
      * @n 格納されたオブジェクトはUpdateの前に確認されアクティブになっていたらUpdateリストに追加される
      */
-    std::vector<GameObject*> m_listObjectNonActive;
+    std::vector<int> m_listObjectNonActive;
 
     //以下継承したObjectGeneratorで使用するため本当はいらないがわかりやすくするために作成
 
@@ -71,16 +78,28 @@ protected:
 
     /**
      * @brief Updateのリストからアクティブでなくなったオブジェクトを非アクティブリストに登録する処理
-     * @n Drawリストに登録する処理で分岐してこっちに登録
-     * @param _obj 登録したいオブジェクト
+     * @n Updateリストに登録する処理で分岐してこっちに登録
+     * @param _objid 登録したいオブジェクトのID
      */
-    void SetObjectNonActive(GameObject *_obj);
+    void SetObjectNonActive(int _objid);
+
+    /**
+     * @brief 生成後Updateリストに追加待ちのオブジェクトを登録する処理
+     * @param _objid 追加したいオブジェクトのID
+     */
+    void SetObjectToWaitList(int _objid);
 
     /**
      * @brief 非アクティブなリストからアクティブに変わったオブジェクトをUpdateリストに移す処理
      * @n Updateのぶん回し前に使用する
      */
-    void UpdateNonActiveList();
+    void UpdateListNonActive();
+
+    /**
+     * @brief Updateリストの更新処理
+     * @n すべてのObjectのUpdate前に呼ぶこと
+     */
+    void UpdateListObjectUpdate();
 
     /**
      * @brief アップデート時に使用するリストをリセットするメソッド
@@ -92,5 +111,9 @@ protected:
      */
     void ResetDrawList();
 
-    void EraseObjectFromListNonActive(GameObject* _obj);
+    /**
+     * @brief 非アクティブリストからオブジェクトを削除する処理
+     * @param _objid 削除したいオブジェクトのID
+     */
+    void EraseObjectFromListNonActive(int _objid);
 };

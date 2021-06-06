@@ -56,23 +56,30 @@ void ControlObjectPriority::SetObjectDrawingOrder(const GameObject &obj, const f
 //================================================================================================
 //================================================================================================
 
-void ControlObjectPriority::SetObjectNonActive(GameObject *_obj)
+void ControlObjectPriority::SetObjectNonActive(int _objid)
 {
     //リストに格納
-    m_listObjectNonActive.push_back(_obj);
+    m_listObjectNonActive.push_back(_objid);
 }
 
 //================================================================================================
 //================================================================================================
 
-void ControlObjectPriority::UpdateNonActiveList()
+void ControlObjectPriority::SetObjectToWaitList(int _objid)
+{
+    m_listObjectWaitAddUpdate.push_back(_objid);
+}
+
+//================================================================================================
+//================================================================================================
+
+void ControlObjectPriority::UpdateListNonActive()
 {
 
     for (auto itr = m_listObjectNonActive.begin(); itr != m_listObjectNonActive.end();)
     {
-        if ((*itr)->m_activeFlag.GetValue() == true)
+        if (auto obj = GameObject::Find(*itr); obj->m_activeFlag.GetValue())
         {
-            GameObject* obj = *itr;
             //アクティブになったので変更
             SetObjectUpdateOrder(*obj);
             itr = m_listObjectNonActive.erase(itr);
@@ -83,6 +90,19 @@ void ControlObjectPriority::UpdateNonActiveList()
             itr++;
         }
     }
+}
+
+//================================================================================================
+//================================================================================================
+
+void ControlObjectPriority::UpdateListObjectUpdate()
+{
+    for (auto itr = m_listObjectWaitAddUpdate.begin(); itr != m_listObjectWaitAddUpdate.end();itr++)
+    {
+        int id = *itr;
+        SetObjectUpdateOrder(*GameObject::Find(id));
+    }
+    m_listObjectWaitAddUpdate.clear();
 }
 
 //================================================================================================
@@ -114,12 +134,12 @@ void ControlObjectPriority::ResetDrawList()
 //================================================================================================
 //================================================================================================
 
-void ControlObjectPriority::EraseObjectFromListNonActive(GameObject* _obj)
+void ControlObjectPriority::EraseObjectFromListNonActive(int _objid)
 {
-    for (auto itr = m_listObjectNonActive.begin(); itr != m_listObjectNonActive.end();itr++)
+    for (auto itr = m_listObjectNonActive.begin(); itr != m_listObjectNonActive.end(); itr++)
     {
         //削除したいオブジェクトと一緒か
-        if (*itr == _obj)
+        if (GameObject::Find(*itr) == GameObject::Find(_objid))
         {
             m_listObjectNonActive.erase(itr);
             break;
