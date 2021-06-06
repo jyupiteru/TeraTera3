@@ -291,10 +291,18 @@ void CImGuiManager::EraseWindows(void)
 
 void CImGuiManager::Draw_ImGui_Proparty(int)
 {
+
+    bool _flag = false;
     ImGui::Text("This is the details of the Project");
     ImGui::BulletText("Window Width : %0.0f,Height : %0.0f", static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT));
     ImGui::BulletText("Max Frame : %d", static_cast<int>(MAX_FRAME_RATE));
     ImGui::BulletText("Application average %.1f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    ImGui::Checkbox("Close AllWindows", &_flag);
+
+    if (_flag)
+    {
+        m_flagSurvival.SetValue(false);
+    }
 }
 
 //================================================================================================
