@@ -313,8 +313,20 @@ public:
     template <IsComponent component>
     bool RemoveComponent(component *type)
     {
+        bool flag = true;
+
+        //既にリストに登録しているか確認
+        for (auto itr : m_listEraseComponent)
+        {
+            if (typeid(*type) == itr)
+            {
+                flag = false;
+                break;
+            }
+        }
+
         //typeは存在しているものか
-        if (type != nullptr)
+        if (type != nullptr && flag)
         {
             auto obj = type->m_gameObject;
             //コンポーネントがリストに存在するか確認
