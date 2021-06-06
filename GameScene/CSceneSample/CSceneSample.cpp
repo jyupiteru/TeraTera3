@@ -38,6 +38,7 @@ void CSceneSample::Init()
 
     {
         auto chara = GameObject::MakeNewObject("chara", E_TYPE_OBJECT::UI);
+        chara->m_activeFlag.SetValue(false);
         chara->RemoveComponent<Com2DTexture>();
         chara->m_transform->m_worldPosition.SetValue(0, 0, 0);
         chara->m_transform->m_size.SetValue(100, 100, 1);
@@ -251,6 +252,12 @@ void CSceneSample::Update()
         //GameObject::Find("ui3")->m_transform->m_size.AddValue(1, 1, 1);
         //GameObject::Find("model2")->m_transform->m_angle.AddValue(1, 1, 0);
     }
+    if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_LSHIFT))
+    {
+        auto obj = GameObject::Find("chara");
+        obj->m_activeFlag.SetValue(!obj->m_activeFlag.GetValue());
+    }
+
     //if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))
     //{
     //    GameObject::Find("ui3")->m_transform->m_angle.AddValue(0, 0, 1);
