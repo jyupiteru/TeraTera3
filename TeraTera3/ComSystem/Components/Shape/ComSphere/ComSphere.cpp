@@ -30,16 +30,16 @@ void ComSphere::Init()
 
 void ComSphere::Ready()
 {
+	// 球のインデックスデータを作成
+	CreateIndex();
+
+	// 球の頂点データを作成
+	CreateVertex();
+
 	if (m_pIndexBuffer == nullptr)
 	{
 		//本当はInitの処理 分割数を動的?に決めれるようにするためにここに
 		ID3D11Device *device = GetDX11Device();
-
-		// 球のインデックスデータを作成
-		CreateIndex();
-
-		// 球の頂点データを作成
-		CreateVertex();
 
 		int sts;
 
