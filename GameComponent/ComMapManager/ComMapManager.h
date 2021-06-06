@@ -7,7 +7,6 @@ enum class E_MAPCHIP
 {
 	FLOOR,
 	NONE,
-	ENEMY_GOAL
 };
 
 class ComMapManager : public ComponentBase
@@ -19,21 +18,21 @@ class ComMapManager : public ComponentBase
 	 */
 	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, E_MAPCHIP>>> m_listMapData;
 
-	/**
-	 * @brief 各ステージの横、奥行どれくらいが最大か保持するリスト
-	 * @n ステージ数、億、横
-	 */
-	std::unordered_map<int, std::pair<int, int>> m_listMapMaxNum;
-
-	std::vector<std::pair<float, float>> m_listShotFirstPos;
 
 	static ComMapManager *m_instance;
 
-	int m_stageWidthMax = 20;
-
-	int m_stageDepthMax = 20;
-
 public:
+	/**
+	 * @brief 縦横どれくらい生成するか
+	 * @n 横、縦 初期は10,10
+	 */
+	CVector2<int> m_mapMax;
+
+	/**
+	 * @brief ステージの半分の大きさ
+	 */
+	CVector<float> m_MaphalfSize;
+
 	ComMapManager(){};
 	~ComMapManager(){};
 

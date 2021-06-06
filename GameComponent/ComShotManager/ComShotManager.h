@@ -18,15 +18,16 @@ class ComShotManager : public ComponentBase
 
     static ComShotManager *m_instance;
 
-    /**
-     * @brief 生成をする座標
-     */
-    std::vector<std::pair<float, float>> m_listFirstPos;
 
     /**
      * @brief 対象への座標簡易アクセス用
      */
     GameObject *m_playerobj = nullptr;
+
+    /**
+     * @brief 弾の生成周期管理用
+     */
+    float m_timeCount = 0.0f;
 
 public:
     /**
@@ -39,7 +40,17 @@ public:
      */
     CVector<int> m_shotMax;
 
-    CVector<float> m_shotSpeed;
+    /**
+     * @brief 弾のスピード
+     * @n 最低値、最大値
+     */
+    CVector2<float> m_shotSpeed;
+
+    /**
+     * @brief 弾をどれくらいブレさせるか 大きさにより難易度変わりそう
+     * @n 初期 0～10
+     */
+    CVector<float> m_shotRandNum;
 
     ComShotManager(){};
     ~ComShotManager(){};
@@ -56,5 +67,5 @@ public:
 
     void SetShotReadyList(ComShot *_shot);
 
-    void SetShotFirstPos(std::vector<std::pair<float, float>> &_firstpos);
+    void CrateShot();
 };

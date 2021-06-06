@@ -7,8 +7,6 @@ void ComMapManager::Init()
 {
     m_instance = this;
 
-    m_listMapMaxNum[0] = {10, 10};
-
     //手前から奥
     for (int i = 0; i < 10; i++)
     {
@@ -17,22 +15,10 @@ void ComMapManager::Init()
         {
             m_listMapData[0][i][k] = E_MAPCHIP::FLOOR;
         }
-        //生成可能個所をセット 左右の手前から奥
-        m_listShotFirstPos.push_back(std::make_pair(0, i));
-        m_listShotFirstPos.push_back(std::make_pair(9, i));
     }
 
-    for (int i = 1; i < 9; i++)
-    {
-        //手前、奥の左から右
-        m_listShotFirstPos.push_back(std::make_pair(i, 9));
-        m_listShotFirstPos.push_back(std::make_pair(i, 0));
-    }
 
-    m_listMapData[0][4][4] = E_MAPCHIP::ENEMY_GOAL;
-    m_listMapData[0][4][5] = E_MAPCHIP::ENEMY_GOAL;
-    m_listMapData[0][5][4] = E_MAPCHIP::ENEMY_GOAL;
-    m_listMapData[0][5][5] = E_MAPCHIP::ENEMY_GOAL;
+    m_mapMax.SetValue(10, 10);
 }
 
 //================================================================================================
@@ -48,7 +34,6 @@ void ComMapManager::Uninit()
 
 void ComMapManager::Ready()
 {
-    ComShotManager::GetInstance().SetShotFirstPos(m_listShotFirstPos);
 }
 
 //================================================================================================
@@ -78,21 +63,21 @@ ComMapManager &ComMapManager::GetInstance()
 
 void ComMapManager::CreateMap(int _stagenum)
 {
-    float mapsize = 10.0f;
+    float mapsize = m_MaphalfSize.GetValue();
 
     //全長を計算し半分にしてから反転して奥のスタート座標を計算
-    auto depth_startpos = static_cast<float>(m_listMapMaxNum[_stagenum].first * mapsize);
+    auto depth_startpos = static_cast<float>(m_mapMax.GetValue().second * mapsize);
     depth_startpos = -1.0f * depth_startpos / 2;
 
     //全長を計算し半分にしてから反転して横スタート座標を計算
-    auto width_startpos = static_cast<float>((m_listMapMaxNum[_stagenum].second) * mapsize);
+    auto width_startpos = static_cast<float>(m_mapMax.GetValue().first * mapsize);
     width_startpos = -1.0f * width_startpos / 2;
 
     //手前から奥
-    for (int nowdepth = 0; nowdepth < m_listMapMaxNum[_stagenum].first; nowdepth++)
+    for (int nowdepth = 0; nowdepth < m_mapMax.GetValue().second; nowdepth++)
     {
         //左から右
-        for (int nowwidth = 0; nowwidth < m_listMapMaxNum[_stagenum].second; nowwidth++)
+        for (int nowwidth = 0; nowwidth < m_mapMax.GetValue().first; nowwidth++)
         {
             //表示する際の名前を作成
             std::string objname = "stage : z " + std::to_string(nowdepth);
@@ -118,19 +103,8 @@ void ComMapManager::CreateMap(int _stagenum)
 
                 break;
 
-            case E_MAPCHIP::ENEMY_GOAL:
-
-                //オブジェクト作成
-                obj = MakeMapObj(objname);
-
-                //座標の計算
-                obj->m_transform->m_worldPosition.SetValue(pos_x, 0, pos_z);
-                obj->m_transform->m_size.SetValue(mapsize, mapsize, mapsize);
-
-                obj->m_transform->m_color.SetValue(256.0f, 0.0f, 0.0f, 1.0f);
-
-                break;
             case E_MAPCHIP::NONE:
+            default:
                 break;
             }
         }
