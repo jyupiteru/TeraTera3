@@ -8,12 +8,6 @@
 #include "../GameObject.h"
 #include "../../Components/Behavior/ComTransform/ComTransform.h"
 
-std::multimap<int, int> ControlObjectPriority::m_listObjectForUpdate;
-
-std::map<int, std::map<int, std::map<float, std::multimap<int, int>>>> ControlObjectPriority::m_listObjectForDraw;
-
-GameObject *ControlObjectPriority::m_pCameraObject = nullptr;
-
 void ControlObjectPriority::SetObjectUpdateOrder(const GameObject &obj)
 {
     auto id = obj.m_objID;
@@ -62,6 +56,38 @@ void ControlObjectPriority::SetObjectDrawingOrder(const GameObject &obj, const f
 //================================================================================================
 //================================================================================================
 
+void ControlObjectPriority::SetObjectNonActive(GameObject *_obj)
+{
+    //リストに格納
+    m_listObjectNonActive.push_back(_obj);
+}
+
+//================================================================================================
+//================================================================================================
+
+void ControlObjectPriority::UpdateNonActiveList()
+{
+
+    for (auto itr = m_listObjectNonActive.begin(); itr != m_listObjectNonActive.end();)
+    {
+        if ((*itr)->m_activeFlag.GetValue() == true)
+        {
+            GameObject* obj = *itr;
+            //アクティブになったので変更
+            SetObjectUpdateOrder(*obj);
+            itr = m_listObjectNonActive.erase(itr);
+        }
+        else
+        {
+            //非アクティブのままなのでこのまま
+            itr++;
+        }
+    }
+}
+
+//================================================================================================
+//================================================================================================
+
 void ControlObjectPriority::ResetUpdateList()
 {
     m_listObjectForUpdate.clear();
@@ -83,4 +109,20 @@ void ControlObjectPriority::ResetDrawList()
         }
     }
     m_listObjectForDraw.clear();
+}
+
+//================================================================================================
+//================================================================================================
+
+void ControlObjectPriority::EraseObjectFromListNonActive(GameObject* _obj)
+{
+    for (auto itr = m_listObjectNonActive.begin(); itr != m_listObjectNonActive.end();itr++)
+    {
+        //削除したいオブジェクトと一緒か
+        if (*itr == _obj)
+        {
+            m_listObjectNonActive.erase(itr);
+            break;
+        }
+    }
 }

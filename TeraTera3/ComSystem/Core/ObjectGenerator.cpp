@@ -49,6 +49,9 @@ void ObjectGenerator::Update()
 
 	auto [camera_x, camera_y, camera_z] = m_pCameraObject->m_transform->m_worldPosition.GetValue();
 
+	//非アクティブからアクティブになったオブジェクトを移動
+	UpdateNonActiveList();
+
 	for (auto &itr : m_listObjectForUpdate)
 	{
 		if (m_pListAllObject.contains(itr.second))
@@ -59,18 +62,24 @@ void ObjectGenerator::Update()
 			{
 				m_updateCounter++;
 				(*obj)->Update();
-			}
-			(*obj)->EraseComponent();
 
-			{ //描画用の情報をセットする場所
-				//todo ここの処理が重いようなら計算場所、方法を見直し
-				auto [r, g, b, a] = (*obj)->m_transform->m_color.GetValue();
-				auto [pos_x, pos_y, pos_z] = (*obj)->m_transform->m_worldPosition.GetValue();
-				auto distance = (camera_x - pos_x) * (camera_x - pos_x) +
-								(camera_y - pos_y) * (camera_y - pos_y) +
-								(camera_z - pos_z) * (camera_z - pos_z);
-				distance = sqrt(distance);
-				SetObjectDrawingOrder(**obj, distance);
+				(*obj)->EraseComponent();
+
+				{ //描画用の情報をセットする場所
+					//todo ここの処理が重いようなら計算場所、方法を見直し
+					auto [r, g, b, a] = (*obj)->m_transform->m_color.GetValue();
+					auto [pos_x, pos_y, pos_z] = (*obj)->m_transform->m_worldPosition.GetValue();
+					auto distance = (camera_x - pos_x) * (camera_x - pos_x) +
+									(camera_y - pos_y) * (camera_y - pos_y) +
+									(camera_z - pos_z) * (camera_z - pos_z);
+					distance = sqrt(distance);
+					SetObjectDrawingOrder(**obj, distance);
+				}
+			}
+			else
+			{
+				//非アクティブなのでリストから隔離
+				SetObjectNonActive(obj->get());
 			}
 		}
 	}
@@ -263,9 +272,12 @@ void ObjectGenerator::EraseObject()
 
 			CCollision3DSystem::GetInstance().EraseCollisionObject(objid);
 
+			EraseObjectFromListNonActive(obj->get());
+
 			//オブジェクトをリストから削除
 			m_pListAllObject[objid].reset();
 			m_pListAllObject.erase(objid);
+
 		}
 		nowlist.clear();
 	}
@@ -373,12 +385,18 @@ GameObject *const ObjectGenerator::AddObjectInGenerator(std::string_view name, E
 			priority = E_DEFAULT_UPDATEPRIORITY::NONE;
 			break;
 		}
+
+		//Updateの優先順位を設定
 		(*obj)->m_objectUpdatePriority.SetValue(static_cast<int>(priority));
 
 		//リストに名前とIDを登録
 		m_pListObjectName[name.data()] = objid;
 
-		SetObjectUpdateOrder(*m_pListAllObject[objid].get());
+		//Updateリストに登録
+		//SetObjectUpdateOrder(*m_pListAllObject[objid].get());
+
+		//NonActiveリストに登録 こうしないとUpdate内で生成した場合バグが起きるはず
+		SetObjectNonActive(m_pListAllObject[objid].get());
 
 		if (name == "camera")
 		{
