@@ -11,6 +11,7 @@ CEventSystem *CEventSystem::m_instance = nullptr;
 
 CEventSystem::CEventSystem()
 {
+    m_flagActive.SetValue(true);
 }
 
 //================================================================================================
@@ -25,7 +26,10 @@ CEventSystem::~CEventSystem()
 
 void CEventSystem::Update()
 {
-    CCollision3DSystem::GetInstance().Update();
+    if (m_flagActive.GetValue())
+    {
+        CCollision3DSystem::GetInstance().Update();
+    }
 }
 
 //================================================================================================
@@ -65,6 +69,10 @@ CEventSystem &CEventSystem::GetInstance()
 
 void CEventSystem::ImGuiDraw(unsigned int windowid)
 {
+    bool flag = m_flagActive.GetValue();
+    ImGui::Checkbox("Stop All Event", &flag);
+    m_flagActive.SetValue(flag);
+
     if (ImGui::TreeNode("CollisionSystem3D"))
     {
         CCollision3DSystem::GetInstance().ImGuiDraw(windowid);

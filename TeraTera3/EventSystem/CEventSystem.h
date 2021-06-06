@@ -40,6 +40,9 @@ class CEventSystem final
     static CEventSystem *m_instance;
 
 public:
+
+    CVector<bool> m_flagActive;
+
     void Update();
 
     static void Create();
