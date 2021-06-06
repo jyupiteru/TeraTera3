@@ -18,7 +18,6 @@ class ComShotManager : public ComponentBase
 
     static ComShotManager *m_instance;
 
-
     /**
      * @brief 対象への座標簡易アクセス用
      */
@@ -32,25 +31,27 @@ class ComShotManager : public ComponentBase
 public:
     /**
      * @brief 弾の生成間隔
+     * @n 初期の間隔、最終の間隔
      */
-    CVector<float> m_intervalTime;
-
-    /**
-     * @brief 同時生成数
-     */
-    CVector<int> m_shotMax;
+    CVector2<float> m_intervalTime;
 
     /**
      * @brief 弾のスピード
-     * @n 最低値、最大値
+     * @n 最低値、初期最大値、最後の最大値
      */
-    CVector2<float> m_shotSpeed;
+    CVector3<float> m_shotSpeed;
+
+    /**
+     * @brief 弾の大きさ
+     * @n 最小値、初期最大値、最終最大値
+     */
+    CVector3<float> m_shotSize;
 
     /**
      * @brief 弾をどれくらいブレさせるか 大きさにより難易度変わりそう
-     * @n 初期 0～10
+     * @n 最小値、初期最大値、最終最大値
      */
-    CVector<float> m_shotRandNum;
+    CVector3<float> m_shotRandNum;
 
     ComShotManager(){};
     ~ComShotManager(){};
@@ -68,4 +69,7 @@ public:
     void SetShotReadyList(ComShot *_shot);
 
     void CrateShot();
+
+private:
+    void CreateShotObject();
 };

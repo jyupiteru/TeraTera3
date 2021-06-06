@@ -54,14 +54,16 @@ void CSceneGame1::Init()
         auto gamemanager = GameObject::MakeNewObject("GameManager", E_TYPE_OBJECT::NONE);
         gamemanager->AddComponent<ComGameManager>();
         auto mapmanager = gamemanager->AddComponent<ComMapManager>();
-        mapmanager->m_MaphalfSize.SetValue(5);
+        mapmanager->m_MaphalfSize.SetValue(10);
         mapmanager->m_mapMax.SetValue(10, 10);
         mapmanager->CreateMap(0);
 
         auto shotmanager = gamemanager->AddComponent<ComShotManager>();
-        shotmanager->m_shotMax.SetValue(10);
-        shotmanager->m_shotRandNum.SetValue(10);
-        shotmanager->m_shotSpeed.SetValue(5, 10);
+        shotmanager->m_intervalTime.SetValue(3.0f, 0.2f);
+        shotmanager->m_shotRandNum.SetValue(0, 2, 4);
+        shotmanager->m_shotSpeed.SetValue(4, 7, 10);
+
+        shotmanager->m_shotSize.SetValue(5, 7, 10);
     }
 
     {
@@ -70,10 +72,7 @@ void CSceneGame1::Init()
         timer->m_transform->m_size.SetValue(50.0f, 80.0f, 1.0f);
         timer->m_transform->m_color.SetValue(0.0f, 0.0f, 0.0f, 1.0f);
         auto comtimer = timer->AddComponent<ComTimer>();
-        comtimer->m_maxTimeCount = 60;
-    }
-
-    {
+        comtimer->m_maxTimeCount.SetValue(60);
     }
 }
 
