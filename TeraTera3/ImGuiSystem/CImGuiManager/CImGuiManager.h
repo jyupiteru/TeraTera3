@@ -232,8 +232,7 @@ protected:
      */
     void EraseWindows(void);
 
-    void 
-    ImGUiCreateNewWindow(int)
+    void ImGUiCreateNewWindow(int)
     {
         CreateImGuiWindow();
     }
@@ -243,7 +242,7 @@ protected:
      * @param none 引数特になし
      */
     void ImGuiDrawProparty(int);
-    
+
     /**
      * @brief ImGuiを使用してデバッグ情報を映しているウインドウの詳細を表示する処理
      * @param windowid 引数特になし

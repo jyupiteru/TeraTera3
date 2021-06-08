@@ -86,7 +86,6 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	{
 		sizecount++;
 	}
-	windowdata->SetImGuiFunction("Menu", "Project Property", true);
 
 	//ウインドウの座標を変更
 	windowdata->m_firstSize.x = static_cast<float>(sizecount * 50);
@@ -144,6 +143,12 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
 	CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CEventSystem::GetInstance(), "Menu");
 
+	windowdata->SetImGuiFunction("Menu", "Project Property", true);
+	windowdata->SetImGuiFunction("Menu", "Window Details", true);
+	windowdata->SetImGuiFunction("Menu", "ObjectList", true);
+	windowdata->SetImGuiFunction("Menu", "Objects", true);
+	windowdata->SetImGuiFunction("Menu", "SceneList", true);
+	windowdata->SetImGuiFunction("Menu", "EventSystem", true);
 	return true;
 }
 
@@ -209,5 +214,4 @@ void GameUninit()
 	CContainer::Delete(true);
 	CImGuiManager::Delete(true);
 	CDirectXGraphics::Delete(true);
-
 }
