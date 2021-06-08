@@ -9,7 +9,6 @@
 #include "../../Behavior/ComTransform/ComTransform.h"
 
 #include "../../../../System/CVector.h"
-#include "../../../../WindowsSystem/Memory.h"
 #include "../../../../WindowsSystem/DX11Settransform.h"
 #include "../../../../System/CMatrix/CMatrix.h"
 
@@ -122,7 +121,7 @@ public:
 
     virtual void Update() override;
 
-    virtual void ImGui_Draw(unsigned int windowid) override;
+    virtual void ImGuiDraw(unsigned int windowid) override;
 
     //Set系
     /**

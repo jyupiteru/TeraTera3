@@ -10,7 +10,6 @@
 #include "../vertexproto.h"
 #include "../Mesh/mesh.h"
 #include "../../../Dx11mathutil/Dx11mathutil.h"
-#include "../../../Dx11util/DX11util.h"
 
 using namespace std;
 using namespace DirectX;
@@ -19,7 +18,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 	this->m_vertices = vertices;
 	this->m_indices = indices;
 	//	this->m_dev = CDirectXGraphics::GetInstance()->GetDXDevice();
-	this->m_dev = GetDX11Device();
+	this->m_dev = CDirectXGraphics::GetInstance().GetDXDevice();
 	this->m_textures = textures;
 	this->m_mtrl = mtrl;
 	this->setupMesh();
@@ -114,7 +113,7 @@ bool Mesh::setupMesh()
 
 		ID3D11DeviceContext* devicecontext;
 		//	devicecontext = CDirectXGraphics::GetInstance()->GetImmediateContext();
-		devicecontext = GetDX11DeviceContext();
+		devicecontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
 		// 定数バッファ更新
 		D3D11_MAPPED_SUBRESOURCE pData;
@@ -152,7 +151,7 @@ void Mesh::updatevertexbuffer() {
 	ID3D11DeviceContext* devicecontext;
 
 //	devicecontext = CDirectXGraphics::GetInstance()->GetImmediateContext();
-	devicecontext = GetDX11DeviceContext();
+	devicecontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
 	D3D11_MAPPED_SUBRESOURCE pData;
 

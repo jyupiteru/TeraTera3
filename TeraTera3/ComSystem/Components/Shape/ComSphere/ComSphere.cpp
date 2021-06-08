@@ -39,7 +39,7 @@ void ComSphere::Ready()
 	if (m_pIndexBuffer == nullptr)
 	{
 		//本当はInitの処理 分割数を動的?に決めれるようにするためにここに
-		ID3D11Device *device = GetDX11Device();
+		ID3D11Device *device = CDirectXGraphics::GetInstance().GetDXDevice();
 
 		int sts;
 
@@ -121,7 +121,7 @@ void ComSphere::Draw()
 	m_pComShader->SetPixelShader();
 	m_pComShader->SetVertexShader();
 
-	ID3D11DeviceContext *device = GetDX11DeviceContext();
+	ID3D11DeviceContext *device = CDirectXGraphics::GetInstance().GetImmediateContext();
 	// 頂点バッファをセットする
 	unsigned int stride = sizeof(tagVertex);
 	unsigned offset = 0;
@@ -138,7 +138,7 @@ void ComSphere::Draw()
 //================================================================================================
 //================================================================================================
 
-void ComSphere::ImGui_Draw(unsigned int windowid)
+void ComSphere::ImGuiDraw(unsigned int windowid)
 {
 	ImGui::BulletText("Radius : %0.1f", m_radius);
 	ImGui::BulletText("Division");
@@ -250,7 +250,7 @@ void ComSphere::ChangeColors()
 	if (m_pVertexBuffer == nullptr)
 	{
 		// 頂点バッファ作成（後で変更可能なもの）
-		bool sts = CreateVertexBufferWrite(GetDX11Device(),	  //デバイス
+		bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(),	  //デバイス
 										   sizeof(tagVertex), //ストライド（1頂点当たりのバイト数）
 										   vertices,		  //頂点数
 										   m_vertex,		  //初期化データの先頭アドレス
@@ -265,11 +265,11 @@ void ComSphere::ChangeColors()
 		// 作成済みなら 内容を書き換える
 		D3D11_MAPPED_SUBRESOURCE pData;
 
-		HRESULT hr = GetDX11DeviceContext()->Map(m_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
+		HRESULT hr = CDirectXGraphics::GetInstance().GetImmediateContext()->Map(m_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
 		if (SUCCEEDED(hr))
 		{
 			memcpy_s(pData.pData, pData.RowPitch, (void *)(m_vertex), sizeof(tagVertex) * vertices);
-			GetDX11DeviceContext()->Unmap(m_pVertexBuffer, 0);
+			CDirectXGraphics::GetInstance().GetImmediateContext()->Unmap(m_pVertexBuffer, 0);
 		}
 	}
 }

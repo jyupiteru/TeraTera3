@@ -13,7 +13,6 @@
 #include "../../../Core/GameObject.h"
 
 #include "../../../../WindowsSystem/Shader/Shader.h"
-#include "../../../../WindowsSystem/Dx11util/DX11util.h"
 #include "../../../../ResourceContainer/CContainer.h"
 
 #pragma once
@@ -80,7 +79,7 @@ public:
 	 */
     virtual void Uninit() override;
 
-    virtual void ImGui_Draw(unsigned int windowid) override;
+    virtual void ImGuiDraw(unsigned int windowid) override;
 
     /**
 	 * @brief 			バーテックスシェーダ生成処理

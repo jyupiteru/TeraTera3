@@ -59,13 +59,13 @@ void Com3DModel::Draw()
     XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
     DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
     // モデル描画
-    m_pListModel[m_keyModel]->Draw(GetDX11DeviceContext());
+    m_pListModel[m_keyModel]->Draw(CDirectXGraphics::GetInstance().GetImmediateContext());
 }
 
 //================================================================================================
 //================================================================================================
 
-void Com3DModel::ImGui_Draw(unsigned int windowid)
+void Com3DModel::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("ModelName : %s", m_keyModel.c_str());
     ImGui::Text("Here has nodisplay things");
@@ -81,7 +81,7 @@ void Com3DModel::LoadModelData(std::string modelname)
     if (!m_pListModel.contains(m_keyModel))
     {
         std::shared_ptr<DatFile> dat = std::make_shared<DatFile>();
-        bool sts = dat->Load(modelname.c_str(), GetDX11Device(), GetDX11DeviceContext());
+        bool sts = dat->Load(modelname.c_str(), CDirectXGraphics::GetInstance().GetDXDevice(), CDirectXGraphics::GetInstance().GetImmediateContext());
         if (sts)
         {
             m_pListModel[m_keyModel] = dat;

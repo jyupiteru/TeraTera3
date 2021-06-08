@@ -128,14 +128,18 @@ void CImGuiWindow::Draw()
 
 void CImGuiWindow::SetImGuiFunction(std::string_view _menuname, std::string_view _functionname, bool _flag)
 {
-    auto menu_accessdata = CImGuiManager::GetInstance().GetMenuAccessId(_menuname.data());
-    auto function_accessdata = CImGuiManager::GetInstance().GetFunctionAccessId(menu_accessdata.first, _functionname.data());
-
-    //メニューと対象の関数ポインタは存在したのか?
-    if (function_accessdata.first)
+    //メニュー名、セットしたい処理名はそれぞれ登録済みか確認する
+    auto accessdata = CImGuiManager::GetInstance().GetMenuAccessId(_menuname.data());
+    if (accessdata.first == true)
     {
-        //その関数ポインタの位置にフラグをセットする
-        m_listFlagMenu[_menuname.data()].set(function_accessdata.second, _flag);
+        accessdata = CImGuiManager::GetInstance().GetFunctionAccessId(accessdata.second, _functionname.data());
+
+        //メニューと対象の関数ポインタは存在したのか?
+        if (accessdata.first)
+        {
+            //その関数ポインタの位置にフラグをセットする
+            m_listFlagMenu[_menuname.data()].set(accessdata.second, _flag);
+        }
     }
 }
 

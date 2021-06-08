@@ -7,8 +7,6 @@
 #include <DirectXMath.h>
 
 #include "../../../Core/ComponentBase.h"
-#include "../../../../WindowsSystem/Dx11util/DX11util.h"
-
 #include "../ComCamera/ComCamera.h"
 
 #pragma once
@@ -64,5 +62,5 @@ public:
 
     virtual void Update() override;
 
-    virtual void ImGui_Draw(unsigned int windowid) override;
+    virtual void ImGuiDraw(unsigned int windowid) override;
 };

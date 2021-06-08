@@ -37,7 +37,7 @@ void ComTransform::Uninit()
 //================================================================================================
 //================================================================================================
 
-void ComTransform::ImGui_Draw(unsigned int windowid)
+void ComTransform::ImGuiDraw(unsigned int windowid)
 {
     //ワールド座標の表示
     auto [worldpos_x, worldpos_y, worldpos_z] = m_worldPosition.GetValue();

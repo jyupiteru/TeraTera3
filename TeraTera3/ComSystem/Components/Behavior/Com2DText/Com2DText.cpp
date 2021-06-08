@@ -33,7 +33,7 @@ void Com2DText::Init()
 
     CreateVertexIndexData();
 
-    ID3D11Device *device = GetDX11Device();
+    ID3D11Device *device = CDirectXGraphics::GetInstance().GetDXDevice();
 
     // 頂点バッファ生成
     bool sts = CreateVertexBufferWrite(device, sizeof(tagVertex), MAXSTRINGSIZE * 4, m_listVertex.data(), &m_vertexBuffer);
@@ -149,17 +149,18 @@ void Com2DText::Draw()
     m_screenData.viewPortHeight.x = SCREEN_HEIGHT;
     m_screenData.viewPortWidth.x = SCREEN_WIDTH;
 
-    //シェーダにスクリーンサイズをセット
-    GetDX11DeviceContext()->UpdateSubresource(m_screenBuffer, 0, nullptr, &m_screenData, 0, 0);
-    GetDX11DeviceContext()->VSSetConstantBuffers(5, 1, &m_screenBuffer);
-
-    //これをONにすると強制的にほかのものに上書きできる(一番手前になる)
-    TurnOffZbuffer();
-
     // デバイスコンテキストを取得
     ID3D11DeviceContext *devcontext;
     //	devcontext = CDirectXGraphics::GetInstance()->GetImmediateContext();
-    devcontext = GetDX11DeviceContext();
+    devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
+
+    //シェーダにスクリーンサイズをセット
+    devcontext->UpdateSubresource(m_screenBuffer, 0, nullptr, &m_screenData, 0, 0);
+    devcontext->VSSetConstantBuffers(5, 1, &m_screenBuffer);
+
+    //これをONにすると強制的にほかのものに上書きできる(一番手前になる)
+    CDirectXGraphics::GetInstance().TurnOffZbuffer();
+
 
     unsigned int stride = sizeof(tagVertex); // ストライドをセット（１頂点当たりのバイト数）
     unsigned offset = 0;                     // オフセット値をセット
@@ -199,13 +200,13 @@ void Com2DText::Draw()
         0,                                             // 開始インデックス
         0);                                            // 基準頂点インデックス
 
-    TurnOnZbuffer();
+    CDirectXGraphics::GetInstance().TurnOnZBuffer();
 }
 
 //================================================================================================
 //================================================================================================
 
-void Com2DText::ImGui_Draw(unsigned int windowid)
+void Com2DText::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("Font name : %s", m_keyFontTexture.c_str());
     ImGui::BulletText("Draw Text : %s", m_text.c_str());
@@ -229,7 +230,7 @@ void Com2DText::LoadFontTexture(std::string_view fontname)
 {
 
     // 定数バッファ生成
-    bool sts = CreateConstantBufferWrite(GetDX11Device(), sizeof(tagConstantBufferViewPort), &m_cbuffer);
+    bool sts = CreateConstantBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(), sizeof(tagConstantBufferViewPort), &m_cbuffer);
     if (!sts)
     {
         MessageBox(nullptr, TEXT("CreateConstantBufferWrite error"), TEXT("error"), MB_OK);
@@ -243,15 +244,15 @@ void Com2DText::LoadFontTexture(std::string_view fontname)
 
     if (!m_pListFontTexture.contains(m_keyFontTexture))
     {
-        ID3D11ShaderResourceView *srv = nullptr;
-        ID3D11Resource *texres = nullptr;
+        ID3D11ShaderResourceView* srv = nullptr;
+        ID3D11Resource* texres = nullptr;
 
         // SRV生成
         sts = CreateSRVfromFile(folder.c_str(), //画像ファイル名
-                                GetDX11Device(),
-                                GetDX11DeviceContext(),
-                                &texres,
-                                &srv);
+            CDirectXGraphics::GetInstance().GetDXDevice(),
+            CDirectXGraphics::GetInstance().GetImmediateContext(),
+            &texres,
+            &srv);
         if (!sts)
         {
             MessageBox(nullptr, TEXT("CreateSRVfromFile error"), TEXT("error"), MB_OK);
@@ -280,7 +281,7 @@ void Com2DText::ClearString(void)
 void Com2DText::UpdateBuffer()
 {
     D3D11_MAPPED_SUBRESOURCE pData;
-    ID3D11DeviceContext *devcontext = GetDX11DeviceContext();
+    ID3D11DeviceContext *devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
     //頂点バッファの更新
     HRESULT hr = devcontext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);

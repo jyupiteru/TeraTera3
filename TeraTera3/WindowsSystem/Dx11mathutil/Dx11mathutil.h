@@ -9,9 +9,9 @@
 
 #pragma once
 #include <DirectXMath.h>
-#include "../Memory.h"
 #include	<assimp\Importer.hpp>
 
+#define ALIGN16 _declspec(align(16))
 struct tagPLANE
 {
 	float a, b, c, d;

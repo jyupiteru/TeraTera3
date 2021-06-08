@@ -3,7 +3,7 @@
 #include "../../../../ThirdParty/ImGui/imgui.h"
 #include "../../../ImGuiSystem/ImGuiHelperFunctions.h"
 
-void CCollisionBase::ImGui_Draw(unsigned int windowid)
+void CCollisionBase::ImGuiDraw(unsigned int windowid)
 {
     //ローカルのx軸はどの方向に向いているか
     ImGui::BulletText("AxisX");

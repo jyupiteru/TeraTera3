@@ -7,6 +7,7 @@
  */
 #include "ComShader.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
+#include "../../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
 
 using namespace std;
 
@@ -63,7 +64,7 @@ void ComShader::Uninit()
 //================================================================================================
 //================================================================================================
 
-void ComShader::ImGui_Draw(unsigned int windowid)
+void ComShader::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("Use Pixel Shader : %s", m_keyPixelShader.c_str());
     ImGui::BulletText("Use Vertex Shader : %s", m_keyVertexShader.c_str());
@@ -126,7 +127,7 @@ void ComShader::LoadVertexShader(std::string vsfile, D3D11_INPUT_ELEMENT_DESC *l
         ID3D11InputLayout *layout;
 
         //存在しないので頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
-        bool sts = CreateVertexShader(GetDX11Device(), //デバイス
+        bool sts = CreateVertexShader(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
                                       vsfile.c_str(),  //シェーダーソースファイル
                                       "main",          //エントリー関数
                                       "vs_5_0",        //シェーダーモデル
@@ -164,7 +165,7 @@ void ComShader::LoadPixelShader(std::string psfile, bool flag)
         ID3D11PixelShader *pixelshader;
 
         //存在しないのでピクセルシェーダーを生成
-        bool sts = CreatePixelShader(GetDX11Device(), // デバイス
+        bool sts = CreatePixelShader(CDirectXGraphics::GetInstance().GetDXDevice(), // デバイス
                                      psfile.c_str(),  //ピクセルシェーダーファイル名
                                      "main",          //エントリー関数
                                      "ps_5_0",        //シェーダーモデル
@@ -186,10 +187,10 @@ void ComShader::LoadPixelShader(std::string psfile, bool flag)
 void ComShader::SetVertexShader(std::string key)
 {
     //頂点フォーマットをセット
-    GetDX11DeviceContext()->IASetInputLayout(m_pLayout[key]);
+    CDirectXGraphics::GetInstance().GetImmediateContext()->IASetInputLayout(m_pLayout[key]);
 
     //頂点シェーダーをセット
-    GetDX11DeviceContext()->VSSetShader(m_pVertexShaders[key], nullptr, 0);
+    CDirectXGraphics::GetInstance().GetImmediateContext()->VSSetShader(m_pVertexShaders[key], nullptr, 0);
 }
 
 //================================================================================================
@@ -198,5 +199,5 @@ void ComShader::SetVertexShader(std::string key)
 void ComShader::SetPixelShader(std::string key)
 {
     //ピクセルシェーダーをセット
-    GetDX11DeviceContext()->PSSetShader(m_pPixelShaders[key], nullptr, 0);
+    CDirectXGraphics::GetInstance().GetImmediateContext()->PSSetShader(m_pPixelShaders[key], nullptr, 0);
 }

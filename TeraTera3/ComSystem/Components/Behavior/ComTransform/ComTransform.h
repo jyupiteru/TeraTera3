@@ -111,7 +111,7 @@ public:
         UpdateMatrix();
     }
 
-    virtual void ImGui_Draw(unsigned int windowid) override;
+    virtual void ImGuiDraw(unsigned int windowid) override;
 
     /**
 	 * @brief 			行列のみをセットするクラス

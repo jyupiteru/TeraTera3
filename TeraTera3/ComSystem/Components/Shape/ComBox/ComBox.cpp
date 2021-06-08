@@ -8,7 +8,6 @@
 #include "../../DefaultComponents.h"
 
 #include "../../../../WindowsSystem/CDirectXGraphics/CDirectxGraphics.h"
-#include "../../../../WindowsSystem/Dx11util/DX11util.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
 #include "../../Behavior/ComTransform/ComTransform.h"
 
@@ -37,7 +36,7 @@ void ComBox::Init()
 
 		// BOXの頂点データを作成
 		CreateVertex();
-		ID3D11Device *device = GetDX11Device();
+		ID3D11Device *device = CDirectXGraphics::GetInstance().GetDXDevice();
 		// インデックスバッファ作成
 		sts = CreateIndexBuffer(
 			device,
@@ -101,7 +100,7 @@ void ComBox::Uninit()
 //================================================================================================
 //================================================================================================
 
-void ComBox::ImGui_Draw(unsigned int windowid)
+void ComBox::ImGuiDraw(unsigned int windowid)
 {
 	ImGui::BulletText("LocalSize");
 	ImGui::Indent();
@@ -122,7 +121,7 @@ void ComBox::Draw()
 	m_pComShader->SetPixelShader();
 	m_pComShader->SetVertexShader();
 
-	ID3D11DeviceContext *devcontext = GetDX11DeviceContext();
+	ID3D11DeviceContext *devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 	// 頂点バッファをセットする
 	unsigned int stride = sizeof(tagVertex);
 	unsigned offset = 0;
@@ -256,7 +255,7 @@ void ComBox::ChangeColor()
 	if (m_pVertexBuffer == nullptr)
 	{
 		// 頂点バッファ作成（後で変更可能なもの）
-		bool sts = CreateVertexBufferWrite(GetDX11Device(),	  //デバイス
+		bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(),	  //デバイス
 										   sizeof(tagVertex), //ストライド（1頂点当たりのバイト数）
 										   8,				  //頂点数
 										   m_vertex,		  //初期化データの先頭アドレス
@@ -271,11 +270,11 @@ void ComBox::ChangeColor()
 		// 作成済みなら 内容を書き換える
 		D3D11_MAPPED_SUBRESOURCE pData;
 
-		HRESULT hr = GetDX11DeviceContext()->Map(m_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
+		HRESULT hr = CDirectXGraphics::GetInstance().GetImmediateContext()->Map(m_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
 		if (SUCCEEDED(hr))
 		{
 			memcpy_s(pData.pData, pData.RowPitch, (void *)(m_vertex), sizeof(tagVertex) * 8);
-			GetDX11DeviceContext()->Unmap(m_pVertexBuffer, 0);
+			CDirectXGraphics::GetInstance().GetImmediateContext()->Unmap(m_pVertexBuffer, 0);
 		}
 	}
 }

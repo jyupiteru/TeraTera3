@@ -76,7 +76,7 @@ void Com3DBillBoard::Draw()
 //================================================================================================
 //================================================================================================
 
-void Com3DBillBoard::ImGui_Draw(unsigned int windowid)
+void Com3DBillBoard::ImGuiDraw(unsigned int windowid)
 {
-    Com3DTexture::ImGui_Draw(windowid);
+    Com3DTexture::ImGuiDraw(windowid);
 }

@@ -88,17 +88,17 @@ void ComBoxCollider3D::Draw()
 //================================================================================================
 //================================================================================================
 
-void ComBoxCollider3D::ImGui_Draw(unsigned int windowid)
+void ComBoxCollider3D::ImGuiDraw(unsigned int windowid)
 {
     //ほぼこっちの処理と一緒なので
-    CCollisionBase::ImGui_Draw(windowid);
+    CCollisionBase::ImGuiDraw(windowid);
 
     //描画するか and オブジェクトは存在しているか
     if (m_draw && m_colliderObject != nullptr)
     {
         if (ImGui::TreeNode(m_colliderObject->m_objectName.c_str()))
         {
-            m_colliderObject->ImGui_Draw(windowid);
+            m_colliderObject->ImGuiDraw(windowid);
             ImGui::TreePop();
         }
     }

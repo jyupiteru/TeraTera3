@@ -61,7 +61,7 @@ public:
      */
 	virtual void Draw() override;
 
-	virtual void ImGui_Draw(unsigned int windowid) override;
+	virtual void ImGuiDraw(unsigned int windowid) override;
 
 	virtual void SetVertex() override;
 

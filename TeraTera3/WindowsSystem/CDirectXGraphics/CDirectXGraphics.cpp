@@ -4,18 +4,48 @@
  */
 
 #include "CDirectXGraphics.h"
-/*-------------------------------------------------------------------------------
-	DirectX Grpaphics の初期化処理
 
-		P1 : ウインドウハンドル値
-		P2 : ウインドウサイズ（幅）
-		P3 : ウインドウサイズ（高さ）
-		P4 : フルスクリーン（false window  true fullscreen )
+CDirectXGraphics *CDirectXGraphics::m_instance = nullptr;
 
-		戻り値
-			false : 失敗
-			true  : 成功
----------------------------------------------------------------------------------*/
+CDirectXGraphics::CDirectXGraphics()
+{
+	m_lpDevice = NULL;
+	m_lpImmediateContext = NULL;
+	m_Height = 0;
+	m_Width = 0;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::Create()
+{
+	m_instance = new CDirectXGraphics();
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::Delete(bool _flag)
+{
+	if (_flag)
+	{
+		delete m_instance;
+		m_instance = nullptr;
+	}
+}
+
+//================================================================================================
+//================================================================================================
+
+CDirectXGraphics &CDirectXGraphics::GetInstance()
+{
+	return *m_instance;
+}
+
+//================================================================================================
+//================================================================================================
+
 bool CDirectXGraphics::Init(HWND hWnd, unsigned int Width, unsigned int Height, bool fullscreen)
 {
 	HRESULT hr = S_OK;
@@ -373,37 +403,8 @@ bool CDirectXGraphics::Init(HWND hWnd, unsigned int Width, unsigned int Height, 
 	return (true);
 }
 
-void CDirectXGraphics::TurnOnAlphaBlending()
-{
-	float blendFactor[4];
-
-	blendFactor[0] = 0.0f;
-	blendFactor[1] = 0.0f;
-	blendFactor[2] = 0.0f;
-	blendFactor[3] = 0.0f;
-
-	//アルファブレンドをONにする
-	m_lpImmediateContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
-	return;
-}
-
-void CDirectXGraphics::TurnOffAlphaBlending()
-{
-	float blendFactor[4];
-
-	blendFactor[0] = 0.0f;
-	blendFactor[1] = 0.0f;
-	blendFactor[2] = 0.0f;
-	blendFactor[3] = 0.0f;
-
-	//アルファブレンドをOFFにする
-	m_lpImmediateContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
-	return;
-}
-
-/*-------------------------------------------------------------------------------
-	DirectX Grpaphics の終了処理
----------------------------------------------------------------------------------*/
+//================================================================================================
+//================================================================================================
 void CDirectXGraphics::Exit()
 {
 	if (m_alphaDisableBlendingState)
@@ -480,4 +481,161 @@ void CDirectXGraphics::Exit()
 		m_lpSwapChain = 0;
 	}
 	return;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::BeforeDraw(float _clearcolor[])
+{
+	m_lpImmediateContext->ClearRenderTargetView(m_lpRenderTargetView, _clearcolor);
+	// Zバッファ(深度バッファ)クリア
+	m_lpImmediateContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::AfterDraw()
+{
+	// レンダリングされたイメージを表示。
+	m_lpSwapChain->Present(0, 0);
+}
+
+//================================================================================================
+//================================================================================================
+
+ID3D11Device *CDirectXGraphics::GetDXDevice() const
+{
+	return m_lpDevice;
+}
+
+//================================================================================================
+//================================================================================================
+
+ID3D11DeviceContext *CDirectXGraphics::GetImmediateContext() const
+{
+	return m_lpImmediateContext;
+}
+
+//================================================================================================
+//================================================================================================
+
+IDXGISwapChain *CDirectXGraphics::GetSwapChain() const
+{
+	return m_lpSwapChain;
+}
+
+//================================================================================================
+//================================================================================================
+
+ID3D11RenderTargetView *CDirectXGraphics::GetRenderTargetView() const
+{
+	return m_lpRenderTargetView;
+}
+
+//================================================================================================
+//================================================================================================
+
+ID3D11DepthStencilView *CDirectXGraphics::GetDepthStencilView() const
+{
+	return m_depthStencilView;
+}
+
+//================================================================================================
+//================================================================================================
+
+int CDirectXGraphics::GetWidth() const
+{
+	return m_Width;
+}
+
+//================================================================================================
+//================================================================================================
+
+int CDirectXGraphics::GetHeight() const
+{
+	return m_Height;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnOffZbuffer()
+{
+	ID3D11RenderTargetView *rtvtable[1];
+
+	rtvtable[0] = m_lpRenderTargetView;
+
+	m_lpImmediateContext->OMSetRenderTargets(
+		1,		  // ターゲット
+		rtvtable, // ビューテーブル
+		nullptr	  // 深度バッファなし
+	);
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnOnZBuffer()
+{
+	ID3D11RenderTargetView *rtvtable[1];
+
+	rtvtable[0] = m_lpRenderTargetView;
+
+	m_lpImmediateContext->OMSetRenderTargets(
+		1,				   // ターゲット
+		rtvtable,		   // ビューテーブル
+		m_depthStencilView // 深度バッファなし
+	);
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnOnAlphaBlending()
+{
+	float blendFactor[4];
+
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	//アルファブレンドをONにする
+	m_lpImmediateContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
+	return;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnOffAlphaBlending()
+{
+	float blendFactor[4];
+
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	//アルファブレンドをOFFにする
+	m_lpImmediateContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
+	return;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnWire()
+{
+	m_lpImmediateContext->RSSetState(m_rasterStateWire);
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnSolid()
+{
+	m_lpImmediateContext->RSSetState(m_rasterStateSolid);
 }

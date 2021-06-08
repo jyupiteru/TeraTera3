@@ -232,7 +232,7 @@ GameObject* const GameObject::Find(std::string_view name)
 //================================================================================================
 //================================================================================================
 
-void GameObject::ImGui_Draw(unsigned int windowid)
+void GameObject::ImGuiDraw(unsigned int windowid)
 {
 	//表示内容
 	//id、コンポーネント総数
@@ -243,19 +243,19 @@ void GameObject::ImGui_Draw(unsigned int windowid)
 
 	if (ImGui::TreeNode("Object Details"))
 	{
-		ImGui_DrawObjectDetails(windowid);
+		ImGuiDrawObjectDetails(windowid);
 		ImGui::TreePop();
 	}
 
 	if (ImGui::TreeNode("Components"))
 	{
-		ImGui_DrawComponents(windowid);
+		ImGuiDrawComponents(windowid);
 		ImGui::TreePop();
 	}
 
 	if (ImGui::TreeNode("Child Object"))
 	{
-		ImGui_DrawChiObjects(windowid);
+		ImGuiDrawChiObjects(windowid);
 		ImGui::TreePop();
 	}
 }
@@ -263,7 +263,7 @@ void GameObject::ImGui_Draw(unsigned int windowid)
 //================================================================================================
 //================================================================================================
 
-void GameObject::ImGui_DrawObjectDetails(unsigned int windowid)
+void GameObject::ImGuiDrawObjectDetails(unsigned int windowid)
 {
 	ImGui::BulletText("ObjectID : %d", m_objID);
 
@@ -297,7 +297,7 @@ void GameObject::ImGui_DrawObjectDetails(unsigned int windowid)
 //================================================================================================
 //================================================================================================
 
-void GameObject::ImGui_DrawComponents(unsigned int windowid)
+void GameObject::ImGuiDrawComponents(unsigned int windowid)
 {
 	ImGui::BulletText("TotalComponent : %d", m_pListComponent.size());
 
@@ -349,8 +349,8 @@ void GameObject::ImGui_DrawComponents(unsigned int windowid)
 			{
 				if (ImGui::TreeNode(componentname.c_str()))
 				{
-					//対象コンポーネントのImGui_Drawを実行
-					itr.second->ImGui_Draw(windowid);
+					//対象コンポーネントのImGuiDrawを実行
+					itr.second->ImGuiDraw(windowid);
 					ImGui::TreePop();
 				}
 				componentcount++;
@@ -368,7 +368,7 @@ void GameObject::ImGui_DrawComponents(unsigned int windowid)
 //================================================================================================
 //================================================================================================
 
-void GameObject::ImGui_DrawChiObjects(unsigned int windowid)
+void GameObject::ImGuiDrawChiObjects(unsigned int windowid)
 {
 	ImGui::BulletText("TotalChildObject : %d", m_pListChildObject.size());
 
@@ -446,7 +446,7 @@ void GameObject::ImGui_DrawChiObjects(unsigned int windowid)
 		{
 			//idを取得して内容を描画
 			unsigned int objectid = m_pListChildObjectName[selectobject];
-			m_pListChildObject[objectid]->ImGui_Draw(windowid);
+			m_pListChildObject[objectid]->ImGuiDraw(windowid);
 		}
 	}
 }

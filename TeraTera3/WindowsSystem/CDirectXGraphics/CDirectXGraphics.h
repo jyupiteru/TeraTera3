@@ -7,132 +7,204 @@
 
 #pragma once
 
+/**
+ * @brief DirectXを使用した
+ */
 class CDirectXGraphics
 {
 private:
-	ID3D11Device *m_lpDevice = nullptr;					 // DIRECT3DDEVICE11デバイス
-	ID3D11DeviceContext *m_lpImmediateContext = nullptr; // DIRECT3DDEVICE11デバイスコンテキスト
-	IDXGISwapChain *m_lpSwapChain = nullptr;			 // スワップチェイン
+	/**
+	 * @brief DirectXのデバイス
+	 */
+	ID3D11Device *m_lpDevice = nullptr;
 
-	ID3D11RenderTargetView *m_lpRenderTargetView = nullptr; // レンダーターゲットビュー
-	ID3D11Texture2D *m_depthStencilBuffer = nullptr;		// Ｚバッファ、ステンシルバッファ
-	ID3D11DepthStencilState *m_depthStencilState = nullptr; // Ｚバッファ、ステンシルステート
-	ID3D11DepthStencilView *m_depthStencilView = nullptr;	// Ｚバッファ、ステンシルビュー
-	ID3D11RasterizerState *m_rasterStateSolid = nullptr;	// ラスターステータス(ソリッド)
-	ID3D11RasterizerState *m_rasterStateWire = nullptr;		// ラスターステータス(ワイヤー)
+	/**
+	 * @brief DirectXコンテキスト
+	 */
+	ID3D11DeviceContext *m_lpImmediateContext = nullptr;
 
-	D3D_DRIVER_TYPE m_DriverType;	  // ドライバタイプ
-	D3D_FEATURE_LEVEL m_FeatureLevel; // 機能レベル
-	int m_Width;					  // バックバッファＸサイズ
-	int m_Height;					  // バックバッファＹサイズ
+	/**
+	 * @brief スワップチェイン
+	 */
+	IDXGISwapChain *m_lpSwapChain = nullptr;
 
-	ID3D11SamplerState *m_samplerstate = nullptr; // サンプラーステート
+	/**
+	 * @brief レンダーターゲットビュー
+	 */
+	ID3D11RenderTargetView *m_lpRenderTargetView = nullptr;
 
+	/**
+	 * @brief Ｚバッファ、ステンシルバッファ
+	 */
+	ID3D11Texture2D *m_depthStencilBuffer = nullptr;
+
+	/**
+	 * @brief Ｚバッファ、ステンシルステート
+	 */
+	ID3D11DepthStencilState *m_depthStencilState = nullptr;
+
+	/**
+	 * @brief Ｚバッファ、ステンシルビュー
+	 */
+	ID3D11DepthStencilView *m_depthStencilView = nullptr;
+
+	/**
+	 * @brief ラスターステータス(ソリッド)
+	 * @n ソリッド表示する際の各種情報を詰めた変数
+	 */
+	ID3D11RasterizerState *m_rasterStateSolid = nullptr;
+
+	/**
+	 * @brief  ラスターステータス(ワイヤー)
+	 * @n ワイヤー表示する際の各種情報を詰めた変数
+	 */
+	ID3D11RasterizerState *m_rasterStateWire = nullptr;
+
+	/**
+	 * @brief ドライバの種類
+	 */
+	D3D_DRIVER_TYPE m_DriverType;
+
+	/**
+	 * @brief 機能レベル
+	 */
+	D3D_FEATURE_LEVEL m_FeatureLevel;
+
+	/**
+	 * @brief 裏のバッファの横サイズ
+	 */
+	int m_Width;
+
+	/**
+	 * @brief 裏のバッファの縦サイズ
+	 */
+	int m_Height;
+
+	/**
+	 * @brief サンプラー情報
+	 */
+	ID3D11SamplerState *m_samplerstate = nullptr;
+
+	/**
+	 * @brief ?? 多分アルファブレンド関係の変数
+	 * @todo  要解析アルファブレンドが効いているときの情報を集めた変数だと思う
+	 */
 	ID3D11BlendState *m_alphaEnableBlendingState = nullptr;
+
+	/**
+	 * @brief ?? 多分アルファブレンド関係の変数
+	 * @todo  要解析アルファブレンドが聞いていないときの情報を集めた変数だと思う
+	 */
 	ID3D11BlendState *m_alphaDisableBlendingState = nullptr;
 
-public:
-	CDirectXGraphics()
-	{ // コンストラクタ
-		m_lpDevice = NULL;
-		m_lpImmediateContext = NULL;
-		m_Height = 0;
-		m_Width = 0;
-	}
+	static CDirectXGraphics *m_instance;
 
-	// 初期処理
+	CDirectXGraphics();
+
+public:
+	static void Create();
+
+	static void Delete(bool _flag = false);
+
+	static [[nodiscard]] CDirectXGraphics &GetInstance();
+
+	/**
+	 * @brief DirectX Grpaphics の初期化処理
+	 * @param hWnd ウインドウハンドル値
+	 * @param Width ウインドウの幅
+	 * @param Height ウインドウの縦
+	 * @param fullscreen フルスクリーンか?
+	 * @return true 成功
+	 * @return false 失敗
+	 */
 	bool Init(HWND hWnd, unsigned int Width, unsigned int Height, bool fullscreen = false);
 
-	// 終了処理
+	/**
+	 * @brief 終了処理
+	 */
 	void Exit();
 
-	// デバイスGET
-	ID3D11Device *GetDXDevice() const
-	{
-		return m_lpDevice;
-	}
+	/**
+	 * @brief 描画前に行う処理
+	 * @param _clearcolor 画面の背景の色
+	 */
+	void BeforeDraw(float _clearcolor[]);
 
-	// イミディエイトデバイスGET
-	ID3D11DeviceContext *GetImmediateContext() const
-	{
-		return m_lpImmediateContext;
-	}
+	/**
+	 * @brief 描画後に行う更新処理
+	 * @n ダブルバッファ?
+	 */
+	void AfterDraw();
 
-	// SWAPチェインGET
-	IDXGISwapChain *GetSwapChain() const
-	{
-		return m_lpSwapChain;
-	}
+	/**
+	 * @brief DirectXのデバイスを取得する処理
+	 * @return ID3D11Device* 取得したいDirectX11のデバイス
+	 */
+	ID3D11Device *GetDXDevice() const;
 
-	// レンダリングターゲットGET
-	ID3D11RenderTargetView *GetRenderTargetView() const
-	{
-		return m_lpRenderTargetView;
-	}
+	/**
+	 * @brief コンテキストの取得処理
+	 * @return ID3D11DeviceContext* 取得したいコンテキストのポインタ
+	 */
+	ID3D11DeviceContext *GetImmediateContext() const;
 
-	// depthstencil view
-	ID3D11DepthStencilView *GetDepthStencilView() const
-	{
-		return m_depthStencilView;
-	}
+	/**
+	 * @brief スワップチェインを取得する処理
+	 * @return IDXGISwapChain* 取得したいスワップチェインのポインタ
+	 */
+	IDXGISwapChain *GetSwapChain() const;
 
-	//
-	int GetWidth() const
-	{
-		return m_Width;
-	}
+	/**
+	 * @brief レンダリングターゲットを取得する処理
+	 * @return ID3D11RenderTargetView* 取得したいレンダリングターゲットのポインタ
+	 */
+	ID3D11RenderTargetView *GetRenderTargetView() const;
 
-	//
-	int GetHeight() const
-	{
-		return m_Height;
-	}
+	/**
+	 * @brief デプスステンシルビューを取得する処理
+	 * @return ID3D11DepthStencilView* デプスステンシルビューのポインタ
+	 */
+	ID3D11DepthStencilView *GetDepthStencilView() const;
 
-	// Zバッファ無効化
-	void TurnOffZbuffer()
-	{
-		ID3D11RenderTargetView *rtvtable[1];
+	/**
+	 * @brief ウインドウの横幅の取得
+	 * @return int ウインドウの横幅
+	 */
+	int GetWidth() const;
 
-		rtvtable[0] = m_lpRenderTargetView;
+	/**
+	 * @brief ウインドウの縦幅の取得
+	 * @return int ウインドウの横の取得
+	 */
+	int GetHeight() const;
 
-		m_lpImmediateContext->OMSetRenderTargets(
-			1,		  // ターゲット
-			rtvtable, // ビューテーブル
-			nullptr	  // 深度バッファなし
-		);
-	}
+	/**
+	 * @brief Zバッファの無効化処理
+	 */
+	void TurnOffZbuffer();
 
-	// Zバッファ有効化
-	void TurnOnZBuffer()
-	{
-		ID3D11RenderTargetView *rtvtable[1];
+	/**
+	 * @brief Zバッファの有効化処理
+	 */
+	void TurnOnZBuffer();
 
-		rtvtable[0] = m_lpRenderTargetView;
-
-		m_lpImmediateContext->OMSetRenderTargets(
-			1,				   // ターゲット
-			rtvtable,		   // ビューテーブル
-			m_depthStencilView // 深度バッファなし
-		);
-	}
-
-	// アルファブレンド有効化
+	/**
+	 * @brief アルファブレンドの有効化処理
+	 */
 	void TurnOnAlphaBlending();
 
-	// アルファブレンド無効化
+	/**
+	 * @brief アルファブレンドの無効化処理
+	 */
 	void TurnOffAlphaBlending();
 
-	// ワイヤフレーム
-	void TurnWire()
-	{
-		//  set the rasterizer state
-		m_lpImmediateContext->RSSetState(m_rasterStateWire);
-	}
+	/**
+	 * @brief 表示をワイヤーフレームに変更する
+	 */
+	void TurnWire();
 
-	// ソリッド
-	void TurnSolid()
-	{
-		//  set the rasterizer state
-		m_lpImmediateContext->RSSetState(m_rasterStateSolid);
-	}
+	/**
+	 * @brief 表示をソリッドに変更する
+	 */
+	void TurnSolid();
 };
