@@ -9,10 +9,10 @@
 
 std::unordered_map<std::type_index, int> ComponentBase::m_listComponentID;
 
-void ComponentBase::ImGui_Draw(unsigned int windowid)
+void ComponentBase::ImGuiDraw(unsigned int windowid)
 {
-    //ImGui_Drawになにも追加していないとき出る
+    //ImGuiDrawになにも追加していないとき出る
 
-    ImGui::Text("No ImGui_Draw");
-    ImGui::Text("Add ImGui_Draw to component!!!");
+    ImGui::Text("No ImGuiDraw");
+    ImGui::Text("Add ImGuiDraw to component!!!");
 }

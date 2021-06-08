@@ -114,7 +114,7 @@ void Com3DModelAssimp::Draw()
         m_pShader->SetVertexShader();
 
         // モデル描画
-        m_pNowModelData->modeldata.Draw(GetDX11DeviceContext(),
+        m_pNowModelData->modeldata.Draw(CDirectXGraphics::GetInstance().GetImmediateContext(),
                                         (DirectX::XMFLOAT4X4 &)m_modelMatrix,
                                         m_animationData);
     }
@@ -123,7 +123,7 @@ void Com3DModelAssimp::Draw()
 //================================================================================================
 //================================================================================================
 
-void Com3DModelAssimp::ImGui_Draw(unsigned int windowid)
+void Com3DModelAssimp::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("ModelName : %s", m_keyModel.c_str());
     ImGui::Text("Here has nodisplay things");

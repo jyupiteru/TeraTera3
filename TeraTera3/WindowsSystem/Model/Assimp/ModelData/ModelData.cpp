@@ -9,7 +9,6 @@
 #include "memory.h"
 #include "ModelData.h"
 #include "../vertexproto.h"
-#include "../../../Dx11util/DX11util.h"
 #include "../../../DX11Settransform.h"
 #include "../../../Dx11mathutil/Dx11mathutil.h"
 
@@ -26,8 +25,8 @@ std::vector<Texture> ModelData::loadMaterialTextures(
 	ID3D11Device *dev;
 	ID3D11DeviceContext *devcon;
 
-	dev = GetDX11Device();
-	devcon = GetDX11DeviceContext();
+	dev = CDirectXGraphics::GetInstance().GetDXDevice();
+	devcon = CDirectXGraphics::GetInstance().GetImmediateContext();
 
 	// マテリアルからテクスチャ個数を取得し(基本は1個)ループする
 	for (unsigned int i = 0; i < mtrl->GetTextureCount(type); i++)
@@ -202,7 +201,7 @@ bool ModelData::Load(std::string resourcefolder,
 
 	// ボーン行列格納用の定数バッファを生成する
 	ID3D11Device *device;
-	device = GetDX11Device();
+	device = CDirectXGraphics::GetInstance().GetDXDevice();
 
 	sts = CreateConstantBufferWrite(device, sizeof(ConstantBufferBoneMatrix), &m_constantbufferbonematrix);
 	if (!sts)
@@ -571,7 +570,7 @@ void ModelData::UpdateBoneMatrixConstantBuffer(std::map<std::string, BONE> &list
 	}
 
 	ID3D11DeviceContext *devicecontext;
-	devicecontext = GetDX11DeviceContext();
+	devicecontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
 	D3D11_MAPPED_SUBRESOURCE pData;
 

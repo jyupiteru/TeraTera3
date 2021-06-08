@@ -5,7 +5,6 @@
  */
 
 #include "CImGuiManager.h"
-#include "../../WindowsSystem/Dx11util/DX11util.h"
 #include "../CImGuiWindow/CImGuiWindow.h"
 #include "CImGuiHelper/CImGuiHelper.h"
 #include "../../Setup.h"
@@ -27,7 +26,7 @@ void CImGuiManager::Init(HWND hWnd)
         std::exit(1);
     }
 
-    if (!ImGui_ImplDX11_Init(GetDX11Device(), GetDX11DeviceContext()))
+    if (!ImGui_ImplDX11_Init(CDirectXGraphics::GetInstance().GetDXDevice(), CDirectXGraphics::GetInstance().GetImmediateContext()))
     {
         ImGui::DestroyContext();
         std::exit(1);
@@ -52,9 +51,9 @@ void CImGuiManager::Init(HWND hWnd)
 
     this->CreateMenu("Menu", 0);
     this->CreateMenu("CustomMenu", 1);
-    this->SetImGuiFunction("Create New Window", std::bind(&CImGuiManager::ImGUi_CreateNewWindow, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::TRIGGER_CLICK, 0);
-    this->SetImGuiFunction("Window Details", std::bind(&CImGuiManager::ImGui_Draw_WindowsDetails, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::DRAW, 1);
-    this->SetImGuiFunction("Project Property", std::bind(&CImGuiManager::Draw_ImGui_Proparty, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::DRAW, 2);
+    this->SetImGuiFunction("Create New Window", std::bind(&CImGuiManager::ImGUiCreateNewWindow, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::TRIGGER_CLICK, 0);
+    this->SetImGuiFunction("Window Details", std::bind(&CImGuiManager::ImGuiDrawWindowsDetails, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::DRAW, 1);
+    this->SetImGuiFunction("Project Property", std::bind(&CImGuiManager::ImGuiDrawProparty, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::DRAW, 2);
 }
 
 //================================================================================================
@@ -289,7 +288,7 @@ void CImGuiManager::EraseWindows(void)
 //================================================================================================
 //================================================================================================
 
-void CImGuiManager::Draw_ImGui_Proparty(int)
+void CImGuiManager::ImGuiDrawProparty(int)
 {
 
     bool _flag = false;
@@ -308,7 +307,7 @@ void CImGuiManager::Draw_ImGui_Proparty(int)
 //================================================================================================
 //================================================================================================
 
-void CImGuiManager::ImGui_Draw_WindowsDetails(int windowid)
+void CImGuiManager::ImGuiDrawWindowsDetails(int windowid)
 {
     m_listWindow[windowid]->DrawWindowDetails();
 }

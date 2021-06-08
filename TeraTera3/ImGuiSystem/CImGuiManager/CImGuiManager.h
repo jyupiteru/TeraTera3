@@ -232,7 +232,7 @@ protected:
      */
     void EraseWindows(void);
 
-    void ImGUi_CreateNewWindow(int)
+    void ImGUiCreateNewWindow(int)
     {
         CreateImGuiWindow();
     }
@@ -241,9 +241,13 @@ protected:
      * @brief プロジェクトのプロパティをImGuiのウインドウに表示する際に使用する処理
      * @param none 引数特になし
      */
-    void Draw_ImGui_Proparty(int);
+    void ImGuiDrawProparty(int);
 
-    void ImGui_Draw_WindowsDetails(int windowid);
+    /**
+     * @brief ImGuiを使用してデバッグ情報を映しているウインドウの詳細を表示する処理
+     * @param windowid 引数特になし
+     */
+    void ImGuiDrawWindowsDetails(int windowid);
 
     /**
      * @brief メニューのアクセスidを取得する関数

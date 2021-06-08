@@ -483,14 +483,14 @@ public:
      * @brief ImGuiで表示する際に使用する処理
      * @param windowid ウインドウのid
      */
-    void ImGui_Draw(unsigned int windowid);
+    void ImGuiDraw(unsigned int windowid);
 
 private:
-    void ImGui_DrawObjectDetails(unsigned int windowid);
+    void ImGuiDrawObjectDetails(unsigned int windowid);
 
-    void ImGui_DrawComponents(unsigned int windowid);
+    void ImGuiDrawComponents(unsigned int windowid);
 
-    void ImGui_DrawChiObjects(unsigned int windowid);
+    void ImGuiDrawChiObjects(unsigned int windowid);
 
     /**
      * @brief オブジェクトを削除する処理1

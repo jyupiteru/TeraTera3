@@ -16,7 +16,7 @@ void ComLight::Init()
 
     // コンスタントバッファ作成
     bool sts = CreateConstantBuffer(
-        GetDX11Device(),             // デバイス
+        CDirectXGraphics::GetInstance().GetDXDevice(),             // デバイス
         sizeof(ConstantBufferLight), // サイズ
         &m_pConstantBufferLight);    // コンスタントバッファ４
     if (!sts)
@@ -67,22 +67,22 @@ void ComLight::Update()
              cb.Ambient.z,
              cb.Ambient.w) = m_ambient.GetValue();
 
-    GetDX11DeviceContext()->UpdateSubresource(m_pConstantBufferLight,
+    CDirectXGraphics::GetInstance().GetImmediateContext()->UpdateSubresource(m_pConstantBufferLight,
                                               0,
                                               nullptr,
                                               &cb,
                                               0, 0);
 
     // コンスタントバッファ4をｂ3レジスタへセット（頂点シェーダー用）
-    GetDX11DeviceContext()->VSSetConstantBuffers(4, 1, &m_pConstantBufferLight);
+    CDirectXGraphics::GetInstance().GetImmediateContext()->VSSetConstantBuffers(4, 1, &m_pConstantBufferLight);
     // コンスタントバッファ4をｂ3レジスタへセット(ピクセルシェーダー用)
-    GetDX11DeviceContext()->PSSetConstantBuffers(4, 1, &m_pConstantBufferLight);
+    CDirectXGraphics::GetInstance().GetImmediateContext()->PSSetConstantBuffers(4, 1, &m_pConstantBufferLight);
 }
 
 //================================================================================================
 //================================================================================================
 
-void ComLight::ImGui_Draw(unsigned int windowid)
+void ComLight::ImGuiDraw(unsigned int windowid)
 {
     auto [ambient_x, ambient_y, ambient_z, ambient_a] = m_ambient.GetValue();
     ImGui::BulletText("Ambient");
