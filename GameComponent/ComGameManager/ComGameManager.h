@@ -15,6 +15,7 @@ enum class E_GAMEFLOW
 {
     READY,
     GAME,
+    GAMEOVER,
     END
 };
 

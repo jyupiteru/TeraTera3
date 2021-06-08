@@ -5,6 +5,7 @@
  */
 
 #include "ComPlayer.h"
+#include "../ComGameManager/ComGameManager.h"
 
 void ComPlayer::Init()
 {
@@ -53,6 +54,16 @@ void ComPlayer::OnTriggerStay3D(GameObject *obj)
     {
         m_nowstate = E_PLAYERFLOW::GAME;
         m_gameObject->m_transform->m_vector.SetValue(0.0f, 0.0f, 0.0f);
+        ComGameManager::GetInstance().m_nowGameState.SetValue(E_GAMEFLOW::GAME);
+    }
+    else
+    {
+        //あたったのは弾か?
+        if (obj->m_objectName.find("Shot") != std::string::npos)
+        {
+            //ゲームオーバー処理
+            ComGameManager::GetInstance().m_nowGameState.SetValue(E_GAMEFLOW::GAMEOVER);
+        }
     }
 }
 

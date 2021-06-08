@@ -1,4 +1,12 @@
-﻿#include "ComGameManager.h"
+﻿/**
+ * @file ComGameManager.cpp
+ * @author jupiter ()
+ * @brief ComGameManagerの実装が書かれたcpp
+ */
+
+#include "ComGameManager.h"
+
+#include "../ComTimer/ComTimer.h"
 
 ComGameManager *ComGameManager::m_instance = nullptr;
 
@@ -44,6 +52,21 @@ void ComGameManager::UpdateFlow()
         break;
 
     case E_GAMEFLOW::GAME:
+
+        //残り時間が0になっていないか？
+        if (ComTimer::GetInstance().m_nowCount.GetValue() < ComTimer::GetInstance().m_maxTimeCount.GetValue())
+        {
+            ComTimer::GetInstance().UpdateTime();
+        }
+        else
+        { //一定時間が経過したので終了する
+            m_nowGameState.SetValue(E_GAMEFLOW::END);
+        }
+
+        break;
+
+    case E_GAMEFLOW::GAMEOVER:
+        CSceneManager::GetInstance().LoadScene("SceneResult");
         break;
 
     case E_GAMEFLOW::END:

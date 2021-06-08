@@ -52,7 +52,7 @@ public:
 
     void Ready() override;
 
-    void Update() override;
+    void UpdateTime();
 
     static ComTimer &GetInstance()
     {

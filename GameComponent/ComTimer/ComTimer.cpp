@@ -35,7 +35,7 @@ void ComTimer::Ready()
 //================================================================================================
 //================================================================================================
 
-void ComTimer::Update()
+void ComTimer::UpdateTime()
 {
     //カウントの更新
     m_milliCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
