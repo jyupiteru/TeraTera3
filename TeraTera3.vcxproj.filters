@@ -72,12 +72,6 @@
     <ClInclude Include="TeraTera3\WindowsSystem\DX11Settransform.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Memory.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\NonCopyable.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="ThirdParty\ImGui\imconfig.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>

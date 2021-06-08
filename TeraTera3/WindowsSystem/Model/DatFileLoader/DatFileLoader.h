@@ -4,9 +4,6 @@
 #include <string>
 #include <DirectXMath.h>
 
-#include "../../Memory.h"
-#include "../../NonCopyable.h"
-
 namespace X
 {
 	typedef int32_t VertexSuu; // 頂点数
@@ -63,7 +60,7 @@ namespace X
 	};
 } // namespace X
 
-class DatFileLoader : private NonCopyable
+class DatFileLoader
 {
 public:
 	X::VertexSuu m_VertexSuu = 0;

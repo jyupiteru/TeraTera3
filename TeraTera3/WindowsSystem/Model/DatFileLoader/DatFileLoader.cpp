@@ -2,11 +2,31 @@
 
 DatFileLoader::~DatFileLoader()
 {
-	DeleteArray(m_Subset);
-	DeleteArray(m_DecalTex);
-	DeleteArray(m_Material);
-	DeleteArray(m_Index);
-	DeleteArray(m_Vertex);
+	if (m_Subset)
+	{
+		delete[] m_Subset;
+		m_Subset = nullptr;
+	}
+	if (m_DecalTex)
+	{
+		delete[] m_DecalTex;
+		m_DecalTex = nullptr;
+	}
+	if (m_Material)
+	{
+		delete[] m_Material;
+		m_Material = nullptr;
+	}
+	if (m_Index)
+	{
+		delete[] m_Index;
+		m_Index = nullptr;
+	}
+	if (m_Vertex)
+	{
+		delete[] m_Vertex;
+		m_Vertex = nullptr;
+	}
 }
 
 void DatFileLoader::Serialize(const char *filename)
