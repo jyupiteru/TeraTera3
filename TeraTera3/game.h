@@ -19,7 +19,6 @@
 
 #include "WindowsSystem/CDirectInput.h"
 #include "WindowsSystem/DX11Settransform.h"
-#include "WindowsSystem/Dx11util/DX11util.h"
 #include "WindowsSystem/dx11mathutil/Dx11mathutil.h"
 
 //#ifdef _DEBUG

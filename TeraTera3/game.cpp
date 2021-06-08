@@ -52,7 +52,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	bool sts;
 
 	// DX11初期処理
-	sts = DX11Init(hwnd, width, height, fullscreen);
+	CDirectXGraphics::Create();
+	sts = CDirectXGraphics::GetInstance().Init(hwnd, width, height, fullscreen);
 	if (!sts)
 	{
 		MessageBox(hwnd, TEXT("DX11 init error"), TEXT("error"), MB_OK);
@@ -136,7 +137,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	}
 
 	// アルファブレンド有効にする
-	TurnOnAlphablend();
+	CDirectXGraphics::GetInstance().TurnOnAlphaBlending();
 
 	CSceneManager::Create();
 
@@ -179,10 +180,10 @@ void GameUpdate(float fps)
 void GameDraw()
 {
 	// ターゲットバッファクリア
-	float ClearColor[4] = {0.0f, 0.0f, 1.0f, 1.0f}; //red,green,blue,alpha
+	float clearcolor[4] = {0.0f, 0.0f, 1.0f, 1.0f}; //red,green,blue,alpha
 
 	// レンダリング前処理
-	DX11BeforeRender(ClearColor);
+	CDirectXGraphics::GetInstance().BeforeDraw(clearcolor);
 
 	//シーンに存在しているオブジェクトのDrawをぶん回し
 	CSceneManager::GetInstance().Draw();
@@ -190,7 +191,7 @@ void GameDraw()
 	CImGuiManager::GetInstance().Draw();
 
 	// レンダリング後処理
-	DX11AfterRender();
+	CDirectXGraphics::GetInstance().AfterDraw();
 }
 
 //================================================================================================
@@ -207,6 +208,6 @@ void GameUninit()
 	CEventSystem::Delete(true);
 	CContainer::Delete(true);
 	CImGuiManager::Delete(true);
+	CDirectXGraphics::Delete(true);
 
-	DX11Uninit();
 }

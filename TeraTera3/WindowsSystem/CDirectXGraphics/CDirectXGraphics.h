@@ -86,19 +86,27 @@ private:
 	ID3D11SamplerState *m_samplerstate = nullptr;
 
 	/**
-	 * @brief ?? 多分アルファブレンド関係の変数 
+	 * @brief ?? 多分アルファブレンド関係の変数
 	 * @todo  要解析アルファブレンドが効いているときの情報を集めた変数だと思う
 	 */
 	ID3D11BlendState *m_alphaEnableBlendingState = nullptr;
 
 	/**
-	 * @brief ?? 多分アルファブレンド関係の変数 
+	 * @brief ?? 多分アルファブレンド関係の変数
 	 * @todo  要解析アルファブレンドが聞いていないときの情報を集めた変数だと思う
 	 */
 	ID3D11BlendState *m_alphaDisableBlendingState = nullptr;
 
-public:
+	static CDirectXGraphics *m_instance;
+
 	CDirectXGraphics();
+
+public:
+	static void Create();
+
+	static void Delete(bool _flag = false);
+
+	static [[nodiscard]] CDirectXGraphics &GetInstance();
 
 	/**
 	 * @brief DirectX Grpaphics の初期化処理
@@ -115,6 +123,18 @@ public:
 	 * @brief 終了処理
 	 */
 	void Exit();
+
+	/**
+	 * @brief 描画前に行う処理
+	 * @param _clearcolor 画面の背景の色
+	 */
+	void BeforeDraw(float _clearcolor[]);
+
+	/**
+	 * @brief 描画後に行う更新処理
+	 * @n ダブルバッファ?
+	 */
+	void AfterDraw();
 
 	/**
 	 * @brief DirectXのデバイスを取得する処理
@@ -150,19 +170,13 @@ public:
 	 * @brief ウインドウの横幅の取得
 	 * @return int ウインドウの横幅
 	 */
-	int GetWidth() const
-	{
-		return m_Width;
-	}
+	int GetWidth() const;
 
 	/**
 	 * @brief ウインドウの縦幅の取得
 	 * @return int ウインドウの横の取得
 	 */
-	int GetHeight() const
-	{
-		return m_Height;
-	}
+	int GetHeight() const;
 
 	/**
 	 * @brief Zバッファの無効化処理
@@ -187,16 +201,10 @@ public:
 	/**
 	 * @brief 表示をワイヤーフレームに変更する
 	 */
-	void TurnWire()
-	{
-		m_lpImmediateContext->RSSetState(m_rasterStateWire);
-	}
+	void TurnWire();
 
 	/**
 	 * @brief 表示をソリッドに変更する
 	 */
-	void TurnSolid()
-	{
-		m_lpImmediateContext->RSSetState(m_rasterStateSolid);
-	}
+	void TurnSolid();
 };

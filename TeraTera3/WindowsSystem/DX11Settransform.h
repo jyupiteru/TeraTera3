@@ -3,7 +3,7 @@
 #include <tchar.h>
 
 #include "Shader/Shader.h"
-#include "DX11Util/DX11Util.h"
+#include "CDirectXGraphics/CDirectXGraphics.h"
 #include "Dx11mathutil/Dx11mathutil.h"
 #include "Memory.h"
 
@@ -67,7 +67,7 @@ public:
 	bool Init()
 	{
 
-		ID3D11Device *device = GetDX11Device();
+		ID3D11Device *device = CDirectXGraphics::GetInstance().GetDXDevice();
 
 		// コンスタントバッファ作成
 		bool sts = CreateConstantBuffer(
@@ -109,25 +109,27 @@ public:
 		ALIGN16 DirectX::XMMATRIX mat;
 		mat = DirectX::XMLoadFloat4x4(&matrix);
 
+		auto context = CDirectXGraphics::GetInstance().GetImmediateContext();
+
 		switch (type)
 		{
 		case TYPE::WORLD:
 			m_CBWorld.World = XMMatrixTranspose(mat);
-			GetDX11DeviceContext()->UpdateSubresource(m_pConstantBufferWorld, 0, nullptr, &m_CBWorld, 0, 0);
-			GetDX11DeviceContext()->VSSetConstantBuffers(0, 1, &m_pConstantBufferWorld);
-			GetDX11DeviceContext()->PSSetConstantBuffers(0, 1, &m_pConstantBufferWorld);
+			context->UpdateSubresource(m_pConstantBufferWorld, 0, nullptr, &m_CBWorld, 0, 0);
+			context->VSSetConstantBuffers(0, 1, &m_pConstantBufferWorld);
+			context->PSSetConstantBuffers(0, 1, &m_pConstantBufferWorld);
 			break;
 		case TYPE::VIEW:
 			m_CBView.View = XMMatrixTranspose(mat);
-			GetDX11DeviceContext()->UpdateSubresource(m_pConstantBufferView, 0, nullptr, &m_CBView, 0, 0);
-			GetDX11DeviceContext()->VSSetConstantBuffers(1, 1, &m_pConstantBufferView);
-			GetDX11DeviceContext()->PSSetConstantBuffers(1, 1, &m_pConstantBufferView);
+			context->UpdateSubresource(m_pConstantBufferView, 0, nullptr, &m_CBView, 0, 0);
+			context->VSSetConstantBuffers(1, 1, &m_pConstantBufferView);
+			context->PSSetConstantBuffers(1, 1, &m_pConstantBufferView);
 			break;
 		case TYPE::PROJECTION:
 			m_CBProjection.Projection = XMMatrixTranspose(mat);
-			GetDX11DeviceContext()->UpdateSubresource(m_pConstantBufferProjection, 0, nullptr, &m_CBProjection, 0, 0);
-			GetDX11DeviceContext()->VSSetConstantBuffers(2, 1, &m_pConstantBufferProjection);
-			GetDX11DeviceContext()->PSSetConstantBuffers(2, 1, &m_pConstantBufferProjection);
+			context->UpdateSubresource(m_pConstantBufferProjection, 0, nullptr, &m_CBProjection, 0, 0);
+			context->VSSetConstantBuffers(2, 1, &m_pConstantBufferProjection);
+			context->PSSetConstantBuffers(2, 1, &m_pConstantBufferProjection);
 			break;
 		}
 	}

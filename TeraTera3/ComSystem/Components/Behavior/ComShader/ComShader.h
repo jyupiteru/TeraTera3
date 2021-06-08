@@ -13,7 +13,6 @@
 #include "../../../Core/GameObject.h"
 
 #include "../../../../WindowsSystem/Shader/Shader.h"
-#include "../../../../WindowsSystem/Dx11util/DX11util.h"
 #include "../../../../ResourceContainer/CContainer.h"
 
 #pragma once

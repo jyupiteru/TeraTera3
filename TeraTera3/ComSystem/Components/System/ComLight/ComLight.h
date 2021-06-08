@@ -7,8 +7,6 @@
 #include <DirectXMath.h>
 
 #include "../../../Core/ComponentBase.h"
-#include "../../../../WindowsSystem/Dx11util/DX11util.h"
-
 #include "../ComCamera/ComCamera.h"
 
 #pragma once
