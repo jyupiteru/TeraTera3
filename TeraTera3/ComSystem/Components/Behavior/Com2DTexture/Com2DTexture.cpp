@@ -8,6 +8,7 @@
 
 #include "../ComTransform/ComTransform.h"
 #include "../../../../System/CMatrix/CMatrix.h"
+#include "../../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
 
 ConstantBufferViewPort Com2DTexture::m_screenData;
 
@@ -19,7 +20,7 @@ void Com2DTexture::Init()
     m_typeComponent.SetValue(E_TYPE_COMPONENT::OBJECT2D);
     this->LoadTexture("System/white.png");
 
-    ID3D11Device *device = GetDX11Device();
+    ID3D11Device *device = CDirectXGraphics::GetInstance().GetDXDevice();
 
     // 定数バッファ作成
     bool sts = CreateConstantBuffer(
@@ -78,15 +79,15 @@ void Com2DTexture::Draw()
     m_screenData.viewPortWidth.x = SCREEN_WIDTH;
 
     //シェーダにスクリーンサイズをセット
-    GetDX11DeviceContext()->UpdateSubresource(m_screenBuffer, 0, nullptr, &m_screenData, 0, 0);
-    GetDX11DeviceContext()->VSSetConstantBuffers(5, 1, &m_screenBuffer);
+    CDirectXGraphics::GetInstance().GetImmediateContext()->UpdateSubresource(m_screenBuffer, 0, nullptr, &m_screenData, 0, 0);
+    CDirectXGraphics::GetInstance().GetImmediateContext()->VSSetConstantBuffers(5, 1, &m_screenBuffer);
 
     //これをONにすると強制的にほかのものに上書きできる(一番手前になる)
-    TurnOffZbuffer();
+    CDirectXGraphics::GetInstance().TurnOffZbuffer();
 
     Com3DTexture::Draw();
 
-    TurnOnZbuffer();
+    CDirectXGraphics::GetInstance().TurnOnZBuffer();
 }
 
 //================================================================================================
@@ -149,7 +150,7 @@ void Com2DTexture::SetVertex()
     if (m_vertexbuffer == nullptr)
     {
         // 頂点バッファ作成（後で変更可能なもの）
-        bool sts = CreateVertexBufferWrite(GetDX11Device(),   //デバイス
+        bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(),   //デバイス
                                            sizeof(tagVertex), //ストライド（1頂点当たりのバイト数）
                                            4,                 //頂点数
                                            m_vertex,          //初期化データの先頭アドレス
@@ -164,11 +165,11 @@ void Com2DTexture::SetVertex()
         // 作成済みなら 内容を書き換える
         D3D11_MAPPED_SUBRESOURCE pData;
 
-        HRESULT hr = GetDX11DeviceContext()->Map(m_vertexbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
+        HRESULT hr = CDirectXGraphics::GetInstance().GetImmediateContext()->Map(m_vertexbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
         if (SUCCEEDED(hr))
         {
             memcpy_s(pData.pData, pData.RowPitch, (void *)(m_vertex), sizeof(tagVertex) * 4);
-            GetDX11DeviceContext()->Unmap(m_vertexbuffer, 0);
+            CDirectXGraphics::GetInstance().GetImmediateContext()->Unmap(m_vertexbuffer, 0);
         }
     }
 }

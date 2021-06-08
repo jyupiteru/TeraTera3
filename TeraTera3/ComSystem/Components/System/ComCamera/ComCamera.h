@@ -9,7 +9,6 @@
 #include "../../Behavior/ComTransform/ComTransform.h"
 
 #include "../../../../System/CVector.h"
-#include "../../../../WindowsSystem/Memory.h"
 #include "../../../../WindowsSystem/DX11Settransform.h"
 #include "../../../../System/CMatrix/CMatrix.h"
 

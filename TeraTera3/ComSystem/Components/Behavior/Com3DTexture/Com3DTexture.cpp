@@ -107,7 +107,7 @@ void Com3DTexture::Draw()
     DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mat);
 
     // イミィディエイトコンテキスト
-    ID3D11DeviceContext *devcontext = GetDX11DeviceContext();
+    ID3D11DeviceContext *devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
     // 頂点バッファをセット
     unsigned int stride = sizeof(tagVertex);
@@ -177,7 +177,7 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
     unsigned int idx[4] = {0, 1, 2, 3};
 
     // インデックスバッファ生成
-    bool sts = CreateIndexBuffer(GetDX11Device(), //デバイス
+    bool sts = CreateIndexBuffer(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
                                  4,               //インデックス数
                                  idx,             //初期化データの先頭アドレス
                                  &m_idxbuffer);   //インデックスバッファ
@@ -189,7 +189,7 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
     SetUV();
 
     // 定数バッファ生成
-    sts = CreateConstantBufferWrite(GetDX11Device(), sizeof(ConstantBufferMaterial), &m_cbuffer);
+    sts = CreateConstantBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(), sizeof(ConstantBufferMaterial), &m_cbuffer);
     if (!sts)
     {
         MessageBox(nullptr, TEXT("CreateConstantBufferWrite error"), TEXT("error"), MB_OK);
@@ -208,8 +208,8 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
 
         // SRV生成
         sts = CreateSRVfromFile(folder.c_str(), //画像ファイル名
-                                GetDX11Device(),
-                                GetDX11DeviceContext(),
+            CDirectXGraphics::GetInstance().GetDXDevice(),
+            CDirectXGraphics::GetInstance().GetImmediateContext(),
                                 &texres,
                                 &srv);
         if (!sts)
@@ -230,11 +230,11 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
 
     // 定数バッファ書き換え
     D3D11_MAPPED_SUBRESOURCE pData;
-    HRESULT hr = GetDX11DeviceContext()->Map(m_cbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
+    HRESULT hr = CDirectXGraphics::GetInstance().GetImmediateContext()->Map(m_cbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
     if (SUCCEEDED(hr))
     {
         memcpy_s(pData.pData, pData.RowPitch, (void *)(&material), sizeof(ConstantBufferMaterial));
-        GetDX11DeviceContext()->Unmap(m_cbuffer, 0);
+        CDirectXGraphics::GetInstance().GetImmediateContext()->Unmap(m_cbuffer, 0);
     }
 }
 
@@ -313,7 +313,7 @@ void Com3DTexture::SetVertex()
     if (m_vertexbuffer == nullptr)
     {
         // 頂点バッファ作成（後で変更可能な）
-        bool sts = CreateVertexBufferWrite(GetDX11Device(),   //デバイス
+        bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(),   //デバイス
                                            sizeof(tagVertex), //ストライド（1頂点当たりのバイト数）
                                            4,                 //頂点数
                                            m_vertex,          //初期化データの先頭アドレス
@@ -328,11 +328,11 @@ void Com3DTexture::SetVertex()
         // 作成済みなら 内容を書き換える
         D3D11_MAPPED_SUBRESOURCE pData;
 
-        HRESULT hr = GetDX11DeviceContext()->Map(m_vertexbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
+        HRESULT hr = CDirectXGraphics::GetInstance().GetImmediateContext()->Map(m_vertexbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
         if (SUCCEEDED(hr))
         {
             memcpy_s(pData.pData, pData.RowPitch, (void *)(m_vertex), sizeof(tagVertex) * 4);
-            GetDX11DeviceContext()->Unmap(m_vertexbuffer, 0);
+            CDirectXGraphics::GetInstance().GetImmediateContext()->Unmap(m_vertexbuffer, 0);
         }
     }
 }

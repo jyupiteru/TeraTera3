@@ -5,7 +5,6 @@
  */
 
 #include "CImGuiManager.h"
-#include "../../WindowsSystem/Dx11util/DX11util.h"
 #include "../CImGuiWindow/CImGuiWindow.h"
 #include "CImGuiHelper/CImGuiHelper.h"
 #include "../../Setup.h"
@@ -27,7 +26,7 @@ void CImGuiManager::Init(HWND hWnd)
         std::exit(1);
     }
 
-    if (!ImGui_ImplDX11_Init(GetDX11Device(), GetDX11DeviceContext()))
+    if (!ImGui_ImplDX11_Init(CDirectXGraphics::GetInstance().GetDXDevice(), CDirectXGraphics::GetInstance().GetImmediateContext()))
     {
         ImGui::DestroyContext();
         std::exit(1);

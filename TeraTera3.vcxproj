@@ -218,8 +218,6 @@
     <ClInclude Include="TeraTera3\WindowsSystem\CDirectXGraphics\CDirectXGraphics.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\DX11Settransform.h" />
-    <ClInclude Include="TeraTera3\WindowsSystem\Dx11util\DX11util.h" />
-    <ClInclude Include="TeraTera3\WindowsSystem\Memory.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\animationdataassimp\animationdataassimp.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.h" />
@@ -228,7 +226,6 @@
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\vertexproto.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFileLoader\DatFileLoader.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.h" />
-    <ClInclude Include="TeraTera3\WindowsSystem\NonCopyable.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Shader\Shader.h" />
     <ClInclude Include="ThirdParty\ImGui\imconfig.h" />
     <ClInclude Include="ThirdParty\ImGui\imgui.h" />
@@ -290,7 +287,6 @@
     <ClCompile Include="TeraTera3\Timer\CTimer.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\CDirectXGraphics\CDirectXGraphics.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.cpp" />
-    <ClCompile Include="TeraTera3\WindowsSystem\Dx11util\Dx11util.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\animationdataassimp\animationdataassimp.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.cpp" />
