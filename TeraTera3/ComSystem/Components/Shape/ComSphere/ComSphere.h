@@ -109,7 +109,7 @@ public:
 
     virtual void Draw();
 
-    virtual void ImGui_Draw(unsigned int windowid) override;
+    virtual void ImGuiDraw(unsigned int windowid) override;
 
 protected:
     /**

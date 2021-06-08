@@ -148,7 +148,7 @@ void Com3DTexture::Draw()
 //================================================================================================
 //================================================================================================
 
-void Com3DTexture::ImGui_Draw(unsigned int windowid)
+void Com3DTexture::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("TextureName : %s", m_keyTexture.c_str());
 

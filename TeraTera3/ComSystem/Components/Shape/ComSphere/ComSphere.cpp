@@ -138,7 +138,7 @@ void ComSphere::Draw()
 //================================================================================================
 //================================================================================================
 
-void ComSphere::ImGui_Draw(unsigned int windowid)
+void ComSphere::ImGuiDraw(unsigned int windowid)
 {
 	ImGui::BulletText("Radius : %0.1f", m_radius);
 	ImGui::BulletText("Division");

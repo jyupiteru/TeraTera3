@@ -92,9 +92,9 @@ void Com2DTexture::Draw()
 //================================================================================================
 //================================================================================================
 
-void Com2DTexture::ImGui_Draw(unsigned int windowid)
+void Com2DTexture::ImGuiDraw(unsigned int windowid)
 {
-    Com3DTexture::ImGui_Draw(windowid);
+    Com3DTexture::ImGuiDraw(windowid);
 }
 
 //================================================================================================

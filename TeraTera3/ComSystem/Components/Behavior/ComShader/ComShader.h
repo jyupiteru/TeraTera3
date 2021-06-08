@@ -80,7 +80,7 @@ public:
 	 */
     virtual void Uninit() override;
 
-    virtual void ImGui_Draw(unsigned int windowid) override;
+    virtual void ImGuiDraw(unsigned int windowid) override;
 
     /**
 	 * @brief 			バーテックスシェーダ生成処理

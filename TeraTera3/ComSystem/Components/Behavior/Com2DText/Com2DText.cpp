@@ -205,7 +205,7 @@ void Com2DText::Draw()
 //================================================================================================
 //================================================================================================
 
-void Com2DText::ImGui_Draw(unsigned int windowid)
+void Com2DText::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("Font name : %s", m_keyFontTexture.c_str());
     ImGui::BulletText("Draw Text : %s", m_text.c_str());

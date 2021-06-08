@@ -131,7 +131,7 @@ void ComCamera::Update()
 //================================================================================================
 //================================================================================================
 
-void ComCamera::ImGui_Draw(unsigned int windowid)
+void ComCamera::ImGuiDraw(unsigned int windowid)
 {
     auto [eyepos_x, eyepos_y, eyepos_z] = m_cEyePos.GetValue();
     ImGui::BulletText("EyePosition");

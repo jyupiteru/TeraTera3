@@ -119,7 +119,7 @@ public:
      */
     CVector<bool> m_isTrigger;
 
-    virtual void ImGui_Draw(unsigned int windowid);
+    virtual void ImGuiDraw(unsigned int windowid);
 
     //例
     // void OnTriggerStay3D(GameObject *);

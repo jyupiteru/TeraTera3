@@ -103,7 +103,7 @@ void Com3DAnimationAssimp::Update()
 //================================================================================================
 //================================================================================================
 
-void Com3DAnimationAssimp::ImGui_Draw(unsigned int windowid)
+void Com3DAnimationAssimp::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("NowAnimationName : %s", m_nowAnimation.first);
     ImGui::BulletText("NowAnimationId : %d", m_nowAnimation.second);

@@ -98,7 +98,7 @@ public:
      * @brief ImGui描画時に表示、変更させたい内容を入れた処理
      * @note ここの処理みたいにオーバーライドされていない時に消す処理を追加したらジョブシステム作成できるかも？
      */
-    virtual void ImGui_Draw(unsigned int windowid);
+    virtual void ImGuiDraw(unsigned int windowid);
 
     /**
      * @brief アップデート処理

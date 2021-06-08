@@ -63,7 +63,7 @@ void ComShader::Uninit()
 //================================================================================================
 //================================================================================================
 
-void ComShader::ImGui_Draw(unsigned int windowid)
+void ComShader::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("Use Pixel Shader : %s", m_keyPixelShader.c_str());
     ImGui::BulletText("Use Vertex Shader : %s", m_keyVertexShader.c_str());

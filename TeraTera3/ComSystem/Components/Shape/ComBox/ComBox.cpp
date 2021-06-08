@@ -101,7 +101,7 @@ void ComBox::Uninit()
 //================================================================================================
 //================================================================================================
 
-void ComBox::ImGui_Draw(unsigned int windowid)
+void ComBox::ImGuiDraw(unsigned int windowid)
 {
 	ImGui::BulletText("LocalSize");
 	ImGui::Indent();

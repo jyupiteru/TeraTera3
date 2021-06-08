@@ -52,9 +52,9 @@ void CImGuiManager::Init(HWND hWnd)
 
     this->CreateMenu("Menu", 0);
     this->CreateMenu("CustomMenu", 1);
-    this->SetImGuiFunction("Create New Window", std::bind(&CImGuiManager::ImGUi_CreateNewWindow, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::TRIGGER_CLICK, 0);
-    this->SetImGuiFunction("Window Details", std::bind(&CImGuiManager::ImGui_Draw_WindowsDetails, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::DRAW, 1);
-    this->SetImGuiFunction("Project Property", std::bind(&CImGuiManager::Draw_ImGui_Proparty, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::DRAW, 2);
+    this->SetImGuiFunction("Create New Window", std::bind(&CImGuiManager::ImGUiCreateNewWindow, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::TRIGGER_CLICK, 0);
+    this->SetImGuiFunction("Window Details", std::bind(&CImGuiManager::ImGuiDrawWindowsDetails, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::DRAW, 1);
+    this->SetImGuiFunction("Project Property", std::bind(&CImGuiManager::ImGuiDrawProparty, this, std::placeholders::_1), "Menu", E_TYPE_IMGUIFUNCTION::DRAW, 2);
 }
 
 //================================================================================================
@@ -289,7 +289,7 @@ void CImGuiManager::EraseWindows(void)
 //================================================================================================
 //================================================================================================
 
-void CImGuiManager::Draw_ImGui_Proparty(int)
+void CImGuiManager::ImGuiDrawProparty(int)
 {
 
     bool _flag = false;
@@ -308,7 +308,7 @@ void CImGuiManager::Draw_ImGui_Proparty(int)
 //================================================================================================
 //================================================================================================
 
-void CImGuiManager::ImGui_Draw_WindowsDetails(int windowid)
+void CImGuiManager::ImGuiDrawWindowsDetails(int windowid)
 {
     m_listWindow[windowid]->DrawWindowDetails();
 }

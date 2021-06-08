@@ -562,6 +562,6 @@ void ObjectGenerator::ImGuiDraw_Objects(int windowid)
 		unsigned int select_objectid = m_pListObjectName[selectobject];
 
 		//次のオブジェクトのImGuiDrawを実行
-		m_pListAllObject[select_objectid]->ImGui_Draw(windowid);
+		m_pListAllObject[select_objectid]->ImGuiDraw(windowid);
 	}
 }

@@ -114,7 +114,7 @@ public:
 
 	virtual void Draw() override;
 
-	virtual void ImGui_Draw(unsigned int windowid) override;
+	virtual void ImGuiDraw(unsigned int windowid) override;
 
 	/**
 	 * @brief 画像読み込み処理

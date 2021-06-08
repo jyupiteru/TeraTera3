@@ -123,7 +123,7 @@ void Com3DModelAssimp::Draw()
 //================================================================================================
 //================================================================================================
 
-void Com3DModelAssimp::ImGui_Draw(unsigned int windowid)
+void Com3DModelAssimp::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("ModelName : %s", m_keyModel.c_str());
     ImGui::Text("Here has nodisplay things");

@@ -65,7 +65,7 @@ void Com3DModel::Draw()
 //================================================================================================
 //================================================================================================
 
-void Com3DModel::ImGui_Draw(unsigned int windowid)
+void Com3DModel::ImGuiDraw(unsigned int windowid)
 {
     ImGui::BulletText("ModelName : %s", m_keyModel.c_str());
     ImGui::Text("Here has nodisplay things");

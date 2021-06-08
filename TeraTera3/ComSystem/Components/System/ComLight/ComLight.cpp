@@ -82,7 +82,7 @@ void ComLight::Update()
 //================================================================================================
 //================================================================================================
 
-void ComLight::ImGui_Draw(unsigned int windowid)
+void ComLight::ImGuiDraw(unsigned int windowid)
 {
     auto [ambient_x, ambient_y, ambient_z, ambient_a] = m_ambient.GetValue();
     ImGui::BulletText("Ambient");

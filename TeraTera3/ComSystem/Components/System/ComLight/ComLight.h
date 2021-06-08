@@ -64,5 +64,5 @@ public:
 
     virtual void Update() override;
 
-    virtual void ImGui_Draw(unsigned int windowid) override;
+    virtual void ImGuiDraw(unsigned int windowid) override;
 };
