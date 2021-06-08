@@ -1,8 +1,14 @@
-﻿
+﻿/**
+ * @file ComPlayer.cpp
+ * @author jupiter ()
+ * @brief ComPlayerクラスの実装を記述したcpp
+ */
+
 #include "ComPlayer.h"
 
 void ComPlayer::Init()
 {
+    m_playerSpeed.SetValue(10.0f);
 }
 
 //================================================================================================
@@ -42,6 +48,7 @@ void ComPlayer::Update()
 
 void ComPlayer::OnTriggerStay3D(GameObject *obj)
 {
+    //READY時に衝突する=最初の落下が終わったということなので更新
     if (m_nowstate == E_PLAYERFLOW::READY)
     {
         m_nowstate = E_PLAYERFLOW::GAME;
@@ -54,7 +61,7 @@ void ComPlayer::OnTriggerStay3D(GameObject *obj)
 
 void ComPlayer::PlayerMove()
 {
-    float movespeed = m_playerSpeed;
+    float movespeed = m_playerSpeed.GetValue();
     movespeed *= static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
     DirectX::XMFLOAT3 vec = {0.0f, 0.0f, 0.0f};

@@ -23,7 +23,7 @@ void CSceneGame1::Init()
         }
     }
 
-    {
+    { //プレイヤーの生成
         if (GameObject *player = GameObject::Find("player"); player == nullptr)
         {
             player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
@@ -39,7 +39,7 @@ void CSceneGame1::Init()
         }
     }
 
-    {
+    { //カメラの取得と交信
         auto camera = GameObject::Find("camera");
         auto comcamera = camera->GetComponent<ComCamera>();
         comcamera->m_typeFixed = E_TYPE_FIXED::LOOKAT;
@@ -50,14 +50,17 @@ void CSceneGame1::Init()
         camera->m_objectUpdatePriority.SetValue(-1);
     }
 
-    {
+    { //ゲームの流れを管理するクラスの生成
         auto gamemanager = GameObject::MakeNewObject("GameManager", E_TYPE_OBJECT::NONE);
         gamemanager->AddComponent<ComGameManager>();
+
+        //マップを管理するコンポーネントの追加とマップの生成
         auto mapmanager = gamemanager->AddComponent<ComMapManager>();
         mapmanager->m_MaphalfSize.SetValue(10);
         mapmanager->m_mapMax.SetValue(10, 10);
         mapmanager->CreateMap(0);
 
+        //弾を管理するコンポーネントの追加
         auto shotmanager = gamemanager->AddComponent<ComShotManager>();
         shotmanager->m_intervalTime.SetValue(3.0f, 0.2f);
         shotmanager->m_shotRandNum.SetValue(0, 2, 4);
@@ -66,7 +69,7 @@ void CSceneGame1::Init()
         shotmanager->m_shotSize.SetValue(5, 7, 10);
     }
 
-    {
+    { //時間を管理するオブジェクトの生成
         auto timer = GameObject::MakeNewObject("Timer", E_TYPE_OBJECT::SYSTEM);
         timer->m_transform->m_worldPosition.SetValue(-SCREEN_WIDTH / 2 + 60, SCREEN_HEIGHT / 2 - 20.0f, 0.0f);
         timer->m_transform->m_size.SetValue(50.0f, 80.0f, 1.0f);

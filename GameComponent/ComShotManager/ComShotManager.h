@@ -53,23 +53,31 @@ public:
      */
     CVector3<float> m_shotRandNum;
 
+public:
     ComShotManager(){};
     ~ComShotManager(){};
 
     void Init() override;
-
     void Uninit() override;
-
     void Ready() override;
-
     void Update() override;
 
     [[nodiscard]] static ComShotManager &GetInstance();
 
+    /**
+     * @brief 弾を生成待ちリストに追加する処理
+     * @param _shot 登録したいオブジェクトに追加しているComShotコンポーネント
+     */
     void SetShotReadyList(ComShot *_shot);
 
+    /**
+     * @brief 弾オブジェクトをアクティブにして速度等をセットする処理
+     */
     void CrateShot();
 
 private:
+    /**
+     * @brief 弾オブジェクトの生成
+     */
     void CreateShotObject();
 };

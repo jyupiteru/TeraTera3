@@ -1,4 +1,10 @@
-﻿#include "ComTimer.h"
+﻿/**
+ * @file ComTimer.cpp
+ * @author jupiter ()
+ * @brief ComTimerの実装が書かれたcpp
+ */
+
+#include "ComTimer.h"
 
 ComTimer *ComTimer::m_instance = nullptr;
 
@@ -31,11 +37,13 @@ void ComTimer::Ready()
 
 void ComTimer::Update()
 {
-    m_milliCount += CTimer::GetInstance().m_deltaTime.GetValue();
+    //カウントの更新
+    m_milliCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
     //カウントが1.0秒超えるor現在の残り秒数が0秒以上で更新する
     if (m_milliCount >= 1.0f && m_timeCount >= 0)
     {
+        //表示している秒数の更新
         m_timeCount -= 1;
         m_milliCount -= 1.0f;
         m_comText->m_text = std::to_string(m_timeCount);

@@ -1,4 +1,10 @@
-﻿#include "ComMapManager.h"
+﻿/**
+ * @file ComMapManager.cpp
+ * @author jupiter ()
+ * @brief ComMapManagerクラスの実装が記述されたcpp
+ */
+
+#include "ComMapManager.h"
 #include "../ComShotManager/ComShotManager.h"
 
 ComMapManager *ComMapManager::m_instance = nullptr;
@@ -16,7 +22,6 @@ void ComMapManager::Init()
             m_listMapData[0][i][k] = E_MAPCHIP::FLOOR;
         }
     }
-
 
     m_mapMax.SetValue(10, 10);
 }
@@ -121,8 +126,9 @@ GameObject *ComMapManager::MakeMapObj(std::string_view _objname)
     obj->m_typeObject = E_TYPE_OBJECT::MODEL3D;
     obj->AddComponent<ComShader>();
     obj->AddComponent<ComBox>();
-    obj->AddComponent<ComBoxCollider3D>()->m_isTrigger.SetValue(true);
-    obj->GetComponent<ComBoxCollider3D>()->m_isFirstJustSize = true;
+    auto collider = obj->AddComponent<ComBoxCollider3D>();
+    collider->m_isTrigger.SetValue(true);
+    collider->m_isFirstJustSize = true;
 
     return obj;
 }

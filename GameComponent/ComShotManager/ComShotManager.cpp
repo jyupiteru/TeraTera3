@@ -1,6 +1,12 @@
-﻿#include "ComShotManager.h"
-#include "../ComMapManager/ComMapManager.h"
+﻿/**
+ * @file ComShotManager.cpp
+ * @author jupiter ()
+ * @brief ComShotManagerクラスの実装を記述したcpp
+ */
+
 #include <random>
+#include "ComShotManager.h"
+#include "../ComMapManager/ComMapManager.h"
 #include "../ComTimer/ComTimer.h"
 
 ComShotManager *ComShotManager::m_instance = nullptr;
@@ -44,11 +50,11 @@ void ComShotManager::Ready()
 
 void ComShotManager::Update()
 {
-    m_timeCount += CTimer::GetInstance().m_deltaTime.GetValue();
+    m_timeCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
+    //現在の生成周期の計算
     float maxtime = ComTimer::GetInstance().m_maxTimeCount.GetValue();
     float timerate = ComTimer::GetInstance().m_nowCount.GetValue() / maxtime;
-
     float time = m_intervalTime.GetValue().first - m_intervalTime.GetValue().second;
     time *= timerate;
     time = m_intervalTime.GetValue().first - time;
@@ -89,6 +95,7 @@ void ComShotManager::CrateShot()
     {
         CreateShotObject();
     }
+
     ComShot *comshot = m_listWaitCreate[0];
     m_listWaitCreate.erase(m_listWaitCreate.begin());
     comshot->m_gameObject->m_activeFlag.SetValue(true);
@@ -106,6 +113,7 @@ void ComShotManager::CrateShot()
     DirectX::XMFLOAT3 firstpos;
     //乱数を生成
     std::mt19937 mt{std::random_device{}()};
+
     {
         firstpos.x = static_cast<float>(ComMapManager::GetInstance().m_mapMax.GetValue().first) / 2;
         firstpos.z = static_cast<float>(ComMapManager::GetInstance().m_mapMax.GetValue().second) / 2;
@@ -153,7 +161,7 @@ void ComShotManager::CrateShot()
 
         std::uniform_int_distribution<int> rand3(static_cast<int>(size_min * 10), static_cast<int>(sizemax * 10));
 
-        float nowsize = rand3(mt);
+        float nowsize = static_cast<float>(rand3(mt));
         nowsize /= 10;
 
         comshot->m_gameObject->m_transform->m_size.SetValue(nowsize, nowsize, nowsize);
@@ -164,16 +172,18 @@ void ComShotManager::CrateShot()
 
         auto [rand_min, rand_firstmax, rand_lastmax] = m_shotRandNum.GetValue();
 
+        //ずれの計算
         float nowrand = rand_firstmax + rand_lastmax;
         nowrand *= 2;
         std::uniform_int_distribution<int> rand2(static_cast<int>(rand_min * 10), static_cast<int>(nowrand * 10));
 
+        //x,zのペア
         std::pair<float, float> vector_;
-        vector_.first = rand2(mt);
+        vector_.first = static_cast<float>(rand2(mt));
         vector_.first /= 10.0f;
         vector_.first -= nowrand;
 
-        vector_.second = rand2(mt);
+        vector_.second = static_cast<float>(rand2(mt));
         vector_.second /= 10.0f;
         vector_.second -= nowrand;
 
@@ -196,7 +206,7 @@ void ComShotManager::CrateShot()
 
         //速さをかける
         std::uniform_int_distribution<int> rand3(static_cast<int>(speed_min * 10), static_cast<int>(nowspeed * 10));
-        float speed = rand3(mt);
+        float speed = static_cast<float>(rand3(mt));
         speed /= 10.0f;
         vector.first *= speed;
         vector.second *= speed;
