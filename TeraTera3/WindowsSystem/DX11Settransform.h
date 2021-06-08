@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include <DirectXMath.h>
+#include <tchar.h>
 
 #include "Shader/Shader.h"
 #include "DX11Util/DX11Util.h"
-#include <tchar.h>
+#include "Dx11mathutil/Dx11mathutil.h"
 #include "Memory.h"
 
 class DX11SetTransform

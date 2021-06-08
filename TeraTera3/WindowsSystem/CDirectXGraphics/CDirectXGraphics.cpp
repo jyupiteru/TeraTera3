@@ -4,18 +4,18 @@
  */
 
 #include "CDirectXGraphics.h"
-/*-------------------------------------------------------------------------------
-	DirectX Grpaphics の初期化処理
 
-		P1 : ウインドウハンドル値
-		P2 : ウインドウサイズ（幅）
-		P3 : ウインドウサイズ（高さ）
-		P4 : フルスクリーン（false window  true fullscreen )
+CDirectXGraphics::CDirectXGraphics()
+{
+	m_lpDevice = NULL;
+	m_lpImmediateContext = NULL;
+	m_Height = 0;
+	m_Width = 0;
+}
 
-		戻り値
-			false : 失敗
-			true  : 成功
----------------------------------------------------------------------------------*/
+//================================================================================================
+//================================================================================================
+
 bool CDirectXGraphics::Init(HWND hWnd, unsigned int Width, unsigned int Height, bool fullscreen)
 {
 	HRESULT hr = S_OK;
@@ -373,37 +373,8 @@ bool CDirectXGraphics::Init(HWND hWnd, unsigned int Width, unsigned int Height, 
 	return (true);
 }
 
-void CDirectXGraphics::TurnOnAlphaBlending()
-{
-	float blendFactor[4];
-
-	blendFactor[0] = 0.0f;
-	blendFactor[1] = 0.0f;
-	blendFactor[2] = 0.0f;
-	blendFactor[3] = 0.0f;
-
-	//アルファブレンドをONにする
-	m_lpImmediateContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
-	return;
-}
-
-void CDirectXGraphics::TurnOffAlphaBlending()
-{
-	float blendFactor[4];
-
-	blendFactor[0] = 0.0f;
-	blendFactor[1] = 0.0f;
-	blendFactor[2] = 0.0f;
-	blendFactor[3] = 0.0f;
-
-	//アルファブレンドをOFFにする
-	m_lpImmediateContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
-	return;
-}
-
-/*-------------------------------------------------------------------------------
-	DirectX Grpaphics の終了処理
----------------------------------------------------------------------------------*/
+//================================================================================================
+//================================================================================================
 void CDirectXGraphics::Exit()
 {
 	if (m_alphaDisableBlendingState)
@@ -479,5 +450,111 @@ void CDirectXGraphics::Exit()
 		m_lpSwapChain->Release();
 		m_lpSwapChain = 0;
 	}
+	return;
+}
+
+//================================================================================================
+//================================================================================================
+
+ID3D11Device *CDirectXGraphics::GetDXDevice() const
+{
+	return m_lpDevice;
+}
+
+//================================================================================================
+//================================================================================================
+
+ID3D11DeviceContext *CDirectXGraphics::GetImmediateContext() const
+{
+	return m_lpImmediateContext;
+}
+
+//================================================================================================
+//================================================================================================
+
+IDXGISwapChain *CDirectXGraphics::GetSwapChain() const
+{
+	return m_lpSwapChain;
+}
+
+//================================================================================================
+//================================================================================================
+
+ID3D11RenderTargetView *CDirectXGraphics::GetRenderTargetView() const
+{
+	return m_lpRenderTargetView;
+}
+
+//================================================================================================
+//================================================================================================
+
+ID3D11DepthStencilView *CDirectXGraphics::GetDepthStencilView() const
+{
+	return m_depthStencilView;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnOffZbuffer()
+{
+	ID3D11RenderTargetView *rtvtable[1];
+
+	rtvtable[0] = m_lpRenderTargetView;
+
+	m_lpImmediateContext->OMSetRenderTargets(
+		1,		  // ターゲット
+		rtvtable, // ビューテーブル
+		nullptr	  // 深度バッファなし
+	);
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnOnZBuffer()
+{
+	ID3D11RenderTargetView *rtvtable[1];
+
+	rtvtable[0] = m_lpRenderTargetView;
+
+	m_lpImmediateContext->OMSetRenderTargets(
+		1,				   // ターゲット
+		rtvtable,		   // ビューテーブル
+		m_depthStencilView // 深度バッファなし
+	);
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnOnAlphaBlending()
+{
+	float blendFactor[4];
+
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	//アルファブレンドをONにする
+	m_lpImmediateContext->OMSetBlendState(m_alphaEnableBlendingState, blendFactor, 0xffffffff);
+	return;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CDirectXGraphics::TurnOffAlphaBlending()
+{
+	float blendFactor[4];
+
+	blendFactor[0] = 0.0f;
+	blendFactor[1] = 0.0f;
+	blendFactor[2] = 0.0f;
+	blendFactor[3] = 0.0f;
+
+	//アルファブレンドをOFFにする
+	m_lpImmediateContext->OMSetBlendState(m_alphaDisableBlendingState, blendFactor, 0xffffffff);
 	return;
 }

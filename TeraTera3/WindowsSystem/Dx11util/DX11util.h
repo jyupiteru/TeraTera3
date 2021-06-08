@@ -3,7 +3,7 @@
 #include <DirectXMath.h>
 #include "../CDirectxGraphics/CDirectXGraphics.h"
 #include "../Shader/Shader.h"
-#include "../Memory.h"
+
 
 CDirectXGraphics *GetDX11Obj();
 ID3D11Device *GetDX11Device();
