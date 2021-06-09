@@ -14,6 +14,10 @@
 
 #include "ComTimer/ComTimer.h"
 
-#include"ComShot/ComShot.h"
+#include "ComShot/ComShot.h"
 
-#include"ComShotManager/ComShotManager.h"
+#include "ComShotManager/ComShotManager.h"
+
+#include "ComDataManager/ComDataManager.h"
+
+#include "ComResultManager/ComResultManager.h"

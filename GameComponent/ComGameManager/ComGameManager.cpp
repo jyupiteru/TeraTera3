@@ -7,6 +7,7 @@
 #include "ComGameManager.h"
 
 #include "../ComTimer/ComTimer.h"
+#include "../ComDataManager/ComDataManager.h"
 
 ComGameManager *ComGameManager::m_instance = nullptr;
 
@@ -66,9 +67,11 @@ void ComGameManager::UpdateFlow()
         break;
 
     case E_GAMEFLOW::GAMEOVER:
-        CSceneManager::GetInstance().LoadScene("SceneResult");
-        break;
 
+        ComDataManager::GetInstance().m_maxTime.SetValue(ComTimer::GetInstance().m_maxTimeCount.GetValue());
+        ComDataManager::GetInstance().m_nowCount.SetValue(ComTimer::GetInstance().m_nowCount.GetValue());
+
+        CSceneManager::GetInstance().LoadScene("SceneResult");
     case E_GAMEFLOW::END:
         break;
     }

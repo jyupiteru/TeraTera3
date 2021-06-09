@@ -77,6 +77,12 @@ void CSceneGame1::Init()
         auto comtimer = timer->AddComponent<ComTimer>();
         comtimer->m_maxTimeCount.SetValue(60);
     }
+
+    {
+        auto datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
+        datamanager->DontDestroyOnLoad();
+        datamanager->AddComponent<ComDataManager>();
+    }
 }
 
 void CSceneGame1::Uninit()

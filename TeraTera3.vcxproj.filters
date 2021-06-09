@@ -312,6 +312,12 @@
     <ClInclude Include="GameComponent\ComShotManager\ComShotManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="GameComponent\ComDataManager\ComDataManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComResultManager\ComResultManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeraTera3\Timer\CTimer.cpp">
@@ -524,13 +530,16 @@
     <ClCompile Include="GameComponent\ComTimer\ComTimer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponent\ComShotManager\ComEnemyManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="GameComponent\ComShot\ComShot.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameComponent\ComShotManager\ComShotManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComDataManager\ComDataManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComResultManager\ComResultManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

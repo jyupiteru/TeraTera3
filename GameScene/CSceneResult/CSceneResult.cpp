@@ -3,7 +3,7 @@
 void CSceneResult::Init()
 {
     { //ステージ（ドーム表示）
-        if (GameObject* skydome = GameObject::Find("skydome"); skydome == nullptr)
+        if (GameObject *skydome = GameObject::Find("skydome"); skydome == nullptr)
         {
             skydome = GameObject::MakeNewObject("skydome", E_TYPE_OBJECT::NONE);
             skydome->AddPackage<Package3DModelObject>();
@@ -27,7 +27,7 @@ void CSceneResult::Init()
     {
         auto chara = GameObject::MakeNewObject("result", E_TYPE_OBJECT::UI);
         chara->RemoveComponent<Com2DTexture>();
-        chara->m_transform->m_worldPosition.SetValue(0, SCREEN_HEIGHT/4, 0);
+        chara->m_transform->m_worldPosition.SetValue(0, SCREEN_HEIGHT / 4, 0);
         chara->m_transform->m_size.SetValue(300, 250, 1);
         chara->m_transform->m_color.SetValue(0, 0, 0, 1.0f);
         auto text = chara->AddComponent<Com2DText>();
@@ -36,11 +36,24 @@ void CSceneResult::Init()
     {
         auto chara = GameObject::MakeNewObject("chara", E_TYPE_OBJECT::UI);
         chara->RemoveComponent<Com2DTexture>();
-        chara->m_transform->m_worldPosition.SetValue(0, 0, 0);
+        chara->m_transform->m_worldPosition.SetValue(0, -100, 0);
         chara->m_transform->m_size.SetValue(500, 250, 1);
         chara->m_transform->m_color.SetValue(0, 0, 0, 1.0f);
         auto text = chara->AddComponent<Com2DText>();
         text->m_text = "Thank you For Playing";
+    }
+    {
+        GameObject *datamanager = GameObject::Find("DataManager");
+        if (datamanager == nullptr)
+        {
+            datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
+            datamanager->DontDestroyOnLoad();
+            datamanager->AddComponent<ComDataManager>();
+        }
+    }
+    {
+        GameObject *resultmanager = GameObject::MakeNewObject("ResultManager", E_TYPE_OBJECT::SYSTEM);
+        resultmanager->AddComponent<ComResultManager>();
     }
 }
 
