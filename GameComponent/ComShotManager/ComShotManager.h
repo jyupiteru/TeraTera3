@@ -6,6 +6,8 @@
 
 class ComShotManager : public ComponentBase
 {
+    static ComShotManager *m_instance;
+
     /**
      * @brief 弾を管理するリスト
      */
@@ -16,7 +18,10 @@ class ComShotManager : public ComponentBase
      */
     std::vector<ComShot *> m_listWaitCreate;
 
-    static ComShotManager *m_instance;
+    /**
+     * @brief 現在アクティブな弾の配列
+     */
+    std::vector<ComShot *> m_listActiveShot;
 
     /**
      * @brief 対象への座標簡易アクセス用
@@ -86,4 +91,9 @@ private:
      * @brief 弾オブジェクトの生成
      */
     void CreateShotObject();
+    
+    /**
+     * @brief すべての弾の更新処理
+     */
+    void UpdateShots();
 };

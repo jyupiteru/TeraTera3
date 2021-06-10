@@ -7,7 +7,7 @@
 #include "ComShot.h"
 #include "../ComShotManager/ComShotManager.h"
 
-void ComShot::Update()
+void ComShot::UpdateShot()
 {
     //弾の速度を設定
     auto [vec_x, vec_y, vec_z] = m_shotSpeed.GetValue();

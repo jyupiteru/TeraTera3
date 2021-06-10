@@ -22,5 +22,10 @@ public:
 public:
     ComShot(){};
     ~ComShot(){};
-    void Update() override;
+
+    /**
+     * @brief 弾の更新処理
+     * @n Managerのほうで更新する用
+     */
+    void UpdateShot();
 };

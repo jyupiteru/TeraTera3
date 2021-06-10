@@ -68,6 +68,8 @@ void ComShotManager::Update()
 
         CrateShot();
     }
+
+    UpdateShots();
 }
 
 //================================================================================================
@@ -101,6 +103,7 @@ void ComShotManager::CrateShot()
     ComShot *comshot = m_listWaitCreate[0];
     m_listWaitCreate.erase(m_listWaitCreate.begin());
     comshot->m_gameObject->m_activeFlag.SetValue(true);
+    m_listActiveShot.push_back(comshot);
 
     //全体(8割計算)のうちどれくらい進んでいるか
     float timerate = ComTimer::GetInstance().m_maxTimeCount.GetValue() * 0.8f;
@@ -134,23 +137,23 @@ void ComShotManager::CrateShot()
         switch (randnum)
         {
         case 0: //右
-            firstpos.x = mapmax.first;
-            firstpos.z = rand_z(mt);
+            firstpos.x = static_cast<float>(mapmax.first);
+            firstpos.z = static_cast<float>(rand_z(mt));
             break;
 
         case 1: //左
-            firstpos.x = -mapmax.first;
-            firstpos.z = rand_z(mt);
+            firstpos.x = static_cast<float>(-mapmax.first);
+            firstpos.z = static_cast<float>(rand_z(mt));
             break;
 
         case 2: //上
-            firstpos.z = mapmax.second;
-            firstpos.x = rand_x(mt);
+            firstpos.z = static_cast<float>(mapmax.second);
+            firstpos.x = static_cast<float>(rand_x(mt));
             break;
 
         case 3: //下
-            firstpos.z = -mapmax.second;
-            firstpos.x = rand_x(mt);
+            firstpos.z = static_cast<float>(-mapmax.second);
+            firstpos.x = static_cast<float>(rand_x(mt));
             break;
         }
 
@@ -255,4 +258,34 @@ void ComShotManager::CreateShotObject()
     collider->m_isTrigger.SetValue(true);
     collider->m_draw = true;
     collider->m_isFirstJustSize = true;
+}
+
+//================================================================================================
+//================================================================================================
+
+void ComShotManager::UpdateShots()
+{
+    //マップの大きさを取り出し計算
+    std::pair<int, int> mapmax = ComMapManager::GetInstance().m_mapMax.GetValue();
+    float maphalfsize = ComMapManager::GetInstance().m_MaphalfSize.GetValue();
+    std::pair<float, float> mapsize;
+    mapsize.first = maphalfsize * 2 * mapmax.first;
+    mapsize.second = maphalfsize * 2 * mapmax.second;
+
+    for (auto itr = m_listActiveShot.begin(); itr != m_listActiveShot.end();)
+    {
+        //座標を取り出し有効範囲内なら更新 外に出たら非アクティブに
+        auto [pos_x, pos_y, pos_z] = (*itr)->m_gameObject->m_transform->m_worldPosition.GetValue();
+        if (-mapsize.first < pos_x && pos_x < mapsize.first &&
+            -mapsize.second < pos_z && pos_z < mapsize.second)
+        {
+            (*itr)->UpdateShot();
+            itr++;
+        }
+        else
+        {
+            this->SetShotReadyList(*itr);
+            itr = m_listActiveShot.erase(itr);
+        }
+    }
 }

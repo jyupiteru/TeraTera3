@@ -66,7 +66,7 @@ void CSceneGame1::Init()
         shotmanager->m_shotRandNum.SetValue(0, 2, 4);
         shotmanager->m_shotSpeed.SetValue(4, 7, 10);
 
-        shotmanager->m_shotSize.SetValue(1.0, 0.7, 0.7);
+        shotmanager->m_shotSize.SetValue(1.0f, 0.7f, 0.7f);
         shotmanager->m_shotSizeRate.SetValue(5, 7, 10);
     }
 
