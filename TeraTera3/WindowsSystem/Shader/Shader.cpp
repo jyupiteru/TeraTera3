@@ -2,23 +2,20 @@
 #include "DirectXTex.h"
 #include "Shader.h"
 
-//--------------------------------------------------------------------------------------
-// ファイル名を取得する
-//--------------------------------------------------------------------------------------
-std::string ExtractFileName(std::string fullpath, const char* split)
+std::string ExtractFileName(std::string fullpath, const char *split)
 {
-	unsigned int path_i = static_cast<unsigned int>(fullpath.find_last_of(split) + 1);//7
-	unsigned int ext_i = static_cast<unsigned int>(fullpath.find_last_of("."));//10
-	std::string pathname = fullpath.substr(0, path_i + 1);//0文字目から７文字切り出す "C:\\aaa\\"
-	std::string extname = fullpath.substr(ext_i, fullpath.size() - ext_i); // 10文字目から４文字切り出す ".txt"
-	std::string filename = fullpath.substr(path_i, ext_i - path_i);//
+	unsigned int path_i = static_cast<unsigned int>(fullpath.find_last_of(split) + 1); //7
+	unsigned int ext_i = static_cast<unsigned int>(fullpath.find_last_of("."));		   //10
+	std::string pathname = fullpath.substr(0, path_i + 1);							   //0文字目から７文字切り出す "C:\\aaa\\"
+	std::string extname = fullpath.substr(ext_i, fullpath.size() - ext_i);			   // 10文字目から４文字切り出す ".txt"
+	std::string filename = fullpath.substr(path_i, ext_i - path_i);					   //
 
 	return filename + extname;
 }
 
-//--------------------------------------------------------------------------------------
-// ファイルの拡張子を取得する
-//--------------------------------------------------------------------------------------
+//================================================================================================
+//================================================================================================
+
 std::string GetFileExt(const char *filename)
 {
 	std::string extname;
@@ -29,9 +26,9 @@ std::string GetFileExt(const char *filename)
 	return extname;
 }
 
-//--------------------------------------------------------------------------------------
-// コンパイル済みシェーダーファイルを読み込む
-//--------------------------------------------------------------------------------------
+//================================================================================================
+//================================================================================================
+
 bool readShader(const char *csoName, std::vector<unsigned char> &byteArray)
 {
 	FILE *fp;
@@ -51,9 +48,9 @@ bool readShader(const char *csoName, std::vector<unsigned char> &byteArray)
 	return true;
 }
 
-//--------------------------------------------------------------------------------------
-// シェーダーをファイル拡張子に合わせてコンパイル
-//--------------------------------------------------------------------------------------
+//================================================================================================
+//================================================================================================
+
 HRESULT CompileShader(const char *szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, void **ShaderObject, size_t &ShaderObjectSize, ID3DBlob **ppBlobOut)
 {
 
@@ -92,9 +89,9 @@ HRESULT CompileShader(const char *szFileName, LPCSTR szEntryPoint, LPCSTR szShad
 	return S_OK;
 }
 
-//--------------------------------------------------------------------------------------
-// シェーダーをコンパイル
-//--------------------------------------------------------------------------------------
+//================================================================================================
+//================================================================================================
+
 HRESULT CompileShaderFromFile(const char *szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob **ppBlobOut)
 {
 	ID3DBlob *p1 = nullptr;
@@ -146,18 +143,10 @@ HRESULT CompileShaderFromFile(const char *szFileName, LPCSTR szEntryPoint, LPCST
 	return S_OK;
 }
 
-//--------------------------------------------------------------------------------------
-// 頂点シェーダーオブジェクトを生成する
-//--------------------------------------------------------------------------------------
-bool CreateVertexShader(
-	ID3D11Device *device,
-	const char *szFileName,
-	LPCSTR szEntryPoint,
-	LPCSTR szShaderModel,
-	D3D11_INPUT_ELEMENT_DESC *layout,
-	unsigned int numElements,
-	ID3D11VertexShader **ppVertexShader,
-	ID3D11InputLayout **ppVertexLayout)
+//================================================================================================
+//================================================================================================
+
+bool CreateVertexShader(ID3D11Device *device, const char *szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, D3D11_INPUT_ELEMENT_DESC *layout, unsigned int numElements, ID3D11VertexShader **ppVertexShader, ID3D11InputLayout **ppVertexLayout)
 {
 
 	HRESULT hr;
@@ -202,14 +191,10 @@ bool CreateVertexShader(
 	return true;
 }
 
-//--------------------------------------------------------------------------------------
-// ピクセルシェーダーオブジェクトを生成する
-//--------------------------------------------------------------------------------------
-bool CreatePixelShader(ID3D11Device *device,
-					   const char *szFileName,
-					   LPCSTR szEntryPoint,
-					   LPCSTR szShaderModel,
-					   ID3D11PixelShader **ppPixelShader)
+//================================================================================================
+//================================================================================================
+
+bool CreatePixelShader(ID3D11Device *device, const char *szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3D11PixelShader **ppPixelShader)
 {
 
 	HRESULT hr;
@@ -238,92 +223,10 @@ bool CreatePixelShader(ID3D11Device *device,
 	return true;
 }
 
-//--------------------------------------------------------------------------------------
-// 頂点シェーダーオブジェクトを生成する
-//--------------------------------------------------------------------------------------
-/*
+//================================================================================================
+//================================================================================================
 
-bool CreateVertexShader(ID3D11Device* device,
-						const char* szFileName,
-						LPCSTR szEntryPoint,
-						LPCSTR szShaderModel,
-						D3D11_INPUT_ELEMENT_DESC* layout,
-						unsigned int numElements,
-						ID3D11VertexShader** ppVertexShader,
-						ID3D11InputLayout**  ppVertexLayout){
-
-	ID3DBlob* pBlob=nullptr;
-
-	HRESULT hr = CompileShaderFromFile(szFileName, szEntryPoint, szShaderModel, &pBlob);
-	if (FAILED(hr)){
-		return false;
-	}
-
-	// 頂点シェーダーを生成
-	hr = device->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, ppVertexShader);
-	if (FAILED(hr))
-	{
-		pBlob->Release();
-		return false;
-	}
-
-	// 頂点データ定義生成
-	hr = device->CreateInputLayout(
-		layout,
-		numElements,
-		pBlob->GetBufferPointer(),
-		pBlob->GetBufferSize(),
-		ppVertexLayout);
-
-	if (FAILED(hr)){
-		MessageBox(nullptr, "CreateInputLayout error", "error", MB_OK);
-		pBlob->Release();
-		return false;
-	}
-
-	return true;
-}
-*/
-
-//--------------------------------------------------------------------------------------
-// ピクセルシェーダーオブジェクトを生成する
-//--------------------------------------------------------------------------------------
-/*
-
-bool CreatePixelShader(ID3D11Device* device,
-	const char* szFileName,
-	LPCSTR szEntryPoint,
-	LPCSTR szShaderModel,
-	ID3D11PixelShader** ppPixelShader){
-
-	ID3DBlob* pBlob = nullptr;
-
-	// コンパイル
-	HRESULT hr = CompileShaderFromFile(szFileName, szEntryPoint, szShaderModel, &pBlob);
-	if (FAILED(hr)){
-		return false;
-	}
-
-	// 頂点シェーダーを生成
-	hr = device->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, ppPixelShader);
-	if (FAILED(hr))
-	{
-		pBlob->Release();
-		return false;
-	}
-
-	return true;
-}
-*/
-
-/*----------------------------
-コンスタントバッファを作成
-------------------------------*/
-bool CreateConstantBuffer(
-	ID3D11Device *device,		   // デバイスオブジェクト
-	unsigned int bytesize,		   // コンスタントバッファサイズ
-	ID3D11Buffer **pConstantBuffer // コンスタントバッファ
-)
+bool CreateConstantBuffer(ID3D11Device *device, unsigned int bytesize, ID3D11Buffer **pConstantBuffer)
 {
 
 	// コンスタントバッファ生成
@@ -345,14 +248,10 @@ bool CreateConstantBuffer(
 	return true;
 }
 
-/*----------------------------
-コンスタントバッファを作成(MAPで書き換え可能)
-------------------------------*/
-bool CreateConstantBufferWrite(
-	ID3D11Device *device,		   // デバイスオブジェクト
-	unsigned int bytesize,		   // コンスタントバッファサイズ
-	ID3D11Buffer **pConstantBuffer // コンスタントバッファ
-)
+//================================================================================================
+//================================================================================================
+
+bool CreateConstantBufferWrite(ID3D11Device *device, unsigned int bytesize, ID3D11Buffer **pConstantBuffer)
 {
 
 	// コンスタントバッファ生成
@@ -374,15 +273,11 @@ bool CreateConstantBufferWrite(
 	return true;
 }
 
-/*------------------------
-インデックスバッファを作成
---------------------------*/
-bool CreateIndexBuffer(
-	ID3D11Device *device,  // デバイスオブジェクト
-	unsigned int indexnum, // インデックス数
-	void *indexdata,	   // インデックスデータ格納メモリ先頭アドレス
-	ID3D11Buffer **pIndexBuffer)
-{ // インデックスバッファ
+//================================================================================================
+//================================================================================================
+
+bool CreateIndexBuffer(ID3D11Device *device, unsigned int indexnum, void *indexdata, ID3D11Buffer **pIndexBuffer)
+{
 
 	// インデックスバッファ生成
 	D3D11_BUFFER_DESC bd;
@@ -407,15 +302,11 @@ bool CreateIndexBuffer(
 	return true;
 }
 
-/*------------------------
-インデックスバッファを作成(MAPで書き換え可能)
---------------------------*/
-bool CreateIndexBufferWrite(
-	ID3D11Device *device,  // デバイスオブジェクト
-	unsigned int indexnum, // インデックス数
-	void *indexdata,	   // インデックスデータ格納メモリ先頭アドレス
-	ID3D11Buffer **pIndexBuffer)
-{ // インデックスバッファ
+//================================================================================================
+//================================================================================================
+
+bool CreateIndexBufferWrite(ID3D11Device *device, unsigned int indexnum, void *indexdata, ID3D11Buffer **pIndexBuffer)
+{
 
 	// インデックスバッファ生成
 	D3D11_BUFFER_DESC bd;
@@ -440,16 +331,10 @@ bool CreateIndexBufferWrite(
 	return true;
 }
 
-/*------------------------
-頂点バッファを作成
---------------------------*/
-bool CreateVertexBuffer(
-	ID3D11Device *device,
-	unsigned int stride,		 // １頂点当たりバイト数
-	unsigned int vertexnum,		 // 頂点数
-	void *vertexdata,			 // 頂点データ格納メモリ先頭アドレス
-	ID3D11Buffer **pVertexBuffer // 頂点バッファ
-)
+//================================================================================================
+//================================================================================================
+
+bool CreateVertexBuffer(ID3D11Device *device, unsigned int stride, unsigned int vertexnum, void *vertexdata, ID3D11Buffer **pVertexBuffer)
 {
 
 	HRESULT hr;
@@ -476,16 +361,10 @@ bool CreateVertexBuffer(
 	return true;
 }
 
-/*------------------------
-頂点バッファを作成(ＣＰＵ書き込み可能)
---------------------------*/
-bool CreateVertexBufferWrite(
-	ID3D11Device *device,
-	unsigned int stride,		 // １頂点当たりバイト数
-	unsigned int vertexnum,		 // 頂点数
-	void *vertexdata,			 // 頂点データ格納メモリ先頭アドレス
-	ID3D11Buffer **pVertexBuffer // 頂点バッファ
-)
+//================================================================================================
+//================================================================================================
+
+bool CreateVertexBufferWrite(ID3D11Device *device, unsigned int stride, unsigned int vertexnum, void *vertexdata, ID3D11Buffer **pVertexBuffer)
 {
 
 	HRESULT hr;
@@ -512,16 +391,10 @@ bool CreateVertexBufferWrite(
 	return true;
 }
 
-/*------------------------
-頂点バッファ(UAV)を作成
---------------------------*/
-bool CreateVertexBufferUAV(
-	ID3D11Device *device,
-	unsigned int stride,		 // １頂点当たりバイト数
-	unsigned int vertexnum,		 // 頂点数
-	void *vertexdata,			 // 頂点データ格納メモリ先頭アドレス
-	ID3D11Buffer **pVertexBuffer // 頂点バッファ
-)
+//================================================================================================
+//================================================================================================
+
+bool CreateVertexBufferUAV(ID3D11Device *device, unsigned int stride, unsigned int vertexnum, void *vertexdata, ID3D11Buffer **pVertexBuffer)
 {
 
 	HRESULT hr;
@@ -551,16 +424,10 @@ bool CreateVertexBufferUAV(
 	return true;
 }
 
-/*------------------------
- Structuredバッファを作成
---------------------------*/
-bool CreateStructuredBuffer(
-	ID3D11Device *device,
-	unsigned int stride,			 // ストライドバイト数
-	unsigned int num,				 // 個数
-	void *data,						 // データ格納メモリ先頭アドレス
-	ID3D11Buffer **pStructuredBuffer // RWStructuredBuffer
-)
+//================================================================================================
+//================================================================================================
+
+bool CreateStructuredBuffer(ID3D11Device *device, unsigned int stride, unsigned int num, void *data, ID3D11Buffer **pStructuredBuffer)
 {
 
 	HRESULT hr;
@@ -597,14 +464,10 @@ bool CreateStructuredBuffer(
 	return true;
 }
 
-/*---------------------------------
-STAGINGバッファを作成しコピーする
-----------------------------------*/
-ID3D11Buffer *CreateAndCopyToBuffer(
-	ID3D11Device *device,
-	ID3D11DeviceContext *devicecontext,
-	ID3D11Buffer *pBuffer // RWStructuredBuffer
-)
+//================================================================================================
+//================================================================================================
+
+ID3D11Buffer *CreateAndCopyToBuffer(ID3D11Device *device, ID3D11DeviceContext *devicecontext, ID3D11Buffer *pBuffer)
 {
 
 	HRESULT hr;
@@ -629,13 +492,11 @@ ID3D11Buffer *CreateAndCopyToBuffer(
 
 	return CloneBuffer;
 }
-/*------------------------
-ShaderResourceViewを作成
---------------------------*/
-bool CreateShaderResourceView(
-	ID3D11Device *device,
-	ID3D11Buffer *pBuffer, // Buffer
-	ID3D11ShaderResourceView **ppSRV)
+
+//================================================================================================
+//================================================================================================
+
+bool CreateShaderResourceView(ID3D11Device *device, ID3D11Buffer *pBuffer, ID3D11ShaderResourceView **ppSRV)
 {
 
 	D3D11_BUFFER_DESC bd;
@@ -674,13 +535,10 @@ bool CreateShaderResourceView(
 	return true;
 }
 
-/*------------------------
-UnOrderedAccessViewを作成
---------------------------*/
-bool CreateUnOrderAccessView(
-	ID3D11Device *device,
-	ID3D11Buffer *pBuffer, // Buffer
-	ID3D11UnorderedAccessView **ppUAV)
+//================================================================================================
+//================================================================================================
+
+bool CreateUnOrderAccessView(ID3D11Device *device, ID3D11Buffer *pBuffer, ID3D11UnorderedAccessView **ppUAV)
 {
 
 	D3D11_BUFFER_DESC bd;
@@ -719,13 +577,10 @@ bool CreateUnOrderAccessView(
 	return true;
 }
 
-/*------------------------------------------------------------
-　ＴＧＡファイルを読み込みシェーダーリソースビュー―を作成する
- --------------------------------------------------------------*/
-bool CreateSRVfromTGAFile(const char *filename,
-						  ID3D11Device *device,
-						  ID3D11Resource **resource,
-						  ID3D11ShaderResourceView **srv)
+//================================================================================================
+//================================================================================================
+
+bool CreateSRVfromTGAFile(const char *filename, ID3D11Device *device, ID3D11Resource **resource, ID3D11ShaderResourceView **srv)
 {
 
 	HRESULT hr;
@@ -769,14 +624,10 @@ bool CreateSRVfromTGAFile(const char *filename,
 	return true;
 }
 
-/*------------------------------------------------------------
-　WICファイルを読み込みシェーダーリソースビューを作成する
- --------------------------------------------------------------*/
-bool CreateSRVfromWICFile(const char *filename,
-						  ID3D11Device *device,
-						  ID3D11DeviceContext *device11Context,
-						  ID3D11Resource **resource,
-						  ID3D11ShaderResourceView **srv)
+//================================================================================================
+//================================================================================================
+
+bool CreateSRVfromWICFile(const char *filename, ID3D11Device *device, ID3D11DeviceContext *device11Context, ID3D11Resource **resource, ID3D11ShaderResourceView **srv)
 {
 
 	ID3D11Resource *texr = nullptr; // テクスチャリソース
@@ -803,14 +654,10 @@ bool CreateSRVfromWICFile(const char *filename,
 	return true;
 }
 
-/*------------------------------------------------------------
-　DDSファイルを読み込みシェーダーリソースビュー―を作成する
- --------------------------------------------------------------*/
-bool CreateSRVfromDDS(const char *filename,
-					  ID3D11Device *device,
-					  ID3D11DeviceContext *device11Context,
-					  ID3D11Resource **resource,
-					  ID3D11ShaderResourceView **srv)
+//================================================================================================
+//================================================================================================
+
+bool CreateSRVfromDDS(const char *filename, ID3D11Device *device, ID3D11DeviceContext *device11Context, ID3D11Resource **resource, ID3D11ShaderResourceView **srv)
 {
 
 	ID3D11Resource *texr = nullptr; // テクスチャリソース
@@ -837,15 +684,10 @@ bool CreateSRVfromDDS(const char *filename,
 	return true;
 }
 
-/*------------------------------------------------------------
-　ファイルを読み込みシェーダーリソースビューを作成する
- --------------------------------------------------------------*/
-bool CreateSRVfromFile(
-	const char *filename,
-	ID3D11Device *device,
-	ID3D11DeviceContext *device11Context,
-	ID3D11Resource **resource,
-	ID3D11ShaderResourceView **srv)
+//================================================================================================
+//================================================================================================
+
+bool CreateSRVfromFile(const char *filename, ID3D11Device *device, ID3D11DeviceContext *device11Context, ID3D11Resource **resource, ID3D11ShaderResourceView **srv)
 {
 
 	std::string fname(filename);
