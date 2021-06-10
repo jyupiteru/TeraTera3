@@ -77,14 +77,15 @@ void CSceneTitle::Init()
         floor->m_transform->m_color.AddValue(-100.0f, -100.0f, -100.0f, 0.0f);
     }
 
-    {
+    { //カメラの取得と交信
         auto camera = GameObject::Find("camera");
-        camera->m_transform->m_worldPosition.SetValue(0.0f, 4.0f, 0.0f);
         auto comcamera = camera->GetComponent<ComCamera>();
         comcamera->m_typeFixed = E_TYPE_FIXED::LOOKAT;
-        comcamera->m_range.SetValue(10);
-        comcamera->m_firstAngle.SetValue(0.0f, 0.0f, 0.0f);
-        //comcamera->m_offsetPos.SetValue(0, 30, 0);
+        //camera->GetComponent<ComCamera>()->m_otherTransform = GameObject::Find("player")->m_transform;
+        comcamera->m_range.SetValue(20);
+        comcamera->m_firstAngle.SetValue(45, 0, 0);
+        comcamera->m_offsetPos.SetValue(0, 0, 0);
+        camera->m_objectUpdatePriority.SetValue(-1);
     }
 }
 
@@ -95,6 +96,11 @@ void CSceneTitle::Uninit()
 
 void CSceneTitle::Update()
 {
+    if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
+    {
+        //ゲームシーンへの遷移
+        CSceneManager::GetInstance().LoadScene("SceneGame1");
+    }
 }
 
 void CSceneTitle::Draw()

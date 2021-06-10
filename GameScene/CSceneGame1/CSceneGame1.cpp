@@ -24,13 +24,17 @@ void CSceneGame1::Init()
     }
 
     { //プレイヤーの生成
-        if (GameObject *player = GameObject::Find("player"); player == nullptr)
+        if (GameObject* player = GameObject::Find("player"); player == nullptr)
         {
             player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
             player->m_transform->m_worldPosition.SetValue(0, 50, 0);
             player->m_transform->m_size.SetValue(10, 10, 10);
             player->AddComponent<ComPlayer>();
             player->GetComponent<Com3DModelAssimp>()->LoadModelData("Player/idle_run.fbx", "Player/");
+
+            auto anim = player->AddComponent<Com3DAnimationAssimp>();
+            anim->ChangeAnimation("idle");
+
             auto collider = player->AddComponent<ComBoxCollider3D>();
             collider->m_isTrigger.SetValue(true);
             collider->m_isFirstJustSize = true;

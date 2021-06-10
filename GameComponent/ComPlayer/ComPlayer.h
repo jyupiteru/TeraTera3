@@ -8,14 +8,7 @@
 
 #pragma once
 
-/**
- * @brief プレイヤーの状況の列挙型
- */
-enum class E_PLAYERFLOW
-{
-    READY,
-    GAME
-};
+
 
 /**
  * @brief プレイヤーの処理全般を管理しているコンポーネントクラス
@@ -23,9 +16,54 @@ enum class E_PLAYERFLOW
 class ComPlayer : public ComponentBase
 {
     /**
+     * @brief プレイヤーの状況の列挙型
+     */
+    enum class E_PLAYERFLOW
+    {
+        READY,
+        GAME,
+        FALL
+    };
+
+    /**
+     * @brief プレイヤーの現在の状態を制御するための列挙型
+     */
+    enum class E_FLAG_ANIMATIONPLAYER
+    {
+        IDLE,
+        RUNING,
+        JUMP_START,
+        JUMP_NOW,
+        JUMP_END,
+    };
+
+    E_FLAG_ANIMATIONPLAYER m_nowPlayerAnimation = E_FLAG_ANIMATIONPLAYER::JUMP_NOW;
+
+    /**
      * @brief 現在のプレイヤーの状況を管理する変数
      */
     E_PLAYERFLOW m_nowstate = E_PLAYERFLOW::READY;
+
+    /**
+     * @brief このオブジェクトのアニメーションへのパス
+     */
+    Com3DAnimationAssimp *m_comAnimation = nullptr;
+
+    /**
+     * @brief 現在ブロックに触れているかを判定するフラグ
+     */
+    bool m_flagIsStandGround = false;
+
+    /**
+     * @brief アニメーションの遷移を管理するフラグ
+     * @n trueで強制的にアニメーションを次に遷移
+     */
+    bool m_flagChangeAnimation = false;
+
+    /**
+     * @brief プレイヤーが何秒間地面から離れたかを数える変数
+     */
+    float m_fallCount = 0;
 
 public:
     /**
@@ -48,4 +86,9 @@ private:
      * @brief プレイヤーの移動処理
      */
     void PlayerMove();
+
+    /**
+     * @brief アニメーションを変更する(常に通る)メソッド
+     */
+    void ChangeAnimation();
 };

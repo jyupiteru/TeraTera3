@@ -67,12 +67,12 @@ void ComGameManager::UpdateFlow()
         break;
 
     case E_GAMEFLOW::GAMEOVER:
-
+        break;
+    case E_GAMEFLOW::END:
         ComDataManager::GetInstance().m_maxTime.SetValue(ComTimer::GetInstance().m_maxTimeCount.GetValue());
         ComDataManager::GetInstance().m_nowCount.SetValue(ComTimer::GetInstance().m_nowCount.GetValue());
 
         CSceneManager::GetInstance().LoadScene("SceneResult");
-    case E_GAMEFLOW::END:
         break;
     }
 }

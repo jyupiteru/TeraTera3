@@ -63,6 +63,11 @@ void CSceneResult::Uninit()
 
 void CSceneResult::Update()
 {
+    if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
+    {
+        //タイトルへのシーン移動
+        CSceneManager::GetInstance().LoadScene("SceneTitla");
+    }
 }
 
 void CSceneResult::Draw()
