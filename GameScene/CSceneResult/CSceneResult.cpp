@@ -43,6 +43,15 @@ void CSceneResult::Init()
         text->m_text = "Thank you For Playing";
     }
     {
+        auto totitle = GameObject::MakeNewObject("totitle", E_TYPE_OBJECT::UI);
+        totitle->RemoveComponent<Com2DTexture>();
+        totitle->m_transform->m_worldPosition.SetValue(0, -220, 0);
+        totitle->m_transform->m_size.SetValue(600, 250, 1);
+        totitle->m_transform->m_color.SetValue(0, 0, 0, 1.0f);
+        auto text = totitle->AddComponent<Com2DText>();
+        text->m_text = "SpaceKey can back to title";
+    }
+    {
         GameObject* datamanager = GameObject::Find("DataManager");
         if (datamanager == nullptr)
         {

@@ -26,11 +26,18 @@ public:
      */
     CVector<float> m_maxTime;
 
+    /**
+     * @brief プレイした中での最高得点
+     */
+    CVector<int> m_highScore;
+
 public:
-    ComDataManager() {};
-    ~ComDataManager() {};
+    ComDataManager(){};
+    ~ComDataManager(){};
     void Init() override;
     void Uninit() override;
 
     [[nodiscard]] static ComDataManager &GetInstance();
+
+    void MathPoint();
 };

@@ -9,9 +9,17 @@ class ComResultManager : public ComponentBase
     /**
      * @brief 得点
      */
-    int m_point = 0;
+    int m_score = 0;
 
-    Com2DText *m_comText = nullptr;
+    /**
+     * @brief 今回獲得した点数を表示するテキストへのアクセス簡略用変数
+     */
+    Com2DText *m_comScoreText = nullptr;
+
+    /**
+     * @brief 今までプレイした中での最高得点を表示するテキストへのアクセス簡略用変数
+     */
+    Com2DText *m_comhighScoreText = nullptr;
 
 public:
     ComResultManager(){};
@@ -24,5 +32,5 @@ private:
     /**
      * @brief 得点を計算する処理
      */
-    void MathPoint();
+    void MathScore();
 };
