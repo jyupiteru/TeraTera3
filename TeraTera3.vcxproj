@@ -222,7 +222,6 @@
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\ModelData\ModelData.h" />
-    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\utftosjisconv\utftosjisconv.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\vertexproto.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFileLoader\DatFileLoader.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.h" />
@@ -291,7 +290,6 @@
     <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\ModelData\ModelData.cpp" />
-    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\utftosjisconv\utftosjisconv.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Model\DatFileLoader\DatFileLoader.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.cpp" />
     <ClCompile Include="TeraTera3\WindowsSystem\Model\DDSTextureLoader.cpp" />

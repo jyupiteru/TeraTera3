@@ -45,7 +45,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CDebugLog::Create();
 
 	CDebugLog::GetInstance().Draw("DebugLog is Start");
-	CDebugLog::GetInstance().Draw("Use TeraTera ver3 Framewark");
+	CDebugLog::GetInstance().Draw("Use TeraTera ver3 Framework");
 
 	CContainer::Create();
 
@@ -149,6 +149,9 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	windowdata->SetImGuiFunction("Menu", "Objects", true);
 	windowdata->SetImGuiFunction("Menu", "SceneList", true);
 	windowdata->SetImGuiFunction("Menu", "EventSystem", true);
+
+
+	CDebugLog::GetInstance().Draw("End GameInit");
 	return true;
 }
 
