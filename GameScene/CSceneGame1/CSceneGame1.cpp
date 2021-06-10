@@ -30,7 +30,7 @@ void CSceneGame1::Init()
             player->m_transform->m_worldPosition.SetValue(0, 50, 0);
             player->m_transform->m_size.SetValue(10, 10, 10);
             player->AddComponent<ComPlayer>();
-            player->GetComponent<Com3DModelAssimp>()->LoadModelData("Player/Running.fbx", "Player/");
+            player->GetComponent<Com3DModelAssimp>()->LoadModelData("Player/idle_run.fbx", "Player/");
             auto collider = player->AddComponent<ComBoxCollider3D>();
             collider->m_isTrigger.SetValue(true);
             collider->m_isFirstJustSize = true;

@@ -9,7 +9,7 @@ class ComResultManager : public ComponentBase
     /**
      * @brief 得点
      */
-    int m_point;
+    int m_point = 0;
 
     Com2DText *m_comText = nullptr;
 
