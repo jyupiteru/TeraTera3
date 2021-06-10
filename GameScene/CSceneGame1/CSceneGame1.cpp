@@ -38,6 +38,7 @@ void CSceneGame1::Init()
             auto collider = player->AddComponent<ComBoxCollider3D>();
             collider->m_isTrigger.SetValue(true);
             collider->m_isFirstJustSize = true;
+            collider->m_offsetSize.SetValue(-7.0f, 0.5f, -0.5f);
             collider->m_draw = true;
             //player->GetComponent<Com3DModelAssimp>()->m_firstAngle.SetValue(0, 90, -90);
         }
@@ -84,9 +85,13 @@ void CSceneGame1::Init()
     }
 
     {
-        auto datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
-        datamanager->DontDestroyOnLoad();
-        datamanager->AddComponent<ComDataManager>();
+        GameObject* datamanager = GameObject::Find("DataManager");
+        if (datamanager == nullptr)
+        {
+            datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
+            datamanager->DontDestroyOnLoad();
+            datamanager->AddComponent<ComDataManager>();
+        }
     }
 }
 

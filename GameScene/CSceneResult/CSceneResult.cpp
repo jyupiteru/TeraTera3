@@ -43,7 +43,7 @@ void CSceneResult::Init()
         text->m_text = "Thank you For Playing";
     }
     {
-        GameObject *datamanager = GameObject::Find("DataManager");
+        GameObject* datamanager = GameObject::Find("DataManager");
         if (datamanager == nullptr)
         {
             datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
@@ -66,7 +66,7 @@ void CSceneResult::Update()
     if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
     {
         //タイトルへのシーン移動
-        CSceneManager::GetInstance().LoadScene("SceneTitla");
+        CSceneManager::GetInstance().LoadScene("SceneTitle");
     }
 }
 

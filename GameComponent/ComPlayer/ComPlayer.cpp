@@ -41,7 +41,7 @@ void ComPlayer::Update()
     {
     case E_PLAYERFLOW::READY:
         //落下処理
-        m_gameObject->m_transform->m_vector.SetValue(0.0f, -0.5f, 0.0f);
+        m_gameObject->m_transform->m_vector.SetValue(0.0f, -15.0f*CTimer::GetInstance().m_deltaTime.GetValue(), 0.0f);
         break;
 
     case E_PLAYERFLOW::GAME:
@@ -61,10 +61,11 @@ void ComPlayer::Update()
 
     case E_PLAYERFLOW::FALL:
 
-        if (m_fallCount < 4.0f)
+        if (m_fallCount < 2.5f)
         {
             m_fallCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
             m_nowPlayerAnimation = E_FLAG_ANIMATIONPLAYER::JUMP_NOW;
+            m_gameObject->m_transform->m_vector.SetValue(0.0f, -15.0f * CTimer::GetInstance().m_deltaTime.GetValue(), 0.0f);
         }
         else
         {

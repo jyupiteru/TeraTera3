@@ -79,6 +79,8 @@ void CSceneTitle::Init()
 
     { //カメラの取得と交信
         auto camera = GameObject::Find("camera");
+        camera->m_transform->m_worldPosition.SetValue(0, 0, 0);
+
         auto comcamera = camera->GetComponent<ComCamera>();
         comcamera->m_typeFixed = E_TYPE_FIXED::LOOKAT;
         //camera->GetComponent<ComCamera>()->m_otherTransform = GameObject::Find("player")->m_transform;
@@ -86,6 +88,15 @@ void CSceneTitle::Init()
         comcamera->m_firstAngle.SetValue(45, 0, 0);
         comcamera->m_offsetPos.SetValue(0, 0, 0);
         camera->m_objectUpdatePriority.SetValue(-1);
+    }
+    {
+        GameObject* datamanager = GameObject::Find("DataManager");
+        if (datamanager == nullptr)
+        {
+            datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
+            datamanager->DontDestroyOnLoad();
+            datamanager->AddComponent<ComDataManager>();
+        }
     }
 }
 
