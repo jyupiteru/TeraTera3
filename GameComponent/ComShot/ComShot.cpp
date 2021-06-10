@@ -19,4 +19,5 @@ void ComShot::Update()
     vec_z *= deltatime;
 
     m_gameObject->m_transform->m_worldPosition.AddValue(vec_x, vec_y, vec_z);
+    m_gameObject->m_transform->m_angle.AddValue(0, 60 * deltatime, 0);
 }

@@ -15,11 +15,13 @@ void ComShotManager::Init()
 {
     m_instance = this;
     m_intervalTime.SetValue(4.0f, 2.0f);
-    m_shotSize.SetValue(5, 10, 20);
 
-    m_shotSpeed.SetValue(5, 10, 20);
+    m_shotSize.SetValue(1.0f, 0.5f, 0.5f);
+    m_shotSizeRate.SetValue(5.0f, 10.0f, 20.0f);
 
-    m_shotRandNum.SetValue(0, 10, 5);
+    m_shotSpeed.SetValue(5.0f, 10.0f, 20.0f);
+
+    m_shotRandNum.SetValue(0.0f, 10.0f, 5.0f);
 }
 
 //================================================================================================
@@ -112,40 +114,53 @@ void ComShotManager::CrateShot()
 
     DirectX::XMFLOAT3 firstpos;
     //乱数を生成
-    std::mt19937 mt{std::random_device{}()};
+    std::random_device rd;
+
+    std::mt19937 mt(rd());
 
     {
-        firstpos.x = static_cast<float>(ComMapManager::GetInstance().m_mapMax.GetValue().first) / 2;
-        firstpos.z = static_cast<float>(ComMapManager::GetInstance().m_mapMax.GetValue().second) / 2;
+        std::pair<int, int> mapmax = ComMapManager::GetInstance().m_mapMax.GetValue();
+        /*mapmax.first /= 2;
+        mapmax.second /= 2;*/
+
         firstpos.y = ComMapManager::GetInstance().m_MaphalfSize.GetValue();
 
         std::uniform_int_distribution<int> rand(0, 3);
+        std::uniform_int_distribution<int> rand_x(-mapmax.first, mapmax.first);
+        std::uniform_int_distribution<int> rand_z(-mapmax.second, mapmax.second);
 
-        //ビット操作をする
-        std::bitset<4> bit;
-        bit = rand(mt);
+        int randnum = rand(mt);
 
-        if (bit.test(0))
+        switch (randnum)
         {
-            //右端に生成
-            firstpos.x *= firstpos.y;
-        }
-        else
-        {
-            //左端に生成
-            firstpos.x *= -firstpos.y;
+        case 0: //右
+            firstpos.x = mapmax.first;
+            firstpos.z = rand_z(mt);
+            break;
+
+        case 1: //左
+            firstpos.x = -mapmax.first;
+            firstpos.z = rand_z(mt);
+            break;
+
+        case 2: //上
+            firstpos.z = mapmax.second;
+            firstpos.x = rand_x(mt);
+            break;
+
+        case 3: //下
+            firstpos.z = -mapmax.second;
+            firstpos.x = rand_x(mt);
+            break;
         }
 
-        if (bit.test(1))
-        {
-            //奥に生成
-            firstpos.z *= firstpos.y;
-        }
-        else
-        {
-            //手前に生成
-            firstpos.z *= -firstpos.y;
-        }
+        std::string drawstring = "rand " + std::to_string(randnum);
+        drawstring += " X " + std::to_string(firstpos.x);
+        drawstring += " Z : " + std::to_string(firstpos.z);
+        CDebugLog::GetInstance().Draw(drawstring);
+
+        firstpos.x *= firstpos.y;
+        firstpos.z *= firstpos.y;
 
         //座標の格納 yは少し浮かせる(衝突判定回数軽減のため)
         comshot->m_gameObject->m_transform->m_worldPosition.SetValue(firstpos.x, firstpos.y * 1.2f, firstpos.z);
@@ -153,7 +168,8 @@ void ComShotManager::CrateShot()
 
     {
         //大きさの処理
-        auto [size_min, size_firstmax, size_lastmax] = m_shotSize.GetValue();
+        auto [size_x, size_y, size_z] = m_shotSize.GetValue();
+        auto [size_min, size_firstmax, size_lastmax] = m_shotSizeRate.GetValue();
 
         float sizemax = size_lastmax - size_firstmax;
         sizemax *= timerate;
@@ -164,7 +180,7 @@ void ComShotManager::CrateShot()
         float nowsize = static_cast<float>(rand3(mt));
         nowsize /= 10;
 
-        comshot->m_gameObject->m_transform->m_size.SetValue(nowsize, nowsize, nowsize);
+        comshot->m_gameObject->m_transform->m_size.SetValue(nowsize * size_x, nowsize * size_y, nowsize * size_z);
     }
 
     {
@@ -226,7 +242,7 @@ void ComShotManager::CreateShotObject()
     //各コンポーネントの設定
     shot->RemoveComponent<Com3DModelAssimp>();
     shot->AddComponent<ComSphere>();
-    shot->m_transform->m_color.SetValue(255, 0, 255, 1.0f);
+    shot->m_transform->m_color.SetValue(125, 125, 255, 1.0f);
     shot->m_activeFlag.SetValue(false);
     ComShot *comshot = shot->AddComponent<ComShot>();
 

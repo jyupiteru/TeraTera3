@@ -43,9 +43,15 @@ public:
 
     /**
      * @brief 弾の大きさ
-     * @n 最小値、初期最大値、最終最大値
+     * @n 1を基準に比率
      */
     CVector3<float> m_shotSize;
+
+    /**
+     * @brief 弾の大きさの変化率
+     * @n 最小値、初期最大値、最終最大値
+     */
+    CVector3<float> m_shotSizeRate;
 
     /**
      * @brief 弾をどれくらいブレさせるか 大きさにより難易度変わりそう
