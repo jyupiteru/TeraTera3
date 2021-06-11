@@ -150,6 +150,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	windowdata->SetImGuiFunction("Menu", "SceneList", true);
 	windowdata->SetImGuiFunction("Menu", "EventSystem", true);
 
+	//GameのInit後にやらないと読み込み処理の時間が反映されてしまうので
+	CTimer::GetInstance().Update();
 
 	CDebugLog::GetInstance().Draw("End GameInit");
 	return true;
