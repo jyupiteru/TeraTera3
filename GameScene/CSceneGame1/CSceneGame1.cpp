@@ -33,7 +33,22 @@ void CSceneGame1::Init()
             player->GetComponent<Com3DModelAssimp>()->LoadModelData("Player/idle_run.fbx", "Player/");
 
             auto anim = player->AddComponent<Com3DAnimationAssimp>();
-            anim->ChangeAnimation("idle");
+
+            if (anim->ChangeAnimation("idle"))
+            {//読み込めていない
+                anim->SetAnimationName("idle", 0, "idle");
+                anim->SetAnimationName("idle", 1, "run");
+
+                anim->LoadAnimation("stretch", "Player/stretch.fbx");
+                anim->SetAnimationName("stretch", 0, "neck");
+                anim->SetAnimationName("stretch", 1, "arm");
+
+                anim->LoadAnimation("jump", "Player/jump.fbx");
+                anim->SetAnimationName("jump", 0, "jumpup");
+                anim->SetAnimationName("jump", 1, "falling");
+                anim->SetAnimationName("jump", 2, "jumpdown");
+                anim->ChangeAnimation("idle");
+            }
 
             auto collider = player->AddComponent<ComBoxCollider3D>();
             collider->m_isTrigger.SetValue(true);
