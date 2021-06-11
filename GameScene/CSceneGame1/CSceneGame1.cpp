@@ -24,7 +24,7 @@ void CSceneGame1::Init()
     }
 
     { //プレイヤーの生成
-        if (GameObject* player = GameObject::Find("player"); player == nullptr)
+        if (GameObject *player = GameObject::Find("player"); player == nullptr)
         {
             player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
             player->m_transform->m_worldPosition.SetValue(0, 50, 0);
@@ -34,8 +34,9 @@ void CSceneGame1::Init()
 
             auto anim = player->AddComponent<Com3DAnimationAssimp>();
 
-            if (anim->ChangeAnimation("idle"))
-            {//読み込めていない
+            if (!anim->ChangeAnimation("idle"))
+            { //読み込めていない
+                anim->LoadAnimation("idle", "Player/idle_run.fbx");
                 anim->SetAnimationName("idle", 0, "idle");
                 anim->SetAnimationName("idle", 1, "run");
 
@@ -100,7 +101,7 @@ void CSceneGame1::Init()
     }
 
     {
-        GameObject* datamanager = GameObject::Find("DataManager");
+        GameObject *datamanager = GameObject::Find("DataManager");
         if (datamanager == nullptr)
         {
             datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
