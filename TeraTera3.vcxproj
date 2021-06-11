@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponent\ComTitleManager\ComTitleManager.h" />
     <ClInclude Include="GameComponent\ComResultManager\ComResultManager.h" />
     <ClInclude Include="GameComponent\ComDataManager\ComDataManager.h" />
     <ClInclude Include="GameComponent\ComShotManager\ComEnemyManager.h" />
@@ -250,6 +251,7 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameComponent\ComTitleManager\ComTitleManager.cpp" />
     <ClCompile Include="GameComponent\ComResultManager\ComResultManager.cpp" />
     <ClCompile Include="GameComponent\ComDataManager\ComDataManager.cpp" />
     <ClCompile Include="GameComponent\ComShotManager\ComShotManager.cpp" />

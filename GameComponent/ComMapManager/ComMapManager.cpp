@@ -32,6 +32,7 @@ void ComMapManager::Init()
 void ComMapManager::Uninit()
 {
     m_instance = nullptr;
+    m_listMapObject.clear();
 }
 
 //================================================================================================
@@ -119,10 +120,23 @@ void ComMapManager::CreateMap(int _stagenum)
 //================================================================================================
 //================================================================================================
 
+void ComMapManager::SetMapGameOver()
+{
+    for (auto &itr : m_listMapObject)
+    {
+        itr->m_activeFlag.SetValue(false);
+    }
+}
+
+//================================================================================================
+//================================================================================================
+
 GameObject *ComMapManager::MakeMapObj(std::string_view _objname)
 {
     //オブジェクト作成
     GameObject *obj = m_gameObject->AddChildObject(_objname.data(), E_TYPE_OBJECT::NONE);
+    m_listMapObject.push_back(obj);
+
     obj->m_typeObject = E_TYPE_OBJECT::MODEL3D;
     obj->AddComponent<ComShader>();
     obj->AddComponent<ComBox>();
@@ -132,3 +146,6 @@ GameObject *ComMapManager::MakeMapObj(std::string_view _objname)
 
     return obj;
 }
+
+//================================================================================================
+//================================================================================================

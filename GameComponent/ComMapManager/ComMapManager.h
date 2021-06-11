@@ -30,6 +30,11 @@ class ComMapManager : public ComponentBase
 	 */
 	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, E_MAPCHIP>>> m_listMapData;
 
+	/**
+	 * @brief マップに配置するオブジェクトを管理するリスト
+	 */
+	std::vector<GameObject *> m_listMapObject;
+
 	static ComMapManager *m_instance;
 
 public:
@@ -54,12 +59,18 @@ public:
 	void Draw() override;
 
 	static [[nodiscard]] ComMapManager &GetInstance();
-	
+
 	/**
 	 * @brief マップを生成する処理
 	 * @param _stagenum 何個目のマップを生成するか?
 	 */
 	void CreateMap(int _stagenum);
+
+	/**
+	 * @brief すべてのマップをゲームオーバーの時の状態にする
+	 * @n ComGameOverからのみ呼び出すこと
+	 */
+	void SetMapGameOver();
 
 private:
 	/**

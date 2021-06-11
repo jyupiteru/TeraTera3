@@ -35,7 +35,7 @@ void CSceneGame1::Init()
             auto anim = player->AddComponent<Com3DAnimationAssimp>();
 
             if (!anim->ChangeAnimation("idle"))
-            { //読み込めていない
+            { //読み込めていないので各種アニメーション読み込み
                 anim->LoadAnimation("idle", "Player/idle_run.fbx");
                 anim->SetAnimationName("idle", 0, "idle");
                 anim->SetAnimationName("idle", 1, "run");

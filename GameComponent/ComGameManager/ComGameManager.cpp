@@ -8,6 +8,7 @@
 
 #include "../ComTimer/ComTimer.h"
 #include "../ComDataManager/ComDataManager.h"
+#include "../ComMapManager/ComMapManager.h"
 
 ComGameManager *ComGameManager::m_instance = nullptr;
 
@@ -67,6 +68,7 @@ void ComGameManager::UpdateFlow()
         break;
 
     case E_GAMEFLOW::GAMEOVER:
+        ComMapManager::GetInstance().SetMapGameOver();
         break;
     case E_GAMEFLOW::END:
         ComDataManager::GetInstance().m_maxTime.SetValue(ComTimer::GetInstance().m_maxTimeCount.GetValue());

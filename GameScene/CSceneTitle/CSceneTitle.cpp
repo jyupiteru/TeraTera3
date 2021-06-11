@@ -98,6 +98,10 @@ void CSceneTitle::Init()
             datamanager->AddComponent<ComDataManager>();
         }
     }
+    {
+        GameObject* titlemanager = GameObject::MakeNewObject("titlemanager", E_TYPE_OBJECT::SYSTEM);
+        titlemanager->AddComponent<ComTitleManager>();
+    }
 }
 
 void CSceneTitle::Uninit()

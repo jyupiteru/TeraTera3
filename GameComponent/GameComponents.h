@@ -21,3 +21,5 @@
 #include "ComDataManager/ComDataManager.h"
 
 #include "ComResultManager/ComResultManager.h"
+
+#include "ComTitleManager/ComTitleManager.h"
