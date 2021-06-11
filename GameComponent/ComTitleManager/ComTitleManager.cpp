@@ -16,6 +16,15 @@ void ComTitleManager::Init()
 
 void ComTitleManager::Ready()
 {
+    GameObject *title = m_gameObject->AddChildObject("TitleText", E_TYPE_OBJECT::UI);
+    title->m_transform->m_size.SetValue(600, 250, 1);
+    title->m_transform->m_worldPosition.SetValue(0, 200, 0);
+    title->m_transform->m_color.SetValue(0, 0, 0, 1.0f);
+    title->RemoveComponent<Com2DTexture>();
+    auto texttitle = title->AddComponent<Com2DText>();
+    texttitle->m_flagSetRate.SetValue(true);
+    texttitle->m_text = "Get The Coin2";
+
     //子オブジェクトの生成と座標設定
     GameObject *highscoretext = m_gameObject->AddChildObject("HighScoreText", E_TYPE_OBJECT::UI);
     highscoretext->m_transform->m_size.SetValue(450, 200, 1);
