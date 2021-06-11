@@ -39,5 +39,15 @@ public:
 
     [[nodiscard]] static ComDataManager &GetInstance();
 
-    void MathPoint();
+    /**
+     * @brief ハイスコアを外部から読み込む処理
+     * @n Titleのみ
+     */
+    void LoadScore();
+
+    /**
+     * @brief ハイスコアを外部に保存する処理
+     * @n Resultのみ
+     */
+    void SaveScore();
 };

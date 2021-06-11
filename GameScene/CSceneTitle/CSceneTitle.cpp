@@ -97,6 +97,7 @@ void CSceneTitle::Init()
             datamanager->DontDestroyOnLoad();
             datamanager->AddComponent<ComDataManager>();
         }
+        datamanager->GetComponent<ComDataManager>()->LoadScore();
     }
     {
         GameObject* titlemanager = GameObject::MakeNewObject("titlemanager", E_TYPE_OBJECT::SYSTEM);
