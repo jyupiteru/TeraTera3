@@ -24,40 +24,40 @@ void CSceneGame1::Init()
     }
 
     { //プレイヤーの生成
-        if (GameObject *player = GameObject::Find("player"); player == nullptr)
-        {
-            player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
-            player->m_transform->m_worldPosition.SetValue(0, 50, 0);
-            player->m_transform->m_size.SetValue(10, 10, 10);
-            player->AddComponent<ComPlayer>();
-            player->GetComponent<Com3DModelAssimp>()->LoadModelData("Player/idle_run.fbx", "Player/");
+        GameObject* player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
+        player->m_transform->m_worldPosition.SetValue(0, 50, 0);
+        player->m_transform->m_size.SetValue(10, 10, 10);
+        player->AddComponent<ComPlayer>();
+        player->GetComponent<Com3DModelAssimp>()->LoadModelData("Player/idle_run.fbx", "Player/");
 
-            auto anim = player->AddComponent<Com3DAnimationAssimp>();
+        auto anim = player->AddComponent<Com3DAnimationAssimp>();
 
-            if (!anim->ChangeAnimation("idle"))
-            { //読み込めていないので各種アニメーション読み込み
-                anim->LoadAnimation("idle", "Player/idle_run.fbx");
-                anim->SetAnimationName("idle", 0, "idle");
-                anim->SetAnimationName("idle", 1, "run");
+        if (!anim->ChangeAnimation("idle"))
+        { //読み込めていないので各種アニメーション読み込み
+            anim->LoadAnimation("idle", "Player/idle_run.fbx");
+            anim->SetAnimationName("idle", 0, "idle");
+            anim->SetAnimationName("idle", 1, "run");
 
-                anim->LoadAnimation("stretch", "Player/stretch.fbx");
-                anim->SetAnimationName("stretch", 0, "neck");
-                anim->SetAnimationName("stretch", 1, "arm");
+            anim->LoadAnimation("stretch", "Player/stretch.fbx");
+            anim->SetAnimationName("stretch", 0, "neck");
+            anim->SetAnimationName("stretch", 1, "arm");
 
-                anim->LoadAnimation("jump", "Player/jump.fbx");
-                anim->SetAnimationName("jump", 0, "jumpup");
-                anim->SetAnimationName("jump", 1, "falling");
-                anim->SetAnimationName("jump", 2, "jumpdown");
-                anim->ChangeAnimation("idle");
-            }
-
-            auto collider = player->AddComponent<ComBoxCollider3D>();
-            collider->m_isTrigger.SetValue(true);
-            collider->m_isFirstJustSize = true;
-            collider->m_offsetSize.SetValue(-7.0f, 0.5f, -0.5f);
-            collider->m_draw = true;
-            //player->GetComponent<Com3DModelAssimp>()->m_firstAngle.SetValue(0, 90, -90);
+            anim->LoadAnimation("jump", "Player/jump.fbx");
+            anim->SetAnimationName("jump", 0, "jumpup");
+            anim->SetAnimationName("jump", 1, "falling");
+            anim->SetAnimationName("jump", 2, "jumpdown");
+            anim->ChangeAnimation("idle");
         }
+
+        auto collider = player->AddComponent<ComBoxCollider3D>();
+        collider->m_isTrigger.SetValue(true);
+        collider->m_isFirstJustSize = true;
+        collider->m_offsetSize.SetValue(-7.0f, 0.5f, -0.5f);
+
+#ifdef _DEBUG
+        collider->m_draw = true;
+#endif // _DEBUG
+
     }
 
     { //カメラの取得と交信

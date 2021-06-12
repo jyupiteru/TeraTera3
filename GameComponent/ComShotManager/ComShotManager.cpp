@@ -256,8 +256,12 @@ void ComShotManager::CreateShotObject()
     //衝突判定関係の設定
     ComBoxCollider3D *collider = shot->AddComponent<ComBoxCollider3D>();
     collider->m_isTrigger.SetValue(true);
-    collider->m_draw = true;
     collider->m_isFirstJustSize = true;
+
+#ifdef _DEBUG
+    collider->m_draw = true;
+#endif // _DEBUG
+
 }
 
 //================================================================================================

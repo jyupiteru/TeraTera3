@@ -2,6 +2,11 @@
 
 void CSceneTitle::Init()
 {
+#ifndef _DEBUG
+    CImGuiManager::GetInstance().m_flagSurvival.SetValue(false);
+    CDebugLog::GetInstance().m_flagSurvival.SetValue(false);
+#endif
+
     { //ステージ（ドーム表示）
         if (GameObject* skydome = GameObject::Find("skydome"); skydome == nullptr)
         {
