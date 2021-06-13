@@ -9,6 +9,7 @@
 
 void ComResultManager::Init()
 {
+    MathScore();
 }
 
 //================================================================================================
@@ -24,6 +25,7 @@ void ComResultManager::Ready()
     highscoretext->RemoveComponent<Com2DTexture>();
     m_comhighScoreText = highscoretext->AddComponent<Com2DText>();
     m_comhighScoreText->m_flagSetRate.SetValue(true);
+    m_comhighScoreText->m_text = "High Score : " + std::to_string(ComDataManager::GetInstance().m_highScore.GetValue());
 
     GameObject *text = m_gameObject->AddChildObject("ScoreText", E_TYPE_OBJECT::UI);
     text->m_transform->m_size.SetValue(300, 200, 1);
@@ -32,8 +34,8 @@ void ComResultManager::Ready()
     text->RemoveComponent<Com2DTexture>();
     m_comScoreText = text->AddComponent<Com2DText>();
     m_comScoreText->m_flagSetRate.SetValue(true);
+    m_comScoreText->m_text = "Score : " + std::to_string(m_score);
 
-    MathScore();
 }
 
 //================================================================================================
@@ -55,14 +57,13 @@ void ComResultManager::MathScore()
     timerate /= maxtime;
 
     //最終得点の計算とその何割かを計算
-    maxtime *= 10;
+    maxtime *= 200;
     m_score = static_cast<int>(maxtime * timerate);
 
-    m_comScoreText->m_text = "Score : " + std::to_string(m_score);
+    //m_comScoreText->m_text = "Score : " + std::to_string(m_score);
 
     if (m_score > ComDataManager::GetInstance().m_highScore.GetValue())
     {
         ComDataManager::GetInstance().m_highScore.SetValue(m_score);
     }
-    m_comhighScoreText->m_text = "High Score : " + std::to_string(ComDataManager::GetInstance().m_highScore.GetValue());
 }

@@ -31,7 +31,7 @@ void ComCoinManager::Uninit()
 void ComCoinManager::Ready()
 {
     //40個生成 足りなくなったら追加する
-    for (int i = 0; i < 40; i++)
+    for (int i = 0; i < m_coinMax.GetValue(); i++)
     {
         CreateCoinObject();
     }
@@ -51,8 +51,8 @@ void ComCoinManager::Update()
     time *= timerate;
     time = m_intervalTime.GetValue().first - time;
 
-    //弾の生成周期の待機時間を過ぎたか？
-    if (m_timeCount > time)
+    //弾の生成周期の待機時間を過ぎたか？&& 上限以内か？
+    if (m_timeCount > time && m_coinMax.GetValue() > m_listActiveCoin.size())
     {
         m_timeCount = 0.0f;
 
@@ -67,7 +67,20 @@ void ComCoinManager::SetWaitList(ComCoin *_coin, bool _flag)
 {
     _coin->m_gameObject->m_activeFlag.SetValue(false);
     m_listWaitCreate.push_back(_coin);
-    m_coinMax.AddValue(-1);
+
+    //リストから探しては破棄する
+    for (auto itr = m_listActiveCoin.begin(); itr != m_listActiveCoin.end();)
+    {
+        if ((*itr) == _coin)
+        {
+            itr = m_listActiveCoin.erase(itr);
+            break;
+        }
+        else
+        {
+            itr++;
+        }
+    }
 }
 
 //================================================================================================
@@ -114,12 +127,13 @@ void ComCoinManager::CreateCoin()
         firstpos.x = static_cast<float>(rand_x(mt));
         firstpos.z = static_cast<float>(rand_z(mt));
 
-        //マップ上の座標に修正
-        firstpos.x /= 2;
-        firstpos.z /= 2;
-
         firstpos.x *= firstpos.y;
         firstpos.z *= firstpos.y;
+
+
+        //マップ上の座標に修正
+        firstpos.x -= firstpos.x / 2;
+        firstpos.z -= firstpos.z / 2;
 
         comcoin->m_gameObject->m_transform->m_worldPosition.SetValue(firstpos.x, firstpos.y * 1.2f, firstpos.z);
     }

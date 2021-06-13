@@ -92,7 +92,7 @@ void CSceneGame1::Init()
         auto coinmanager = gamemanager->AddComponent<ComCoinManager>();
         coinmanager->m_coinScore.SetValue(10, 200);
         coinmanager->m_coinSize.SetValue(4, 4, 4);
-        //coinmanager->
+        coinmanager->m_coinMax.SetValue(20);
     }
 
     { //時間を管理するオブジェクトの生成
