@@ -32,6 +32,16 @@ class ComCoinManager : public ComponentBase
      */
     float m_timeCount = 0.0f;
 
+    /**
+     * @brief 取得したコインの総数を数える変数
+     */
+    int m_coinGetCount = 0;
+
+    /**
+     * @brief 取得したコイン数を表示するテキスト
+     */
+    Com2DText *m_comScoreText = nullptr;
+
 public:
     /**
      * @brief コインの大きさを管理する変数

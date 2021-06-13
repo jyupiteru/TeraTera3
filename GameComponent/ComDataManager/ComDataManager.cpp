@@ -13,7 +13,7 @@ void ComDataManager::Init()
     m_instance = this;
 
     m_maxTime.SetValue(60.0f);
-    m_nowCount.SetValue(30.0f);
+    m_nowCount.SetValue(0.0f);
 }
 
 //================================================================================================

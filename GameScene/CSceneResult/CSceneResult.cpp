@@ -52,10 +52,6 @@ void CSceneResult::Init()
         text->m_text = "SpaceKey can back to title";
     }
     {
-        GameObject *resultmanager = GameObject::MakeNewObject("ResultManager", E_TYPE_OBJECT::SYSTEM);
-        resultmanager->AddComponent<ComResultManager>();
-    }
-    {
         GameObject* datamanager = GameObject::Find("DataManager");
         if (datamanager == nullptr)
         {
@@ -63,7 +59,10 @@ void CSceneResult::Init()
             datamanager->DontDestroyOnLoad();
             datamanager->AddComponent<ComDataManager>();
         }
-        datamanager->GetComponent<ComDataManager>()->SaveScore();
+    }
+    {
+        GameObject *resultmanager = GameObject::MakeNewObject("ResultManager", E_TYPE_OBJECT::SYSTEM);
+        resultmanager->AddComponent<ComResultManager>();
     }
 }
 

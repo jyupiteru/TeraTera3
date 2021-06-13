@@ -27,6 +27,11 @@ public:
     CVector<float> m_maxTime;
 
     /**
+     * @brief 取得した弾の総スコア
+     */
+    CVector<int> m_shotScore;
+
+    /**
      * @brief プレイした中での最高得点
      */
     CVector<int> m_highScore;

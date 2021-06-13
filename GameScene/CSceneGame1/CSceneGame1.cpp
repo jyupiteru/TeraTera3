@@ -89,8 +89,9 @@ void CSceneGame1::Init()
         shotmanager->m_shotSize.SetValue(1.0f, 0.7f, 0.7f);
         shotmanager->m_shotSizeRate.SetValue(5, 7, 10);
 
+        //コインを管理するコンポーネントの追加
         auto coinmanager = gamemanager->AddComponent<ComCoinManager>();
-        coinmanager->m_coinScore.SetValue(10, 200);
+        coinmanager->m_coinScore.SetValue(10, 400);
         coinmanager->m_coinSize.SetValue(4, 4, 4);
         coinmanager->m_coinMax.SetValue(20);
         coinmanager->m_intervalTime.SetValue(2.0f, 0.1f);

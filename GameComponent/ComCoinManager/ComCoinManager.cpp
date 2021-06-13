@@ -9,6 +9,7 @@
 #include "../ComCoin/ComCoin.h"
 #include "../ComTimer/ComTimer.h"
 #include "../ComMapManager/ComMapManager.h"
+#include "../ComDataManager/ComDataManager.h"
 
 ComCoinManager *ComCoinManager::m_instance = nullptr;
 
@@ -35,6 +36,16 @@ void ComCoinManager::Ready()
     {
         CreateCoinObject();
     }
+
+    auto textobj = m_gameObject->AddChildObject("CoinText", E_TYPE_OBJECT::SYSTEM);
+
+    textobj->m_transform->m_worldPosition.SetValue(-SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2 - 60.0f, 0.0f);
+    textobj->m_transform->m_size.SetValue(240.0f, 120.0f, 1.0f);
+    textobj->m_transform->m_color.SetValue(0.0f, 0.0f, 0.0f, 1.0f);
+    m_comScoreText = textobj->AddComponent<Com2DText>();
+
+    m_comScoreText->m_flagSetRate.SetValue(true);
+    m_comScoreText->m_text = "CoinTotal : " + std::to_string(m_coinGetCount);
 }
 
 //================================================================================================
@@ -80,6 +91,14 @@ void ComCoinManager::SetWaitList(ComCoin *_coin, bool _flag)
         {
             itr++;
         }
+    }
+
+    if (_flag)
+    { //プレイヤーに当たったのでスコアを加算
+        m_coinGetCount++;
+        ComDataManager::GetInstance().m_shotScore.AddValue(_coin->m_hitScore.GetValue());
+
+        m_comScoreText->m_text = "CoinTotal : " + std::to_string(m_coinGetCount);
     }
 }
 
