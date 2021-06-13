@@ -213,8 +213,8 @@ void GameUninit()
 	DX11SetTransform::GetInstance()->Uninit();
 	CTimer::Delete(true);
 	CDebugLog::Delete(true);
-	ObjectGenerator::Delete(true);
 	CSceneManager::Delete(true);
+	ObjectGenerator::Delete(true);
 	CEventSystem::Delete(true);
 	CContainer::Delete(true);
 	CImGuiManager::Delete(true);

@@ -117,16 +117,11 @@ class GameObject
      * @brief m_objIDを決めるためのカウンタ
      */
     static int m_classCount;
-
+    
     /**
-     * @brief  CObjectの生成時処理
-     * @details makeNewObject以外から生成したくないのでprivateにしています
+     * @brief 親オブジェクトのアクティブかどうかを保持する変数
      */
-    GameObject() : m_objID(m_classCount)
-    {
-        m_classCount++;
-        Init();
-    }
+    bool m_flagParentActive = false;
 
 public:
     //ObjectGenetator空からのアクセスを許可
@@ -197,6 +192,18 @@ public:
      */
     CVector<int> m_drawLayer;
 
+private:
+    /**
+     * @brief  CObjectの生成時処理
+     * @details makeNewObject以外から生成したくないのでprivateにしています
+     */
+    GameObject() : m_objID(m_classCount)
+    {
+        m_classCount++;
+        Init();
+    }
+
+public:
     /**
      * @brief CObjectの破棄時処理
      */
