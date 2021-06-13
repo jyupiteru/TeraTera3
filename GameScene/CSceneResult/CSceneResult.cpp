@@ -68,6 +68,8 @@ void CSceneResult::Init()
 
 void CSceneResult::Uninit()
 {
+    GameObject* datamanager = GameObject::Find("DataManager");
+    datamanager->m_transform->Destroy(datamanager);
 }
 
 void CSceneResult::Update()

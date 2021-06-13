@@ -91,7 +91,7 @@ void CSceneGame1::Init()
 
         //コインを管理するコンポーネントの追加
         auto coinmanager = gamemanager->AddComponent<ComCoinManager>();
-        coinmanager->m_coinScore.SetValue(10, 400);
+        coinmanager->m_coinScore.SetValue(100, 300);
         coinmanager->m_coinSize.SetValue(4, 4, 4);
         coinmanager->m_coinMax.SetValue(20);
         coinmanager->m_intervalTime.SetValue(2.0f, 0.1f);
