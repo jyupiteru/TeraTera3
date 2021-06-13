@@ -110,7 +110,7 @@ void CSceneSample::Init()
         model2->m_transform->m_vector.SetValue(-1, 0, 0);
         model2->AddComponent<Test2>();
         auto assimp = model2->GetComponent<Com3DModelAssimp>();
-        assimp->LoadModelData("Player/Running.fbx", "Player/");
+        assimp->LoadModelData("Player/idle_run.fbx", "Player/");
 
         auto collider = model2->AddComponent<ComBoxCollider3D>();
         //collider->m_draw = true;
@@ -126,10 +126,10 @@ void CSceneSample::Init()
          model2->m_transform->m_angle.SetValue(0, 0, 0);
          model2->AddComponent<Test2>();
          auto assimp = model2->GetComponent<Com3DModelAssimp>();
-         assimp->LoadModelData("Player/Running.fbx", "Player/");
+         assimp->LoadModelData("Player/idle_run.fbx", "Player/");
          Com3DAnimationAssimp *anim = model2->AddComponent<Com3DAnimationAssimp>();
-         anim->LoadAnimation("test1", "Player/Running.fbx");
-         anim->ChangeAnimation("test1", 0);
+         anim->LoadAnimation("test1", "Player/idle_run.fbx");
+         anim->ChangeAnimation("test1", 1);
          auto collider = model2->AddComponent<ComBoxCollider3D>();
          collider->m_draw = true;
          collider->m_isFirstJustSize = true;
