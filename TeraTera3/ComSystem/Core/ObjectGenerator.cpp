@@ -71,8 +71,8 @@ void ObjectGenerator::Update()
 					auto [r, g, b, a] = (*obj)->m_transform->m_color.GetValue();
 					auto [pos_x, pos_y, pos_z] = (*obj)->m_transform->m_worldPosition.GetValue();
 					auto distance = (camera_x - pos_x) * (camera_x - pos_x) +
-						(camera_y - pos_y) * (camera_y - pos_y) +
-						(camera_z - pos_z) * (camera_z - pos_z);
+									(camera_y - pos_y) * (camera_y - pos_y) +
+									(camera_z - pos_z) * (camera_z - pos_z);
 					distance = sqrt(distance);
 					SetObjectDrawingOrder(**obj, distance);
 				}
@@ -279,7 +279,6 @@ void ObjectGenerator::EraseObject()
 			//オブジェクトをリストから削除
 			m_pListAllObject[objid].reset();
 			m_pListAllObject.erase(objid);
-
 		}
 		nowlist.clear();
 	}
@@ -443,6 +442,16 @@ bool ObjectGenerator::DestroyInGenerator(GameObject *obj)
 			obj->m_pParentObject->m_pListChildObject.erase(obj->m_objID);
 			obj->m_pParentObject->m_pListChildObjectName.erase(obj->m_objectName);
 			obj->m_pParentObject = nullptr;
+		}
+
+		//既に登録されていないか確認
+		for (auto itr : m_listEraseObject)
+		{
+			//同じIDのオブジェクトか?
+			if (itr == obj->m_objID)
+			{
+				return false;
+			}
 		}
 		m_listEraseObject.push_back(obj->m_objID);
 		return true;
