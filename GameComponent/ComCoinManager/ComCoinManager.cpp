@@ -157,7 +157,7 @@ void ComCoinManager::CreateCoin()
     { //コインの点数
         int score = +m_coinScore.GetValue().second - m_coinScore.GetValue().first;
 
-        score *= timerate;
+        score = static_cast<int>(timerate*score);
         score += m_coinScore.GetValue().first;
 
         comcoin->m_hitScore.SetValue(score);

@@ -28,7 +28,7 @@ void ComPlayer::Ready()
     m_comAnimation->ChangeAnimation("falling");
 
 
-    m_fallCount += CTimer::GetInstance().m_deltaTime.GetValue();
+    m_fallCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
     m_flagIsStandGround = false;
 }
 
@@ -41,7 +41,7 @@ void ComPlayer::Update()
     {
     case E_PLAYERFLOW::READY:
         //落下処理
-        m_gameObject->m_transform->m_vector.SetValue(0.0f, -15.0f*CTimer::GetInstance().m_deltaTime.GetValue(), 0.0f);
+        m_gameObject->m_transform->m_vector.SetValue(0.0f, -15.0f*static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue()), 0.0f);
         break;
 
     case E_PLAYERFLOW::GAME:
@@ -65,7 +65,7 @@ void ComPlayer::Update()
         {
             m_fallCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
             m_nowPlayerAnimation = E_FLAG_ANIMATIONPLAYER::JUMP_NOW;
-            m_gameObject->m_transform->m_vector.SetValue(0.0f, -15.0f * CTimer::GetInstance().m_deltaTime.GetValue(), 0.0f);
+            m_gameObject->m_transform->m_vector.SetValue(0.0f, -15.0f * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue()), 0.0f);
         }
         else
         {

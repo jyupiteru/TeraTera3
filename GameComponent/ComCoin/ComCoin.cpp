@@ -12,7 +12,7 @@ void ComCoin::Update()
     //回転速度を設定して回転させる
     float rotatespeed = 100;
 
-    rotatespeed *= CTimer::GetInstance().m_deltaTime.GetValue();
+    rotatespeed *= static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
     m_gameObject->m_transform->m_angle.AddValue(0, rotatespeed, 0);
 }
