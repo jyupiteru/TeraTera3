@@ -24,7 +24,7 @@ void CSceneGame1::Init()
     }
 
     { //プレイヤーの生成
-        GameObject* player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
+        GameObject *player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
         player->m_transform->m_worldPosition.SetValue(0, 50, 0);
         player->m_transform->m_size.SetValue(10, 10, 10);
         player->AddComponent<ComPlayer>();
@@ -57,7 +57,6 @@ void CSceneGame1::Init()
 #ifdef _DEBUG
         collider->m_draw = true;
 #endif // _DEBUG
-
     }
 
     { //カメラの取得と交信
@@ -89,6 +88,11 @@ void CSceneGame1::Init()
 
         shotmanager->m_shotSize.SetValue(1.0f, 0.7f, 0.7f);
         shotmanager->m_shotSizeRate.SetValue(5, 7, 10);
+
+        auto coinmanager = gamemanager->AddComponent<ComCoinManager>();
+        coinmanager->m_coinScore.SetValue(10, 200);
+        coinmanager->m_coinSize.SetValue(4, 4, 4);
+        //coinmanager->
     }
 
     { //時間を管理するオブジェクトの生成
@@ -108,6 +112,13 @@ void CSceneGame1::Init()
             datamanager->DontDestroyOnLoad();
             datamanager->AddComponent<ComDataManager>();
         }
+    }
+
+    {
+        GameObject *coin = GameObject::MakeNewObject("coin", E_TYPE_OBJECT::MODEL3D);
+        coin->m_transform->m_worldPosition.SetValue(0, 50, 0);
+        coin->m_transform->m_size.SetValue(10, 10, 10);
+        coin->GetComponent<Com3DModelAssimp>()->LoadModelData("Coin/Coin.fbx", "Coin/");
     }
 }
 

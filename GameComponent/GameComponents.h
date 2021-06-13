@@ -23,3 +23,7 @@
 #include "ComResultManager/ComResultManager.h"
 
 #include "ComTitleManager/ComTitleManager.h"
+
+#include "ComCoin/ComCoin.h"
+
+#include "ComCoinManager/ComCoinManager.h"
