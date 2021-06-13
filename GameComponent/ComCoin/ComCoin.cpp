@@ -10,10 +10,11 @@
 void ComCoin::Update()
 {
     //回転速度を設定して回転させる
-    float rotatespeed = m_hitScore.GetValue() / 4;
+    float rotatespeed = 100;
+
     rotatespeed *= CTimer::GetInstance().m_deltaTime.GetValue();
 
-    m_gameObject->m_transform->m_angle.SetValue(0, rotatespeed, 0);
+    m_gameObject->m_transform->m_angle.AddValue(0, rotatespeed, 0);
 }
 
 //================================================================================================
