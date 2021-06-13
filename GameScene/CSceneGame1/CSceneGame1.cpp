@@ -24,7 +24,7 @@ void CSceneGame1::Init()
     }
 
     { //プレイヤーの生成
-        GameObject *player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
+        GameObject *player = GameObject::MakeNewObject("Player", E_TYPE_OBJECT::MODEL3D);
         player->m_transform->m_worldPosition.SetValue(0, 50, 0);
         player->m_transform->m_size.SetValue(10, 10, 10);
         player->AddComponent<ComPlayer>();
@@ -82,9 +82,9 @@ void CSceneGame1::Init()
 
         //弾を管理するコンポーネントの追加
         auto shotmanager = gamemanager->AddComponent<ComShotManager>();
-        shotmanager->m_intervalTime.SetValue(3.0f, 0.2f);
-        shotmanager->m_shotRandNum.SetValue(0, 2, 4);
-        shotmanager->m_shotSpeed.SetValue(4, 7, 10);
+        shotmanager->m_intervalTime.SetValue(2.0f, 0.1f);
+        shotmanager->m_shotRandNum.SetValue(0, 3, 7);
+        shotmanager->m_shotSpeed.SetValue(4, 7, 12);
 
         shotmanager->m_shotSize.SetValue(1.0f, 0.7f, 0.7f);
         shotmanager->m_shotSizeRate.SetValue(5, 7, 10);
@@ -93,6 +93,7 @@ void CSceneGame1::Init()
         coinmanager->m_coinScore.SetValue(10, 200);
         coinmanager->m_coinSize.SetValue(4, 4, 4);
         coinmanager->m_coinMax.SetValue(20);
+        coinmanager->m_intervalTime.SetValue(2.0f, 0.1f);
     }
 
     { //時間を管理するオブジェクトの生成
@@ -113,13 +114,6 @@ void CSceneGame1::Init()
             datamanager->AddComponent<ComDataManager>();
         }
     }
-
-    {
-        GameObject *coin = GameObject::MakeNewObject("coin", E_TYPE_OBJECT::MODEL3D);
-        coin->m_transform->m_worldPosition.SetValue(0, 50, 0);
-        coin->m_transform->m_size.SetValue(10, 10, 10);
-        coin->GetComponent<Com3DModelAssimp>()->LoadModelData("Coin/Coin.fbx", "Coin/");
-    }
 }
 
 void CSceneGame1::Uninit()
@@ -129,7 +123,7 @@ void CSceneGame1::Uninit()
 void CSceneGame1::Update()
 {
     GameObject *camera = GameObject::Find("camera");
-    camera->m_transform->m_worldPosition.SetValue(GameObject::Find("player")->m_transform->m_worldPosition.GetValue());
+    camera->m_transform->m_worldPosition.SetValue(GameObject::Find("Player")->m_transform->m_worldPosition.GetValue());
 }
 
 void CSceneGame1::Draw()

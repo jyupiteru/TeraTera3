@@ -10,7 +10,7 @@
 void ComCoin::Update()
 {
     //回転速度を設定して回転させる
-    float rotatespeed = m_hitScore.GetValue();
+    float rotatespeed = m_hitScore.GetValue() / 4;
     rotatespeed *= CTimer::GetInstance().m_deltaTime.GetValue();
 
     m_gameObject->m_transform->m_angle.SetValue(0, rotatespeed, 0);
@@ -22,11 +22,11 @@ void ComCoin::Update()
 void ComCoin::OnTriggerStay3D(GameObject *obj)
 {
     //衝突したのはプレイヤーか?
-    if (obj->m_objectName.find("player") != std::string::npos)
+    if (obj->m_objectName.find("Player") != std::string::npos)
     {
         ComCoinManager::GetInstance().SetWaitList(this, true);
     }
-    else if (obj->m_objectName.find("shot") != std::string::npos)
+    else if (obj->m_objectName.find("Shot") != std::string::npos)
     {
         ComCoinManager::GetInstance().SetWaitList(this, false);
     }

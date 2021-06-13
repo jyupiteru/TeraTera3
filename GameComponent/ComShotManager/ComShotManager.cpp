@@ -44,7 +44,7 @@ void ComShotManager::Ready()
     {
         CreateShotObject();
     }
-    m_playerobj = GameObject::Find("player");
+    m_playerobj = GameObject::Find("Player");
 }
 
 //================================================================================================

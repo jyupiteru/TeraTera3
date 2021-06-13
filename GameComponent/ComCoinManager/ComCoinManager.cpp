@@ -120,20 +120,18 @@ void ComCoinManager::CreateCoin()
         std::pair<int, int> mapmax = ComMapManager::GetInstance().m_mapMax.GetValue();
         firstpos.y = ComMapManager::GetInstance().m_MaphalfSize.GetValue();
 
-        std::uniform_int_distribution<int> rand_x(0, mapmax.first);
-        std::uniform_int_distribution<int> rand_z(0, mapmax.second);
+        std::uniform_int_distribution<int> rand_x(0, mapmax.first-1);
+        std::uniform_int_distribution<int> rand_z(0, mapmax.second-1);
 
         //座標の決定
         firstpos.x = static_cast<float>(rand_x(mt));
         firstpos.z = static_cast<float>(rand_z(mt));
 
+        firstpos.x -= mapmax.first / 2;
+        firstpos.z -= mapmax.second / 2;
+
         firstpos.x *= firstpos.y;
         firstpos.z *= firstpos.y;
-
-
-        //マップ上の座標に修正
-        firstpos.x -= firstpos.x / 2;
-        firstpos.z -= firstpos.z / 2;
 
         comcoin->m_gameObject->m_transform->m_worldPosition.SetValue(firstpos.x, firstpos.y * 1.2f, firstpos.z);
     }
