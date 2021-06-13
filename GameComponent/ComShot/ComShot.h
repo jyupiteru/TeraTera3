@@ -28,4 +28,6 @@ public:
      * @n Managerのほうで更新する用
      */
     void UpdateShot();
+    
+    void OnTriggerStay3D(GameObject *obj);
 };

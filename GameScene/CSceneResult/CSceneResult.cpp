@@ -59,7 +59,6 @@ void CSceneResult::Init()
             datamanager->DontDestroyOnLoad();
             datamanager->AddComponent<ComDataManager>();
         }
-        datamanager->GetComponent<ComDataManager>()->SaveScore();
     }
     {
         GameObject *resultmanager = GameObject::MakeNewObject("ResultManager", E_TYPE_OBJECT::SYSTEM);
@@ -69,6 +68,8 @@ void CSceneResult::Init()
 
 void CSceneResult::Uninit()
 {
+    GameObject* datamanager = GameObject::Find("DataManager");
+    datamanager->m_transform->Destroy(datamanager);
 }
 
 void CSceneResult::Update()

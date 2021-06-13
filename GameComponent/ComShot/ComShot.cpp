@@ -21,3 +21,16 @@ void ComShot::UpdateShot()
     m_gameObject->m_transform->m_worldPosition.AddValue(vec_x, vec_y, vec_z);
     m_gameObject->m_transform->m_angle.AddValue(0, 60 * deltatime, 0);
 }
+
+//================================================================================================
+//================================================================================================
+
+void ComShot::OnTriggerStay3D(GameObject *obj)
+{
+    //プレイヤーに当たったか？
+    if (//obj->m_objectName.find("Coin") != std::string::npos ||
+        obj->m_objectName.find("Player") != std::string::npos)
+    {
+        ComShotManager::GetInstance().SetShotReadyList(this);
+    }
+}

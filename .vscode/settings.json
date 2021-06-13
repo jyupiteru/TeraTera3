@@ -78,7 +78,8 @@
     "charconv": "cpp",
     "format": "cpp",
     "forward_list": "cpp",
-    "optional": "cpp"
+    "optional": "cpp",
+    "fstream": "cpp"
   },
   "cSpell.words": [
     "backto",

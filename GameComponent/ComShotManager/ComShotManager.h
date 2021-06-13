@@ -32,7 +32,9 @@ class ComShotManager : public ComponentBase
      * @brief 弾の生成周期管理用
      */
     float m_timeCount = 0.0f;
-
+    
+    Com2DText* m_scoreText=nullptr;
+    
 public:
     /**
      * @brief 弾の生成間隔
