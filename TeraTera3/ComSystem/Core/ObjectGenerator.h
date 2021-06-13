@@ -104,7 +104,6 @@ public:
     //GameObjectからのprivateのアクセスを許可
     friend GameObject;
 
-
     void Update();
 
     void Draw();
