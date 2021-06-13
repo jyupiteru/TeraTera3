@@ -45,11 +45,10 @@ cbuffer ConstantBufferBoneMatrix : register(b6)
 	matrix BoneMatrix[400];
 }
 
-//--------------------------------------------------------------------------------------
-// 構造体定義
-//--------------------------------------------------------------------------------------
+//頂点シェーダー => ピクセルシェーダーに渡す構造体
 struct VS_OUTPUT
 {
+	//座標
 	float4 Pos : SV_POSITION;
 	float4 Color : COLOR0;
 	float2 Tex : TEXCOORD;
