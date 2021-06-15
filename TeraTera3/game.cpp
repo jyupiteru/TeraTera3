@@ -124,7 +124,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		auto light = GameObject::MakeNewObject("light", E_TYPE_OBJECT::NONE);
 
 		ComLight* comlight = light->AddComponent<ComLight>();
-		comlight->m_lightColor.SetValue(0.0f, 0.0f, 0.0f, 0.0f); // 環境光
+		comlight->m_lightColor.SetValue(256.0f, 256.0f, 256.0f, 1.0f); // 環境光
 		comlight->m_lightDirection.SetValue(lightdir.x, lightdir.y, lightdir.z);
 
 		light->m_objectUpdatePriority.SetValue(-20);

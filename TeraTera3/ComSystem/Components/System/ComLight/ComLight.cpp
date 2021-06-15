@@ -68,7 +68,7 @@ void ComLight::ImGuiDraw(unsigned int windowid)
     auto [ambient_x, ambient_y, ambient_z, ambient_a] = m_lightColor.GetValue();
     ImGui::BulletText("Ambient");
     ImGui::SameLine();
-    HelpMarker((const char *)u8"???まだわかってない");
+    HelpMarker((const char *)u8"環境光のこと");
     ImGui::Indent();
     ImGui::Text("X : %d, Y : %d, Z : %d, A : %d", ambient_x, ambient_y, ambient_z, ambient_a);
 }
@@ -115,6 +115,10 @@ void ComLight::UpdateDirectionLight()
              cb.Ambient.y,
              cb.Ambient.z,
              cb.Ambient.w) = m_lightColor.GetValue();
+
+    cb.Ambient.x /= 256.0f;
+    cb.Ambient.y /= 256.0f;
+    cb.Ambient.z /= 256.0f;
 
     //環境色は設定されているか？
     if (cb.Ambient.x == 0 &&
