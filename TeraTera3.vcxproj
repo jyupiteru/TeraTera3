@@ -17,14 +17,13 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{b0291a1a-032b-4cb2-a580-4913cd15bc86}</ProjectGuid>
     <RootNamespace>TeraTera3</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -44,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -53,25 +52,23 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="Shared" >
+  <ImportGroup Label="Shared">
   </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -85,7 +82,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -119,11 +115,15 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(DX11_INCLUDE);$(ASSIMP_INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(DX11_LIB_X64DEBUG);$(ASSIMP_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,8 +142,166 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-
-  <ItemGroup></ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h" />
+    <ClInclude Include="GameScene\CSceneGame1\CSceneGame1.h" />
+    <ClInclude Include="GameScene\CSceneResult\CSceneResult.h" />
+    <ClInclude Include="GameScene\CSceneSample2\CSceneSample2.h" />
+    <ClInclude Include="GameScene\CSceneSample\CSceneSample.h" />
+    <ClInclude Include="GameScene\CSceneTitle\CSceneTitle.h" />
+    <ClInclude Include="GameScene\SceneSetter.h" />
+    <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.h" />
+    <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.h" />
+    <ClInclude Include="TeraTera3\ComSystem\ComponentPackages\DefaultPackages.h" />
+    <ClInclude Include="TeraTera3\ComSystem\ComponentPackages\Package3DBillBoard.h" />
+    <ClInclude Include="TeraTera3\ComSystem\ComponentPackages\Package3DModelAssimp.h" />
+    <ClInclude Include="TeraTera3\ComSystem\ComponentPackages\Package3DModelObject.h" />
+    <ClInclude Include="TeraTera3\ComSystem\ComponentPackages\Package3DTexObject.h" />
+    <ClInclude Include="TeraTera3\ComSystem\ComponentPackages\PackageUITexture.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\Com2DTexture\Com2DTexture.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\Com2DText\Com2DText.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\Com3DAnimationAssimp\Com3DAnimationAssimp.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\Com3DBillBoard\Com3DBillBoard.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\Com3DModelAssimp\Com3DModelAssimp.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\Com3DModel\Com3DModel.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\Com3DTexture\Com3DTexture.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComBoxCollider3D\ComBoxCollider3D.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComShader\ComShader.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComTransform\ComTransform.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Custom\ComSphereColli\ComSphereCo.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\DefaultComponents.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Shape\ComBox\ComBox.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Shape\ComSphere\ComSphere.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\System\ComCamera\ComCamera.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\System\ComLight\ComLight.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Test\Com3DBillboardText\Com3DBillboardText.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Test\Com3DText\Com3DText.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Test\ComAssimpCollider\ComAssimpCollider.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Test\ComBoxCollider2D\ComBoxCollider2D.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Test\ComRigidBody2D\ComRigidBody2D.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Test\ComRigidBody3D\ComRigidBody3D.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\Util\CCollisionBase.h" />
+    <ClInclude Include="TeraTera3\ComSystem\ComSystem.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Core\ComponentBase.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Core\Cores.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Core\GameObject.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Core\helper\ConceptIsComponent.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Core\helper\ControlObjPriority.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Core\helper\CTagManager.h" />
+    <ClInclude Include="TeraTera3\EventSystem\Events\Collision2DSystem\CCollision2DSystem.h" />
+    <ClInclude Include="TeraTera3\EventSystem\Events\Collision3DSystem\CCollision3DSystem.h" />
+    <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\CollisionConcept.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Core\ObjectGenerator.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Core\PackageBase.h" />
+    <ClInclude Include="TeraTera3\DebugLog\CDebugLog.h" />
+    <ClInclude Include="GameComponent\GameComponents.h" />
+    <ClInclude Include="GameComponent\Tests\Test.h" />
+    <ClInclude Include="GameComponent\Tests\Test2.h" />
+    <ClInclude Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.h" />
+    <ClInclude Include="TeraTera3\game.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiWindow\CImGuiWindow.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\ImGuiHeaders.h" />
+    <ClInclude Include="TeraTera3\ImGuiSystem\ImGuiHelperFunctions.h" />
+    <ClInclude Include="TeraTera3\main.h" />
+    <ClInclude Include="TeraTera3\ResourceContainer\CContainer.h" />
+    <ClInclude Include="TeraTera3\ResourceContainer\CListResource.h" />
+    <ClInclude Include="TeraTera3\SceneSystem\CScene.h" />
+    <ClInclude Include="TeraTera3\SceneSystem\CSceneManager\CSceneManager.h" />
+    <ClInclude Include="TeraTera3\Setup.h" />
+    <ClInclude Include="TeraTera3\System\CMatrix\CMatrix.h" />
+    <ClInclude Include="TeraTera3\System\CVector.h" />
+    <ClInclude Include="TeraTera3\TeraTera.h" />
+    <ClInclude Include="TeraTera3\Timer\CTimer.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\CDirectInput.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\CDirectXGraphics\CDirectXGraphics.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\DX11Settransform.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\animationdataassimp\animationdataassimp.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\ModelData\ModelData.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\vertexproto.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFileLoader\DatFileLoader.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.h" />
+    <ClInclude Include="TeraTera3\WindowsSystem\Shader\Shader.h" />
+    <ClInclude Include="ThirdParty\ImGui\imconfig.h" />
+    <ClInclude Include="ThirdParty\ImGui\imgui.h" />
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="ThirdParty\ImGui\imgui_internal.h" />
+    <ClInclude Include="ThirdParty\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ThirdParty\ImGui\imstb_textedit.h" />
+    <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp" />
+    <ClCompile Include="GameScene\CSceneGame1\CSceneGame1.cpp" />
+    <ClCompile Include="GameScene\CSceneResult\CSceneResult.cpp" />
+    <ClCompile Include="GameScene\CSceneSample2\CSceneSample2.cpp" />
+    <ClCompile Include="GameScene\CSceneSample\CSceneSample.cpp" />
+    <ClCompile Include="GameScene\CSceneTitle\CSceneTitle.cpp" />
+    <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.cpp" />
+    <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com2DTexture\Com2DTexture.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com2DText\Com2DText.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com3DAnimationAssimp\Com3DAnimationAssimp.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com3DBillBoard\Com3DBillBoard.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com3DModelAssimp\Com3DModelAssimp.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com3DModel\Com3DModel.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com3DTexture\Com3DTexture.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\ComBoxCollider3D\ComBoxCollider3D.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\ComShader\ComShader.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\ComTransform\ComTransform.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Custom\ComSphereColli\ComSphereCo.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Shape\ComBox\ComBox.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Shape\ComSphere\ComSphere.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\System\ComCamera\ComCamera.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\System\ComLight\ComLight.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Test\Com3DBillboardText\Com3DBillboardText.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Test\Com3DText\Com3DText.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Test\ComAssimpCollider\ComAssimpCollider.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Test\ComBoxCollider2D\ComBoxCollider2D.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Test\ComRigidBody2D\ComRigidBody2D.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Test\ComRigidBody3D\ComRigidBody3D.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\Util\CCollisionBase.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Core\ComponentBase.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Core\GameObject.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Core\helper\ControlObjPriority.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Core\helper\CTagManager.cpp" />
+    <ClCompile Include="TeraTera3\EventSystem\Events\Collision2DSystem\CCollision2DSystem.cpp" />
+    <ClCompile Include="TeraTera3\EventSystem\Events\Collision3DSystem\CCollision3DSystem.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Core\ObjectGenerator.cpp" />
+    <ClCompile Include="TeraTera3\DebugLog\CDebugLog.cpp" />
+    <ClCompile Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.cpp" />
+    <ClCompile Include="TeraTera3\game.cpp" />
+    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.cpp" />
+    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.cpp" />
+    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiWindow\CImGuiWindow.cpp" />
+    <ClCompile Include="TeraTera3\main.cpp" />
+    <ClCompile Include="TeraTera3\ResourceContainer\CContainer.cpp" />
+    <ClCompile Include="TeraTera3\SceneSystem\CSceneManager\CSceneManager.cpp" />
+    <ClCompile Include="TeraTera3\System\CMatrix\CMatrix.cpp" />
+    <ClCompile Include="TeraTera3\Timer\CTimer.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\CDirectXGraphics\CDirectXGraphics.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\animationdataassimp\animationdataassimp.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\ModelData\ModelData.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\DatFileLoader\DatFileLoader.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Model\DDSTextureLoader.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\Shader\Shader.cpp" />
+    <ClCompile Include="TeraTera3\WindowsSystem\WICTextureLoader.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
