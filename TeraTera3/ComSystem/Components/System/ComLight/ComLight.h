@@ -11,6 +11,8 @@
 
 #pragma once
 
+class ComSphere;
+
 /**
  * @brief ゲーム内の光を管理するコンポーネント
  */
@@ -26,13 +28,31 @@ class ComLight : public ComponentBase
         DirectX::XMFLOAT4 Ambient;
     };
 
-    /**
-     * @brief 光のタイプを設定
-     */
-    enum class LightType
+    /*ALIGN16 struct tag
     {
-        DIRECTIONAL,
+
+    };*/
+
+    /**
+     * @brief ライトの種類
+     */
+    enum class E_LightType
+    {
+        /**
+         * @brief ライトの方向とカラーのみを持つライト
+         * @n 位置情報がないので移動しても光の強さ、方向は変わらない
+         */
+        DIRECTION,
+
+        /**
+         * @brief ライトの位置、色、影響範囲(メートル)を持つ
+         * @n DIRECTIONより少し重いらしい
+         */
         POINT,
+
+        /**
+         * @brief ライトの位置、色、影響範囲、放射方向、放射角度、影響範囲(メートル)
+         */
         SPOT
     };
 
@@ -41,13 +61,17 @@ class ComLight : public ComponentBase
      */
     ID3D11Buffer *m_pConstantBufferLight = nullptr;
 
+    /**
+     * @brief 各種保持しているコンポーネントへのアクセス簡易用変数
+     */
     ComCamera *m_pComCamera = nullptr;
+    ComSphere *m_pComSphere = nullptr;
 
 public:
     /**
      * @brief 光のタイプを決めるのに使用
      */
-    LightType m_type;
+    E_LightType m_type;
 
     /**
      * @brief ？？？

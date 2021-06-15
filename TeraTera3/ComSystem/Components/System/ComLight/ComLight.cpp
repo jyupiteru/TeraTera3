@@ -9,20 +9,23 @@
 #include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../../../Core/GameObject.h"
 #include "../../Behavior/ComTransform/ComTransform.h"
+#include "../../Shape/ComSphere/ComSphere.h"
 
 void ComLight::Init()
 {
-    m_type = LightType::DIRECTIONAL;
+    m_type = E_LightType::DIRECTION;
 
     // コンスタントバッファ作成
     bool sts = CreateConstantBuffer(
-        CDirectXGraphics::GetInstance().GetDXDevice(),             // デバイス
-        sizeof(ConstantBufferLight), // サイズ
-        &m_pConstantBufferLight);    // コンスタントバッファ４
+        CDirectXGraphics::GetInstance().GetDXDevice(), // デバイス
+        sizeof(ConstantBufferLight),                   // サイズ
+        &m_pConstantBufferLight);                      // コンスタントバッファ４
     if (!sts)
     {
         MessageBox(NULL, "CreateBuffer(constant buffer Light) error", "Error", MB_OK);
     }
+
+    m_pComSphere = m_gameObject->AddComponent<ComSphere>();
 }
 
 //================================================================================================
@@ -68,10 +71,10 @@ void ComLight::Update()
              cb.Ambient.w) = m_ambient.GetValue();
 
     CDirectXGraphics::GetInstance().GetImmediateContext()->UpdateSubresource(m_pConstantBufferLight,
-                                              0,
-                                              nullptr,
-                                              &cb,
-                                              0, 0);
+                                                                             0,
+                                                                             nullptr,
+                                                                             &cb,
+                                                                             0, 0);
 
     // コンスタントバッファ4をｂ3レジスタへセット（頂点シェーダー用）
     CDirectXGraphics::GetInstance().GetImmediateContext()->VSSetConstantBuffers(4, 1, &m_pConstantBufferLight);
