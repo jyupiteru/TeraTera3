@@ -29,9 +29,9 @@ cbuffer ConstantBufferMaterial : register(b3)
 
 cbuffer ConstantBufferLight : register(b4)
 {
-	float4 LightDirection;			// 光の方向
+	float4 LightDirection;			// 正規化していない光の方向
 	float4 EyePos;					// 視点位置
-	float4 Ambient;
+	float4 Ambient;					//環境光の情報 要するにライトの情報
 }
 
 cbuffer ConstantBufferViewPort : register(b5)
