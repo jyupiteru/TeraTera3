@@ -143,6 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAsnimationData.h" />
+    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpScene\CAssimpScene.h" />
+    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.h" />
+    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpModelData.h" />
     <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h" />
     <ClInclude Include="GameScene\CSceneGame1\CSceneGame1.h" />
     <ClInclude Include="GameScene\CSceneResult\CSceneResult.h" />
@@ -220,6 +224,7 @@
     <ClInclude Include="TeraTera3\WindowsSystem\DX11Settransform.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\animationdataassimp\animationdataassimp.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.h" />
+    <ClInclude Include="TeraTera3\System\AssimpModel\AssimpVertexsData.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\ModelData\ModelData.h" />
     <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\vertexproto.h" />
@@ -236,6 +241,10 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAsnimationData.cpp" />
+    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpScene\CAssimpScene.cpp" />
+    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.cpp" />
+    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpModelData.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp" />
     <ClCompile Include="GameScene\CSceneGame1\CSceneGame1.cpp" />
     <ClCompile Include="GameScene\CSceneResult\CSceneResult.cpp" />

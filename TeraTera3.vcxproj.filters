@@ -288,6 +288,21 @@
     <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpModelData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpScene\CAssimpScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAsnimationData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TeraTera3\System\AssimpModel\AssimpVertexsData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeraTera3\Timer\CTimer.cpp">
@@ -483,6 +498,18 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpModelData.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpScene\CAssimpScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAsnimationData.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
