@@ -1,7 +1,13 @@
 
+////
+// ランバートの拡散反射モデルのピクセルシェーダー
+// 
+// 法線必須
+////
 
 
 #include	"../commonpsvs.fx"
+
 
 float4 main(VS_OUTPUT input) : SV_Target
 {

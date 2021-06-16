@@ -61,7 +61,7 @@ void Com3DModelAssimp::Uninit()
 void Com3DModelAssimp::Ready()
 {
     m_pShader = m_gameObject->GetComponent<ComShader>();
-    m_pShader->LoadPixelShader("psphong.fx", true);
+    m_pShader->LoadPixelShader("pslambert.fx", true);
 }
 
 //================================================================================================
