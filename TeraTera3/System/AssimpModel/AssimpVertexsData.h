@@ -19,6 +19,7 @@ struct tagAssimpVertex
 	DirectX::XMFLOAT2 m_Tex;	//	UV座標
 	int m_BoneIndex[4];			//	本来はボーンインデックス
 	float m_BoneWeight[4];		//	ウェイト値
+	DirectX::XMFLOAT4 color;	//	オブジェクトの色情報
 	int m_BoneNum;				//	ボーン数
 	std::string m_BoneName[4];	//	本来はボーンインデックスで管理するべき
 };

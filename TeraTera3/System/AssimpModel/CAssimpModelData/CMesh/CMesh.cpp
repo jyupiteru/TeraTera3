@@ -106,9 +106,9 @@ bool CMesh::CreateBuffer()
 
     // 頂点バッファ生成
     bool sts = CreateVertexBufferWrite(device,
-                                       static_cast<unsigned int>(sizeof(tagAssimpVertex)),    // ストライド
-                                       static_cast<unsigned int>(m_vertices.size()), // 頂点数
-                                       m_vertices.data(),                            // 頂点データ
+                                       static_cast<unsigned int>(sizeof(tagAssimpVertex)), // ストライド
+                                       static_cast<unsigned int>(m_vertices.size()),       // 頂点数
+                                       m_vertices.data(),                                  // 頂点データ
                                        &m_vertexBuffer);
     if (!sts)
     {
@@ -166,14 +166,15 @@ bool CMesh::CreateBuffer()
     return true;
 }
 
+//================================================================================================
+//================================================================================================
+
 void CMesh::UpdateVertexBuffer()
 {
 
     HRESULT hr;
 
-    ID3D11DeviceContext *devicecontext;
-
-    devicecontext = CDirectXGraphics::GetInstance().GetImmediateContext();
+    ID3D11DeviceContext *devicecontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
     D3D11_MAPPED_SUBRESOURCE pData;
 
@@ -181,7 +182,6 @@ void CMesh::UpdateVertexBuffer()
     hr = devicecontext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData);
     if (SUCCEEDED(hr))
     {
-        //			memcpy_s(pData.pData, pData.RowPitch, (void*)m_deformvertices.data(), sizeof(aiVertex)*m_deformvertices.size());
         memcpy_s(pData.pData, pData.RowPitch, (void *)m_vertices.data(), sizeof(tagAssimpVertex) * m_vertices.size());
         devicecontext->Unmap(m_vertexBuffer, 0);
     }
