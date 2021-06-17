@@ -20,6 +20,7 @@ VS_OUTPUT main(
 	float4x4 comb = (float4x4)0;
 	for (int i = 0; i < 4; i++)
 	{
+		//親から自分までを計算して座標生成?
 		comb += BoneMatrix[BoneIndex[i]] * BoneWeight[i];
 	}
 
@@ -37,7 +38,7 @@ VS_OUTPUT main(
 	N = mul(N, World);			// 法線ベクトルにワールド変換行列を掛けて方向を変える
 	N = normalize(N);			// 正規化
 
-	output.Normal = N;
+	output.Normal = N;          //ピクセルシェーダーでつかうために格納
 
 	float4 L = LightDirection;
 	L = normalize(L);

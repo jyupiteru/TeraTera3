@@ -23,8 +23,23 @@ class ComLight : public ComponentBase
      */
     ALIGN16 struct ConstantBufferLight
     {
-        DirectX::XMFLOAT4 LightDirection;
-        DirectX::XMFLOAT4 EyePos;
+        /**
+         * @brief 正規化していない光のさす方向の情報
+         */
+        DirectX::XMFLOAT3 LightDirection;
+
+        float pad; //穴埋め用変数
+
+        /**
+         * @brief カメラの座標情報？
+         */
+        DirectX::XMFLOAT3 EyePos;
+
+        float pad2; //穴埋め用変数２
+
+        /**
+         * @brief ライトの環境光情報
+         */
         DirectX::XMFLOAT4 Ambient;
     };
 
@@ -36,11 +51,11 @@ class ComLight : public ComponentBase
     /**
      * @brief ライトの種類
      */
-    enum class E_LightType
+    enum class E_TYPE_LIGHT
     {
         /**
          * @brief ライトの方向とカラーのみを持つライト
-         * @n 位置情報がないので移動しても光の強さ、方向は変わらない
+         * @n 位置情報がないので移動しても光の強さ、方向は変わらない = めちゃくちゃ遠くからあたっているイメージ 影変えるには方向を変える必要あり
          */
         DIRECTION,
 
@@ -71,20 +86,35 @@ public:
     /**
      * @brief 光のタイプを決めるのに使用
      */
-    E_LightType m_type;
+    E_TYPE_LIGHT m_typeLight;
 
     /**
-     * @brief ？？？
+     * @brief 色の方向情報
+     * @n どの角度からあたるかなどを入れる めんどくさかったらライトの座標入れてもいいかも(正規化するので)
      */
-    CVector4<float> m_ambient;
+    CVector3<float> m_lightDirection;
 
+    /**
+     * @brief 環境光の色
+     * @n 各種モデル等に反映されます
+     */
+    CVector4<float> m_lightColor;
+
+public:
     virtual void Init() override;
-
     virtual void Uninit() override;
-
     virtual void Ready() override;
-
     virtual void Update() override;
-
     virtual void ImGuiDraw(unsigned int windowid) override;
+
+private:
+    /**
+     * @brief ライトの更新処理
+     */
+    void UpdateLight();
+
+    /**
+     * @brief ディレクションライトの更新処理
+     */
+    void UpdateDirectionLight();
 };

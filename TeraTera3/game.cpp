@@ -103,33 +103,29 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 
 	{
 		// カメラ変換行列初期化
-		XMFLOAT3 eye = {0, 0, -30};	 // 視点
-		XMFLOAT3 lookat = {0, 0, 0}; // 注視点
-		XMFLOAT3 up = {0, 1, 0};	 // 上向きベクトル
+		XMFLOAT3 eye = { 0, 0, -30 };	 // 視点
+		XMFLOAT3 lookat = { 0, 0, 0 }; // 注視点
+		XMFLOAT3 up = { 0, 1, 0 };	 // 上向きベクトル
 
 		//カメラオブジェクトを生成
 		auto camera = GameObject::MakeNewObject("camera", E_TYPE_OBJECT::NONE);
 		camera->AddComponent<ComCamera>()->SetCamera(eye, lookat, up);
 
 		camera->GetComponent<ComCamera>()->SetProjection(1.0f, 100000.0f,
-														 XM_PIDIV2, SCREEN_WIDTH, SCREEN_HEIGHT);
+			XM_PIDIV2, SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera->AddComponent<ComShader>();
 		camera->DontDestroyOnLoad();
 		camera->m_objectUpdatePriority.SetValue(-20);
 
 		// 平行光源初期化
-		DirectX::XMFLOAT4 lightpos = {1, 1, -1, 0}; // 平行光源の方向をセット
+		DirectX::XMFLOAT3 lightdir = { 1, 1, -1}; // 平行光源の方向をセット
 
 		//シーンに設置するライトを生成
 		auto light = GameObject::MakeNewObject("light", E_TYPE_OBJECT::NONE);
-		light->GetComponent<ComTransform>()->m_worldPosition.SetValue(lightpos.x,
-																	  lightpos.y,
-																	  lightpos.z);
 
-		light->AddComponent<ComLight>()->m_ambient.SetValue(0.0f,
-															0.0f,
-															0.0f,
-															0.0f); // 環境光
+		ComLight* comlight = light->AddComponent<ComLight>();
+		comlight->m_lightColor.SetValue(256.0f, 256.0f, 256.0f, 1.0f); // 環境光
+		comlight->m_lightDirection.SetValue(lightdir.x, lightdir.y, lightdir.z);
 
 		light->m_objectUpdatePriority.SetValue(-20);
 		light->DontDestroyOnLoad();

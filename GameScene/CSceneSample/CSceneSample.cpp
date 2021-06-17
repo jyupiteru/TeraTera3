@@ -119,6 +119,23 @@ void CSceneSample::Init()
         collider->m_draw = true;
     }
 
+    { //1体目のアニメーションモデル
+        auto model2 = GameObject::MakeNewObject("animmodel3", E_TYPE_OBJECT::MODEL3D);
+        model2->m_transform->m_worldPosition.SetValue(0, -30, -100);
+        model2->m_transform->m_size.SetValue(100, 100, 100);
+        model2->m_transform->m_angle.SetValue(0, 0, 0);
+        //model2->m_transform->m_vector.SetValue(-1, 0, 0);
+        model2->AddComponent<Test2>();
+        auto assimp = model2->GetComponent<Com3DModelAssimp>();
+        assimp->LoadModelData("Player/idle_run.fbx", "Player/");
+
+        auto collider = model2->AddComponent<ComBoxCollider3D>();
+        //collider->m_draw = true;
+        collider->m_isFirstJustSize = true;
+        collider->m_isTrigger.SetValue(true);
+        collider->m_draw = true;
+    }
+
      { //2体目のアニメーションモデル
          auto model2 = GameObject::MakeNewObject("animmodel2", E_TYPE_OBJECT::MODEL3D);
          model2->m_transform->m_worldPosition.SetValue(-100, 50, 100);
