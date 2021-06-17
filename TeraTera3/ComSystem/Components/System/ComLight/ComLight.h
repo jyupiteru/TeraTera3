@@ -96,9 +96,9 @@ public:
 
     /**
      * @brief 環境光の色
-     * @n 各種モデル等に反映されます
+     * @n 各種モデル等に反映される
      */
-    CVector4<float> m_lightColor;
+    CVector3<float> m_lightColor;
 
 public:
     virtual void Init() override;

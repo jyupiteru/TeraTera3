@@ -1,8 +1,9 @@
 
 ////
-// ランバートの拡散反射モデルのピクセルシェーダー
+//	ランバートの拡散反射のピクセルシェーダー
 // 
-// 法線必須
+//	法線必須
+//	カメラ色反映、オブジェクト色反映なしなので注意
 ////
 
 
@@ -23,10 +24,13 @@ float4 main(VS_OUTPUT input) : SV_Target
 	float d = dot(L, N);		//法線と光の方向を内積して0と比較 大きいほうを格納
 	d = max (0.0,d);            //0とdの大きいほうを格納する
 
-	float4 diffuse = diffuseMaterial * d * Ambient;
+	float4 diffuse = d * Ambient;	//環境光がどれくらい影響があるか計算
+	diffuse *=  diffuseMaterial;	//??
 
-	float4 texcol = g_Tex.Sample(g_SamplerLinear, input.Tex);
-	float4 col = Ambient + diffuse * texcol;
-	col.a = 1.0f;
+	float4 texcol = g_Tex.Sample(g_SamplerLinear, input.Tex);	//マテリアル色?の取得
+	float4 col =  diffuse * texcol;								//マテリアル色を環境光とかける
+
+	col.a = 1.0f;	//?
+
 	return col;
 }
