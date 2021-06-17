@@ -114,9 +114,7 @@ void Com3DModelAssimp::Draw()
         m_pShader->SetVertexShader();
 
         // モデル描画
-        m_pNowModelData->modeldata.Draw(CDirectXGraphics::GetInstance().GetImmediateContext(),
-                                        (DirectX::XMFLOAT4X4 &)m_modelMatrix,
-                                        m_animationData);
+        m_pNowModelData->modeldata.Draw((DirectX::XMFLOAT4X4&)m_modelMatrix, m_animationData);
     }
 }
 
