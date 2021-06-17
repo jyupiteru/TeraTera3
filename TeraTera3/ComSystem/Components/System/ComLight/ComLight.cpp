@@ -65,12 +65,12 @@ void ComLight::Update()
 
 void ComLight::ImGuiDraw(unsigned int windowid)
 {
-    auto [ambient_x, ambient_y, ambient_z, ambient_a] = m_lightColor.GetValue();
+    auto [ambient_x, ambient_y, ambient_z] = m_lightColor.GetValue();
     ImGui::BulletText("Ambient");
     ImGui::SameLine();
     HelpMarker((const char *)u8"環境光のこと");
     ImGui::Indent();
-    ImGui::Text("X : %d, Y : %d, Z : %d, A : %d", ambient_x, ambient_y, ambient_z, ambient_a);
+    ImGui::Text("X : %d, Y : %d, Z : %d", ambient_x, ambient_y, ambient_z);
 }
 
 //================================================================================================
@@ -113,8 +113,7 @@ void ComLight::UpdateDirectionLight()
 
     std::tie(cb.Ambient.x,
              cb.Ambient.y,
-             cb.Ambient.z,
-             cb.Ambient.w) = m_lightColor.GetValue();
+             cb.Ambient.z) = m_lightColor.GetValue();
 
     cb.Ambient.x /= 256.0f;
     cb.Ambient.y /= 256.0f;

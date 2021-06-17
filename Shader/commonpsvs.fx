@@ -42,6 +42,7 @@ cbuffer ConstantBufferViewPort : register(b5)
 
 cbuffer ConstantBufferBoneMatrix : register(b6)
 {
+	float4 AssimpModelColor;
 	matrix BoneMatrix[400];
 }
 

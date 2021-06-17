@@ -72,7 +72,8 @@ void CSceneSample2::Init()
         Sphere->AddComponent<ComSphere>();
         Sphere->m_transform->m_worldPosition.SetValue(40, 0, 100);
         Sphere->m_transform->m_size.SetValue(100, 100, 100);
-        Sphere->m_transform->m_color.SetValue(0, 256, 0, 0.3f);
+        Sphere->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
+        Sphere->GetComponent<ComShader>()->LoadPixelShader("pslambert.fx", true);
         // box->m_transform->m_angle.SetValue(0, 0, 0);
     }
     //{
@@ -91,6 +92,7 @@ void CSceneSample2::Init()
         model2->m_transform->m_size.SetValue(100, 100, 100);
         model2->m_transform->m_angle.SetValue(0, 0, 0);
         model2->GetComponent<Com3DModelAssimp>()->LoadModelData("Hal/hal.pmx", "HAL/");
+        model2->GetComponent<ComShader>()->LoadPixelShader("pslambert.fx", true);
         model2->AddComponent<Test2>();
 
         auto collider = model2->AddComponent<ComBoxCollider3D>();
@@ -120,6 +122,7 @@ void CSceneSample2::Init()
         box2->m_transform->m_worldPosition.SetValue(-100, 0, 100);
         box2->m_transform->m_size.SetValue(100, 100, 100);
         box2->m_transform->m_color.SetValue(0, 256, 0, 0.5f);
+        box2->GetComponent<ComShader>()->LoadPixelShader("pslambert.fx", true);
         auto collider = box2->AddComponent<ComBoxCollider3D>();
         collider->m_draw = true;
         collider->m_isFirstJustSize = true;

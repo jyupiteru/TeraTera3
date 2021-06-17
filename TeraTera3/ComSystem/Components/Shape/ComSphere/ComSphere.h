@@ -50,7 +50,7 @@ private:
         DirectX::XMFLOAT3 Pos = {0.0f, 0.0f, 0.0f};
 
         /**
-		 * @brief 正規化したベクトル？
+		 * @brief   法線
 		 */
         DirectX::XMFLOAT3 Normal = {0.0f, 0.0f, 0.0f};
 

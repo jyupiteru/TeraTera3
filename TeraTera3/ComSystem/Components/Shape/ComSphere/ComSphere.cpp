@@ -21,8 +21,26 @@ unsigned int ComSphere::m_classCounter = 0;
 void ComSphere::Init()
 {
 	m_typeComponent.SetValue(E_TYPE_COMPONENT::OBJECT3D);
-	m_divX.SetValue(15);
-	m_divY.SetValue(15);
+	m_divX.SetValue(10);
+	m_divY.SetValue(10);
+
+	// 頂点データの定義
+	D3D11_INPUT_ELEMENT_DESC layout[] =
+		{
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
+	unsigned int numElements = ARRAYSIZE(layout);
+
+	//専用シェーダの読み込み
+	m_pComShader = m_gameObject->GetComponent<ComShader>();
+	if (m_pComShader == nullptr)
+	{
+		m_pComShader = m_gameObject->AddComponent<ComShader>();
+	}
+	m_pComShader->LoadVertexShader("vs3dshape.fx", layout, numElements, true);
+	m_pComShader->LoadPixelShader("ps3dshape.fx", true);
 }
 
 //================================================================================================
@@ -55,24 +73,6 @@ void ComSphere::Ready()
 		}
 	}
 	m_classCounter++;
-
-	// 頂点データの定義
-	D3D11_INPUT_ELEMENT_DESC layout[] =
-		{
-			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		};
-	unsigned int numElements = ARRAYSIZE(layout);
-
-	//専用シェーダの読み込み
-	m_pComShader = m_gameObject->GetComponent<ComShader>();
-	if (m_pComShader == nullptr)
-	{
-		m_pComShader = m_gameObject->AddComponent<ComShader>();
-	}
-	m_pComShader->LoadVertexShader("vs3dshape.fx", layout, numElements, true);
-	m_pComShader->LoadPixelShader("ps3dshape.fx", true);
 }
 
 //================================================================================================
@@ -205,6 +205,7 @@ void ComSphere::CreateVertex()
 
 		for (unsigned int x = 0; x <= m_divX.GetValue(); x++)
 		{
+			//何かわからんけどミスある
 			azimuth = (2 * PI * (float)x) / (float)m_divX.GetValue(); // 方位角をセット
 
 			// 頂点座標セット
@@ -250,11 +251,11 @@ void ComSphere::ChangeColors()
 	if (m_pVertexBuffer == nullptr)
 	{
 		// 頂点バッファ作成（後で変更可能なもの）
-		bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(),	  //デバイス
-										   sizeof(tagVertex), //ストライド（1頂点当たりのバイト数）
-										   vertices,		  //頂点数
-										   m_vertex,		  //初期化データの先頭アドレス
-										   &m_pVertexBuffer); //頂点バッファ
+		bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
+										   sizeof(tagVertex),							  //ストライド（1頂点当たりのバイト数）
+										   vertices,									  //頂点数
+										   m_vertex,									  //初期化データの先頭アドレス
+										   &m_pVertexBuffer);							  //頂点バッファ
 		if (!sts)
 		{
 			MessageBox(nullptr, "ComBox ChangeColor Error", "error", MB_OK);

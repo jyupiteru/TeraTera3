@@ -108,6 +108,7 @@ void CSceneSample::Init()
         model2->m_transform->m_size.SetValue(100, 100, 100);
         model2->m_transform->m_angle.SetValue(0, 0, 0);
         model2->m_transform->m_vector.SetValue(-1, 0, 0);
+        model2->m_transform->m_color.SetValue(0, 100, 0, 0.5f);
         model2->AddComponent<Test2>();
         auto assimp = model2->GetComponent<Com3DModelAssimp>();
         assimp->LoadModelData("Player/idle_run.fbx", "Player/");

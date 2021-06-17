@@ -19,7 +19,6 @@ struct tagAssimpVertex
 	DirectX::XMFLOAT2 m_Tex;	//	UV座標
 	int m_BoneIndex[4];			//	本来はボーンインデックス
 	float m_BoneWeight[4];		//	ウェイト値
-	DirectX::XMFLOAT4 color;	//	オブジェクトの色情報
 	int m_BoneNum;				//	ボーン数
 	std::string m_BoneName[4];	//	本来はボーンインデックスで管理するべき
 };
@@ -58,8 +57,9 @@ struct tagBONE
 	aiMatrix4x4 OffsetMatrix;	 // ボーンオフセット行列
 };
 
-struct tagConstantBufferBoneMatrix // ボーン行列格納用のコンスタントバッファ
+struct tagConstantBufferBoneMatrix // ボーン行列と色情報格納用のコンスタントバッファ
 {
+	DirectX::XMFLOAT4 color;
 	DirectX::XMFLOAT4X4 mBoneMatrix[400];
 };
 
