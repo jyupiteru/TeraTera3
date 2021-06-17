@@ -11,7 +11,8 @@
 #include "../../../Core/ComponentBase.h"
 #include "../ComShader/ComShader.h"
 
-#include "../../../../WindowsSystem/Model/Assimp/ModelData/ModelData.h"
+// #include "../../../../WindowsSystem/Model/Assimp/ModelData/ModelData.h"
+#include "../../../../System/AssimpModel/CAssimpModelData/CAssimpModelData.h"
 #include "../../../../ResourceContainer/CContainer.h"
 
 #pragma once
@@ -26,7 +27,7 @@ struct tagAssimpModelData
     /**
          * @brief モデルの情報
          */
-    ModelData modeldata;
+    CAssimoModelData modeldata;
 
     /**
          * @brief 各軸の最大値

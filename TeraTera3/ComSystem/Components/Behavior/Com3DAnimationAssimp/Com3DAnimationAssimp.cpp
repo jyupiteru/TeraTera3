@@ -92,7 +92,7 @@ void Com3DAnimationAssimp::Update()
         const aiScene *scene = m_pNowAnimationData->m_listAnimation[m_nowAnimation.first]->GetScene();
         tagAssimpModelData *data = m_pCom3DModel->m_pNowModelData;
 
-        data->modeldata.Update(m_gameObject->m_transform->GetMatrix(), scene,
+        data->modeldata.UpdateAnimation(m_gameObject->m_transform->GetMatrix(), scene,
                                m_nowAnimation.second, m_pCom3DModel->m_animationData);
 
         //アニメーションの速度を調整する
@@ -143,8 +143,8 @@ int Com3DAnimationAssimp::LoadAnimation(std::string_view groupname, std::string_
     //このアニメーションを読み込んだことがない
     if (flag)
     {
-        std::shared_ptr<AnimationDataAssimp> animdata;
-        animdata = std::make_shared<AnimationDataAssimp>();
+        std::shared_ptr<CAssimpAnimationData> animdata;
+        animdata = std::make_shared<CAssimpAnimationData>();
 
         //フォルダを移動
         std::string str = "Assets/Models/";

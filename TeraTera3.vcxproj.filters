@@ -36,21 +36,6 @@
     <ClInclude Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\animationdataassimp\animationdataassimp.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\ModelData\ModelData.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Model\Assimp\vertexproto.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -297,7 +282,7 @@
     <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpScene\CAssimpScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAsnimationData.h">
+    <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAnimationData.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="TeraTera3\System\AssimpModel\AssimpVertexsData.h">
@@ -318,18 +303,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\animationdataassimp\animationdataassimp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\assimpscene\assimpscene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\Mesh\mesh.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\Model\Assimp\ModelData\ModelData.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.cpp">
@@ -509,7 +482,7 @@
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpScene\CAssimpScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAsnimationData.cpp">
+    <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAnimationData.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

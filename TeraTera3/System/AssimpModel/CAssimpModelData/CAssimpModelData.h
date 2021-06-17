@@ -15,13 +15,12 @@
 #include "CAssimpScene/CAssimpScene.h"
 #include "Cmesh/CMesh.h"
 #include "../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
-#include "../CAssimpAnimationData/CAssimpAsnimationData.h"
+#include "../CAssimpAnimationData/CAssimpAnimationData.h"
 
 class Com3DModelAssimp;
 
 /**
  * @brief アニメーションの際に必要になる各種データ
- * @todo これは一時的(再編成が大変)なので絶対に無くすこと！
  */
 struct tagAssimpAnimationData
 {
@@ -138,10 +137,7 @@ public:
      * @brief メッシュを取得する処理
      * @return const std::vector<Mesh>& 取得したいメッシュ情報
      */
-    const std::vector<CMesh> &GetMeshes() const
-    {
-        return m_meshes;
-    }
+    const std::vector<CMesh> &GetMeshes() const;
 
     /**
      * @brief マテリアルを読み込む処理
@@ -162,16 +158,16 @@ private:
      * @param _node 解析したいノードの情報
      * @param _scene ??
      */
-    void processNode(aiNode *_node, const aiScene *_scene);
+    void ProcessNode(aiNode *_node, const aiScene *_scene);
 
-        /**
+    /**
      * @brief 目種を解析する処理
      * @param mesh
      * @param scene
      * @param meshidx
      * @return Mesh 解析したメッシュ
      */
-        CMesh processMesh(aiMesh *_mesh, const aiScene *_scene, int _meshidx);
+    CMesh ProcessMesh(aiMesh *_mesh, const aiScene *_scene, int _meshidx);
 
     /**
      * @brief マテリアルに対応したテクスチャを取得する処理
@@ -181,7 +177,7 @@ private:
      * @param _scene
      * @return std::vector<Texture>
      */
-    std::vector<tagTexture> loadMaterialTextures(aiMaterial *_mat, aiTextureType _type, std::string _typeName, const aiScene *_scene);
+    std::vector<tagTexture> LoadMaterialTextures(aiMaterial *_mat, aiTextureType _type, std::string _typeName, const aiScene *_scene);
 
     /**
      * @brief ボーンを生成する処理

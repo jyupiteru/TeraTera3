@@ -1,10 +1,9 @@
-#include <assimp\Importer.hpp>
+﻿#include <assimp\Importer.hpp>
 #include <assimp\scene.h>
 #include <assimp\postprocess.h>
 #include <assimp/cimport.h>
 #include <unordered_map>
 #include <vector>
-#include "../CAssimpAnimationData/CAssimpAsnimationData.h"
 #include "../../../WindowsSystem/Shader/Shader.h"
 #include "CAssimpModelData.h"
 #include "../AssimpVertexsData.h"
@@ -17,78 +16,203 @@ CAssimoModelData::CAssimoModelData()
 {
 }
 
+//================================================================================================
+//================================================================================================
+
 CAssimoModelData::~CAssimoModelData()
 {
     Uninit();
 }
 
-// マテリアルに関連してるテクスチャを取得する
-std::vector<tagTexture> CAssimoModelData::loadMaterialTextures(
-    aiMaterial *mtrl,
-    aiTextureType type,
-    std::string typeName,
-    const aiScene *scene)
+//================================================================================================
+//================================================================================================
+
+void CAssimoModelData::Uninit()
 {
-    std::vector<tagTexture> textures; // このマテリアルに関連づいたDIFFUSEテクスチャのリスト
-    ID3D11Device *dev;
-    ID3D11DeviceContext *devcon;
-
-    dev = CDirectXGraphics::GetInstance().GetDXDevice();
-    devcon = CDirectXGraphics::GetInstance().GetImmediateContext();
-
-    // マテリアルからテクスチャ個数を取得し(基本は1個)ループする
-    for (unsigned int i = 0; i < mtrl->GetTextureCount(type); i++)
+    // テクスチャリソースを解放する
+    for (auto tex : m_texturesloaded)
     {
-        aiString str;
-
-        // マテリアルからｉ番目のテクスチャファイル名を取得する
-        mtrl->GetTexture(type, i, &str);
-
-        // もし既にロードされたテクスチャであればロードをスキップする
-        bool skip = false;
-
-        // ロード済みテクスチャ数分ループする
-        for (unsigned int j = 0; j < m_texturesloaded.size(); j++)
+        if (tex.texture != nullptr)
         {
-            // ファイル名が同じであったら読み込まない
-            if (std::strcmp(m_texturesloaded[j].path.c_str(), str.C_Str()) == 0)
-            {
-                // 読み込み済みのテクスチャ情報をDIFFUSEテクスチャのリストにセット
-                textures.push_back(m_texturesloaded[j]);
-                skip = true;
-                break;
-            }
-        }
-        if (!skip)
-        { // まだ読み込まれていなかった場合
-            tagTexture tex;
-
-            std::string filename = std::string(str.C_Str());
-            filename = ExtractFileName(filename, "\\/"); // ファイル名を取得
-            filename = m_directory + filename;           // リソースディレクトリ＋ファイル名
-                                                         // ts			MessageBox(nullptr, filename.c_str(), "load tex", MB_OK);
-
-            // SRV生成
-            bool sts = CreateSRVfromFile(
-                filename.c_str(),
-                dev, devcon, &tex.resource, &tex.texture);
-            if (!sts)
-            {
-                MessageBox(nullptr, "Texture couldn't be loaded", filename.c_str(), MB_ICONERROR | MB_OK);
-            }
-
-            tex.type = typeName;
-            tex.path = str.C_Str();
-            // テクスチャ情報をDIFFUSEテクスチャのリストにセット
-            textures.push_back(tex);
-            this->m_texturesloaded.push_back(tex); // このモデルに関連づいたテクスチャリストにセット
+            tex.texture->Release();
+            tex.resource->Release();
         }
     }
 
-    return textures;
+    // メッシュの解放
+    for (int i = 0; i < m_meshes.size(); i++)
+    {
+        m_meshes[i].Uninit();
+    }
+
+    // 定数バッファ解放
+    if (m_constantbufferbonematrix)
+    {
+        m_constantbufferbonematrix->Release();
+        m_constantbufferbonematrix = nullptr;
+    }
+
+    // assimp scene 解放
+    m_assimpscene.Exit();
 }
 
-// マテリアルデータを取得する
+//================================================================================================
+//================================================================================================
+
+void CAssimoModelData::UpdateAnimation(const DirectX::XMFLOAT4X4 &mtxworld, const aiScene *animationscene, unsigned int animno, tagAssimpAnimationData &animationdata)
+{ // アニメーションコンテナ
+
+    // // アニメーションファイル番号に該当するシーン情報を取得する（アニメーションデータ）
+    // const aiScene *s = animationcontainer[animfileno]->GetScene();
+
+    // アニメーションデータを持っているか？
+    if (animationscene->HasAnimations())
+    {
+        //アニメーションデータからボーンマトリクス算出
+
+        // アニメーションデータ取得
+        aiAnimation *animation = animationscene->mAnimations[animno];
+
+        // ボーンの数だけループ
+        for (unsigned int c = 0; c < animation->mNumChannels; c++)
+        {
+            aiNodeAnim *nodeAnim = animation->mChannels[c];
+
+            // ボーン存在チェック(アニメーションにのみ存在するボーンがあった場合は無視する)
+            auto itr = animationdata.m_listBone.find(nodeAnim->mNodeName.C_Str());
+            if (itr != animationdata.m_listBone.end())
+            {
+                tagBONE *bone = &animationdata.m_listBone[nodeAnim->mNodeName.C_Str()];
+
+                int f1, f2;
+
+                f1 = animationdata.m_frame % nodeAnim->mNumRotationKeys; //簡易実装
+                aiQuaternion rot1 = nodeAnim->mRotationKeys[f1].mValue;  // クオータニオン
+
+                f1 = animationdata.m_frame % nodeAnim->mNumPositionKeys; //簡易実装
+                aiVector3D pos1 = nodeAnim->mPositionKeys[f1].mValue;
+
+                f2 = animationdata.m_preFrame % nodeAnim->mNumRotationKeys; //簡易実装
+                aiQuaternion rot2 = nodeAnim->mRotationKeys[f2].mValue;     // クオータニオン
+
+                f2 = animationdata.m_preFrame % nodeAnim->mNumPositionKeys; //簡易実装
+                aiVector3D pos2 = nodeAnim->mPositionKeys[f2].mValue;
+
+                // 補間
+                rot1.Interpolate(rot1, rot1, rot2, animationdata.m_factor);
+                pos1.x = pos1.x * (1.0f - animationdata.m_factor) + pos2.x * (animationdata.m_factor);
+                pos1.y = pos1.y * (1.0f - animationdata.m_factor) + pos2.y * (animationdata.m_factor);
+                pos1.z = pos1.z * (1.0f - animationdata.m_factor) + pos2.z * (animationdata.m_factor);
+
+                // ボーン行列を更新
+                bone->AnimationMatrix = aiMatrix4x4(
+                    aiVector3D(1.0f, 1.0f, 1.0f), // スケール値
+                    rot1,                         // 姿勢（クオータニオン）
+                    pos1);                        // 位置
+
+                if (animationdata.m_maxflame < nodeAnim->mNumRotationKeys)
+                {
+                    animationdata.m_maxflame = nodeAnim->mNumRotationKeys;
+                }
+            }
+        }
+
+        //再帰的にボーンマトリクスを更新
+        UpdateBoneMatrix(
+            m_assimpscene.GetScene()->mRootNode, // モデルデータのルートノードを指定
+            aiMatrix4x4(),                       // 	ワールド変換行列を頂点シェーダーで処理しているので単位行列を渡す
+            animationdata.m_listBone);
+    }
+
+    if (animationdata.m_cnt % INTERPOLATENUM == 0)
+    {
+        animationdata.m_preFrame = animationdata.m_frame;
+        animationdata.m_frame++;
+        animationdata.m_factor = 0;
+    }
+
+    animationdata.m_factor = 1.0f / (float)(animationdata.m_cnt % INTERPOLATENUM + 1);
+
+    animationdata.m_cnt++;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CAssimoModelData::Draw(DirectX::XMFLOAT4X4 &mtxworld, tagAssimpAnimationData &animationdata)
+{
+    // アニメーションデータを持っているか？
+    if (m_assimpscene.HasAnimation())
+    { // ボーン行列を定数バッファに反映させる
+        UpdateBoneMatrixConstantBuffer(animationdata.m_listBone);
+    }
+
+    // メッシュ数分ループしてモデルを描画する
+    for (int i = 0; i < m_meshes.size(); i++)
+    {
+        // ワールド変換行列
+        DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtxworld);
+        // 定数バッファセット処理
+        m_meshes[i].Draw();
+    }
+}
+
+//================================================================================================
+//================================================================================================
+
+bool CAssimoModelData::Load(std::string resourcefolder, std::string filename)
+{
+    bool sts = m_assimpscene.Init(filename);
+    if (!sts)
+    {
+        MessageBox(nullptr, "ModelData load error", "error", MB_OK);
+        return false;
+    }
+
+    // このモデルのテクスチャが存在するディレクトリ
+    m_directory = resourcefolder;
+
+    // ボーンマップを生成する
+    CreateBone(m_assimpscene.GetScene()->mRootNode);
+
+    // ボーンの配列位置を格納する
+    unsigned int num = 0;
+    for (auto &data : m_Bone)
+    {
+        data.second.idx = num;
+        num++;
+    }
+
+    // マテリアルを取得
+    LoadMaterial();
+
+    // ａｓｓｉｍｐノードを解析する
+    ProcessNode(m_assimpscene.GetScene()->mRootNode, m_assimpscene.GetScene());
+
+    // ボーン行列格納用の定数バッファを生成する
+    ID3D11Device *device;
+    device = CDirectXGraphics::GetInstance().GetDXDevice();
+
+    sts = CreateConstantBufferWrite(device, sizeof(tagConstantBufferBoneMatrix), &m_constantbufferbonematrix);
+    if (!sts)
+    {
+        MessageBox(nullptr, "constant buffer create(bonematrix) fail", "error", MB_OK);
+        return false;
+    }
+
+    return true;
+}
+
+//================================================================================================
+//================================================================================================
+
+const std::vector<CMesh> &CAssimoModelData::GetMeshes() const
+{
+    return m_meshes;
+}
+
+//================================================================================================
+//================================================================================================
 void CAssimoModelData::LoadMaterial()
 {
 
@@ -141,99 +265,10 @@ void CAssimoModelData::LoadMaterial()
     }
 }
 
-// ボーン名ＭＡＰを生成
-void CAssimoModelData::CreateBone(aiNode *node)
-{
-    tagBONE bone;
+//================================================================================================
+//================================================================================================
 
-    /*
-		struct BONE
-		{
-			//std::string Name;
-			aiMatrix4x4 Matrix;						// 初期配置行列
-			aiMatrix4x4 AnimationMatrix;			// ボーン行列
-			aiMatrix4x4 OffsetMatrix;				// ボーンオフセット行列
-		};
-
-		std::map<std::string, BONE> m_Bone;			//ボーンデータ（名前で参照）
-	*/
-
-    // ノード名をキーにしてボーン情報を保存
-    m_Bone[node->mName.C_Str()] = bone;
-
-    // 子供の数分ループしてボーン名ＭＡＰを生成
-    for (unsigned int n = 0; n < node->mNumChildren; n++)
-    {
-        CreateBone(node->mChildren[n]);
-    }
-}
-
-bool CAssimoModelData::Load(std::string resourcefolder,
-                     std::string filename)
-{
-    bool sts = m_assimpscene.Init(filename);
-    if (!sts)
-    {
-        MessageBox(nullptr, "ModelData load error", "error", MB_OK);
-        return false;
-    }
-
-    // このモデルのテクスチャが存在するディレクトリ
-    m_directory = resourcefolder;
-
-    // ボーンマップを生成する
-    CreateBone(m_assimpscene.GetScene()->mRootNode);
-
-    // ボーンの配列位置を格納する
-    unsigned int num = 0;
-    for (auto &data : m_Bone)
-    {
-        data.second.idx = num;
-        num++;
-    }
-
-    // マテリアルを取得
-    LoadMaterial();
-
-    // ａｓｓｉｍｐノードを解析する
-    processNode(m_assimpscene.GetScene()->mRootNode, m_assimpscene.GetScene());
-
-    // ボーン行列格納用の定数バッファを生成する
-    ID3D11Device *device;
-    device = CDirectXGraphics::GetInstance().GetDXDevice();
-
-    sts = CreateConstantBufferWrite(device, sizeof(tagConstantBufferBoneMatrix), &m_constantbufferbonematrix);
-    if (!sts)
-    {
-        MessageBox(nullptr, "constant buffer create(bonematrix) fail", "error", MB_OK);
-        return false;
-    }
-
-    return true;
-}
-
-// ３Ｄモデル描画
-void CAssimoModelData::Draw(DirectX::XMFLOAT4X4 &mtxworld,                     tagAssimpAnimationData &animationdata)
-{
-    // アニメーションデータを持っているか？
-    if (m_assimpscene.HasAnimation())
-    { // ボーン行列を定数バッファに反映させる
-        UpdateBoneMatrixConstantBuffer(animationdata.m_listBone);
-    }
-
-    // メッシュ数分ループしてモデルを描画する
-    for (int i = 0; i < m_meshes.size(); i++)
-    {
-        // ワールド変換行列
-        DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtxworld);
-        // 定数バッファセット処理
-        m_meshes[i].Draw();
-    }
-}
-
-void CAssimoModelData::ChangeAnimation(const aiScene *animationscene,
-                                unsigned int animno,
-                                tagAssimpAnimationData &animationdata)
+void CAssimoModelData::ChangeAnimation(const aiScene *animationscene, unsigned int animno, tagAssimpAnimationData &animationdata)
 {
     // アニメーションデータを持っているか？
     if (animationscene->HasAnimations())
@@ -259,12 +294,36 @@ void CAssimoModelData::ChangeAnimation(const aiScene *animationscene,
         animationdata.m_TickPerSecond = static_cast<float>(animation->mTicksPerSecond);
     }
 }
-// メッシュの解析
-CMesh CAssimoModelData::processMesh(aiMesh *mesh, const aiScene *scene, int meshidx)
+
+//================================================================================================
+//================================================================================================
+
+void CAssimoModelData::ProcessNode(aiNode *node, const aiScene *scene)
 {
-    std::vector<tagAssimpVertex> vertices;      // 頂点
-    std::vector<unsigned int> indices; // 面の構成情報
-    std::vector<tagTexture> textures;     // テクスチャ
+    // ノード内のメッシュの数分ループする
+    for (unsigned int i = 0; i < node->mNumMeshes; i++)
+    {
+        int meshindex = node->mMeshes[i];         // ノードのi番目メッシュのインデックスを取得
+        aiMesh *mesh = scene->mMeshes[meshindex]; // シーンからメッシュ本体を取り出す
+
+        m_meshes.push_back(this->ProcessMesh(mesh, scene, meshindex));
+    }
+
+    // 子ノードについても解析
+    for (unsigned int i = 0; i < node->mNumChildren; i++)
+    {
+        this->ProcessNode(node->mChildren[i], scene);
+    }
+}
+
+//================================================================================================
+//================================================================================================
+
+CMesh CAssimoModelData::ProcessMesh(aiMesh *mesh, const aiScene *scene, int meshidx)
+{
+    std::vector<tagAssimpVertex> vertices; // 頂点
+    std::vector<unsigned int> indices;     // 面の構成情報
+    std::vector<tagTexture> textures;      // テクスチャ
     tagMaterial mtrl;
 
     // 頂点情報を取得
@@ -364,7 +423,7 @@ CMesh CAssimoModelData::processMesh(aiMesh *mesh, const aiScene *scene, int mesh
         aiMaterial *material = scene->mMaterials[mtrlidx];
 
         // このマテリアルに関連づいたテクスチャを取り出す
-        std::vector<tagTexture> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", scene);
+        std::vector<tagTexture> diffuseMaps = this->LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", scene);
 
         // このメッシュで使用しているテクスチャを保存
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -383,6 +442,102 @@ CMesh CAssimoModelData::processMesh(aiMesh *mesh, const aiScene *scene, int mesh
 
     return CMesh(vertices, indices, textures, mtrl);
 }
+
+//================================================================================================
+//================================================================================================
+
+std::vector<tagTexture> CAssimoModelData::LoadMaterialTextures(aiMaterial *mtrl, aiTextureType type, std::string typeName, const aiScene *scene)
+{
+    std::vector<tagTexture> textures; // このマテリアルに関連づいたDIFFUSEテクスチャのリスト
+    ID3D11Device *dev;
+    ID3D11DeviceContext *devcon;
+
+    dev = CDirectXGraphics::GetInstance().GetDXDevice();
+    devcon = CDirectXGraphics::GetInstance().GetImmediateContext();
+
+    // マテリアルからテクスチャ個数を取得し(基本は1個)ループする
+    for (unsigned int i = 0; i < mtrl->GetTextureCount(type); i++)
+    {
+        aiString str;
+
+        // マテリアルからｉ番目のテクスチャファイル名を取得する
+        mtrl->GetTexture(type, i, &str);
+
+        // もし既にロードされたテクスチャであればロードをスキップする
+        bool skip = false;
+
+        // ロード済みテクスチャ数分ループする
+        for (unsigned int j = 0; j < m_texturesloaded.size(); j++)
+        {
+            // ファイル名が同じであったら読み込まない
+            if (std::strcmp(m_texturesloaded[j].path.c_str(), str.C_Str()) == 0)
+            {
+                // 読み込み済みのテクスチャ情報をDIFFUSEテクスチャのリストにセット
+                textures.push_back(m_texturesloaded[j]);
+                skip = true;
+                break;
+            }
+        }
+        if (!skip)
+        { // まだ読み込まれていなかった場合
+            tagTexture tex;
+
+            std::string filename = std::string(str.C_Str());
+            filename = ExtractFileName(filename, "\\/"); // ファイル名を取得
+            filename = m_directory + filename;           // リソースディレクトリ＋ファイル名
+                                                         // ts			MessageBox(nullptr, filename.c_str(), "load tex", MB_OK);
+
+            // SRV生成
+            bool sts = CreateSRVfromFile(
+                filename.c_str(),
+                dev, devcon, &tex.resource, &tex.texture);
+            if (!sts)
+            {
+                MessageBox(nullptr, "Texture couldn't be loaded", filename.c_str(), MB_ICONERROR | MB_OK);
+            }
+
+            tex.type = typeName;
+            tex.path = str.C_Str();
+            // テクスチャ情報をDIFFUSEテクスチャのリストにセット
+            textures.push_back(tex);
+            this->m_texturesloaded.push_back(tex); // このモデルに関連づいたテクスチャリストにセット
+        }
+    }
+
+    return textures;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CAssimoModelData::CreateBone(aiNode *node)
+{
+    tagBONE bone;
+
+    /*
+		struct BONE
+		{
+			//std::string Name;
+			aiMatrix4x4 Matrix;						// 初期配置行列
+			aiMatrix4x4 AnimationMatrix;			// ボーン行列
+			aiMatrix4x4 OffsetMatrix;				// ボーンオフセット行列
+		};
+
+		std::map<std::string, BONE> m_Bone;			//ボーンデータ（名前で参照）
+	*/
+
+    // ノード名をキーにしてボーン情報を保存
+    m_Bone[node->mName.C_Str()] = bone;
+
+    // 子供の数分ループしてボーン名ＭＡＰを生成
+    for (unsigned int n = 0; n < node->mNumChildren; n++)
+    {
+        CreateBone(node->mChildren[n]);
+    }
+}
+
+//================================================================================================
+//================================================================================================
 
 void CAssimoModelData::UpdateBoneMatrix(aiNode *node, aiMatrix4x4 matrix, std::map<std::string, tagBONE> &bonedata)
 {
@@ -412,141 +567,9 @@ void CAssimoModelData::UpdateBoneMatrix(aiNode *node, aiMatrix4x4 matrix, std::m
     }
 }
 
-void CAssimoModelData::UpdateAnimation(const DirectX::XMFLOAT4X4 &mtxworld,
-                       const aiScene *animationscene,
-                       unsigned int animno,
-                       tagAssimpAnimationData &animationdata)
-{ // アニメーションコンテナ
+//================================================================================================
+//================================================================================================
 
-    // // アニメーションファイル番号に該当するシーン情報を取得する（アニメーションデータ）
-    // const aiScene *s = animationcontainer[animfileno]->GetScene();
-
-    // アニメーションデータを持っているか？
-    if (animationscene->HasAnimations())
-    {
-        //アニメーションデータからボーンマトリクス算出
-
-        // アニメーションデータ取得
-        aiAnimation *animation = animationscene->mAnimations[animno];
-
-        // ボーンの数だけループ
-        for (unsigned int c = 0; c < animation->mNumChannels; c++)
-        {
-            aiNodeAnim *nodeAnim = animation->mChannels[c];
-
-            // ボーン存在チェック(アニメーションにのみ存在するボーンがあった場合は無視する)
-            auto itr = animationdata.m_listBone.find(nodeAnim->mNodeName.C_Str());
-            if (itr != animationdata.m_listBone.end())
-            {
-                tagBONE *bone = &animationdata.m_listBone[nodeAnim->mNodeName.C_Str()];
-
-                int f1, f2;
-
-                f1 = animationdata.m_frame % nodeAnim->mNumRotationKeys; //簡易実装
-                aiQuaternion rot1 = nodeAnim->mRotationKeys[f1].mValue;  // クオータニオン
-
-                f1 = animationdata.m_frame % nodeAnim->mNumPositionKeys; //簡易実装
-                aiVector3D pos1 = nodeAnim->mPositionKeys[f1].mValue;
-
-                f2 = animationdata.m_preFrame % nodeAnim->mNumRotationKeys; //簡易実装
-                aiQuaternion rot2 = nodeAnim->mRotationKeys[f2].mValue;     // クオータニオン
-
-                f2 = animationdata.m_preFrame % nodeAnim->mNumPositionKeys; //簡易実装
-                aiVector3D pos2 = nodeAnim->mPositionKeys[f2].mValue;
-
-                // 補間
-                rot1.Interpolate(rot1, rot1, rot2, animationdata.m_factor);
-                pos1.x = pos1.x * (1.0f - animationdata.m_factor) + pos2.x * (animationdata.m_factor);
-                pos1.y = pos1.y * (1.0f - animationdata.m_factor) + pos2.y * (animationdata.m_factor);
-                pos1.z = pos1.z * (1.0f - animationdata.m_factor) + pos2.z * (animationdata.m_factor);
-
-                // ボーン行列を更新
-                bone->AnimationMatrix = aiMatrix4x4(
-                    aiVector3D(1.0f, 1.0f, 1.0f), // スケール値
-                    rot1,                         // 姿勢（クオータニオン）
-                    pos1);                        // 位置
-
-                if (animationdata.m_maxflame < nodeAnim->mNumRotationKeys)
-                {
-                    animationdata.m_maxflame = nodeAnim->mNumRotationKeys;
-                }
-            }
-        }
-
-        //再帰的にボーンマトリクスを更新
-        UpdateBoneMatrix(
-            m_assimpscene.GetScene()->mRootNode, // モデルデータのルートノードを指定
-            aiMatrix4x4(),                       // 	ワールド変換行列を頂点シェーダーで処理しているので単位行列を渡す
-            animationdata.m_listBone);
-    }
-
-    if (animationdata.m_cnt % INTERPOLATENUM == 0)
-    {
-        animationdata.m_preFrame = animationdata.m_frame;
-        animationdata.m_frame++;
-        animationdata.m_factor = 0;
-    }
-
-    animationdata.m_factor = 1.0f / (float)(animationdata.m_cnt % INTERPOLATENUM + 1);
-
-    animationdata.m_cnt++;
-}
-
-void CAssimoModelData::Uninit()
-{
-    // テクスチャリソースを解放する
-    for (auto tex : m_texturesloaded)
-    {
-        if (tex.texture != nullptr)
-        {
-            tex.texture->Release();
-            tex.resource->Release();
-        }
-    }
-
-    // メッシュの解放
-    for (int i = 0; i < m_meshes.size(); i++)
-    {
-        m_meshes[i].Uninit();
-    }
-
-    // 定数バッファ解放
-    if (m_constantbufferbonematrix)
-    {
-        m_constantbufferbonematrix->Release();
-        m_constantbufferbonematrix = nullptr;
-    }
-
-    // assimp scene 解放
-    m_assimpscene.Exit();
-
-    // シーン(アニメーション用の)の解放
-    /*for (auto s : m_sceneAnimContainer)
-	{
-		aiReleaseImport(s);
-	}*/
-}
-
-// ノードの解析
-void CAssimoModelData::processNode(aiNode *node, const aiScene *scene)
-{
-    // ノード内のメッシュの数分ループする
-    for (unsigned int i = 0; i < node->mNumMeshes; i++)
-    {
-        int meshindex = node->mMeshes[i];         // ノードのi番目メッシュのインデックスを取得
-        aiMesh *mesh = scene->mMeshes[meshindex]; // シーンからメッシュ本体を取り出す
-
-        m_meshes.push_back(this->processMesh(mesh, scene, meshindex));
-    }
-
-    // 子ノードについても解析
-    for (unsigned int i = 0; i < node->mNumChildren; i++)
-    {
-        this->processNode(node->mChildren[i], scene);
-    }
-}
-
-// ボーン定数バッファ更新
 void CAssimoModelData::UpdateBoneMatrixConstantBuffer(std::map<std::string, tagBONE> &listbone)
 {
 
