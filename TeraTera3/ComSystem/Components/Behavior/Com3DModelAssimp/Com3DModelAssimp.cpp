@@ -61,7 +61,21 @@ void Com3DModelAssimp::Uninit()
 void Com3DModelAssimp::Ready()
 {
     m_pShader = m_gameObject->GetComponent<ComShader>();
-    //m_pShader->LoadPixelShader("pslambert.fx", true);
+
+    // 頂点データの定義（アニメーション対応）
+    D3D11_INPUT_ELEMENT_DESC layout[] =
+        {
+            {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"BONEINDEX", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"BONEWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        };
+    unsigned int numElements = ARRAYSIZE(layout);
+
+    m_pShader->LoadVertexShader("VSAssimpModel.fx", layout, numElements, true);
+    m_pShader->LoadPixelShader("pslambert.fx", true);
 }
 
 //================================================================================================
@@ -115,7 +129,7 @@ void Com3DModelAssimp::Draw()
         m_pShader->SetVertexShader();
 
         // モデル描画
-        m_pNowModelData->modeldata.Draw((DirectX::XMFLOAT4X4&)m_modelMatrix, m_animationData);
+        m_pNowModelData->modeldata.Draw((DirectX::XMFLOAT4X4 &)m_modelMatrix, m_animationData);
     }
 }
 

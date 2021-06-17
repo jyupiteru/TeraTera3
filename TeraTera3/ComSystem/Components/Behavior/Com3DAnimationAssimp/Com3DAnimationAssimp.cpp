@@ -73,12 +73,14 @@ void Com3DAnimationAssimp::Ready()
             {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"BONEINDEX", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-            {"BONEWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
+            {"BONEWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        };
     unsigned int numElements = ARRAYSIZE(layout);
 
     ComShader *shader = this->m_gameObject->GetComponent<ComShader>();
-    shader->LoadVertexShader("vsoneskin.fx", layout, numElements, true);
+    shader->LoadVertexShader("VSOneskin.fx", layout, numElements, true);
 }
 
 //================================================================================================
@@ -93,7 +95,7 @@ void Com3DAnimationAssimp::Update()
         tagAssimpModelData *data = m_pCom3DModel->m_pNowModelData;
 
         data->modeldata.UpdateAnimation(m_gameObject->m_transform->GetMatrix(), scene,
-                               m_nowAnimation.second, m_pCom3DModel->m_animationData);
+                                        m_nowAnimation.second, m_pCom3DModel->m_animationData);
 
         //アニメーションの速度を調整する
         ChangeAnimationFrame();
