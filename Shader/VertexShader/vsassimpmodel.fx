@@ -9,7 +9,6 @@ VS_OUTPUT main(
 	float4 Pos		:	POSITION,
 	float4 Normal : NORMAL,
 	float2 Tex : TEXCOORD,
-	float4 Color : COLOR,
 	int4   BoneIndex : BONEINDEX,
 	float4 BoneWeight : BONEWEIGHT
 )
@@ -30,7 +29,7 @@ VS_OUTPUT main(
 
 	output.Normal = N;          //ピクセルシェーダーでつかうために格納
 
-	output.Color = Color;
+	output.Color = AssimpModelColor;
 
 	return output;
 }

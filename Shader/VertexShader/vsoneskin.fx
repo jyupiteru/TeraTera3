@@ -1,5 +1,5 @@
 ///////////////////
-//	Assimp‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒ‚ƒfƒ‹ê—p‚ÌƒVƒF[ƒ_
+//	Assimpã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ¢ãƒ‡ãƒ«å°‚ç”¨ã®ã‚·ã‚§ãƒ¼ãƒ€
 ///////////////////
 
 #include"../commonpsvs.fx"
@@ -9,18 +9,17 @@ VS_OUTPUT main(
 	float4 Pos		:	POSITION,
 	float4 Normal : NORMAL,
 	float2 Tex : TEXCOORD,
-	float4 Color : COLOR,
 	int4   BoneIndex : BONEINDEX,
 	float4 BoneWeight : BONEWEIGHT
-	)
+)
 {
 	VS_OUTPUT output = (VS_OUTPUT)0;
 
-	// ’¸“_ƒuƒŒƒ“ƒh‚Ìˆ—
+	// é ‚ç‚¹ãƒ–ãƒ¬ãƒ³ãƒ‰ã®å‡¦ç†
 	float4x4 comb = (float4x4)0;
 	for (int i = 0; i < 4; i++)
 	{
-		//e‚©‚ç©•ª‚Ü‚Å‚ğŒvZ‚µ‚ÄÀ•W¶¬?
+		//è¦ªã‹ã‚‰è‡ªåˆ†ã¾ã§ã‚’è¨ˆç®—ã—ã¦åº§æ¨™ç”Ÿæˆ?
 		comb += BoneMatrix[BoneIndex[i]] * BoneWeight[i];
 	}
 
@@ -32,15 +31,15 @@ VS_OUTPUT main(
 	output.Pos = mul(output.Pos, Projection);
 
 	float4 N = Normal;
-	N.w = 0.0f;					// –@ü‚ÍƒxƒNƒgƒ‹‚È‚Ì‚Å‚v‚Ì’l‚ğ‚O‚É‚·‚éB
+	N.w = 0.0f;					// æ³•ç·šã¯ãƒ™ã‚¯ãƒˆãƒ«ãªã®ã§ï¼·ã®å€¤ã‚’ï¼ã«ã™ã‚‹ã€‚
 
-	N = mul(N, comb);			// –@üƒxƒNƒgƒ‹‚ÉƒRƒ“ƒrƒl[ƒVƒ‡ƒ“s—ñ‚ğŠ|‚¯‚Ä•ûŒü‚ğ•Ï‚¦‚é
-	N = mul(N, World);			// –@üƒxƒNƒgƒ‹‚Éƒ[ƒ‹ƒh•ÏŠ·s—ñ‚ğŠ|‚¯‚Ä•ûŒü‚ğ•Ï‚¦‚é
-	N = normalize(N);			// ³‹K‰»
+	N = mul(N, comb);			// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã«ã‚³ãƒ³ãƒ“ãƒãƒ¼ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’æ›ã‘ã¦æ–¹å‘ã‚’å¤‰ãˆã‚‹
+	N = mul(N, World);			// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ã«ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—ã‚’æ›ã‘ã¦æ–¹å‘ã‚’å¤‰ãˆã‚‹
+	N = normalize(N);			// æ­£è¦åŒ–
 
-	output.Normal = N;          //ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚Å‚Â‚©‚¤‚½‚ß‚ÉŠi”[
+	output.Normal = N;          //ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã§ã¤ã‹ã†ãŸã‚ã«æ ¼ç´
 
-	output.Color = Color;
+	output.Color = AssimpModelColor;
 
 	output.Tex = Tex;
 

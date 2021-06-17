@@ -121,8 +121,9 @@ public:
      * @brief 描画処理
      * @param _mtxworld オブジェクトの行列
      * @param _animationdata アニメーションの情報
+     * @param _color オブジェクトの色情報
      */
-    void Draw(DirectX::XMFLOAT4X4 &_mtxworld, tagAssimpAnimationData &_animationdata);
+    void Draw(DirectX::XMFLOAT4X4 &_mtxworld, tagAssimpAnimationData &_animationdata, DirectX::XMFLOAT4 _color);
 
     /**
      * @brief モデルを読み込む処理
@@ -197,5 +198,5 @@ private:
      * @brief ボーン行列を定数バッファに反映させる処理
      * @param _listbone
      */
-    void UpdateBoneMatrixConstantBuffer(std::map<std::string, tagBONE> &_listbone);
+    void UpdateBoneMatrixConstantBuffer(std::map<std::string, tagBONE> &_listbone, DirectX::XMFLOAT4 _color);
 };

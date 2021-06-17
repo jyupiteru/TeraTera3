@@ -139,12 +139,12 @@ void CAssimoModelData::UpdateAnimation(const DirectX::XMFLOAT4X4 &mtxworld, cons
 //================================================================================================
 //================================================================================================
 
-void CAssimoModelData::Draw(DirectX::XMFLOAT4X4 &mtxworld, tagAssimpAnimationData &animationdata)
+void CAssimoModelData::Draw(DirectX::XMFLOAT4X4 &mtxworld, tagAssimpAnimationData &animationdata, DirectX::XMFLOAT4 _color)
 {
     // アニメーションデータを持っているか？
-    if (m_assimpscene.HasAnimation())
+    //if (m_assimpscene.HasAnimation())
     { // ボーン行列を定数バッファに反映させる
-        UpdateBoneMatrixConstantBuffer(animationdata.m_listBone);
+        UpdateBoneMatrixConstantBuffer(animationdata.m_listBone, _color);
     }
 
     // メッシュ数分ループしてモデルを描画する
@@ -570,7 +570,7 @@ void CAssimoModelData::UpdateBoneMatrix(aiNode *node, aiMatrix4x4 matrix, std::m
 //================================================================================================
 //================================================================================================
 
-void CAssimoModelData::UpdateBoneMatrixConstantBuffer(std::map<std::string, tagBONE> &listbone)
+void CAssimoModelData::UpdateBoneMatrixConstantBuffer(std::map<std::string, tagBONE> &listbone, DirectX::XMFLOAT4 _color)
 {
 
     tagConstantBufferBoneMatrix cb;
@@ -589,6 +589,8 @@ void CAssimoModelData::UpdateBoneMatrixConstantBuffer(std::map<std::string, tagB
         cb.mBoneMatrix[num] = mtx;
         num++;
     }
+
+    cb.color = _color;
 
     ID3D11DeviceContext *devicecontext;
     devicecontext = CDirectXGraphics::GetInstance().GetImmediateContext();

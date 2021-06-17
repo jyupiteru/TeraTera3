@@ -27,8 +27,13 @@ float4 main(VS_OUTPUT input) : SV_Target
 	float4 diffuse = d * Ambient;	//環境光がどれくらい影響があるか計算
 	diffuse *=  diffuseMaterial;	//??
 
+	float4 col = input.Color;
+	col.x /= 256.0f;
+	col.y /= 256.0f;
+	col.z /= 256.0f;
+	
 	float4 texcol = g_Tex.Sample(g_SamplerLinear, input.Tex);	//マテリアル色?の取得
-	float4 col =  diffuse * texcol;								//マテリアル色を環境光とかける
+	col =  diffuse * texcol*col;								//マテリアル色を環境光とかける
 
 	col.a = 1.0f;	//?
 
