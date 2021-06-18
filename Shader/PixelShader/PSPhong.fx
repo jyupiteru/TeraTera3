@@ -23,8 +23,8 @@ float4 main(VS_OUTPUT input) : SV_Target
 	float d = dot(N, L);
 
 	//内積してマイナスになったのが光の方向を向いているので-1をかけて0以下を0にする
-	d *= -1;
-	d = max (0.0,d);
+	d *= -1.0f;
+	d = max(0.0f,d);
 
 	//環境光がどれくらい影響があるか計算
 	float4 diffuseLig = d * Ambient;
@@ -33,7 +33,7 @@ float4 main(VS_OUTPUT input) : SV_Target
 	float4 reflectVec = reflect(L, N);
 
 	//カメラ座標 - ポリゴンの座標 で当たった面からカメラまでのベクトルを求める
-	float4 toEyeVec = EyePos - input.Pos;
+	float4 toEyeVec = EyePos - input.WPos;
 	toEyeVec = normalize(toEyeVec);
 
 	//どれくらい目に入ってくるかを計算 0以下は0に設定

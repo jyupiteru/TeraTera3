@@ -50,10 +50,10 @@ cbuffer ConstantBufferBoneMatrix : register(b6)
 struct VS_OUTPUT
 {
 	//座標
-	float4 Pos : SV_POSITION;
-	float4 Color : COLOR0;
-	float2 Tex : TEXCOORD;
-	float4 WPos : TEXCOORD1;
-	float4 Normal : TEXCOORD2;
+	float4 Pos : SV_POSITION;	//座標 変換済み
+	float4 Color : COLOR0;		//色
+	float2 Tex : TEXCOORD;		//UV
+	float4 WPos : TEXCOORD1;	//ワールド座標
+	float4 Normal : TEXCOORD2;	//法線 正規化まだ
 };
 
