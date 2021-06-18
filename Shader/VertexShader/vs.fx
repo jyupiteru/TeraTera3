@@ -19,7 +19,6 @@ VS_OUTPUT main(	float4 Pos		:	POSITION,
 	N.w = 0.0f;					// 法線はベクトルなのでＷの値を０にする。
 
 	N = mul(N, World);
-	N = normalize(N);
 
 	output.Normal = N;
 

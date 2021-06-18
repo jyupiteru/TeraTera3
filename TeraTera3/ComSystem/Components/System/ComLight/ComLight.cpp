@@ -102,38 +102,26 @@ void ComLight::UpdateDirectionLight()
     std::tie(cb.EyePos.x,
              cb.EyePos.y,
              cb.EyePos.z) = m_pComCamera->m_cEyePos.GetValue();
+
     cb.pad = 0.0;
 
-    //方向情報を格納、正規化はGPU側で行う
+    //方向情報を格納して正規化する
     std::tie(cb.LightDirection.x,
              cb.LightDirection.y,
              cb.LightDirection.z) = m_lightDirection.GetValue();
-
+    DX11Vec3Normalize(cb.LightDirection, cb.LightDirection);
     cb.pad2 = 0;
 
+    //環境光を取り出し値を0.0f~1.0fに収めセット
     std::tie(cb.Ambient.x,
              cb.Ambient.y,
              cb.Ambient.z) = m_lightColor.GetValue();
-
+    m_gameObject->m_transform->m_color.SetValue(cb.Ambient.x, cb.Ambient.y, cb.Ambient.z, 1.0f);
     cb.Ambient.x /= 256.0f;
     cb.Ambient.y /= 256.0f;
     cb.Ambient.z /= 256.0f;
 
-    //環境色は設定されているか？
-    if (cb.Ambient.x == 0 &&
-        cb.Ambient.y == 0 &&
-        cb.Ambient.z == 0 &&
-        cb.Ambient.w == 0)
-    {
-        //されていないのでわかりやすく表示
-        m_gameObject->m_transform->m_color.SetValue(256, 256, 256, 0.9f);
-    }
-    else
-    {
-        m_gameObject->m_transform->m_color.SetValue(cb.Ambient.x, cb.Ambient.y, cb.Ambient.z, cb.Ambient.w);
-    }
-
-    //情報を上書き？
+    //情報を上書き
     CDirectXGraphics::GetInstance().GetImmediateContext()->UpdateSubresource(m_pConstantBufferLight,
                                                                              0,
                                                                              nullptr,

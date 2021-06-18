@@ -14,6 +14,7 @@
 #include "../ComTransform/ComTransform.h"
 #include "../../../../WindowsSystem/DX11Settransform.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
+#include "../Com3DAnimationAssimp/Com3DAnimationAssimp.h"
 
 CListResource *Com3DModelAssimp::m_pListModel;
 
@@ -55,8 +56,12 @@ void Com3DModelAssimp::Init()
         };
     unsigned int numElements = ARRAYSIZE(layout);
 
-    m_pShader->LoadVertexShader("VSAssimpModel.fx", layout, numElements, true);
-    m_pShader->LoadPixelShader("pslambert.fx", true);
+    //アニメーションのは読み込んでいないか?
+    if (auto comanim = m_gameObject->GetComponent<Com3DAnimationAssimp>(); comanim == nullptr)
+    {
+        m_pShader->LoadVertexShader("VSAssimpModel.fx", layout, numElements, true);
+    }
+    m_pShader->LoadPixelShader("PSAssimpPhong.fx", true);
 }
 
 //================================================================================================

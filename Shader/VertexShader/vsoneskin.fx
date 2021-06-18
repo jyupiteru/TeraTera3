@@ -35,7 +35,6 @@ VS_OUTPUT main(
 
 	N = mul(N, comb);			// 法線ベクトルにコンビネーション行列を掛けて方向を変える
 	N = mul(N, World);			// 法線ベクトルにワールド変換行列を掛けて方向を変える
-	N = normalize(N);			// 正規化
 
 	output.Normal = N;          //ピクセルシェーダーでつかうために格納
 
