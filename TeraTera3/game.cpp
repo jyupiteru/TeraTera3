@@ -116,20 +116,16 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		camera->AddComponent<ComShader>();
 		camera->DontDestroyOnLoad();
 		camera->m_objectUpdatePriority.SetValue(-20);
-
+	}
+	{
 		// 平行光源初期化
-		DirectX::XMFLOAT4 lightpos = {1, 1, -1, 0}; // 平行光源の方向をセット
-
+		DirectX::XMFLOAT3 lightdir = {1, -1, 1}; // 平行光源の方向をセット
 		//シーンに設置するライトを生成
 		auto light = GameObject::MakeNewObject("light", E_TYPE_OBJECT::NONE);
-		light->GetComponent<ComTransform>()->m_worldPosition.SetValue(lightpos.x,
-																	  lightpos.y,
-																	  lightpos.z);
 
-		light->AddComponent<ComLight>()->m_ambient.SetValue(0.0f,
-															0.0f,
-															0.0f,
-															0.0f); // 環境光
+		ComLight *comlight = light->AddComponent<ComLight>();
+		comlight->m_lightColor.SetValue(255, 255, 255); // 環境光
+		comlight->m_lightDirection.SetValue(lightdir.x, lightdir.y, lightdir.z);
 
 		light->m_objectUpdatePriority.SetValue(-20);
 		light->DontDestroyOnLoad();

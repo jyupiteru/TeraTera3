@@ -6,7 +6,7 @@
 
 #include "../../Behavior/Com3DModelAssimp/Com3DModelAssimp.h"
 #include "../../../Core/ComponentBase.h"
-#include "../../../../WindowsSystem/Model/Assimp/animationdataassimp/animationdataassimp.h"
+#include "../../../../System/AssimpModel/CAssimpAnimationData/CAssimpAnimationData.h"
 #include "../../../../ResourceContainer/CContainer.h"
 
 #pragma once
@@ -23,7 +23,7 @@ struct taglistAssimpAnimation
          * @brief モデルのアニメーション情報(グループ単位)
          * @n アニメーショングループの名前、そのグループのアニメーションの情報
          */
-    std::unordered_map<std::string, std::shared_ptr<AnimationDataAssimp>> m_listAnimation;
+    std::unordered_map<std::string, std::shared_ptr<CAssimpAnimationData>> m_listAnimation;
 
     /**
          * @brief 各アニメーション名を格納したリスト

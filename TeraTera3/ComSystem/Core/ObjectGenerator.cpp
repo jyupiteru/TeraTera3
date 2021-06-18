@@ -68,7 +68,6 @@ void ObjectGenerator::Update()
 
 				{ //描画用の情報をセットする場所
 					//todo ここの処理が重いようなら計算場所、方法を見直し
-					auto [r, g, b, a] = (*obj)->m_transform->m_color.GetValue();
 					auto [pos_x, pos_y, pos_z] = (*obj)->m_transform->m_worldPosition.GetValue();
 					auto distance = (camera_x - pos_x) * (camera_x - pos_x) +
 									(camera_y - pos_y) * (camera_y - pos_y) +

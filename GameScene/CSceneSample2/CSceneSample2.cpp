@@ -72,7 +72,18 @@ void CSceneSample2::Init()
         Sphere->AddComponent<ComSphere>();
         Sphere->m_transform->m_worldPosition.SetValue(40, 0, 100);
         Sphere->m_transform->m_size.SetValue(100, 100, 100);
-        Sphere->m_transform->m_color.SetValue(0, 256, 0, 0.3f);
+        Sphere->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
+        Sphere->GetComponent<ComShader>()->LoadPixelShader("PSLambert.fx", true);
+        // box->m_transform->m_angle.SetValue(0, 0, 0);
+    }
+    {
+        auto Sphere2 = GameObject::MakeNewObject("Sphere2", E_TYPE_OBJECT::MODEL3D);
+        Sphere2->RemoveComponent<Com3DModelAssimp>();
+        Sphere2->AddComponent<ComSphere>();
+        Sphere2->m_transform->m_worldPosition.SetValue(140, 0, 100);
+        Sphere2->m_transform->m_size.SetValue(100, 100, 100);
+        Sphere2->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
+        Sphere2->GetComponent<ComShader>()->LoadPixelShader("PSPhong.fx", true);
         // box->m_transform->m_angle.SetValue(0, 0, 0);
     }
     //{
