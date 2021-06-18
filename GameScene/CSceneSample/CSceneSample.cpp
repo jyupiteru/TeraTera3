@@ -191,7 +191,7 @@ void CSceneSample::Init()
     //    //box2->m_activeFlag.SetValue(false);
     //}
     {
-        auto camera = GameObject::Find("camera");
+        auto camera = GameObject::Find("Camera");
         auto com = camera->GetComponent<ComCamera>()->m_typeFixed = E_TYPE_FIXED::MODELLOOKAT;
         camera->m_transform->m_worldPosition.SetValue(0, 0, 0);
         camera->m_transform->m_angle.SetValue(0, 0, 0);
