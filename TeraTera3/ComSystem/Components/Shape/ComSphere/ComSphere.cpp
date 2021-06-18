@@ -21,8 +21,8 @@ unsigned int ComSphere::m_classCounter = 0;
 void ComSphere::Init()
 {
 	m_typeComponent.SetValue(E_TYPE_COMPONENT::OBJECT3D);
-	m_divX.SetValue(10);
-	m_divY.SetValue(10);
+	m_divX.SetValue(0);
+	m_divY.SetValue(0);
 
 	// 頂点データの定義
 	D3D11_INPUT_ELEMENT_DESC layout[] =
@@ -48,6 +48,18 @@ void ComSphere::Init()
 
 void ComSphere::Ready()
 {
+	if (m_divX.GetValue() == 0)
+	{
+		//セットされていないので
+		m_divX.SetValue(30);
+	}
+
+	if (m_divY.GetValue() == 0)
+	{
+		//セットされていないので
+		m_divY.SetValue(30);
+	}
+
 	// 球のインデックスデータを作成
 	CreateIndex();
 

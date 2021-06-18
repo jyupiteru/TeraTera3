@@ -1,6 +1,6 @@
 
 ////
-//	ランバートの拡散反射のピクセルシェーダー
+//	モデル用のランバートの拡散反射のピクセルシェーダー
 //	法線必須
 ////
 
@@ -26,6 +26,7 @@ float4 main(VS_OUTPUT input) : SV_Target
 
 	//環境光がどれくらい影響があるか計算
 	float4 diffuseLig = d * Ambient;
+	diffuseLig *=  diffuseMaterial; //メッシュの光をかけている? たぶん
 
 	float4 col = input.Color;
 	col.x /= 256.0f;
