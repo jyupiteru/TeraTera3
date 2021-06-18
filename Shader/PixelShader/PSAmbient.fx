@@ -1,12 +1,10 @@
 
 ////
-//	Assimpモデル用フォングの鏡面反射のピクセルシェーダー
+//	環境光のピクセルシェーダー
 //	法線必須
 ////
 
-
 #include	"../commonpsvs.fx"
-
 
 float4 main(VS_OUTPUT input) : SV_Target
 {
@@ -61,6 +59,10 @@ float4 main(VS_OUTPUT input) : SV_Target
 
 	//鏡面反射光と環境光を足す
 	float4 lig = diffuseLig + specularLig;
+
+	lig.x += 0.3f;
+	lig.y += 0.3f;
+	lig.z += 0.3f;
 
 	//光をかける
 	outcol *= lig;

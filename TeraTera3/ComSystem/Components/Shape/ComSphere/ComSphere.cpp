@@ -127,11 +127,11 @@ void ComSphere::Draw()
 {
 	ChangeColors();
 
-	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
-	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
-
 	m_pComShader->SetPixelShader();
 	m_pComShader->SetVertexShader();
+
+	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
+	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
 
 	ID3D11DeviceContext *device = CDirectXGraphics::GetInstance().GetImmediateContext();
 	// 頂点バッファをセットする

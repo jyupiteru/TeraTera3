@@ -30,7 +30,7 @@ void ComShader::Init()
     }
     if (m_keyPixelShader.empty())
     {
-        LoadPixelShader("ps.fx", true);
+        LoadPixelShader("PSLambert.fx", true);
     }
 
     CContainer::GetInstance().MakePermissionToList(this, "vertexshader");

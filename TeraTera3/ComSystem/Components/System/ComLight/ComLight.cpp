@@ -49,7 +49,7 @@ void ComLight::Uninit()
 
 void ComLight::Ready()
 {
-    m_pComCamera = GameObject::Find("camera")->GetComponent<ComCamera>();
+    m_pComCamera = GameObject::Find("Camera")->GetComponent<ComCamera>();
 }
 
 //================================================================================================

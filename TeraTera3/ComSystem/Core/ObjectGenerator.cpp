@@ -395,7 +395,7 @@ GameObject *const ObjectGenerator::AddObjectInGenerator(std::string_view name, E
 		//NonActiveリストに登録 こうしないとUpdate内で生成した場合バグが起きるはず
 		SetObjectToWaitList(objid);
 
-		if (name == "camera")
+		if (name == "Camera")
 		{
 			m_pCameraObject = m_pListAllObject[objid].get();
 		}
