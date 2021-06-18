@@ -1,7 +1,6 @@
 
 ////
 //	フォングの鏡面反射のピクセルシェーダー
-// 
 //	法線必須
 ////
 
@@ -20,48 +19,52 @@ float4 main(VS_OUTPUT input) : SV_Target
 	N = normalize(N);
 	L = normalize(L);
 
-	float d = dot(L, N);		//法線と光の方向を内積して0と比較 大きいほうを格納
-	d = max (0.0,d);            //0とdの大きいほうを格納する
+	//法線と光の方向を内積して0と比較 大きいほうを格納
+	float d = dot(N, L);
 
-	float4 diffuse = d * Ambient;	//環境光がどれくらい影響があるか計算
-	//diffuse *=  diffuseMaterial;	//??
+	//内積してマイナスになったのが光の方向を向いているので-1をかけて0以下を0にする
+	d *= -1;
+	d = max (0.0,d);
 
-    //反射ベクトルの計算    
-    float3 reflectVec = reflect(diffuse,N);
+	//環境光がどれくらい影響があるか計算
+	float4 diffuseLig = d * Ambient;
+	
+	//反射ベクトル(当たって反射したライトのベクトル)を求める
+	float4 reflectVec = reflect(L, N);
 
-    //反射面から視点に伸びるベクトルの計算して正規化
-    float toEyeVec = EyePos - input.Pos;
-    toEyeVec = normalize(toEyeVec);
-    
-    //反射面から反射したベクトルを視点までのベクトルに落としその大きさを求める
-    float t = dot(reflectVec, toEyeVec);
+	//カメラ座標 - ポリゴンの座標 で当たった面からカメラまでのベクトルを求める
+	float4 toEyeVec = EyePos - input.Pos;
+	toEyeVec = normalize(toEyeVec);
 
-    if(t < 0.0f)
-    {
-        t=0.0f;
-    }
-    
-    //鏡面販社の強さを絞る(2個目の引数)
-    t = pow( t, 50.0f);
-    
-    //鏡面反射光を求める
-    float specularllig = Ambient * t;// * specularMaterial;
-    
-    float4 lig = diffuse + specularllig;
-    
+	//どれくらい目に入ってくるかを計算 0以下は0に設定
+	float t = dot(reflectVec,toEyeVec);
+	t = max(0.0, t);
+
+	//累乗を行い鏡面反射の強さを絞る ハイライトの強さをここで絞る
+	t = pow(t,5.0f);
+
+	//鏡面反射光を求める
+	float specularLig = Ambient * t;
+
 	float4 col = input.Color;
 	col.x /= 256.0f;
 	col.y /= 256.0f;
 	col.z /= 256.0f;
-	
-	float4 texcol = g_Tex.Sample(g_SamplerLinear, input.Tex);	//マテリアル色?の取得
-	col *=  texcol;		
-    
-    //マテリアル色を環境光とかける
-    col *= lig;
-    
-    
-	col.a = 1.0f;	//?
-    
-	return col;
+
+	//マテリアル色?の取得
+	float4 outcol = g_Tex.Sample(g_SamplerLinear, input.Tex);
+
+	//オブジェクト色をかける
+	outcol *= col;
+
+	//鏡面反射光と環境光を足す
+	float4 lig = diffuseLig + specularLig;
+
+	//光をかける
+	outcol *= lig;
+
+	//色を全部反映 ここいじれば透過できそうやけど未挑戦
+	outcol.a = 1.0f;
+
+	return outcol;
 }

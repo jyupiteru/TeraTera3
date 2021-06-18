@@ -25,7 +25,6 @@ VS_OUTPUT main(
 	N.w = 0.0f;					// 法線はベクトルなのでＷの値を０にする。
 
 	N = mul(N, World);			// 法線ベクトルにワールド変換行列を掛けて方向を変える
-	N = normalize(N);			// 正規化
 
 	output.Normal = N;          //ピクセルシェーダーでつかうために格納
 
