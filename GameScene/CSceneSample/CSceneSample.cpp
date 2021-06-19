@@ -9,6 +9,7 @@ void CSceneSample::Init()
     CDebugLog::GetInstance().Draw("init");
     { //ステージ（ドーム表示）
         auto skydome = GameObject::MakeNewObject("skydome", E_TYPE_OBJECT::NONE);
+        skydome->m_drawLayer.SetValue(-1);
         skydome->AddPackage<Package3DModelObject>();
         skydome->GetComponent<Com3DModel>()->LoadModelData("skydome.x.dat");
         skydome->GetComponent<ComShader>()->LoadPixelShader("PSOnlyTex.fx", true);

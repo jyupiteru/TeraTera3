@@ -26,7 +26,6 @@ float4 main(VS_OUTPUT input) : SV_Target
 
 	//環境光がどれくらい影響があるか計算
 	float4 diffuseLig = d * Ambient;
-	diffuseLig *= diffuseMaterial;
 	
 	//反射ベクトル(当たって反射したライトのベクトル)を求める
 	float4 reflectVec = reflect(L, N);
@@ -44,7 +43,6 @@ float4 main(VS_OUTPUT input) : SV_Target
 
 	//鏡面反射光を求める
 	float specularLig = Ambient * t;
-	specularLig *= specularMaterial;
 
 	float4 col = input.Color;
 	col.x /= 256.0f;
