@@ -223,13 +223,13 @@ void CCollision3DSystem::ImGuiDraw(unsigned int windowid)
 {
     if (ImGui::TreeNode("CCollision3DSystem"))
     {
-        ImGuiDraw_Details(windowid);
+        ImGuiDrawDetails(windowid);
         ImGui::TreePop();
     }
 
     if (ImGui::TreeNode("CCollisionObjects"))
     {
-        ImGuiDraw_CollisionObjects(windowid);
+        ImGuiDrawCollisionObjects(windowid);
         ImGui::TreePop();
     }
 }
@@ -237,7 +237,7 @@ void CCollision3DSystem::ImGuiDraw(unsigned int windowid)
 //================================================================================================
 //================================================================================================
 
-void CCollision3DSystem::ImGuiDraw_Details(unsigned int windowid)
+void CCollision3DSystem::ImGuiDrawDetails(unsigned int windowid)
 {
     ImGui::BulletText("CollisionTotal : %u", m_collisionCounter);
     ImGui::BulletText("CollisionTime : %0.7f", m_collisionTime);
@@ -247,7 +247,7 @@ void CCollision3DSystem::ImGuiDraw_Details(unsigned int windowid)
 //================================================================================================
 //================================================================================================
 
-void CCollision3DSystem::ImGuiDraw_CollisionObjects(unsigned int windowid)
+void CCollision3DSystem::ImGuiDrawCollisionObjects(unsigned int windowid)
 {
 
     std::string hide_objectname = CImGuiHelper::GetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "hideobject");
@@ -324,14 +324,14 @@ void CCollision3DSystem::ImGuiDraw_CollisionObjects(unsigned int windowid)
     //すでに何か選択しているか(対象は存在するか)
     if (m_list3DCollisionObjects.contains(selectobjid))
     {
-        ImGuiDraw_CollisionObjectDetails(windowid, selectobjid);
+        ImGuiDrawCollisionObjectDetails(windowid, selectobjid);
     }
 }
 
 //================================================================================================
 //================================================================================================
 
-void CCollision3DSystem::ImGuiDraw_CollisionObjectDetails(unsigned int windowid, int objid)
+void CCollision3DSystem::ImGuiDrawCollisionObjectDetails(unsigned int windowid, int objid)
 {
 }
 

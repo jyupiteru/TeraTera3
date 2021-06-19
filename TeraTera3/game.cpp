@@ -99,7 +99,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	ObjectGenerator::Create();
 
 	CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDraw_Objects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
+	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDrawObjects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
+	CImGuiManager::GetInstance().SetImGuiFunction("DrawLayer", std::bind(&ObjectGenerator::ImGuiDrawDrawLayer, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
 
 	{
 		// カメラ変換行列初期化
