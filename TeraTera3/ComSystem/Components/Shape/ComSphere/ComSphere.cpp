@@ -39,8 +39,8 @@ void ComSphere::Init()
 	{
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
-	m_pComShader->LoadVertexShader("vs3dshape.fx", layout, numElements, true);
-	m_pComShader->LoadPixelShader("ps3dshape.fx", true);
+	m_pComShader->LoadVertexShader("VS3DShape.fx", layout, numElements, true);
+	m_pComShader->LoadPixelShader("PSOnlyColor.fx", true);
 }
 
 //================================================================================================

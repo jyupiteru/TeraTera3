@@ -10,7 +10,7 @@ void CSceneSample2::Init()
         auto skydome = GameObject::MakeNewObject("skydome", E_TYPE_OBJECT::NONE);
         skydome->AddPackage<Package3DModelObject>();
         skydome->GetComponent<Com3DModel>()->LoadModelData("skydome.x.dat");
-        skydome->GetComponent<ComShader>()->LoadPixelShader("psskydome.fx", true);
+        skydome->GetComponent<ComShader>()->LoadPixelShader("PSOnlyTex.fx", true);
         skydome->m_transform->m_size.SetValue(10, 10, 10);
     }
 
