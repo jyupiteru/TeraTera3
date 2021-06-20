@@ -15,7 +15,7 @@ void ComLightPoint::Init()
 {
     if (m_instance == nullptr)
     {
-        m_instance == this;
+        m_instance = this;
         m_range.SetValue(100.0f);
 
         m_gameObject->AddComponent<ComSphere>();

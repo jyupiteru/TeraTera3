@@ -32,11 +32,7 @@ float4 main(VS_OUTPUT input) : SV_Target
 	outcol *= col;
 
 	//鏡面反射光と環境光を足す
-	float4 lig = diffuseLig + specularLig;
-
-	lig.x += 0.3f;
-	lig.y += 0.3f;
-	lig.z += 0.3f;
+	float4 lig = diffuseLig + specularLig + Ambient;
 
 	//光をかける
 	outcol *= lig;

@@ -45,7 +45,7 @@ struct tagPointLight
 	float3 LightPosition;
 
 	//ポイントライトの色
-	float4 lightColor;
+	float3 lightColor;
 
 	//ポイントライトの影響範囲
 	float LightRange;

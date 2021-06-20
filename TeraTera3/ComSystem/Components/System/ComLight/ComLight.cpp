@@ -27,7 +27,7 @@ void ComLight::Init()
 
     m_gameObject->m_transform->m_color.SetValue(255.0f, 255.0f, 0.0f, 0.9f);
 
-    m_lightDirection.SetValue(255.0f, 255.0f, 255.0f);
+    m_ambientColor.SetValue(100.0f, 100.0f, 100.0f);
 
     m_directionalColor.SetValue(255.0f, 255.0f, 255.0f);
 }
