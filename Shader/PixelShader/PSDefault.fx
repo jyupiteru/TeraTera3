@@ -1,9 +1,9 @@
 
 ////
-//	Assimpモデル用フォングの鏡面反射のピクセルシェーダー
+//	デフォルトのピクセルシェーダー
+//	これはPSAmbient.fxと同じ
 //	法線必須
 ////
-
 
 #include	"../Utils/CommonPSVS.fx"
 #include	"../Utils/MathLight.fx"
@@ -14,11 +14,15 @@ float4 main(VS_OUTPUT input) : SV_Target
 
 	//環境光がどれくらい影響があるか計算して格納
 	float4 diffuseLig = CalcLambertDiffuse(DirectionalLight.LightDirection, DirectionalLight.LightColor, input.Normal);
-	diffuseLig *= diffuseMaterial;
 
 	//鏡面反射光を求める
-	float specularLig = CalcPhongSpecular(DirectionalLight.LightDirection, DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
-	specularLig *= specularMaterial;
+	float specularLig = CalcPhongSpecular(DirectionalLight.LightDirection,DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
+	
+	//ポイントライトからピクセルまでの光の方向根くとるを計算
+	float4 ligDirection = input.WPos - PointLight.LightPosition;
+	ligDirection = normalize(ligDirection);
+	
+	float4 diffusePoint = CalcLambertDiffuse(ligDirection,PointLight.lightColor,input.Normal);
 
 
 	float4 col = input.Color;
@@ -32,8 +36,8 @@ float4 main(VS_OUTPUT input) : SV_Target
 	//オブジェクト色をかける
 	outcol *= col;
 
-	//鏡面反射光と環境光を足す
-	float4 lig = diffuseLig + specularLig;
+	//鏡面反射光と環境光と環境光を足す
+	float4 lig = diffuseLig + specularLig + Ambient;
 
 	//光をかける
 	outcol *= lig;

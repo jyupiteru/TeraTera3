@@ -42,10 +42,10 @@ struct tagDirectionalLight
 struct tagPointLight
 {
 	//ポイントライトの座標
-	float3 LightPosition;
+	float4 LightPosition;
 
 	//ポイントライトの色
-	float3 lightColor;
+	float4 lightColor;
 
 	//ポイントライトの影響範囲
 	float LightRange;

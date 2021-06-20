@@ -130,8 +130,8 @@ void ComLight::UpdateLight()
         //ポイントライトの値は設定されていないか?
         if (pointflag == true)
         {
-            cb.pointLight.pointLightColor = {0.0f, 0.0f, 0.0f};
-            cb.pointLight.pointLightPosition = {0.0f, 0.0f, 0.0f};
+            cb.pointLight.pointLightColor = { 0.0f, 0.0f, 0.0f,0.0f };
+            cb.pointLight.pointLightPosition = { 0.0f, 0.0f, 0.0f,0.0f };
             cb.pointLight.pointLightRange = 0.0f;
         }
     }
@@ -152,7 +152,7 @@ void ComLight::UpdateLight()
     }
 
     cb.directionalLight.pad = 0.0f;
-    cb.pointLight.pad = 0.0f;
+    cb.pointLight.pad = { 0.0f,0.0f,0.0f };
     cb.pad3 = 0.0f;
 
     //情報を上書き

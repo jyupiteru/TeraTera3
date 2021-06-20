@@ -40,20 +40,20 @@ ALIGN16 struct tagPointlight
      /**
       * @brief ポイントライトの座標
       */
-     DirectX::XMFLOAT3 pointLightPosition;
-
-     float pad; // 穴埋め用
+     DirectX::XMFLOAT4 pointLightPosition;
 
      /**
       * @brief ポイントライトの色
       * @n 0.0~1.0に変換済み
       */
-     DirectX::XMFLOAT3 pointLightColor;
+     DirectX::XMFLOAT4 pointLightColor;
 
      /**
       * @brief ポイントライトの影響範囲
       */
      float pointLightRange;
+
+     DirectX::XMFLOAT3 pad;
 };
 
 /**
