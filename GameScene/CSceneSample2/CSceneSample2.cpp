@@ -1,7 +1,7 @@
 ﻿#include "CSceneSample2.h"
 
-#include"../../GameComponent/Tests/Test.h"
-#include"../../GameComponent/Tests/Test2.h"
+#include "../../GameComponent/Tests/Test.h"
+#include "../../GameComponent/Tests/Test2.h"
 #include "../../TeraTera3/TeraTera.h"
 
 void CSceneSample2::Init()
@@ -74,7 +74,7 @@ void CSceneSample2::Init()
         Sphere->m_transform->m_worldPosition.SetValue(40, 0, 100);
         Sphere->m_transform->m_size.SetValue(100, 100, 100);
         Sphere->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
-        Sphere->GetComponent<ComShader>()->LoadPixelShader("PSLambert.fx", true);
+        Sphere->GetComponent<ComShader>()->LoadPixelShader("PSPointLight.fx", true);
         // box->m_transform->m_angle.SetValue(0, 0, 0);
     }
     {
@@ -85,7 +85,6 @@ void CSceneSample2::Init()
         Sphere2->m_transform->m_size.SetValue(100, 100, 100);
         Sphere2->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
         Sphere2->GetComponent<ComShader>()->LoadPixelShader("PSPhong.fx", true);
-        // box->m_transform->m_angle.SetValue(0, 0, 0);
     }
     {
         auto Sphere3 = GameObject::MakeNewObject("Sphere3", E_TYPE_OBJECT::MODEL3D);
@@ -95,7 +94,15 @@ void CSceneSample2::Init()
         Sphere3->m_transform->m_size.SetValue(100, 100, 100);
         Sphere3->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
         Sphere3->GetComponent<ComShader>()->LoadPixelShader("PSAmbient.fx", true);
-        // box->m_transform->m_angle.SetValue(0, 0, 0);
+    }
+    {
+        auto Sphere4 = GameObject::MakeNewObject("Sphere4", E_TYPE_OBJECT::MODEL3D);
+        Sphere4->RemoveComponent<Com3DModelAssimp>();
+        Sphere4->AddComponent<ComSphere>();
+        Sphere4->m_transform->m_worldPosition.SetValue(340, 0, 100);
+        Sphere4->m_transform->m_size.SetValue(100, 100, 100);
+        Sphere4->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
+        Sphere4->GetComponent<ComShader>()->LoadPixelShader("PSPointLight.fx", true);
     }
     //{
     //    auto box = GameObject::MakeNewObject("box", E_TYPE_OBJECT::MODEL3D);
@@ -153,6 +160,13 @@ void CSceneSample2::Init()
         //box2->m_activeFlag.SetValue(false);
     }
     {
+        auto obj = GameObject::MakeNewObject("PointLight", E_TYPE_OBJECT::MODEL3D);
+        obj->RemoveComponent<Com3DModelAssimp>();
+        auto light = obj->AddComponent<ComLightPoint>();
+        obj->m_transform->m_size.SetValue(50, 50, 50);
+        light->m_range.SetValue(100.0f);
+    }
+    {
         auto camera = GameObject::Find("Camera");
         auto com = camera->GetComponent<ComCamera>()->m_typeFixed = E_TYPE_FIXED::MODELLOOKAT;
         camera->m_transform->m_worldPosition.SetValue(0, 0, 0);
@@ -174,7 +188,7 @@ void CSceneSample2::Uninit()
 void CSceneSample2::Update()
 {
     auto camera = GameObject::Find("Camera");
-    auto obj = GameObject::Find("model");
+    auto obj = GameObject::Find("PointLight");
 
     if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_A))
     {

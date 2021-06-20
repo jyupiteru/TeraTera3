@@ -21,7 +21,11 @@ float4 main(VS_OUTPUT input) : SV_Target
 	//ポイントライトからピクセルまでの光の方向ベクトルを計算
 	float4 ligDirection = input.WPos - PointLight.LightPosition;
 	ligDirection = normalize(ligDirection);
-
+	
+	input.WPos.w = 0.0f;
+	float4 pointPos = PointLight.LightPosition;
+	pointPos.w = 0.0f;
+	
 	//ポイントライトからの拡散反射光を計算
 	float4 diffusePoint = CalcLambertDiffuse(ligDirection,PointLight.lightColor,input.Normal);
 
@@ -38,14 +42,13 @@ float4 main(VS_OUTPUT input) : SV_Target
 	affect = max(0.0f,affect);
 
 	//指数関数で計算
-	affect = pow(affect,3.0f);
+	affect = pow(affect,2.0f);
 
 	//減衰率をかけて影響を弱める
 	diffusePoint *= affect;
-
 	specularPoint *= affect;
 
-
+	//ディレクショナルライトとポイントライトをそれぞれ合成
 	float4 diffuseLig = diffuseDirection + diffusePoint;
 	float4 specularLig = specularDirection + specularPoint;
 

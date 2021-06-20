@@ -95,6 +95,8 @@ void ComLight::UpdateLight()
         cb.directionalLight.directionalLightColor.x /= 256.0f;
         cb.directionalLight.directionalLightColor.y /= 256.0f;
         cb.directionalLight.directionalLightColor.z /= 256.0f;
+
+        cb.directionalLight.directionalLightColor.w = 0.0f;
     }
 
     { //ポイントライト
@@ -115,11 +117,14 @@ void ComLight::UpdateLight()
                 cb.pointLight.pointLightColor.x /= 256.0f;
                 cb.pointLight.pointLightColor.y /= 256.0f;
                 cb.pointLight.pointLightColor.z /= 256.0f;
+                cb.pointLight.pointLightColor.w = 0.0f;
 
                 //ポイントライトの座標を取得
                 std::tie(cb.pointLight.pointLightPosition.x,
                          cb.pointLight.pointLightPosition.y,
                          cb.pointLight.pointLightPosition.z) = pointlight->m_gameObject->m_transform->m_worldPosition.GetValue();
+
+                cb.pointLight.pointLightPosition.w = 0.0f;
 
                 //ポイントライトの影響範囲を計算
                 cb.pointLight.pointLightRange = pointlight->m_range.GetValue();
@@ -149,6 +154,8 @@ void ComLight::UpdateLight()
         cb.ambient.x /= 256.0f;
         cb.ambient.y /= 256.0f;
         cb.ambient.z /= 256.0f;
+
+        cb.ambient.w = 0.0f;
     }
 
     cb.directionalLight.pad = 0.0f;

@@ -35,11 +35,12 @@ public:
     CVector<float> m_range;
 
 public:
-    ComLightPoint();
-    ~ComLightPoint();
+    ComLightPoint() {};
+    ~ComLightPoint() {};
 
     void Init() override;
     void Uninit() override;
+    void Update() override;
 
 protected:
     /**

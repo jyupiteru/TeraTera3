@@ -17,6 +17,7 @@ void ComLightPoint::Init()
     {
         m_instance = this;
         m_range.SetValue(100.0f);
+        m_lightColor.SetValue(255, 0, 0);
 
         m_gameObject->AddComponent<ComSphere>();
         m_gameObject->m_transform->m_size.SetValue(5.0, 5.0f, 5.0f);
@@ -33,6 +34,15 @@ void ComLightPoint::Init()
 void ComLightPoint::Uninit()
 {
     m_instance = nullptr;
+}
+
+//================================================================================================
+//================================================================================================
+
+void ComLightPoint::Update()
+{
+    auto [color_r, color_g, color_b] = m_lightColor.GetValue();
+    m_gameObject->m_transform->m_color.SetValue(color_r, color_g, color_b, 1.0f);
 }
 
 //================================================================================================
