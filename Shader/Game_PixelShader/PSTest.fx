@@ -5,7 +5,7 @@
 //	法線必須
 ////
 
-#include	"../commonpsvs.fx"
+#include	"../CommonPSVS.fx"
 
 float4 main(VS_OUTPUT input) : SV_Target
 {

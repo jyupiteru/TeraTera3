@@ -1,5 +1,5 @@
 
-#include	"../commonpsvs.fx"
+#include	"../CommonPSVS.fx"
 
 
 VS_OUTPUT main(	float4 Pos		: POSITION,
