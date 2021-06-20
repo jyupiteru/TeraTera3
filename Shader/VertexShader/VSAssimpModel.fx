@@ -2,7 +2,7 @@
 //	Assimpのモデル専用のシェーダ
 ///////////////////
 
-#include"../CommonPSVS.fx"
+#include"../Utils/CommonPSVS.fx"
 
 
 VS_OUTPUT main(

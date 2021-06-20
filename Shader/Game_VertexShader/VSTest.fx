@@ -1,6 +1,6 @@
 
 
-#include	"../CommonPSVS.fx"
+#include	"../Utils/CommonPSVS.fx"
 
 
 VS_OUTPUT main(	float4 Pos		:	POSITION,
