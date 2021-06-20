@@ -11,15 +11,14 @@
 #include "../../Behavior/ComTransform/ComTransform.h"
 #include "../../Shape/ComSphere/ComSphere.h"
 #include "../../Behavior/Com3DModelAssimp/Com3DModelAssimp.h"
+#include "../../Behavior/ComLightPoint/ComLightPoint.h"
 
 void ComLight::Init()
 {
-    m_typeLight = E_TYPE_LIGHT::DIRECTION;
-
     // コンスタントバッファ作成
     bool sts = CreateConstantBuffer(
         CDirectXGraphics::GetInstance().GetDXDevice(), // デバイス
-        sizeof(ConstantBufferLight),                   // サイズ
+        sizeof(tagConstantBufferLight),                // サイズ
         &m_pConstantBufferLight);                      // コンスタントバッファ４
     if (!sts)
     {
@@ -28,8 +27,9 @@ void ComLight::Init()
 
     m_gameObject->m_transform->m_color.SetValue(255.0f, 255.0f, 0.0f, 0.9f);
 
-    m_pComSphere = m_gameObject->AddComponent<ComSphere>();
-    m_gameObject->m_transform->m_size.SetValue(10.0f, 10.0f, 10.0f);
+    m_lightDirection.SetValue(255.0f, 255.0f, 255.0f);
+
+    m_directionalColor.SetValue(255.0f, 255.0f, 255.0f);
 }
 
 //================================================================================================
@@ -65,7 +65,7 @@ void ComLight::Update()
 
 void ComLight::ImGuiDraw(unsigned int windowid)
 {
-    auto [ambient_x, ambient_y, ambient_z] = m_lightColor.GetValue();
+    auto [ambient_x, ambient_y, ambient_z] = m_ambientColor.GetValue();
     ImGui::BulletText("Ambient");
     ImGui::SameLine();
     HelpMarker((const char *)u8"環境光のこと");
@@ -78,48 +78,82 @@ void ComLight::ImGuiDraw(unsigned int windowid)
 
 void ComLight::UpdateLight()
 {
-    switch (m_typeLight)
-    {
-    case E_TYPE_LIGHT::DIRECTION:
-        UpdateDirectionLight();
-        break;
+    tagConstantBufferLight cb;
 
-    case E_TYPE_LIGHT::POINT:
-        break;
+    { //ディレクションライト
+        //方向情報を格納して正規化する
+        std::tie(cb.directionalLight.directionalLightDirection.x,
+                 cb.directionalLight.directionalLightDirection.y,
+                 cb.directionalLight.directionalLightDirection.z) = m_lightDirection.GetValue();
+        DX11Vec3Normalize(cb.directionalLight.directionalLightDirection, cb.directionalLight.directionalLightDirection);
 
-    case E_TYPE_LIGHT::SPOT:
-        break;
+        //ディレクショナルライトの色情報を格納
+        std::tie(cb.directionalLight.directionalLightColor.x,
+                 cb.directionalLight.directionalLightColor.y,
+                 cb.directionalLight.directionalLightColor.z) = m_directionalColor.GetValue();
+
+        cb.directionalLight.directionalLightColor.x /= 256.0f;
+        cb.directionalLight.directionalLightColor.y /= 256.0f;
+        cb.directionalLight.directionalLightColor.z /= 256.0f;
     }
-}
 
-//================================================================================================
-//================================================================================================
+    { //ポイントライト
+        bool pointflag = true;
 
-void ComLight::UpdateDirectionLight()
-{
-    ConstantBufferLight cb;
+        //ポイントライトは生成済みか？
+        if (auto pointlight = ComLightPoint::GetInstance(); pointlight != nullptr)
+        {
+            //コンポーネントと所持しているオブジェクトはアクティブか?
+            if (pointlight->m_enable.GetValue() == true &&
+                pointlight->m_gameObject->m_activeFlag.GetValue() == true)
+            {
+                //ポイントライトの色を取得
+                std::tie(cb.pointLight.pointLightColor.x,
+                         cb.pointLight.pointLightColor.y,
+                         cb.pointLight.pointLightColor.z) = pointlight->m_lightColor.GetValue();
 
-    std::tie(cb.EyePos.x,
-             cb.EyePos.y,
-             cb.EyePos.z) = m_pComCamera->m_cEyePos.GetValue();
+                cb.pointLight.pointLightColor.x /= 256.0f;
+                cb.pointLight.pointLightColor.y /= 256.0f;
+                cb.pointLight.pointLightColor.z /= 256.0f;
 
-    cb.pad = 0.0;
+                //ポイントライトの座標を取得
+                std::tie(cb.pointLight.pointLightPosition.x,
+                         cb.pointLight.pointLightPosition.y,
+                         cb.pointLight.pointLightPosition.z) = pointlight->m_gameObject->m_transform->m_worldPosition.GetValue();
 
-    //方向情報を格納して正規化する
-    std::tie(cb.LightDirection.x,
-             cb.LightDirection.y,
-             cb.LightDirection.z) = m_lightDirection.GetValue();
-    DX11Vec3Normalize(cb.LightDirection, cb.LightDirection);
-    cb.pad2 = 0;
+                //ポイントライトの影響範囲を計算
+                cb.pointLight.pointLightRange = pointlight->m_range.GetValue();
+                pointflag = false;
+            }
+        }
 
-    //環境光を取り出し値を0.0f~1.0fに収めセット
-    std::tie(cb.Ambient.x,
-             cb.Ambient.y,
-             cb.Ambient.z) = m_lightColor.GetValue();
-    m_gameObject->m_transform->m_color.SetValue(cb.Ambient.x, cb.Ambient.y, cb.Ambient.z, 1.0f);
-    cb.Ambient.x /= 256.0f;
-    cb.Ambient.y /= 256.0f;
-    cb.Ambient.z /= 256.0f;
+        //ポイントライトの値は設定されていないか?
+        if (pointflag == true)
+        {
+            cb.pointLight.pointLightColor = {0.0f, 0.0f, 0.0f};
+            cb.pointLight.pointLightPosition = {0.0f, 0.0f, 0.0f};
+            cb.pointLight.pointLightRange = 0.0f;
+        }
+    }
+
+    { //共通処理
+        std::tie(cb.eyePos.x,
+                 cb.eyePos.y,
+                 cb.eyePos.z) = m_pComCamera->m_cEyePos.GetValue();
+
+        //環境光を取り出し値を0.0f~1.0fに収めセット
+        std::tie(cb.ambient.x,
+                 cb.ambient.y,
+                 cb.ambient.z) = m_ambientColor.GetValue();
+
+        cb.ambient.x /= 256.0f;
+        cb.ambient.y /= 256.0f;
+        cb.ambient.z /= 256.0f;
+    }
+
+    cb.directionalLight.pad = 0.0f;
+    cb.pointLight.pad = 0.0f;
+    cb.pad3 = 0.0f;
 
     //情報を上書き
     CDirectXGraphics::GetInstance().GetImmediateContext()->UpdateSubresource(m_pConstantBufferLight,
