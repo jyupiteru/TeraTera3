@@ -3,7 +3,7 @@
 
 //ランバートの拡散反射を計算して返す処理
 //正規化処理は関数内で行っている
-float4 MathLambertDiffuse(float4 _lightdirection, float4 _lightcolor, float4 _normal)
+float4 CalcLambertDiffuse(float4 _lightdirection, float4 _lightcolor, float4 _normal)
 {
 
     //光の方向ベクトルの必要でない値を0,0fにして正規化
@@ -30,7 +30,7 @@ float4 MathLambertDiffuse(float4 _lightdirection, float4 _lightcolor, float4 _no
 
 
 //鏡面反射光を求める関数
-float4 MathPhongSpecular(float4 _lightdirection, float4 _lightcolor, float4 _worldpos, float4 _normal, float4 _eyepos, float _pow)
+float4 CalcPhongSpecular(float4 _lightdirection, float4 _lightcolor, float4 _worldpos, float4 _normal, float4 _eyepos, float _pow)
 {
     //光の方向ベクトルの必要でない値を0,0fにして正規化
     _lightdirection.w = 0.0f;
