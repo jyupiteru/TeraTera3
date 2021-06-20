@@ -16,7 +16,7 @@ float4 main(VS_OUTPUT input) : SV_Target
 	diffuseLig *= diffuseMaterial;
 
 	//鏡面反射光を求める
-	float specularLig = CalcPhongSpecular(DirectionalLight.LightDirection, DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
+	float4 specularLig = CalcPhongSpecular(DirectionalLight.LightDirection, DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
 	specularLig *= specularMaterial;
 
 	float4 col = input.Color;

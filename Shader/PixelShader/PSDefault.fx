@@ -16,12 +16,13 @@ float4 main(VS_OUTPUT input) : SV_Target
 	float4 diffuseLig = CalcLambertDiffuse(DirectionalLight.LightDirection, DirectionalLight.LightColor, input.Normal);
 
 	//鏡面反射光を求める
-	float specularLig = CalcPhongSpecular(DirectionalLight.LightDirection,DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
+	float4 specularLig = CalcPhongSpecular(DirectionalLight.LightDirection,DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
 	
-	//ポイントライトからピクセルまでの光の方向根くとるを計算
+	//ポイントライトからピクセルまでの光の方向ベクトルを計算
 	float4 ligDirection = input.WPos - PointLight.LightPosition;
 	ligDirection = normalize(ligDirection);
-	
+
+	//ポイントライトからの
 	float4 diffusePoint = CalcLambertDiffuse(ligDirection,PointLight.lightColor,input.Normal);
 
 
