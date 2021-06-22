@@ -60,6 +60,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		return false;
 	}
 
+	CDebugLog::GetInstance().Draw("Set DX11");
+
 	//SetTransformの初期化
 	sts = DX11SetTransform::GetInstance()->Init();
 	if (!sts)
@@ -70,10 +72,12 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 
 	// DIRECTINPUT初期化
 	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
+	CDebugLog::GetInstance().Draw("Set DirectInput");
 
 	//ImGuiを管理するかマネージャーの生成と初期化
 	CImGuiManager::Create();
 	CImGuiManager::GetInstance().Init(hwnd);
+	CDebugLog::GetInstance().Draw("Set CImGuiManager");
 
 	//ウインドウを１個生成
 	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
@@ -95,8 +99,10 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	windowdata->m_firstCenterPosition.y = windowdata->m_firstSize.y / 2.0f;
 
 	CEventSystem::Create();
+	CDebugLog::GetInstance().Draw("Set EventSystem");
 
 	ObjectGenerator::Create();
+	CDebugLog::GetInstance().Draw("Set ObjectGenerator");
 
 	CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
 	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDrawObjects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
@@ -138,6 +144,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CDirectXGraphics::GetInstance().TurnOnAlphaBlending();
 
 	CSceneManager::Create();
+	CDebugLog::GetInstance().Draw("Set CSceneManager");
 
 	CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
 	CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CEventSystem::GetInstance(), "Menu");

@@ -10,6 +10,7 @@ CTimer *CTimer::m_instance = nullptr;
 CTimer::CTimer()
 {
     m_lastTime = std::chrono::high_resolution_clock::now();
+    m_timeScale.SetValue(1.0f);
 }
 
 //================================================================================================
@@ -36,6 +37,8 @@ void CTimer::Update(void)
 
     //総秒数を加算
     m_totalDeltaTime += static_cast<float>(m_deltaTime.GetValue());
+
+    m_deltaTime.SetValue(m_deltaTime.GetValue() * m_timeScale.GetValue());
 }
 
 //================================================================================================

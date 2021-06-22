@@ -138,23 +138,23 @@ void CSceneSample::Init()
         collider->m_draw = true;
     }
 
-     { //2体目のアニメーションモデル
-         auto model2 = GameObject::MakeNewObject("animmodel2", E_TYPE_OBJECT::MODEL3D);
-         model2->m_transform->m_worldPosition.SetValue(-100, 50, 100);
-         model2->m_transform->m_size.SetValue(100, 100, 100);
-         model2->m_transform->m_angle.SetValue(0, 0, 0);
-         model2->AddComponent<Test2>();
-         auto assimp = model2->GetComponent<Com3DModelAssimp>();
-         assimp->LoadModelData("Player/idle_run.fbx", "Player/");
-         Com3DAnimationAssimp *anim = model2->AddComponent<Com3DAnimationAssimp>();
-         anim->LoadAnimation("test1", "Player/idle_run.fbx");
-         anim->ChangeAnimation("test1", 1);
-         auto collider = model2->AddComponent<ComBoxCollider3D>();
-         collider->m_draw = true;
-         collider->m_isFirstJustSize = true;
-         collider->m_color.SetValue(256, 256, 0, 0.5f);
-         collider->m_offsetSize.SetValue(0, 50, 0);
-     }
+    { //2体目のアニメーションモデル
+        auto model2 = GameObject::MakeNewObject("animmodel2", E_TYPE_OBJECT::MODEL3D);
+        model2->m_transform->m_worldPosition.SetValue(-100, 50, 100);
+        model2->m_transform->m_size.SetValue(100, 100, 100);
+        model2->m_transform->m_angle.SetValue(0, 0, 0);
+        model2->AddComponent<Test2>();
+        auto assimp = model2->GetComponent<Com3DModelAssimp>();
+        assimp->LoadModelData("Player/idle_run.fbx", "Player/");
+        Com3DAnimationAssimp *anim = model2->AddComponent<Com3DAnimationAssimp>();
+        anim->LoadAnimation("test1", "Player/idle_run.fbx");
+        anim->ChangeAnimation("test1", 1);
+        auto collider = model2->AddComponent<ComBoxCollider3D>();
+        collider->m_draw = true;
+        collider->m_isFirstJustSize = true;
+        collider->m_color.SetValue(256, 256, 0, 0.5f);
+        collider->m_offsetSize.SetValue(0, 50, 0);
+    }
 
     //{
     //    auto colliderobject = GameObject::MakeNewObject("colliderobj", E_TYPE_OBJECT::MODEL3D);
@@ -212,8 +212,8 @@ void CSceneSample::Init()
     //    auto test2 = GameObject::MakeNewObject("test2", E_TYPE_OBJECT::NONE);
     //    // test2->AddComponent<Test2>()->MakeChildObject(0, 0);
     //}
-    float time =  CTimer::GetInstance().GetProgressTime();
-    CDebugLog::GetInstance().Draw("init"+ std::to_string(time));
+    float time = CTimer::GetInstance().GetProgressTime();
+    CDebugLog::GetInstance().Draw("init" + std::to_string(time));
 }
 
 void CSceneSample::Uninit()
@@ -222,6 +222,9 @@ void CSceneSample::Uninit()
 
 void CSceneSample::Update()
 {
+    auto animmodel = GameObject::Find("animmodel");
+    animmodel->m_transform->m_vector.SetValue(-60 * CTimer::GetInstance().m_deltaTime.GetValue(), 0, 0);
+
     auto camera = GameObject::Find("camera");
     auto obj = GameObject::Find("model");
 
@@ -240,6 +243,15 @@ void CSceneSample::Update()
     if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_S))
     {
         obj->m_transform->m_angle.AddValue(1, 0, 0);
+    }
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_F1))
+    {
+        CTimer::GetInstance().m_timeScale.SetValue(0);
+    }
+
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_F2))
+    {
+        CTimer::GetInstance().m_timeScale.SetValue(2);
     }
 
     {
