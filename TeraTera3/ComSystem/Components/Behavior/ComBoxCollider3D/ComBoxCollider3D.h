@@ -17,13 +17,15 @@ class CCollision3DSystem;
  */
 class ComBoxCollider3D : public ComponentBase, public CCollisionBase
 {
-public:
     /**
      * @brief 当たり判定用のオブジェクトを保持する変数
      * @details あまり外からいじらないように
      */
     GameObject *m_colliderObject = nullptr;
 
+    ComBox *m_colliderObjectBox = nullptr;
+
+public:
     friend CCollision3DSystem;
 
     ComBoxCollider3D(){};

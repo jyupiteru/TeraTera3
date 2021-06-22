@@ -91,11 +91,11 @@ public:
 
     void ImGuiDraw(unsigned int windowid);
 
-    void ImGuiDraw_Details(unsigned int windowid);
+    void ImGuiDrawDetails(unsigned int windowid);
 
-    void ImGuiDraw_CollisionObjects(unsigned int windowid);
+    void ImGuiDrawCollisionObjects(unsigned int windowid);
 
-    void ImGuiDraw_CollisionObjectDetails(unsigned int windowid, int objid);
+    void ImGuiDrawCollisionObjectDetails(unsigned int windowid, int objid);
 
     /**
      * @brief 当たり判定があるか判断するためのメソッド

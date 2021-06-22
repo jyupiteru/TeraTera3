@@ -61,9 +61,14 @@ class ObjectGenerator final : public ControlObjectPriority
     std::unique_ptr<CTagManager> m_cTagManager;
 
     /**
+     * @brief ImGUiで表示する用の描画レイヤー情報を保持しているリスト
+     */
+    std::vector<std::string> m_listDrawLayer;
+
+    /**
      * @brief フラスタムカリングを行う際に使用するカメラを持つクラス
      */
-    ComCamera* m_pComCamera;
+    ComCamera *m_pComCamera;
 
     /**
      * @brief そのフレーム内で更新したオブジェクト計測用の変数
@@ -85,7 +90,7 @@ class ObjectGenerator final : public ControlObjectPriority
      */
     float m_drawTime;
 
-    static ObjectGenerator* m_instance;
+    static ObjectGenerator *m_instance;
 
     void Init();
 
@@ -100,6 +105,7 @@ class ObjectGenerator final : public ControlObjectPriority
     {
         Uninit();
     };
+
 public:
     //GameObjectからのprivateのアクセスを許可
     friend GameObject;
@@ -112,7 +118,7 @@ public:
 
     static void Delete(bool _flag);
 
-    [[nodiscard]] static ObjectGenerator& GetInstance();
+    [[nodiscard]] static ObjectGenerator &GetInstance();
 
     /**
      * @brief 削除待ちのオブジェクトを削除する
@@ -133,7 +139,7 @@ private: //GameObjectからのみアクセス可能
      * @return GameObject *const 加えた子オブジェクトのポインタ
      * @details deleteできないが入れ替えはできるのでするな！
      */
-    GameObject* const AddObjectInGenerator(E_TYPE_OBJECT type);
+    GameObject *const AddObjectInGenerator(E_TYPE_OBJECT type);
 
     /**
      * @brief オブジェクト生成処理２ 名前が必要
@@ -141,58 +147,60 @@ private: //GameObjectからのみアクセス可能
      * @param type E_TYPE_OBJECT型 オブジェクトの種類を指定する
      * @return  GameObject *const 加えた子オブジェクトのポインタ
      */
-    GameObject* const AddObjectInGenerator(std::string_view name, E_TYPE_OBJECT type);
+    GameObject *const AddObjectInGenerator(std::string_view name, E_TYPE_OBJECT type);
 
     /**
      * @brief オブジェクトをIDから取得する処理
      * @param objid 検索したいオブジェクトのid
      * @return GameObject* const 指定したオブジェクトが返される
      */
-    [[nodiscard]] GameObject* const FindInGenerator(int objid);
+    [[nodiscard]] GameObject *const FindInGenerator(int objid);
 
     /**
      * @brief オブジェクトを名前から取得する処理
      * @param name オブジェクトに設定した名前
      * @return GameObject* const 指定したオブジェクトが返される
      */
-    [[nodiscard]] GameObject* const FindInGenerator(std::string_view name);
+    [[nodiscard]] GameObject *const FindInGenerator(std::string_view name);
 
     /**
      * @brief リストから指定したオブジェクトを削除する処理1
      * @n 一番軽い削除処理
-     * @param obj オブジェクトポインタをいれること
+     * @param _obj オブジェクトポインタをいれること
      * @return true 削除に成功
      * @return false 削除に失敗
      */
-    bool DestroyInGenerator(GameObject* obj);
+    bool DestroyInGenerator(GameObject *_obj);
 
     /**
      * @brief リストから指定したオブジェクトを削除する処理2
-     * @param objid オブジェクトIDをいれること
+     * @param _objid オブジェクトIDをいれること
      * @return true 削除に成功
      * @return false 削除に失敗
      */
-    bool DestroyInGenerator(const int objid)
-    {
-        return DestroyInGenerator(m_pListAllObject[objid].get());
-    }
+    bool DestroyInGenerator(const int _objid);
 
     /**
      * @brief リストから指定したオブジェクトを削除する処理3
-     * @param name 消したいオブジェクトの名前
+     * @param _name 消したいオブジェクトの名前
      * @return true 削除に成功
      * @return false 削除に失敗
      */
-    bool DestroyInGenerator(std::string name);
+    bool DestroyInGenerator(std::string_view _name);
 
 public:
     /**
      * @brief ImGuiでの描画用メソッド
      */
-    void ImGuiDraw(int windowid);
+    void ImGuiDraw(int _windowid);
 
     /**
      * @brief ImGuiで各オブジェクトを描画する用のメソッド
      */
-    void ImGuiDraw_Objects(int windowid);
+    void ImGuiDrawObjects(int _windowid);
+
+    /**
+     * @brief ImGuiで各オブジェクトの描画レイヤーを表示する用のメソッド 
+     */
+    void ImGuiDrawDrawLayer(int _windowid);
 };

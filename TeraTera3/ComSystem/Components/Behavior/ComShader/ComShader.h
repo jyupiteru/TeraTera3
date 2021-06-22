@@ -84,25 +84,22 @@ public:
     /**
 	 * @brief 			バーテックスシェーダ生成処理
 	 * @param vsfile 	shaderフォルダに入っている生成したいバーテックスシェーダのパスの入れる
-     * @param flag このままキーをセットするかどうか
-	 */
-    void LoadVertexShader(std::string vsfile, bool flag);
-
-    /**
-	 * @brief 			バーテックスシェーダ生成処理２
-	 * @param vsfile 	shaderフォルダに入っている生成したいバーテックスシェーダのパスの入れる
 	 * @param layout 	使用したいlayoutを入れる
 	 * @param layoutsize layoutのサイズをARRAYSIZEでとっていれる
      * @param flag このままキーをセットするかどうか
 	 */
-    void LoadVertexShader(std::string vsfile, D3D11_INPUT_ELEMENT_DESC *layout, unsigned int layoutsize, bool flag);
+    void LoadVertexShader(std::string vsfile, D3D11_INPUT_ELEMENT_DESC *layout, unsigned int layoutsize, bool flag = true);
 
     /**
 	 * @brief 			ピクセルシェーダ生成処理
 	 * @param psfile 	shaderフォルダに入っている生成したいピクセルシェーダのパスを入れる
      * @param flag このままキーをセットするかどうか
 	 */
-    void LoadPixelShader(std::string psfile, bool flag);
+    void LoadPixelShader(std::string psfile, bool flag = true);
+
+    bool ChangeVertexShader(std::string_view _shadername);
+
+    bool ChangePixelShader(std::string_view _shadername);
 
     //Set系
     /**

@@ -26,11 +26,20 @@ void ComShader::Init()
     //デフォルト処理
     if (m_keyVertexShader.empty())
     {
-        LoadVertexShader("vs.fx", true);
+        // 頂点データの定義 頂点フォーマットの順番
+        D3D11_INPUT_ELEMENT_DESC layout[] = {
+            {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
+
+        unsigned int numElements = ARRAYSIZE(layout);
+
+        LoadVertexShader("VS.fx", layout, numElements, true);
     }
+
     if (m_keyPixelShader.empty())
     {
-        LoadPixelShader("ps.fx", true);
+        LoadPixelShader("PSLambert.fx", true);
     }
 
     CContainer::GetInstance().MakePermissionToList(this, "vertexshader");
@@ -95,22 +104,6 @@ void ComShader::ImGuiDraw(unsigned int windowid)
 //================================================================================================
 //================================================================================================
 
-void ComShader::LoadVertexShader(std::string vsfile, bool flag)
-{
-    // 頂点データの定義 頂点フォーマットの順番
-    D3D11_INPUT_ELEMENT_DESC layout[] = {
-        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
-
-    unsigned int numElements = ARRAYSIZE(layout);
-
-    LoadVertexShader(vsfile, layout, numElements, flag);
-}
-
-//================================================================================================
-//================================================================================================
-
 void ComShader::LoadVertexShader(std::string vsfile, D3D11_INPUT_ELEMENT_DESC *layouts, unsigned int layoutsize, bool flag)
 {
     if (flag)
@@ -128,13 +121,13 @@ void ComShader::LoadVertexShader(std::string vsfile, D3D11_INPUT_ELEMENT_DESC *l
 
         //存在しないので頂点シェーダーオブジェクトを生成、同時に頂点レイアウトも生成
         bool sts = CreateVertexShader(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
-                                      vsfile.c_str(),  //シェーダーソースファイル
-                                      "main",          //エントリー関数
-                                      "vs_5_0",        //シェーダーモデル
-                                      layouts,         //頂点レイアウト
-                                      layoutsize,      //エレメント数
-                                      &vertexshader,   //頂点シェーダーオブジェクト
-                                      &layout);        //頂点レイアウト
+                                      vsfile.c_str(),                                //シェーダーソースファイル
+                                      "main",                                        //エントリー関数
+                                      "vs_5_0",                                      //シェーダーモデル
+                                      layouts,                                       //頂点レイアウト
+                                      layoutsize,                                    //エレメント数
+                                      &vertexshader,                                 //頂点シェーダーオブジェクト
+                                      &layout);                                      //頂点レイアウト
 
         if (sts)
         {
@@ -166,10 +159,10 @@ void ComShader::LoadPixelShader(std::string psfile, bool flag)
 
         //存在しないのでピクセルシェーダーを生成
         bool sts = CreatePixelShader(CDirectXGraphics::GetInstance().GetDXDevice(), // デバイス
-                                     psfile.c_str(),  //ピクセルシェーダーファイル名
-                                     "main",          //エントリー関数
-                                     "ps_5_0",        //シェーダーモデル
-                                     &pixelshader);   //ピクセルシェーダーオブジェクト
+                                     psfile.c_str(),                                //ピクセルシェーダーファイル名
+                                     "main",                                        //エントリー関数
+                                     "ps_5_0",                                      //シェーダーモデル
+                                     &pixelshader);                                 //ピクセルシェーダーオブジェクト
         if (sts)
         {
             m_pPixelShaders[m_keyPixelShader] = pixelshader;
@@ -179,6 +172,34 @@ void ComShader::LoadPixelShader(std::string psfile, bool flag)
             MessageBox(nullptr, TEXT(psfile.c_str()), TEXT("error"), MB_OK);
         }
     }
+}
+
+//================================================================================================
+//================================================================================================
+
+bool ComShader::ChangeVertexShader(std::string_view _shadername)
+{
+    //読み込み済みか？
+    if (m_pVertexShaders.contains(m_keyVertexShader))
+    {
+        m_keyVertexShader = _shadername.data();
+        return true;
+    }
+    return false;
+}
+
+//================================================================================================
+//================================================================================================
+
+bool ComShader::ChangePixelShader(std::string_view _shadername)
+{
+    //読み込み済みか？
+    if (m_pPixelShaders.contains(m_keyVertexShader))
+    {
+        m_keyPixelShader = _shadername.data();
+        return true;
+    }
+    return false;
 }
 
 //================================================================================================
