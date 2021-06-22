@@ -14,107 +14,137 @@
 class ComSphere;
 
 /**
+ * @brief ディレクショナルライトを使用するのに必要な情報を集めた構造体
+ */
+ALIGN16 struct tagDirectionalLight
+{
+     /**
+         * @brief 正規化済みのディレクションライトの方向ベクトル
+         */
+     DirectX::XMFLOAT3 directionalLightDirection;
+
+     float pad; //穴埋め用変数
+
+     /**
+      * @brief ディレクションライトの光情報
+      * @n 0.0~1.0に変換済み
+      */
+     DirectX::XMFLOAT4 directionalLightColor;
+};
+
+/**
+ * @brief ポイントライトを使用するのに必要な情報を集めた構造体
+ */
+ALIGN16 struct tagPointlight
+{
+     /**
+      * @brief ポイントライトの座標
+      */
+     DirectX::XMFLOAT4 pointLightPosition;
+
+     /**
+      * @brief ポイントライトの色
+      * @n 0.0~1.0に変換済み
+      */
+     DirectX::XMFLOAT4 pointLightColor;
+
+     /**
+      * @brief ポイントライトの影響範囲
+      */
+     float pointLightRange;
+
+     DirectX::XMFLOAT3 pad;
+};
+
+/**
+* @brief ライトのシェーダに渡す情報
+*/
+ALIGN16 struct tagConstantBufferLight
+{
+     /**
+      * @brief ディレクションライトの情報
+      */
+     tagDirectionalLight directionalLight;
+
+     /**
+      * @brief ポイントライトの情報
+      */
+     tagPointlight pointLight;
+
+     //各ライト共通項?
+
+     /**
+         * @brief カメラの座標情報？
+         */
+     DirectX::XMFLOAT3 eyePos;
+
+     float pad3; //穴埋め用変数２
+
+     /**
+      * @brief 環境光情報
+      * @n 0.0~1.0に変換済み
+      */
+     DirectX::XMFLOAT4 ambient;
+};
+
+/**
  * @brief ゲーム内の光を管理するコンポーネント
  */
 class ComLight : public ComponentBase
 {
-    /**
-     * @brief シェーダに渡す情報
-     */
-    ALIGN16 struct ConstantBufferLight
-    {
-        /**
-         * @brief 正規化していない光のさす方向の情報
-         */
-        DirectX::XMFLOAT3 LightDirection;
 
-        float pad; //穴埋め用変数
+     //  ディレクションライト
+     //  ライトの方向とカラーのみを持つライト
+     //  位置情報がないので移動しても光の強さ、方向は変わらない = めちゃくちゃ遠くからあたっているイメージ 影変えるには方向を変える必要あり
 
-        /**
-         * @brief カメラの座標情報？
-         */
-        DirectX::XMFLOAT3 EyePos;
+     //  ポイントライト
+     //  ライトの位置、色、影響範囲(メートル)を持つ
+     //  DIRECTIONより少し重いらしい
 
-        float pad2; //穴埋め用変数２
+     //  スポットライト
+     //  ライトの位置、色、影響範囲、放射方向、放射角度、影響範囲(メートル)
 
-        /**
-         * @brief ライトの環境光情報
-         */
-        DirectX::XMFLOAT4 Ambient;
-    };
-
-    /*ALIGN16 struct tag
-    {
-
-    };*/
-
-    /**
-     * @brief ライトの種類
-     */
-    enum class E_TYPE_LIGHT
-    {
-        /**
-         * @brief ライトの方向とカラーのみを持つライト
-         * @n 位置情報がないので移動しても光の強さ、方向は変わらない = めちゃくちゃ遠くからあたっているイメージ 影変えるには方向を変える必要あり
-         */
-        DIRECTION,
-
-        /**
-         * @brief ライトの位置、色、影響範囲(メートル)を持つ
-         * @n DIRECTIONより少し重いらしい
-         */
-        POINT,
-
-        /**
-         * @brief ライトの位置、色、影響範囲、放射方向、放射角度、影響範囲(メートル)
-         */
-        SPOT
-    };
-
-    /**
+     /**
      * @brief シェーダに定数を渡すのに必要なバッファ
      */
-    ID3D11Buffer *m_pConstantBufferLight = nullptr;
+     ID3D11Buffer *m_pConstantBufferLight = nullptr;
 
-    /**
+     /**
      * @brief 各種保持しているコンポーネントへのアクセス簡易用変数
      */
-    ComCamera *m_pComCamera = nullptr;
-    ComSphere *m_pComSphere = nullptr;
+     ComCamera *m_pComCamera = nullptr;
+     ComSphere *m_pComSphere = nullptr;
 
 public:
-    /**
-     * @brief 光のタイプを決めるのに使用
-     */
-    E_TYPE_LIGHT m_typeLight;
 
-    /**
-     * @brief 色の方向情報
-     * @n どの角度からあたるかなどを入れる めんどくさかったらライトの座標入れてもいいかも(正規化するので)
+     /**
+     * @brief ディレクションライトの方向情報
+     * @n どの角度からあたるかなどを入れる めんどくさかったらライトの座標入れてもいいかも?(正規化するので)
      */
-    CVector3<float> m_lightDirection;
+     CVector3<float> m_lightDirection;
 
-    /**
+     /**
+     * @brief ディレクションライトの色
+     * @n 各種モデル等に反映される
+     */
+     CVector3<float> m_directionalColor;
+
+     /**
      * @brief 環境光の色
      * @n 各種モデル等に反映される
      */
-    CVector3<float> m_lightColor;
+     CVector3<float> m_ambientColor;
 
 public:
-    virtual void Init() override;
-    virtual void Uninit() override;
-    virtual void Ready() override;
-    virtual void Update() override;
-    virtual void ImGuiDraw(unsigned int windowid) override;
+     virtual void Init() override;
+     virtual void Uninit() override;
+     virtual void Ready() override;
+     virtual void Update() override;
+     virtual void ImGuiDraw(unsigned int windowid) override;
 
 private:
-    /**
+     /**
      * @brief ライトの更新処理
      */
-    void UpdateLight();
-
-    /**
-     * @brief ディレクションライトの更新処理
-     */
-    void UpdateDirectionLight();
+     void UpdateLight();
 };

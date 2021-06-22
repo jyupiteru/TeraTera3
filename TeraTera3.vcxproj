@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.h" />
     <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAnimationData.h" />
     <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpScene\CAssimpScene.h" />
     <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.h" />
@@ -236,6 +237,7 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.cpp" />
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAnimationData.cpp" />
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpScene\CAssimpScene.cpp" />
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.cpp" />
