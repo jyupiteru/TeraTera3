@@ -48,14 +48,7 @@ void ComBox::Init()
 			MessageBox(NULL, "CreateBuffer(index buffer) error", "Error", MB_OK);
 		}
 	}
-	m_comCount++;
-}
 
-//================================================================================================
-//================================================================================================
-
-void ComBox::Ready()
-{
 	// 頂点データの定義
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
@@ -71,8 +64,17 @@ void ComBox::Ready()
 	{
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
-	m_pComShader->LoadVertexShader("vs3dshape.fx", layout, numElements, true);
-	m_pComShader->LoadPixelShader("ps3dshape.fx", true);
+	m_pComShader->LoadVertexShader("VS3dShape.fx", layout, numElements, true);
+	m_pComShader->LoadPixelShader("PSOnlyColor.fx", true);
+
+	m_comCount++;
+}
+
+//================================================================================================
+//================================================================================================
+
+void ComBox::Ready()
+{
 }
 
 //================================================================================================
@@ -255,11 +257,11 @@ void ComBox::ChangeColor()
 	if (m_pVertexBuffer == nullptr)
 	{
 		// 頂点バッファ作成（後で変更可能なもの）
-		bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(),	  //デバイス
-										   sizeof(tagVertex), //ストライド（1頂点当たりのバイト数）
-										   8,				  //頂点数
-										   m_vertex,		  //初期化データの先頭アドレス
-										   &m_pVertexBuffer); //頂点バッファ
+		bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
+										   sizeof(tagVertex),							  //ストライド（1頂点当たりのバイト数）
+										   8,											  //頂点数
+										   m_vertex,									  //初期化データの先頭アドレス
+										   &m_pVertexBuffer);							  //頂点バッファ
 		if (!sts)
 		{
 			MessageBox(nullptr, "ComBox ChangeColor Error", "error", MB_OK);

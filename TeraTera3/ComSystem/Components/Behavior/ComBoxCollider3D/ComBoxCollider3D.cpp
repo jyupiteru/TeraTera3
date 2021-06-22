@@ -46,9 +46,10 @@ void ComBoxCollider3D::Ready()
         //登録されなければ生成はなし
         if (m_draw)
         {
-            m_colliderObject = m_gameObject->AddChildObject(this->m_gameObject->m_objectName + ":3dcollider", E_TYPE_OBJECT::MODEL3D);
-            m_colliderObject->RemoveComponent<Com3DModelAssimp>();
-            m_colliderObject->AddComponent<ComBox>();
+            m_colliderObject = m_gameObject->AddChildObject(this->m_gameObject->m_objectName + ":3dcollider", E_TYPE_OBJECT::NONE);
+            m_colliderObject->m_typeObject = E_TYPE_OBJECT::MODEL3D;
+            m_colliderObject->AddComponent<ComShader>();
+            m_colliderObjectBox = m_colliderObject->AddComponent<ComBox>();
         }
     }
 }
@@ -69,18 +70,18 @@ void ComBoxCollider3D::Draw()
 {
     if (m_colliderObject != nullptr)
     {
-        m_colliderObject->m_activeFlag.SetValue(false);
-
         if (m_draw)
         {
             //そもそもtransformを通させないことで行列を更新させない(でもtransformの値を取得されたら確実にバグ)
             m_colliderObject->m_transform->m_enable.SetValue(false);
 
-            m_colliderObject->m_activeFlag.SetValue(true);
-
             //Updateの更新順位をこのオブジェクトより後にすることでTransformの書き換えを防ぐ？
             m_colliderObject->m_objectUpdatePriority.SetValue(m_gameObject->m_objectDrawPriority.GetValue() + 1);
             m_colliderObject->m_transform->m_color.SetValue(m_color.GetValue());
+        }
+        else
+        {
+            m_colliderObjectBox->m_enable.SetValue(false);
         }
     }
 }

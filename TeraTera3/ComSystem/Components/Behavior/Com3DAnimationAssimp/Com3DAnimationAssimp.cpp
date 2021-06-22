@@ -74,11 +74,12 @@ void Com3DAnimationAssimp::Ready()
             {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"BONEINDEX", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-            {"BONEWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
+            {"BONEWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        };
     unsigned int numElements = ARRAYSIZE(layout);
 
     ComShader *shader = this->m_gameObject->GetComponent<ComShader>();
-    shader->LoadVertexShader("vsoneskin.fx", layout, numElements, true);
+    shader->LoadVertexShader("VSOneskin.fx", layout, numElements, true);
 }
 
 //================================================================================================
@@ -92,8 +93,8 @@ void Com3DAnimationAssimp::Update()
         const aiScene *scene = m_pNowAnimationData->m_listAnimation[m_nowAnimation.first]->GetScene();
         tagAssimpModelData *data = m_pCom3DModel->m_pNowModelData;
 
-        data->modeldata.Update(m_gameObject->m_transform->GetMatrix(), scene,
-                               m_nowAnimation.second, m_pCom3DModel->m_animationData);
+        data->modeldata.UpdateAnimation(m_gameObject->m_transform->GetMatrix(), scene,
+                                        m_nowAnimation.second, m_pCom3DModel->m_animationData);
 
         //アニメーションの速度を調整する
         ChangeAnimationFrame();
@@ -143,8 +144,8 @@ int Com3DAnimationAssimp::LoadAnimation(std::string_view groupname, std::string_
     //このアニメーションを読み込んだことがない
     if (flag)
     {
-        std::shared_ptr<AnimationDataAssimp> animdata;
-        animdata = std::make_shared<AnimationDataAssimp>();
+        std::shared_ptr<CAssimpAnimationData> animdata;
+        animdata = std::make_shared<CAssimpAnimationData>();
 
         //フォルダを移動
         std::string str = "Assets/Models/";

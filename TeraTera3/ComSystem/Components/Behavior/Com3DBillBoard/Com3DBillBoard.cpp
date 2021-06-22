@@ -29,7 +29,7 @@ void Com3DBillBoard::Uninit()
 void Com3DBillBoard::Ready()
 {
     Com3DTexture::Ready();
-    m_pComCamera = GameObject::Find("camera")->GetComponent<ComCamera>();
+    m_pComCamera = GameObject::Find("Camera")->GetComponent<ComCamera>();
 }
 
 //================================================================================================

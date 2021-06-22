@@ -8,9 +8,10 @@ void CSceneSample2::Init()
 {
     { //ステージ（ドーム表示）
         auto skydome = GameObject::MakeNewObject("skydome", E_TYPE_OBJECT::NONE);
+        skydome->m_drawLayer.SetValue(-1);
         skydome->AddPackage<Package3DModelObject>();
         skydome->GetComponent<Com3DModel>()->LoadModelData("skydome.x.dat");
-        skydome->GetComponent<ComShader>()->LoadPixelShader("psskydome.fx", true);
+        skydome->GetComponent<ComShader>()->LoadPixelShader("PSOnlyTex.fx", true);
         skydome->m_transform->m_size.SetValue(10, 10, 10);
     }
 
@@ -72,7 +73,28 @@ void CSceneSample2::Init()
         Sphere->AddComponent<ComSphere>();
         Sphere->m_transform->m_worldPosition.SetValue(40, 0, 100);
         Sphere->m_transform->m_size.SetValue(100, 100, 100);
-        Sphere->m_transform->m_color.SetValue(0, 256, 0, 0.3f);
+        Sphere->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
+        Sphere->GetComponent<ComShader>()->LoadPixelShader("PSLambert.fx", true);
+        // box->m_transform->m_angle.SetValue(0, 0, 0);
+    }
+    {
+        auto Sphere2 = GameObject::MakeNewObject("Sphere2", E_TYPE_OBJECT::MODEL3D);
+        Sphere2->RemoveComponent<Com3DModelAssimp>();
+        Sphere2->AddComponent<ComSphere>();
+        Sphere2->m_transform->m_worldPosition.SetValue(140, 0, 100);
+        Sphere2->m_transform->m_size.SetValue(100, 100, 100);
+        Sphere2->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
+        Sphere2->GetComponent<ComShader>()->LoadPixelShader("PSPhong.fx", true);
+        // box->m_transform->m_angle.SetValue(0, 0, 0);
+    }
+    {
+        auto Sphere3 = GameObject::MakeNewObject("Sphere3", E_TYPE_OBJECT::MODEL3D);
+        Sphere3->RemoveComponent<Com3DModelAssimp>();
+        Sphere3->AddComponent<ComSphere>();
+        Sphere3->m_transform->m_worldPosition.SetValue(240, 0, 100);
+        Sphere3->m_transform->m_size.SetValue(100, 100, 100);
+        Sphere3->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
+        Sphere3->GetComponent<ComShader>()->LoadPixelShader("PSAmbient.fx", true);
         // box->m_transform->m_angle.SetValue(0, 0, 0);
     }
     //{
@@ -131,7 +153,7 @@ void CSceneSample2::Init()
         //box2->m_activeFlag.SetValue(false);
     }
     {
-        auto camera = GameObject::Find("camera");
+        auto camera = GameObject::Find("Camera");
         auto com = camera->GetComponent<ComCamera>()->m_typeFixed = E_TYPE_FIXED::MODELLOOKAT;
         camera->m_transform->m_worldPosition.SetValue(0, 0, 0);
         camera->m_transform->m_angle.SetValue(0, 0, 0);
@@ -151,7 +173,7 @@ void CSceneSample2::Uninit()
 
 void CSceneSample2::Update()
 {
-    auto camera = GameObject::Find("camera");
+    auto camera = GameObject::Find("Camera");
     auto obj = GameObject::Find("model");
 
     if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_A))

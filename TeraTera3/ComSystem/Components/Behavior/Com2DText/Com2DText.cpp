@@ -119,8 +119,8 @@ void Com2DText::Ready()
     {
         m_pShader = m_gameObject->AddComponent<ComShader>();
     }
-    m_pShader->LoadVertexShader("vsuitex.fx", layout, numElements, true);
-    m_pShader->LoadPixelShader("pstexture.fx", true);
+    m_pShader->LoadVertexShader("VSUItex.fx", layout, numElements, true);
+    m_pShader->LoadPixelShader("PSTexWithColor.fx", true);
 }
 
 //================================================================================================

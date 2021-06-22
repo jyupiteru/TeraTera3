@@ -9,9 +9,10 @@ void CSceneSample::Init()
     CDebugLog::GetInstance().Draw("init");
     { //ステージ（ドーム表示）
         auto skydome = GameObject::MakeNewObject("skydome", E_TYPE_OBJECT::NONE);
+        skydome->m_drawLayer.SetValue(-1);
         skydome->AddPackage<Package3DModelObject>();
         skydome->GetComponent<Com3DModel>()->LoadModelData("skydome.x.dat");
-        skydome->GetComponent<ComShader>()->LoadPixelShader("psskydome.fx", true);
+        skydome->GetComponent<ComShader>()->LoadPixelShader("PSOnlyTex.fx", true);
         skydome->m_transform->m_size.SetValue(10, 10, 10);
     }
 
@@ -108,6 +109,24 @@ void CSceneSample::Init()
         model2->m_transform->m_size.SetValue(100, 100, 100);
         model2->m_transform->m_angle.SetValue(0, 0, 0);
         model2->m_transform->m_vector.SetValue(-1, 0, 0);
+        model2->m_transform->m_color.SetValue(0, 100, 0, 0.5f);
+        model2->AddComponent<Test2>();
+        auto assimp = model2->GetComponent<Com3DModelAssimp>();
+        assimp->LoadModelData("Player/idle_run.fbx", "Player/");
+
+        auto collider = model2->AddComponent<ComBoxCollider3D>();
+        //collider->m_draw = true;
+        collider->m_isFirstJustSize = true;
+        collider->m_isTrigger.SetValue(true);
+        collider->m_draw = true;
+    }
+
+    { //1体目のアニメーションモデル
+        auto model2 = GameObject::MakeNewObject("animmodel3", E_TYPE_OBJECT::MODEL3D);
+        model2->m_transform->m_worldPosition.SetValue(0, -30, -100);
+        model2->m_transform->m_size.SetValue(100, 100, 100);
+        model2->m_transform->m_angle.SetValue(0, 0, 0);
+        //model2->m_transform->m_vector.SetValue(-1, 0, 0);
         model2->AddComponent<Test2>();
         auto assimp = model2->GetComponent<Com3DModelAssimp>();
         assimp->LoadModelData("Player/idle_run.fbx", "Player/");
@@ -173,7 +192,7 @@ void CSceneSample::Init()
     //    //box2->m_activeFlag.SetValue(false);
     //}
     {
-        auto camera = GameObject::Find("camera");
+        auto camera = GameObject::Find("Camera");
         auto com = camera->GetComponent<ComCamera>()->m_typeFixed = E_TYPE_FIXED::MODELLOOKAT;
         camera->m_transform->m_worldPosition.SetValue(0, 0, 0);
         camera->m_transform->m_angle.SetValue(0, 0, 0);
