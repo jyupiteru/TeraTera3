@@ -35,6 +35,13 @@ public:
 	 */
 	CVector<double> m_deltaTime;
 
+	/**
+	 * @brief 時間、DeltaTimeの速さ? Updateは停止しないので注意
+	 * @n 1.0fを基準として増やせば増やすほどDeltaTimeは増えます。
+	 * @n 0でDeltaTimeは0になります
+	 */
+	CVector<float> m_timeScale;
+
 private:
 	CTimer();
 

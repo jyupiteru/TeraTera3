@@ -29,11 +29,41 @@ cbuffer ConstantBufferMaterial : register(b3)
 	float4	specularMaterial;
 }
 
+//ディレクションライト用の構造体
+struct tagDirectionalLight
+{
+	//正規化済みの方向ベクトル
+	float4 LightDirection;	
+
+	//0.0~1.0fの変換済みの色情報
+	float4 LightColor;
+};
+
+struct tagPointLight
+{
+	//ポイントライトの座標
+	float4 LightPosition;
+
+	//ポイントライトの色
+	float4 lightColor;
+
+	//ポイントライトの影響範囲
+	float LightRange;
+};
+
 cbuffer ConstantBufferLight : register(b4)
 {
-	float4 LightDirection;			// 正規化していない光の方向
-	float4 EyePos;					// 視点位置
-	float4 Ambient;					//環境光の情報 要するにライトの情報
+	//ディレクショナルライトの情報が入った変数
+	tagDirectionalLight DirectionalLight;			// 正規化していない光の方向
+
+	//ポイントライトの情報が入った変数
+	tagPointLight PointLight;
+
+	//視点位置
+	float4 EyePos;
+
+	//環境光の情報
+	float4 Ambient;
 }
 
 cbuffer ConstantBufferViewPort : register(b5)

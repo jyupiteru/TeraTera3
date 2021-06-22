@@ -13,10 +13,10 @@ float4 main(VS_OUTPUT input) : SV_Target
 {
 
 	//環境光がどれくらい影響があるか計算して格納
-	float4 diffuseLig = CalcLambertDiffuse(LightDirection, Ambient, input.Normal);
+	float4 diffuseLig = CalcLambertDiffuse(DirectionalLight.LightDirection, DirectionalLight.LightColor, input.Normal);
 
 	//鏡面反射光を求める
-	float specularLig = CalcPhongSpecular(LightDirection,Ambient,input.WPos,input.Normal,EyePos ,5.0f);
+	float4 specularLig = CalcPhongSpecular(DirectionalLight.LightDirection, DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
 
 	float4 col = input.Color;
 	col.x /= 256.0f;

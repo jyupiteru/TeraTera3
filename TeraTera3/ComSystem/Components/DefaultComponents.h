@@ -19,6 +19,7 @@
 #include "Behavior/Com3DModelAssimp/Com3DModelAssimp.h"
 #include "Behavior/Com3DAnimationAssimp/Com3DAnimationAssimp.h"
 #include "Behavior/ComBoxCollider3D/ComBoxCollider3D.h"
+#include "Behavior/ComLightPoint/ComLightPoint.h"
 
 #include "Shape/ComBox/ComBox.h"
 #include "Shape/ComSphere/ComSphere.h"
