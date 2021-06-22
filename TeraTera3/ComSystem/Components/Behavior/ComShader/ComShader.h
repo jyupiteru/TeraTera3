@@ -82,24 +82,30 @@ public:
     virtual void ImGuiDraw(unsigned int windowid) override;
 
     /**
-	 * @brief 			バーテックスシェーダ生成処理
-	 * @param vsfile 	shaderフォルダに入っている生成したいバーテックスシェーダのパスの入れる
-	 * @param layout 	使用したいlayoutを入れる
-	 * @param layoutsize layoutのサイズをARRAYSIZEでとっていれる
-     * @param flag このままキーをセットするかどうか
+	 * @brief 			頂点シェーダ生成処理
+	 * @param _vsfile 	Shaderフォルダに入っている生成したい頂点シェーダのパスの入れる
+	 * @param _layout 	使用したいlayoutを入れる
+	 * @param _layoutsize layoutのサイズをARRAYSIZEでとっていれる
+     * @param _flag このままキーをセットするかどうか デフォルトはtrue
+     * @param _Foldername 読み込むシェーダーを格納しているフォルダ名 デフォルトはDefaultVertex
 	 */
-    void LoadVertexShader(std::string vsfile, D3D11_INPUT_ELEMENT_DESC *layout, unsigned int layoutsize, bool flag = true);
+    void LoadVertexShader(std::string _vsfile, D3D11_INPUT_ELEMENT_DESC *_layout, unsigned int _layoutsize, bool _flag = true, std::string_view _foldername = "DefaultVertex");
 
     /**
 	 * @brief 			ピクセルシェーダ生成処理
-	 * @param psfile 	shaderフォルダに入っている生成したいピクセルシェーダのパスを入れる
-     * @param flag このままキーをセットするかどうか
+	 * @param psfile 	Shaderフォルダに入っている生成したいピクセルシェーダのパスを入れる
+     * @param flag このままキーをセットするかどうか デフォルトはtrue
+     * @param _Foldername 読み込むシェーダーを格納しているフォルダ名 デフォルトはDefaultPixel
 	 */
-    void LoadPixelShader(std::string psfile, bool flag = true);
+    void LoadPixelShader(std::string psfile, bool _flag = true, std::string_view _foldername = "DefaultPixel");
 
+    /**
+     * @brief 頂点シェーダーを変更する処理 LoadVertexShaderはレイアウト等がいるので追加しました。
+     * @param _shadername 変更したい読み込み済みシェーダーの名前
+     * @return true 成功
+     * @return false 失敗 まだ読み込めていない
+     */
     bool ChangeVertexShader(std::string_view _shadername);
-
-    bool ChangePixelShader(std::string_view _shadername);
 
     //Set系
     /**

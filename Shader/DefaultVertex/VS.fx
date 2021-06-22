@@ -19,6 +19,11 @@ VS_OUTPUT main(	float4 Pos		:	POSITION,
 	N.w = 0.0f;					// 法線はベクトルなのでＷの値を０にする。
 
 	N = mul(N, World);
+	
+	output.Color.x = 1.0f;
+	output.Color.y = 1.0f;
+	output.Color.z = 1.0f;
+	output.Color.a = 1.0f;
 
 	output.Normal = N;
 

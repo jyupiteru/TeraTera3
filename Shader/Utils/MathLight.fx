@@ -17,7 +17,7 @@ float4 CalcLambertDiffuse(float4 _lightdirection, float4 _lightcolor, float4 _no
     //法線と光の方向を内積
     float d = dot(_normal, _lightdirection);
 
-    //内積は同じ方向なら+になり逆ならば-になる 
+    //内積は同じ方向なら+になり逆ならば-になる
     //法線が光の方向にどれくらい向いているのか知りたいので-1をかける
     d *= -1;
 
@@ -32,6 +32,9 @@ float4 CalcLambertDiffuse(float4 _lightdirection, float4 _lightcolor, float4 _no
 //鏡面反射光を求める関数
 float4 CalcPhongSpecular(float4 _lightdirection, float4 _lightcolor, float4 _worldpos, float4 _normal, float4 _eyepos, float _pow)
 {
+    _eyepos.w = 0.0f;
+    _worldpos.w = 0.0f;
+    
     //光の方向ベクトルの必要でない値を0,0fにして正規化
     _lightdirection.w = 0.0f;
     _lightdirection = normalize(_lightdirection);

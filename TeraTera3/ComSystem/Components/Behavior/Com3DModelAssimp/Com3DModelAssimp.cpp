@@ -61,7 +61,7 @@ void Com3DModelAssimp::Init()
     {
         m_pShader->LoadVertexShader("VSAssimpModel.fx", layout, numElements, true);
     }
-    m_pShader->LoadPixelShader("PSAssimpPhong.fx", true);
+    m_pShader->LoadPixelShader("PSAssimpDefault.fx", true);
 }
 
 //================================================================================================
