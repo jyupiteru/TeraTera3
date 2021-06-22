@@ -81,8 +81,8 @@ void Com3DTexture::Ready()
     {
         m_pShader = m_gameObject->AddComponent<ComShader>();
     }
-    m_pShader->LoadVertexShader("vstexture.fx", layout, numElements, true);
-    m_pShader->LoadPixelShader("pstexture.fx", true);
+    m_pShader->LoadVertexShader("VS3DTex.fx", layout, numElements, true);
+    m_pShader->LoadPixelShader("PSTexWithColor.fx", true);
 
     if (auto [x, y, z] = m_gameObject->m_transform->m_size.GetValue(); z == 0.0f)
     {

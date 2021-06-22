@@ -1,17 +1,24 @@
 
 ////
-//	ランバートの拡散反射のピクセルシェーダー
+//	モデル用環境光のピクセルシェーダー
 //	法線必須
 ////
 
-#include "../Utils/CommonPSVS.fx"
-#include "../Utils/MathLight.fx"
+
+#include	"../Utils/CommonPSVS.fx"
+#include	"../Utils/MathLight.fx"
+
 
 float4 main(VS_OUTPUT input) : SV_Target
 {
 
 	//環境光がどれくらい影響があるか計算して格納
 	float4 diffuseLig = CalcLambertDiffuse(LightDirection, Ambient, input.Normal);
+	diffuseLig *= diffuseMaterial;
+
+	//鏡面反射光を求める
+	float specularLig = CalcPhongSpecular(LightDirection,Ambient,input.WPos,input.Normal,EyePos ,5.0f);
+	specularLig *= specularMaterial;
 
 	float4 col = input.Color;
 	col.x /= 256.0f;
@@ -24,8 +31,15 @@ float4 main(VS_OUTPUT input) : SV_Target
 	//オブジェクト色をかける
 	outcol *= col;
 
-	//環境光をかける
-	outcol *= diffuseLig;
+	//鏡面反射光と環境光を足す
+	float4 lig = diffuseLig + specularLig;
+
+	lig.x += 0.3f;
+	lig.y += 0.3f;
+	lig.z += 0.3f;
+
+	//光をかける
+	outcol *= lig;
 
 	//色を全部反映 ここいじれば透過できそうやけど未挑戦
 	outcol.a = 1.0f;

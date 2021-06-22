@@ -1,5 +1,5 @@
 
-#include	"../commonpsvs.fx"
+#include	"../Utils/CommonPSVS.fx"
 
 float4 main( VS_OUTPUT input ) : SV_Target
 {

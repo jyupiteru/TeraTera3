@@ -2,7 +2,7 @@
 //	Assimpのアニメーションモデル専用のシェーダ
 ///////////////////
 
-#include"../commonpsvs.fx"
+#include"../Utils/CommonPSVS.fx"
 
 
 VS_OUTPUT main(

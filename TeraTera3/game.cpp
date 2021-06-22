@@ -99,7 +99,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	ObjectGenerator::Create();
 
 	CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDraw_Objects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
+	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDrawObjects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
+	CImGuiManager::GetInstance().SetImGuiFunction("DrawLayer", std::bind(&ObjectGenerator::ImGuiDrawDrawLayer, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
 
 	{
 		// カメラ変換行列初期化
@@ -108,7 +109,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		XMFLOAT3 up = {0, 1, 0};	 // 上向きベクトル
 
 		//カメラオブジェクトを生成
-		auto camera = GameObject::MakeNewObject("camera", E_TYPE_OBJECT::NONE);
+		auto camera = GameObject::MakeNewObject("Camera", E_TYPE_OBJECT::NONE);
 		camera->AddComponent<ComCamera>()->SetCamera(eye, lookat, up);
 
 		camera->GetComponent<ComCamera>()->SetProjection(1.0f, 100000.0f,
@@ -121,7 +122,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		// 平行光源初期化
 		DirectX::XMFLOAT3 lightdir = {1, -1, 1}; // 平行光源の方向をセット
 		//シーンに設置するライトを生成
-		auto light = GameObject::MakeNewObject("light", E_TYPE_OBJECT::NONE);
+		auto light = GameObject::MakeNewObject("Light", E_TYPE_OBJECT::NONE);
 
 		ComLight *comlight = light->AddComponent<ComLight>();
 		comlight->m_lightColor.SetValue(255, 255, 255); // 環境光

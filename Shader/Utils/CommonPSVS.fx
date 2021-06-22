@@ -1,9 +1,11 @@
+
+
+#ifndef _HLSL_COMMON_
+
+#define _HLSL_COMMON_
+
 Texture2D g_Tex : register(t0);				// テクスチャ
 SamplerState g_SamplerLinear : register(s0);	// サンプラー
-
-//--------------------------------------------------------------------------------------
-// コンスタントバッファ
-//--------------------------------------------------------------------------------------
 
 cbuffer ConstantBufferWorld : register(b0)
 {
@@ -57,3 +59,4 @@ struct VS_OUTPUT
 	float4 Normal : TEXCOORD2;	//法線 正規化まだ
 };
 
+#endif

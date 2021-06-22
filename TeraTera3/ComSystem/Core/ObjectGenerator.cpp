@@ -47,6 +47,8 @@ void ObjectGenerator::Update()
 	m_updateCounter = 0;
 	m_updateTime = CTimer::GetInstance().GetProgressTime();
 
+	ResetDrawList();
+
 	auto [camera_x, camera_y, camera_z] = m_pCameraObject->m_transform->m_worldPosition.GetValue();
 
 	//非アクティブからアクティブになったオブジェクトを移動
@@ -59,8 +61,8 @@ void ObjectGenerator::Update()
 	{
 		if (m_pListAllObject.contains(itr.second))
 		{
-			auto obj = &m_pListAllObject[itr.second];
 			//objIDからオブジェクトポインタを取得してアクティブか確認する
+			auto obj = &m_pListAllObject[itr.second];
 			if ((*obj)->m_activeFlag.GetValue() == true)
 			{
 				m_updateCounter++;
@@ -98,6 +100,7 @@ void ObjectGenerator::Draw()
 {
 	m_drawTime = CTimer::GetInstance().GetProgressTime();
 	m_drawCounter = 0;
+	m_listDrawLayer.clear();
 
 #ifdef FLAG_DEBUGLOG_CHECKNOTFRUSTUMTYPE
 	std::string notfrustumname;
@@ -112,10 +115,11 @@ void ObjectGenerator::Draw()
 	//ここらにフラスタムカリングの処理を追加
 
 	//todo ここら辺vector、tuple、sortで短縮できるはずなので時間ができたら修正すること
-	//各レイヤーを透明でない->半透明の順に描画
+
+	//各レイヤー描画
 	for (auto &itr : m_listObjectForDraw)
 	{
-		//各レイヤーの描画
+		//透明=>不透明
 		for (auto &itr2 : itr.second)
 		{
 #ifdef FLAG_DEBUGLOG_CHECKNOTFRUSTUMTYPE
@@ -123,6 +127,8 @@ void ObjectGenerator::Draw()
 #endif
 			if (itr2.first == 0)
 			{ //透明でないオブジェクトの描画
+
+				//距離順
 				for (auto &itr3 : itr2.second)
 				{
 					//描画優先度順に描画
@@ -158,6 +164,14 @@ void ObjectGenerator::Draw()
 #endif
 
 									(*obj)->Draw();
+
+									std::string layer;
+									layer = "NoOpa : ";
+									layer += "Dis : " +std::to_string(itr3.first);
+									layer += " : ";
+									layer += (*obj)->m_objectName;
+									m_listDrawLayer.push_back(layer);
+
 									m_drawCounter++;
 								}
 							}
@@ -168,6 +182,8 @@ void ObjectGenerator::Draw()
 			}
 			else
 			{ //半透明オブジェクトの描画
+
+				//距離順
 				for (auto itr3 = itr2.second.rbegin(); itr3 != itr2.second.rend(); itr3++)
 				{
 					//描画優先度順に描画
@@ -201,6 +217,14 @@ void ObjectGenerator::Draw()
 									}
 #endif
 									(*obj)->Draw();
+
+									std::string layer;
+									layer = "Opa : ";
+									layer += "Dis : " + std::to_string(itr3->first);
+									layer += " : ";
+									layer += (*obj)->m_objectName;
+									m_listDrawLayer.push_back(layer);
+
 									m_drawCounter++;
 								}
 							}
@@ -214,8 +238,6 @@ void ObjectGenerator::Draw()
 #endif
 		}
 	}
-
-	ResetDrawList();
 
 	m_drawTime = CTimer::GetInstance().GetProgressTime() - m_drawTime;
 }
@@ -395,7 +417,7 @@ GameObject *const ObjectGenerator::AddObjectInGenerator(std::string_view name, E
 		//NonActiveリストに登録 こうしないとUpdate内で生成した場合バグが起きるはず
 		SetObjectToWaitList(objid);
 
-		if (name == "camera")
+		if (name == "Camera")
 		{
 			m_pCameraObject = m_pListAllObject[objid].get();
 		}
@@ -431,28 +453,36 @@ GameObject *const ObjectGenerator::FindInGenerator(std::string_view name)
 //================================================================================================
 //================================================================================================
 
-bool ObjectGenerator::DestroyInGenerator(GameObject *obj)
+bool ObjectGenerator::DestroyInGenerator(const int _objid)
 {
-	if (obj != nullptr)
+	return DestroyInGenerator(m_pListAllObject[_objid].get());
+}
+
+//================================================================================================
+//================================================================================================
+
+bool ObjectGenerator::DestroyInGenerator(GameObject *_obj)
+{
+	if (_obj != nullptr)
 	{
 		//親オブジェクトが設定されているので先にそれの解除
-		if (obj->m_pParentObject != nullptr)
+		if (_obj->m_pParentObject != nullptr)
 		{
-			obj->m_pParentObject->m_pListChildObject.erase(obj->m_objID);
-			obj->m_pParentObject->m_pListChildObjectName.erase(obj->m_objectName);
-			obj->m_pParentObject = nullptr;
+			_obj->m_pParentObject->m_pListChildObject.erase(_obj->m_objID);
+			_obj->m_pParentObject->m_pListChildObjectName.erase(_obj->m_objectName);
+			_obj->m_pParentObject = nullptr;
 		}
 
 		//既に登録されていないか確認
 		for (auto itr : m_listEraseObject)
 		{
 			//同じIDのオブジェクトか?
-			if (itr == obj->m_objID)
+			if (itr == _obj->m_objID)
 			{
 				return false;
 			}
 		}
-		m_listEraseObject.push_back(obj->m_objID);
+		m_listEraseObject.push_back(_obj->m_objID);
 		return true;
 	}
 	return false;
@@ -461,16 +491,16 @@ bool ObjectGenerator::DestroyInGenerator(GameObject *obj)
 //================================================================================================
 //================================================================================================
 
-bool ObjectGenerator::DestroyInGenerator(std::string name)
+bool ObjectGenerator::DestroyInGenerator(std::string_view _name)
 {
-	auto id = m_pListObjectName[name];
+	auto id = m_pListObjectName[_name.data()];
 	return DestroyInGenerator(m_pListAllObject[id].get());
 }
 
 //================================================================================================
 //================================================================================================
 
-void ObjectGenerator::ImGuiDraw(int windowid)
+void ObjectGenerator::ImGuiDraw(int _windowid)
 {
 	//各オブジェクトの内容描画処理、選択処理
 
@@ -481,10 +511,10 @@ void ObjectGenerator::ImGuiDraw(int windowid)
 	ImGui::BulletText("ObjectTotal : %d", m_pListAllObject.size());
 
 	ImGui::BulletText("ObjectUpdateTotal : %u", m_updateCounter);
-	ImGui::BulletText("UpdateTime : %0.7f", m_updateTime);
+	ImGui::BulletText("UpdateTime : %0.4f", m_updateTime);
 
 	ImGui::BulletText("ObjectDrawTotal : %u", m_drawCounter);
-	ImGui::BulletText("DrawTime : %0.7f", m_drawTime);
+	ImGui::BulletText("DrawTime : %0.4f", m_drawTime);
 
 	ImGui::BulletText("NonActiveObjectTotal : %u", m_listObjectNonActive.size());
 }
@@ -492,11 +522,11 @@ void ObjectGenerator::ImGuiDraw(int windowid)
 //================================================================================================
 //================================================================================================
 
-void ObjectGenerator::ImGuiDraw_Objects(int windowid)
+void ObjectGenerator::ImGuiDrawObjects(int _windowid)
 {
 	//名前、現在表示するもの、フラグ
 
-	std::string hide_objectname = CImGuiHelper::GetWindowDisplayContent(windowid, "objectgenerator_imgui", "hideobject");
+	std::string hide_objectname = CImGuiHelper::GetWindowDisplayContent(_windowid, "objectgenerator_imgui", "hideobject");
 
 	//何も選択されたことがないのなら何もなくす
 	if (hide_objectname == "None")
@@ -527,10 +557,10 @@ void ObjectGenerator::ImGuiDraw_Objects(int windowid)
 	HelpMarker((const char *)u8"検索したいオブジェクト名を入れると絞り込み可能、TABを押しながら打つこと");
 
 	//登録と取得のし直し
-	CImGuiHelper::SetWindowDisplayContent(windowid, "objectgenerator_imgui", "hideobject", input_hidename);
-	hide_objectname = CImGuiHelper::GetWindowDisplayContent(windowid, "objectgenerator_imgui", "hideobject");
+	CImGuiHelper::SetWindowDisplayContent(_windowid, "objectgenerator_imgui", "hideobject", input_hidename);
+	hide_objectname = CImGuiHelper::GetWindowDisplayContent(_windowid, "objectgenerator_imgui", "hideobject");
 
-	std::string selectobject = CImGuiHelper::GetWindowDisplayContent(windowid, "objectgenerator_imgui", "selectobject");
+	std::string selectobject = CImGuiHelper::GetWindowDisplayContent(_windowid, "objectgenerator_imgui", "selectobject");
 
 	if (ImGui::BeginListBox("SelectObject"))
 	{
@@ -549,7 +579,7 @@ void ObjectGenerator::ImGuiDraw_Objects(int windowid)
 				{
 					selectobject = itr.first;
 					//登録内容の更新
-					CImGuiHelper::SetWindowDisplayContent(windowid, "objectgenerator_imgui", "selectobject", itr.first);
+					CImGuiHelper::SetWindowDisplayContent(_windowid, "objectgenerator_imgui", "selectobject", itr.first);
 				}
 
 				//選択されたか
@@ -570,6 +600,20 @@ void ObjectGenerator::ImGuiDraw_Objects(int windowid)
 		unsigned int select_objectid = m_pListObjectName[selectobject];
 
 		//次のオブジェクトのImGuiDrawを実行
-		m_pListAllObject[select_objectid]->ImGuiDraw(windowid);
+		m_pListAllObject[select_objectid]->ImGuiDraw(_windowid);
 	}
+}
+
+//================================================================================================
+//================================================================================================
+
+void ObjectGenerator::ImGuiDrawDrawLayer(int _windowid)
+{
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_HorizontalScrollbar;
+	ImGui::BeginChild("DrawLayer", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.5f, 260), false, window_flags);
+	for (auto itr : m_listDrawLayer)
+	{
+		ImGui::Text(itr.c_str());
+	}
+	ImGui::EndChild();
 }

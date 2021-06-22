@@ -39,8 +39,8 @@ void ComSphere::Init()
 	{
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
-	m_pComShader->LoadVertexShader("vs3dshape.fx", layout, numElements, true);
-	m_pComShader->LoadPixelShader("ps3dshape.fx", true);
+	m_pComShader->LoadVertexShader("VS3DShape.fx", layout, numElements, true);
+	m_pComShader->LoadPixelShader("PSOnlyColor.fx", true);
 }
 
 //================================================================================================
@@ -127,11 +127,11 @@ void ComSphere::Draw()
 {
 	ChangeColors();
 
-	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
-	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
-
 	m_pComShader->SetPixelShader();
 	m_pComShader->SetVertexShader();
+
+	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
+	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
 
 	ID3D11DeviceContext *device = CDirectXGraphics::GetInstance().GetImmediateContext();
 	// 頂点バッファをセットする
