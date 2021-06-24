@@ -92,9 +92,11 @@ cbuffer ConstantBufferBoneMatrix : register(b6)
 
 cbuffer ConstantBufferWipe : register(b7)
 {
-	float2 wipeSize;	//現在のワイプのサイズ 表示をさせない範囲
+	float wipeSize;	//現在のワイプのサイズ 表示をさせない範囲
 
 	float2 wipeVector;	//ワイプの方向(正規化済み)
+	
+	float wipeFlag;		//ワイプが開けるか、閉まるか決めるフラグ
 }
 
 //頂点シェーダー => ピクセルシェーダーに渡す構造体

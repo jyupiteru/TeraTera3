@@ -189,6 +189,7 @@ public:
 
     /**
      * @brief オブジェクトを描画するレイヤー
+     * @n 小さい順に描画
      */
     CVector<int> m_drawLayer;
 
