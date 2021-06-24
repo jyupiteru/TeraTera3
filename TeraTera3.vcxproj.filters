@@ -288,40 +288,22 @@
     <ClInclude Include="TeraTera3\System\AssimpModel\AssimpVertexsData.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComMapManager\ComMapManager.h">
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComGameManager\ComGameManager.h">
+    <ClInclude Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComPlayer\ComPlayer.h">
+    <ClInclude Include="TeraTera3\System\CTextureManager\CTextureManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComTimer\ComTimer.h">
+    <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComShotManager\ComEnemyManager.h">
+    <ClInclude Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComShot\ComShot.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponent\ComShotManager\ComShotManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponent\ComDataManager\ComDataManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponent\ComResultManager\ComResultManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponent\ComTitleManager\ComTitleManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponent\ComCoinManager\ComCoinManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponent\ComCoin\ComCoin.h">
+    <ClInclude Include="TeraTera3\System\CTextureManager\CTextureManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -519,6 +501,15 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAnimationData.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\System\CTextureManager\CTextureManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameComponent\ComMapManager\ComMapManager.cpp">

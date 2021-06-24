@@ -15,6 +15,7 @@
 #include "ComSystem/Core/ObjectGenerator.h"
 #include "SceneSystem/CSceneManager/CSceneManager.h"
 #include "ResourceContainer/CContainer.h"
+#include "System/CTextureManager/CTextureManager.h"
 
 using namespace DirectX;
 
@@ -49,6 +50,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 
 	CContainer::Create();
 
+	CTextureManager::Create();
+
 	bool sts;
 
 	// DX11初期処理
@@ -60,6 +63,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		return false;
 	}
 
+	CDebugLog::GetInstance().Draw("Set DX11");
+
 	//SetTransformの初期化
 	sts = DX11SetTransform::GetInstance()->Init();
 	if (!sts)
@@ -70,10 +75,12 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 
 	// DIRECTINPUT初期化
 	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
+	CDebugLog::GetInstance().Draw("Set DirectInput");
 
 	//ImGuiを管理するかマネージャーの生成と初期化
 	CImGuiManager::Create();
 	CImGuiManager::GetInstance().Init(hwnd);
+	CDebugLog::GetInstance().Draw("Set CImGuiManager");
 
 	//ウインドウを１個生成
 	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
@@ -95,8 +102,10 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	windowdata->m_firstCenterPosition.y = windowdata->m_firstSize.y / 2.0f;
 
 	CEventSystem::Create();
+	CDebugLog::GetInstance().Draw("Set EventSystem");
 
 	ObjectGenerator::Create();
+	CDebugLog::GetInstance().Draw("Set ObjectGenerator");
 
 	CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
 	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDrawObjects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
@@ -125,7 +134,9 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		auto light = GameObject::MakeNewObject("Light", E_TYPE_OBJECT::NONE);
 
 		ComLight *comlight = light->AddComponent<ComLight>();
-		comlight->m_lightColor.SetValue(255, 255, 255); // 環境光
+		comlight->m_ambientColor.SetValue(60, 60, 60);
+		comlight->m_directionalColor.SetValue(155, 155, 155);
+
 		comlight->m_lightDirection.SetValue(lightdir.x, lightdir.y, lightdir.z);
 
 		light->m_objectUpdatePriority.SetValue(-20);
@@ -136,6 +147,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CDirectXGraphics::GetInstance().TurnOnAlphaBlending();
 
 	CSceneManager::Create();
+	CDebugLog::GetInstance().Draw("Set CSceneManager");
 
 	CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
 	CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CEventSystem::GetInstance(), "Menu");
@@ -214,6 +226,7 @@ void GameUninit()
 	ObjectGenerator::Delete(true);
 	CEventSystem::Delete(true);
 	CContainer::Delete(true);
+	CTextureManager::Delete(true);
 	CImGuiManager::Delete(true);
 	CDirectXGraphics::Delete(true);
 }

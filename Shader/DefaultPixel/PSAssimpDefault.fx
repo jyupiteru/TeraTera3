@@ -1,6 +1,6 @@
 
 ////
-//	モデル用環境光のピクセルシェーダー
+//	モデル用のでデフォルトのピクセルシェーダー
 //	法線必須
 ////
 
@@ -11,13 +11,12 @@
 
 float4 main(VS_OUTPUT input) : SV_Target
 {
-
 	//環境光がどれくらい影響があるか計算して格納
-	float4 diffuseLig = CalcLambertDiffuse(LightDirection, Ambient, input.Normal);
+	float4 diffuseLig = CalcLambertDiffuse(DirectionalLight.LightDirection, DirectionalLight.LightColor, input.Normal);
 	diffuseLig *= diffuseMaterial;
 
 	//鏡面反射光を求める
-	float specularLig = CalcPhongSpecular(LightDirection,Ambient,input.WPos,input.Normal,EyePos ,5.0f);
+	float4 specularLig = CalcPhongSpecular(DirectionalLight.LightDirection, DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
 	specularLig *= specularMaterial;
 
 	float4 col = input.Color;
@@ -32,11 +31,7 @@ float4 main(VS_OUTPUT input) : SV_Target
 	outcol *= col;
 
 	//鏡面反射光と環境光を足す
-	float4 lig = diffuseLig + specularLig;
-
-	lig.x += 0.3f;
-	lig.y += 0.3f;
-	lig.z += 0.3f;
+	float4 lig = diffuseLig + specularLig + Ambient;
 
 	//光をかける
 	outcol *= lig;

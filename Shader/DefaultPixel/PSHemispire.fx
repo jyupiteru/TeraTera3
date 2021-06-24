@@ -1,9 +1,9 @@
 
 ////
-//	フォングの鏡面反射のピクセルシェーダー
-//	法線必須
+//	半球ライトのピクセルシェーダー
+//	環境光をよりリアルにしたもの 空の色、地面の色を反映
+//	未実装のため注意
 ////
-
 
 #include	"../Utils/CommonPSVS.fx"
 #include	"../Utils/MathLight.fx"
@@ -13,12 +13,13 @@ float4 main(VS_OUTPUT input) : SV_Target
 {
 
 	//環境光がどれくらい影響があるか計算して格納
-	float4 diffuseLig = CalcLambertDiffuse(LightDirection, Ambient, input.Normal);
+	float4 diffuseLig = CalcLambertDiffuse(DirectionalLight.LightDirection, DirectionalLight.LightColor, input.Normal);
 
 	//鏡面反射光を求める
-	float specularLig = CalcPhongSpecular(LightDirection,Ambient,input.WPos,input.Normal,EyePos ,5.0f);
+	float4 specularLig = CalcPhongSpecular(DirectionalLight.LightDirection,DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
 
 	float4 col = input.Color;
+
 	col.x /= 256.0f;
 	col.y /= 256.0f;
 	col.z /= 256.0f;
@@ -29,8 +30,9 @@ float4 main(VS_OUTPUT input) : SV_Target
 	//オブジェクト色をかける
 	outcol *= col;
 
-	//鏡面反射光と環境光を足す
-	float4 lig = diffuseLig + specularLig;
+	//鏡面反射光と環境光と環境光を足す
+	float4 lig = diffuseLig + specularLig + Ambient;
+
 
 	//光をかける
 	outcol *= lig;
