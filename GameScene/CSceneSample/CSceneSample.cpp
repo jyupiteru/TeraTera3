@@ -230,8 +230,8 @@ void CSceneSample::Uninit()
 
 void CSceneSample::Update()
 {
-    auto animmodel = GameObject::Find("animmodel");
-    animmodel->m_transform->m_vector.SetValue(-60 * CTimer::GetInstance().m_deltaTime.GetValue(), 0, 0);
+    /*auto animmodel = GameObject::Find("animmodel");
+    animmodel->m_transform->m_vector.SetValue(-60 * CTimer::GetInstance().m_deltaTime.GetValue(), 0, 0);*/
 
     auto camera = GameObject::Find("camera");
     auto obj = GameObject::Find("model");

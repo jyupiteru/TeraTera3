@@ -39,10 +39,6 @@ class ComWipe : public Com2DTexture
 	 */
 	ID3D11Buffer *m_wideDataBuffer = nullptr;
 
-	/**
-	 * @brief 現在のワイプのサイズ
-	 */
-	float m_wipeSize;
 
 	/**
 	 * @brief シェーダーに渡す情報を格納する変数
@@ -60,6 +56,12 @@ public:
 	 * @brief ワイプの１秒当たりの進むスピード
 	 */
 	CVector<float> m_wipeSpeed;
+
+	/**
+	 * @brief ワイプの初期サイズ
+	 * @n Speedと組み合わせる speedが+ならsizeは0で-なら最大
+	 */
+	CVector<float> m_wipeSize;
 
 	/**
 	 * @brief ワイプをするか、開けるか決める変数

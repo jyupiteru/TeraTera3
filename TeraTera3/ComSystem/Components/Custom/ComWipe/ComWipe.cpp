@@ -30,10 +30,10 @@ void ComWipe::Init()
 		MessageBox(NULL, "tagWipeData error", "Error", MB_OK);
 	}
 
-	m_wipeSize = 0;
+	m_wipeSize.SetValue(0);
 	m_wipeVector.SetValue(1, 1);
 	m_wipeSpeed.SetValue(150);
-	m_wipeFlag.SetValue(false);
+	m_wipeFlag.SetValue(true);
 }
 
 //================================================================================================
@@ -58,7 +58,7 @@ void ComWipe::Ready()
 
 void ComWipe::Update()
 {
-	m_wipeSize += static_cast<float>(m_wipeSpeed.GetValue() * CTimer::GetInstance().m_deltaTime.GetValue());
+	m_wipeSize.AddValue(static_cast<float>(m_wipeSpeed.GetValue() * CTimer::GetInstance().m_deltaTime.GetValue()));
 }
 
 //================================================================================================
@@ -67,7 +67,7 @@ void ComWipe::Update()
 void ComWipe::Draw()
 {
 	//m_wipeData.pad = {0, 0, 0};
-	m_wipeData.wipeSize = m_wipeSize;
+	m_wipeData.wipeSize = m_wipeSize.GetValue();
 	std::tie(m_wipeData.wipeVector.x, m_wipeData.wipeVector.y) = m_wipeVector.GetValue();
 	m_wipeData.wipeFlag = m_wipeFlag.GetValue();
 	if (m_wipeData.wipeFlag == 0)
@@ -76,8 +76,8 @@ void ComWipe::Draw()
 	}
 
 	//方向を変更
-	/*m_wipeData.wipeVector.x *= -1;
-	m_wipeData.wipeVector.y *= -1;*/
+	//m_wipeData.wipeVector.x *= -1;
+	//m_wipeData.wipeVector.y *= -1;
 
 	//シェーダにワイプに必要な情報をセット
 	CDirectXGraphics::GetInstance().GetImmediateContext()->UpdateSubresource(m_wideDataBuffer, 0, nullptr, &m_wipeData, 0, 0);
