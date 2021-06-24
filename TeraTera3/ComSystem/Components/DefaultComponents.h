@@ -23,3 +23,5 @@
 
 #include "Shape/ComBox/ComBox.h"
 #include "Shape/ComSphere/ComSphere.h"
+
+#include "Custom/ComWipe/ComWipe.h"
