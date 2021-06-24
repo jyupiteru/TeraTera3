@@ -60,7 +60,7 @@ void CSceneGame1::Init()
     }
 
     { //カメラの取得と交信
-        auto camera = GameObject::Find("camera");
+        auto camera = GameObject::Find("Camera");
         auto comcamera = camera->GetComponent<ComCamera>();
         comcamera->m_typeFixed = E_TYPE_FIXED::LOOKAT;
         //camera->GetComponent<ComCamera>()->m_otherTransform = GameObject::Find("player")->m_transform;
@@ -123,7 +123,7 @@ void CSceneGame1::Uninit()
 
 void CSceneGame1::Update()
 {
-    GameObject *camera = GameObject::Find("camera");
+    GameObject *camera = GameObject::Find("Camera");
     camera->m_transform->m_worldPosition.SetValue(GameObject::Find("Player")->m_transform->m_worldPosition.GetValue());
 }
 

@@ -13,7 +13,7 @@ void CSceneTitle::Init()
             skydome = GameObject::MakeNewObject("skydome", E_TYPE_OBJECT::NONE);
             skydome->AddPackage<Package3DModelObject>();
             skydome->GetComponent<Com3DModel>()->LoadModelData("skydome.x.dat");
-            skydome->GetComponent<ComShader>()->LoadPixelShader("psskydome.fx", true);
+            skydome->GetComponent<ComShader>()->LoadPixelShader("PSOnlyTex.fx", true);
             skydome->m_transform->m_size.SetValue(10.0f, 10.0f, 10.0f);
             skydome->DontDestroyOnLoad();
             skydome->m_drawLayer.SetValue(-1);
@@ -74,7 +74,7 @@ void CSceneTitle::Init()
     }
 
     {
-        auto floor = GameObject::MakeNewObject("floor", E_TYPE_OBJECT::MODEL3D);
+        auto floor = GameObject::MakeNewObject("Floor", E_TYPE_OBJECT::MODEL3D);
         floor->RemoveComponent<Com3DModelAssimp>();
         floor->AddComponent<ComBox>();
         floor->m_transform->m_size.SetValue(40.0f, 1.0f, 40.0f);
@@ -83,7 +83,7 @@ void CSceneTitle::Init()
     }
 
     { //カメラの取得と交信
-        auto camera = GameObject::Find("camera");
+        auto camera = GameObject::Find("Camera");
         camera->m_transform->m_worldPosition.SetValue(0, 0, 0);
 
         auto comcamera = camera->GetComponent<ComCamera>();

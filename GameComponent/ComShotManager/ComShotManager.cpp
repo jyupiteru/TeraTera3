@@ -247,9 +247,12 @@ void ComShotManager::CreateShotObject()
     shot->AddComponent<ComSphere>();
     shot->m_transform->m_color.SetValue(125, 125, 255, 1.0f);
     shot->m_activeFlag.SetValue(false);
-    ComShot *comshot = shot->AddComponent<ComShot>();
+
+    ComShader *comshader = shot->GetComponent<ComShader>();
+    comshader->LoadPixelShader("PSAmbient.fx", true);
 
     //リストへの格納
+    ComShot *comshot = shot->AddComponent<ComShot>();
     m_listWaitCreate.emplace_back(comshot);
     m_listShotList.emplace_back(comshot);
 
@@ -261,7 +264,6 @@ void ComShotManager::CreateShotObject()
 #ifdef _DEBUG
     collider->m_draw = true;
 #endif // _DEBUG
-
 }
 
 //================================================================================================

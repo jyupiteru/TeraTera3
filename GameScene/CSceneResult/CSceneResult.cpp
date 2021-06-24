@@ -16,7 +16,7 @@ void CSceneResult::Init()
         }
     }
     { //カメラの取得と交信
-        auto camera = GameObject::Find("camera");
+        auto camera = GameObject::Find("Camera");
         auto comcamera = camera->GetComponent<ComCamera>();
         comcamera->m_typeFixed = E_TYPE_FIXED::LOOKAT;
         comcamera->m_range.SetValue(30);
