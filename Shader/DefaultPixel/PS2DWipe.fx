@@ -17,8 +17,11 @@ float4 main(VS_OUTPUT input) : SV_Target
 	//正規化済みのワイプの方向と座標を内積する
 	float t = dot(wipevec,input.Pos.xy);
 
+	float flag = wipeFlag;
+	flag = normalize(flag);
+
 	//座標から現在の表示をさせない範囲(ワイプ)を引き0未満になったら表示をやめる
-	clip(t - wipeSize);
+	clip((t - wipeSize) * flag) ;
 
 	float4 col = input.Color;
 	col.x /= 256.0f;

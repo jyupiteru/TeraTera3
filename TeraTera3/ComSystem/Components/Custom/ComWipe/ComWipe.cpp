@@ -8,8 +8,6 @@
 #include "../../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
 #include "../../../../Timer/CTimer.h"
 
-
-
 void ComWipe::Init()
 {
 	//表示レイヤーの変更
@@ -35,6 +33,7 @@ void ComWipe::Init()
 	m_wipeSize = 0;
 	m_wipeVector.SetValue(1, 1);
 	m_wipeSpeed.SetValue(150);
+	m_wipeFlag.SetValue(false);
 }
 
 //================================================================================================
@@ -70,6 +69,15 @@ void ComWipe::Draw()
 	//m_wipeData.pad = {0, 0, 0};
 	m_wipeData.wipeSize = m_wipeSize;
 	std::tie(m_wipeData.wipeVector.x, m_wipeData.wipeVector.y) = m_wipeVector.GetValue();
+	m_wipeData.wipeFlag = m_wipeFlag.GetValue();
+	if (m_wipeData.wipeFlag == 0)
+	{
+		m_wipeData.wipeFlag = -1;
+	}
+
+	//方向を変更
+	/*m_wipeData.wipeVector.x *= -1;
+	m_wipeData.wipeVector.y *= -1;*/
 
 	//シェーダにワイプに必要な情報をセット
 	CDirectXGraphics::GetInstance().GetImmediateContext()->UpdateSubresource(m_wideDataBuffer, 0, nullptr, &m_wipeData, 0, 0);

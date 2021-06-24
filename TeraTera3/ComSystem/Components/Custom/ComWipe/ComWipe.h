@@ -22,9 +22,6 @@ class ComWipe : public Com2DTexture
 		 */
 		float wipeSize;
 
-		/**
-		 * @brief パディング
-		 */
 		//DirectX::XMFLOAT3 pad;
 
 		/**
@@ -32,7 +29,9 @@ class ComWipe : public Com2DTexture
 		 */
 		DirectX::XMFLOAT2 wipeVector;
 
-		DirectX::XMFLOAT2 pad2;
+		//float pad;
+
+		float wipeFlag;
 	};
 
 	/**
@@ -53,6 +52,7 @@ class ComWipe : public Com2DTexture
 public:
 	/**
 	 * @brief ワイプをする方向
+	 * @n xが１で右、-1で左yが+で上、-っで下
 	 */
 	CVector2<float> m_wipeVector;
 
@@ -60,6 +60,12 @@ public:
 	 * @brief ワイプの１秒当たりの進むスピード
 	 */
 	CVector<float> m_wipeSpeed;
+
+	/**
+	 * @brief ワイプをするか、開けるか決める変数
+	 * @n trueで開けて、falseで閉まる
+	 */
+	CVector<bool> m_wipeFlag;
 
 public:
 	ComWipe(){};
