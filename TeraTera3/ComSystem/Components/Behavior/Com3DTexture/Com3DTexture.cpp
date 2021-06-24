@@ -10,12 +10,7 @@
 #include "../../../../../ThirdParty/ImGui/imgui.h"
 #include "../../../../WindowsSystem/DX11Settransform.h"
 #include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
-
-std::unordered_map<std::string, ID3D11ShaderResourceView *> Com3DTexture::m_pListSRV;
-
-std::unordered_map<std::string, ID3D11Resource *> Com3DTexture::m_pListTexture;
-
-int Com3DTexture::m_classCount = 0;
+#include "../../../../System/CTextureManager/CTextureManager.h"
 
 using namespace DirectX;
 
@@ -35,8 +30,6 @@ void Com3DTexture::Init()
     m_typeComponent.SetValue(E_TYPE_COMPONENT::OBJECT3D);
 
     this->LoadTexture("System/white.png", E_TYPE_TEXTUREOBJ::VERTICAL);
-
-    m_classCount++;
 }
 
 //================================================================================================
@@ -48,18 +41,6 @@ void Com3DTexture::Uninit()
     {
         m_screenBuffer->Release();
         m_screenBuffer = nullptr;
-    }
-    m_classCount--;
-    if (m_classCount <= 0)
-    {
-        if (m_pListSRV.empty() == false)
-        {
-            m_pListSRV.clear();
-        }
-        if (m_pListTexture.empty() == false)
-        {
-            m_pListTexture.clear();
-        }
     }
 }
 
@@ -127,7 +108,9 @@ void Com3DTexture::Draw()
     // インデックスバッファをセット
     devcontext->IASetIndexBuffer(m_idxbuffer, DXGI_FORMAT_R32_UINT, 0);
 
-    ID3D11ShaderResourceView *srv = m_pListSRV[m_keyTexture];
+    auto data = CTextureManager::GetInstance().GetTextureData(m_keyTexture);
+
+    ID3D11ShaderResourceView *srv = data->srv;
 
     // PSにSRVをセット
     devcontext->PSSetShaderResources(
@@ -178,9 +161,9 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
 
     // インデックスバッファ生成
     bool sts = CreateIndexBuffer(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
-                                 4,               //インデックス数
-                                 idx,             //初期化データの先頭アドレス
-                                 &m_idxbuffer);   //インデックスバッファ
+                                 4,                                             //インデックス数
+                                 idx,                                           //初期化データの先頭アドレス
+                                 &m_idxbuffer);                                 //インデックスバッファ
     if (!sts)
     {
         MessageBox(nullptr, TEXT("CreateIndexBuffer error"), TEXT("error"), MB_OK);
@@ -197,28 +180,10 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
 
     m_keyTexture = texturename;
 
-    std::string folder = "Assets/Textures/";
-
-    folder += texturename;
-
-    if (!m_pListTexture.contains(m_keyTexture))
+    //読み込んだことはあるか？
+    if (!CTextureManager::GetInstance().GetTextureData(m_keyTexture))
     {
-        ID3D11ShaderResourceView *srv = nullptr;
-        ID3D11Resource *texres = nullptr;
-
-        // SRV生成
-        sts = CreateSRVfromFile(folder.c_str(), //画像ファイル名
-            CDirectXGraphics::GetInstance().GetDXDevice(),
-            CDirectXGraphics::GetInstance().GetImmediateContext(),
-                                &texres,
-                                &srv);
-        if (!sts)
-        {
-            MessageBox(nullptr, TEXT("CreateSRVfromFile error"), TEXT("error"), MB_OK);
-        }
-
-        m_pListSRV[m_keyTexture] = srv;
-        m_pListTexture[m_keyTexture] = texres;
+        CTextureManager::GetInstance().LoadTexture(m_keyTexture);
     }
 
     // マテリアル
@@ -313,11 +278,11 @@ void Com3DTexture::SetVertex()
     if (m_vertexbuffer == nullptr)
     {
         // 頂点バッファ作成（後で変更可能な）
-        bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(),   //デバイス
-                                           sizeof(tagVertex), //ストライド（1頂点当たりのバイト数）
-                                           4,                 //頂点数
-                                           m_vertex,          //初期化データの先頭アドレス
-                                           &m_vertexbuffer);  //頂点バッファ
+        bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
+                                           sizeof(tagVertex),                             //ストライド（1頂点当たりのバイト数）
+                                           4,                                             //頂点数
+                                           m_vertex,                                      //初期化データの先頭アドレス
+                                           &m_vertexbuffer);                              //頂点バッファ
         if (!sts)
         {
             MessageBox(nullptr, "Com3DTexture SetVertex Error", "error", MB_OK);

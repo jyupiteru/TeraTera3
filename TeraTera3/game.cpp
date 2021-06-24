@@ -15,6 +15,7 @@
 #include "ComSystem/Core/ObjectGenerator.h"
 #include "SceneSystem/CSceneManager/CSceneManager.h"
 #include "ResourceContainer/CContainer.h"
+#include "System/CTextureManager/CTextureManager.h"
 
 using namespace DirectX;
 
@@ -48,6 +49,8 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CDebugLog::GetInstance().Draw("Use TeraTera ver3 Framework");
 
 	CContainer::Create();
+
+	CTextureManager::Create();
 
 	bool sts;
 
@@ -223,6 +226,7 @@ void GameUninit()
 	ObjectGenerator::Delete(true);
 	CEventSystem::Delete(true);
 	CContainer::Delete(true);
+	CTextureManager::Delete(true);
 	CImGuiManager::Delete(true);
 	CDirectXGraphics::Delete(true);
 }
