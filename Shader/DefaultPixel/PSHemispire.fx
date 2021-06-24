@@ -1,8 +1,8 @@
 
 ////
-//	デフォルトのピクセルシェーダー
-//	これはPSAmbient.fxと同じ
-//	法線必須
+//	半球ライトのピクセルシェーダー
+//	環境光をよりリアルにしたもの 空の色、地面の色を反映
+//	未実装のため注意
 ////
 
 #include	"../Utils/CommonPSVS.fx"
@@ -17,16 +17,9 @@ float4 main(VS_OUTPUT input) : SV_Target
 
 	//鏡面反射光を求める
 	float4 specularLig = CalcPhongSpecular(DirectionalLight.LightDirection,DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
-	
-	//ポイントライトからピクセルまでの光の方向ベクトルを計算
-	float4 ligDirection = input.WPos - PointLight.lightPosition;
-	ligDirection = normalize(ligDirection);
-
-	//ポイントライトからの
-	float4 diffusePoint = CalcLambertDiffuse(ligDirection,PointLight.lightColor,input.Normal);
-
 
 	float4 col = input.Color;
+
 	col.x /= 256.0f;
 	col.y /= 256.0f;
 	col.z /= 256.0f;
@@ -39,6 +32,7 @@ float4 main(VS_OUTPUT input) : SV_Target
 
 	//鏡面反射光と環境光と環境光を足す
 	float4 lig = diffuseLig + specularLig + Ambient;
+
 
 	//光をかける
 	outcol *= lig;

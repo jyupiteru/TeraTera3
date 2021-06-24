@@ -192,6 +192,14 @@ void CSceneSample::Init()
     //    //box2->m_activeFlag.SetValue(false);
     //}
     {
+        auto wipe = GameObject::MakeNewObject("Wipe", E_TYPE_OBJECT::UI);
+        wipe->m_transform->m_size.SetValue(SCREEN_WIDTH, SCREEN_HEIGHT, 1);
+        wipe->m_transform->m_color.SetValue(256, 0, 256, 1.0f);
+        wipe->RemoveComponent<Com2DTexture>();
+        wipe->AddComponent<ComWipe>();
+
+    }
+    {
         auto camera = GameObject::Find("Camera");
         auto com = camera->GetComponent<ComCamera>()->m_typeFixed = E_TYPE_FIXED::MODELLOOKAT;
         camera->m_transform->m_worldPosition.SetValue(0, 0, 0);
@@ -222,8 +230,8 @@ void CSceneSample::Uninit()
 
 void CSceneSample::Update()
 {
-    auto animmodel = GameObject::Find("animmodel");
-    animmodel->m_transform->m_vector.SetValue(-60 * CTimer::GetInstance().m_deltaTime.GetValue(), 0, 0);
+    /*auto animmodel = GameObject::Find("animmodel");
+    animmodel->m_transform->m_vector.SetValue(-60 * CTimer::GetInstance().m_deltaTime.GetValue(), 0, 0);*/
 
     auto camera = GameObject::Find("camera");
     auto obj = GameObject::Find("model");

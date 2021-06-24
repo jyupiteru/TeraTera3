@@ -19,11 +19,11 @@ float4 main(VS_OUTPUT input) : SV_Target
 
 
 	//ポイントライトからピクセルまでの光の方向ベクトルを計算
-	float4 ligDirection = input.WPos - PointLight.LightPosition;
+	float4 ligDirection = input.WPos - PointLight.lightPosition;
 	ligDirection = normalize(ligDirection);
 	
 	input.WPos.w = 0.0f;
-	float4 pointPos = PointLight.LightPosition;
+	float4 pointPos = PointLight.lightPosition;
 	pointPos.w = 0.0f;
 	
 	//ポイントライトからの拡散反射光を計算
@@ -33,10 +33,10 @@ float4 main(VS_OUTPUT input) : SV_Target
 	float4 specularPoint = CalcPhongSpecular(ligDirection,PointLight.lightColor,input.WPos,input.Normal,EyePos,5.0f);
 
 	//ポイントライトとピクセルの距離を計算する
-	float distance = length(input.WPos - PointLight.LightPosition);
+	float distance = length(input.WPos - PointLight.lightPosition);
 
 	//影響率を計算 遠くなれば遠くなるほど小さくなる
-	float affect = 1.0f - 1.0f/ PointLight.LightRange * distance;
+	float affect = 1.0f - 1.0f/ PointLight.lightRange * distance;
 
 	//0以下にならないように計算
 	affect = max(0.0f,affect);

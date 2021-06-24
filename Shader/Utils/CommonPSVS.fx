@@ -42,13 +42,25 @@ struct tagDirectionalLight
 struct tagPointLight
 {
 	//ポイントライトの座標
-	float4 LightPosition;
+	float4 lightPosition;
 
 	//ポイントライトの色
 	float4 lightColor;
 
 	//ポイントライトの影響範囲
-	float LightRange;
+	float lightRange;
+};
+
+struct tagHemispireLight
+{
+	//空の色
+	float3 skyColor;
+
+	//地面の色
+	float3 groundColor;
+
+	//地面の法線
+	float3 groundNormal;
 };
 
 cbuffer ConstantBufferLight : register(b4)
@@ -76,6 +88,15 @@ cbuffer ConstantBufferBoneMatrix : register(b6)
 {
 	float4 AssimpModelColor;
 	matrix BoneMatrix[400];
+}
+
+cbuffer ConstantBufferWipe : register(b7)
+{
+	float wipeSize;	//現在のワイプのサイズ 表示をさせない範囲
+
+	float2 wipeVector;	//ワイプの方向(正規化済み)
+	
+	float wipeFlag;		//ワイプが開けるか、閉まるか決めるフラグ
 }
 
 //頂点シェーダー => ピクセルシェーダーに渡す構造体

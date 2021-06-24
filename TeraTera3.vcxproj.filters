@@ -291,6 +291,12 @@
     <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TeraTera3\System\CTextureManager\CTextureManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeraTera3\Timer\CTimer.cpp">
@@ -489,6 +495,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\System\CTextureManager\CTextureManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

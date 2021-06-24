@@ -31,7 +31,6 @@ void Com2DTexture::Init()
     {
         MessageBox(NULL, "screenbuffer error", "Error", MB_OK);
     }
-    m_classCount++;
 }
 
 //================================================================================================

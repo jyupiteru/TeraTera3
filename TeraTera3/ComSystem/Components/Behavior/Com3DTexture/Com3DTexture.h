@@ -50,25 +50,9 @@ protected:
 	E_TYPE_TEXTUREOBJ m_typeTexture = E_TYPE_TEXTUREOBJ::DEPTH;
 
 	/**
-	 * @brief SRV管理用のSTL
-	 * @details pair型を使えばコンテナ1個になるけど長くなるので要検討
-	 */
-	static std::unordered_map<std::string, ID3D11ShaderResourceView *> m_pListSRV;
-
-	/**
-	 * @brief テクスチャ管理用のSTL
-	 */
-	static std::unordered_map<std::string, ID3D11Resource *> m_pListTexture;
-
-	/**
 	 * @brief テクスチャ、SRV管理用のキー
 	 */
 	std::string m_keyTexture;
-
-	/**
-	 * @brief このクラス生成数を管理するためのメンバ
-	 */
-	static int m_classCount;
 
 	/**
 	 * @brief 頂点バッファ
