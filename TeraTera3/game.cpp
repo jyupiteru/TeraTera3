@@ -107,10 +107,6 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	ObjectGenerator::Create();
 	CDebugLog::GetInstance().Draw("Set ObjectGenerator");
 
-	CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDrawObjects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("DrawLayer", std::bind(&ObjectGenerator::ImGuiDrawDrawLayer, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
-
 	{
 		// カメラ変換行列初期化
 		XMFLOAT3 eye = {0, 0, -30};	 // 視点
@@ -149,20 +145,28 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CSceneManager::Create();
 	CDebugLog::GetInstance().Draw("Set CSceneManager");
 
-	CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CEventSystem::GetInstance(), "Menu");
+	{
+		CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDrawObjects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("DrawLayer", std::bind(&ObjectGenerator::ImGuiDrawDrawLayer, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
 
-	windowdata->SetImGuiFunction("Menu", "Project Property", true);
-	windowdata->SetImGuiFunction("Menu", "Window Details", true);
-	windowdata->SetImGuiFunction("Menu", "ObjectList", true);
-	windowdata->SetImGuiFunction("Menu", "Objects", true);
-	windowdata->SetImGuiFunction("Menu", "SceneList", true);
-	windowdata->SetImGuiFunction("Menu", "EventSystem", true);
+		CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CEventSystem::GetInstance(), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("Timer", &CTimer::GetInstance(), "Menu");
+
+		windowdata->SetImGuiFunction("Menu", "Project Property", true);
+		windowdata->SetImGuiFunction("Menu", "Window Details", true);
+		windowdata->SetImGuiFunction("Menu", "ObjectList", true);
+		windowdata->SetImGuiFunction("Menu", "Objects", true);
+		windowdata->SetImGuiFunction("Menu", "SceneList", true);
+		windowdata->SetImGuiFunction("Menu", "EventSystem", true);
+	}
 
 	//GameのInit後にやらないと読み込み処理の時間が反映されてしまうので
 	CTimer::GetInstance().Update();
 
 	CDebugLog::GetInstance().Draw("End GameInit");
+
 	return true;
 }
 
@@ -191,6 +195,8 @@ void GameUpdate(float fps)
 
 	//シーンに存在しているオブジェクトのUpdateをぶん回し
 	CSceneManager::GetInstance().Update();
+
+	CDebugLog::GetInstance().Update();
 }
 
 //================================================================================================
