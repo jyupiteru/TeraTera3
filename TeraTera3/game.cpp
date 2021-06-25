@@ -191,6 +191,8 @@ void GameUpdate(float fps)
 
 	//シーンに存在しているオブジェクトのUpdateをぶん回し
 	CSceneManager::GetInstance().Update();
+
+	CDebugLog::GetInstance().Update();
 }
 
 //================================================================================================

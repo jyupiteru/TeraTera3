@@ -27,6 +27,11 @@ protected:
     HANDLE m_handleInput;
 
     /**
+     * @brief 現在生存中か判断するのに使用するフラグ
+     */
+    bool m_flagNowActive = true;
+
+    /**
      * @brief 表示の数字用
      */
     int m_count;
@@ -54,13 +59,19 @@ protected:
     };
 
     void Init();
-
     void Uninit();
 
 public:
+    /**
+     * @brief このクラスを有効にするかどうかを管理するフラグ
+     */
+    CVector<bool> m_flagActive;
+
     friend CDebugLog;
 
 private:
+    void Update();
+
     /**
      * @brief デバッグ用の文を表示するクラス
      * @n \nで改行です（入れないと改行されません）

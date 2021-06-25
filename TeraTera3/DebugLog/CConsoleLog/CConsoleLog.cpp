@@ -26,6 +26,7 @@ void CConsoleLog::Init()
     freopen_s(&fp, "CONIN$", "r", stdin);
     m_handleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
     m_handleInput = GetStdHandle(STD_INPUT_HANDLE);
+    m_flagActive.SetValue(true);
 }
 
 //================================================================================================
@@ -33,8 +34,38 @@ void CConsoleLog::Init()
 
 void CConsoleLog::Uninit()
 {
-    FreeConsole(); //コンソールの終了
+    if (m_flagNowActive == false)
+    {
+        FreeConsole(); //コンソールの終了
+    }
+}
 
+//================================================================================================
+//================================================================================================
+
+void CConsoleLog::Update()
+{
+    //if (m_flagActive.GetValue() != m_flagNowActive)
+    //{
+    //    if (m_flagActive.GetValue() == false)
+    //    { //破棄フラグがついている
+
+    //        m_flagNowActive = false;
+    //        FreeConsole();
+    //    }
+    //    else
+    //    { //生存に変更している
+    //        m_flagNowActive = true;
+
+    //        if (!AttachConsole(ATTACH_PARENT_PROCESS))
+    //        {
+    //            // エクスプローラから起動した場合は新規にコンソールを割り当てる
+    //            AllocConsole();
+    //        }
+    //        freopen_s(&fp, "CONOUT$", "w", stdout);
+    //        freopen_s(&fp, "CONIN$", "r", stdin);
+    //    }
+    //}
 }
 
 //================================================================================================
