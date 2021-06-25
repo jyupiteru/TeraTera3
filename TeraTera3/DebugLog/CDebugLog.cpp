@@ -14,7 +14,6 @@ void CDebugLog::Create()
 
     m_instance = new CDebugLog();
     CConsoleLog::Create();
-
 }
 
 //================================================================================================
@@ -35,9 +34,33 @@ void CDebugLog::Delete(bool _flag)
 //================================================================================================
 //================================================================================================
 
+void CDebugLog::Update()
+{
+   /* if (m_flagActive.GetValue() != m_flagNowActive)
+    {
+        if (m_flagActive.GetValue() == false)
+        {
+            m_flagNowActive = false;
+
+            CConsoleLog::GetInstance().m_flagActive.SetValue(false);
+        }
+        else
+        {
+            m_flagNowActive = true;
+
+            CConsoleLog::GetInstance().m_flagActive.SetValue(true);
+        }
+    }
+
+    CConsoleLog::GetInstance().Update();*/
+}
+
+//================================================================================================
+//================================================================================================
+
 void CDebugLog::Draw(std::string_view _sentence, E_DEBUGLOG _type, E_COLOR_INFO _color)
 {
-    if (m_flagSurvival.GetValue())
+    if (m_flagActive.GetValue())
     {
         //種類によって表示先の変更
         switch (_type)

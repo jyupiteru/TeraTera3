@@ -16,7 +16,10 @@
  */
 class CDebugLog final
 {
-    std::bitset<3> m_flagStates;
+    /**
+     * @brief 現在の状況を管理する変数
+     */
+    bool m_flagNowActive = true;
 
 public:
     /**
@@ -32,18 +35,23 @@ public:
 private:
     static CDebugLog *m_instance;
 
-    CDebugLog() { m_flagSurvival.SetValue(true); };
+    CDebugLog() { m_flagActive.SetValue(true); };
     ~CDebugLog(){};
 
 public:
     /**
      * @brief 生存フラグ
      */
-    CVector<bool> m_flagSurvival;
+    CVector<bool> m_flagActive;
 
+public:
     static void Create();
-
     static void Delete(bool _flag = false);
+
+    /**
+     * @brief 更新処理 アクティブとかの管理をここでする！
+     */
+    void Update();
 
     /**
      * @brief デバッグ時のログを表示させる際に使用する処理
