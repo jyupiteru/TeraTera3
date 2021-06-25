@@ -4,6 +4,7 @@
  * @brief CTimerクラスの実装部分を記述してます
  */
 #include "CTimer.h"
+#include "../../ThirdParty/ImGui/imgui.h"
 
 CTimer *CTimer::m_instance = nullptr;
 
@@ -100,4 +101,14 @@ CTimer &CTimer::GetInstance()
         Create();
     }
     return *m_instance;
+}
+
+//================================================================================================
+//================================================================================================
+
+void CTimer::ImGuiDraw(unsigned int)
+{
+    float value = m_timeScale.GetValue();
+    ImGui::InputFloat("TimeScale", &value, 0.1f, 1.0f, "%.1f");
+    m_timeScale.SetValue(value);
 }
