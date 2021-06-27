@@ -51,6 +51,7 @@ void ComGameManager::UpdateFlow()
     switch (m_nowGameState.GetValue())
     {
     case E_GAMEFLOW::READY:
+        //プレイヤーが地面についたときに変更
         break;
 
     case E_GAMEFLOW::GAME:

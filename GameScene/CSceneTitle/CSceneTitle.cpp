@@ -20,32 +20,7 @@ void CSceneTitle::Init()
         }
     }
 
-    /*{
-        auto title = GameObject::MakeNewObject("title", E_TYPE_OBJECT::UI);
-        title->GetComponent<Com2DTexture>()->LoadTexture("gametitle.png");
-        title->m_transform->m_worldPosition.SetValue(0, SCREEN_HEIGHT / 6 * 2, 0);
-        title->m_transform->m_size.SetValue(620.0f, 215.0f, 1.0f);
-        title->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 1.0f);
-    }
-
-    {
-        auto selectimage = GameObject::MakeNewObject("selectimage", E_TYPE_OBJECT::UI);
-        selectimage->GetComponent<Com2DTexture>()->LoadTexture("pressenter.png");
-        selectimage->m_transform->m_worldPosition.SetValue(0.0f, -SCREEN_HEIGHT / 6 * 2, 0.0f);
-        selectimage->m_transform->m_size.SetValue(530.0f, 36.0f, 1.0f);
-        selectimage->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 1.0f);
-    }
-
-    {
-        auto selector = GameObject::MakeNewObject("selector", E_TYPE_OBJECT::UI);
-        selector->GetComponent<Com2DTexture>()->LoadTexture("selector.png");
-        selector->m_transform->m_worldPosition.SetValue(0.0f, -SCREEN_HEIGHT / 6 * 2, 0.0f);
-        selector->m_transform->m_size.SetValue(630.0f, 50.0f, 1);
-        selector->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 1.0f);
-        auto comselect = selector->AddComponent<ComTitleSelectorMove>();
-        comselect->m_widthMaxPlusSize = 30.0f;
-        comselect->m_plusSizePerSecond = 30.0f;
-    }*/
+    
 
     {
         GameObject *player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
@@ -113,7 +88,10 @@ void CSceneTitle::Init()
         if (wipemanager == nullptr)
         {
             wipemanager = GameObject::MakeNewObject("WipeManager", E_TYPE_OBJECT::UI);
+            wipemanager->m_transform->m_size.SetValue(SCREEN_WIDTH, SCREEN_HEIGHT, 1);
+            wipemanager->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
             wipemanager->RemoveComponent<Com2DTexture>();
+            wipemanager->AddComponent<ComWipe>();
             wipemanager->AddComponent<ComWipeManager>();
             wipemanager->DontDestroyOnLoad();
         }

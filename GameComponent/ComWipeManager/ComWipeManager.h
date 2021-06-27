@@ -34,7 +34,7 @@ class ComWipeManager : public ComponentBase
 
 	ComWipe *m_comWipe = nullptr;
 
-	float m_wipeSpeed = 100.0f;
+	float m_wipeSpeed = 400.0f;
 
 	float m_sizeCount = 0.0f;
 

@@ -6,6 +6,7 @@
 
 #include "ComTitleManager.h"
 #include "../ComDataManager/ComDataManager.h"
+#include "../ComWipeManager/ComWipeManager.h"
 
 void ComTitleManager::Init()
 {
@@ -50,4 +51,17 @@ void ComTitleManager::Ready()
 
 void ComTitleManager::Update()
 {
+
+    if (ComWipeManager::GetInstance().GetNowWipeType() == E_TYPE_WIPE::END)
+    {
+        if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
+        {
+            ComWipeManager::GetInstance().StartWipe(E_TYPE_WIPE::GAME_WIPE_CLOSE);
+        }
+    }
+    else if (ComWipeManager::GetInstance().GetNowWipeType() == E_TYPE_WIPE::GAME_WIPE_OPEN)
+    {
+        //ゲームシーンへの遷移
+        // CSceneManager::GetInstance().LoadScene("SceneGame1");
+    }
 }

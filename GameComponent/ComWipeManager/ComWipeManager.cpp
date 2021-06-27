@@ -10,6 +10,7 @@ ComWipeManager *ComWipeManager::m_instance = nullptr;
 
 void ComWipeManager::Init()
 {
+	m_gameObject->m_drawLayer.SetValue(10);
 	m_instance = this;
 }
 
@@ -26,7 +27,8 @@ void ComWipeManager::Uninit()
 
 void ComWipeManager::Ready()
 {
-	m_comWipe = m_gameObject->AddComponent<ComWipe>();
+	m_comWipe = m_gameObject->GetComponent<ComWipe>();
+	m_comWipe->m_enable.SetValue(false);
 }
 
 //================================================================================================
@@ -34,13 +36,24 @@ void ComWipeManager::Ready()
 
 void ComWipeManager::Update()
 {
-	if (m_typeWipe == E_TYPE_WIPE::GAME_WIPE_CLOSE || m_typeWipe == E_TYPE_WIPE::RESULT_WIPE_CLOSE)
+	switch (m_typeWipe)
 	{
+
+	case E_TYPE_WIPE::RESULT_WIPE_CLOSE:
+	case E_TYPE_WIPE::GAME_WIPE_CLOSE:
+
 		UpdateWipeClose();
-	}
-	else if (m_typeWipe != E_TYPE_WIPE::END)
-	{
+
+		break;
+
+	case E_TYPE_WIPE::GAME_WIPE_OPEN:
+	case E_TYPE_WIPE::RESULT_WIPE_OPEN:
+
 		UpdateWipeOpen();
+
+		break;
+	default:
+		break;
 	}
 }
 
@@ -60,6 +73,7 @@ void ComWipeManager::StartWipe(E_TYPE_WIPE _type)
 	float maxsize = SCREEN_WIDTH;
 	m_typeWipe = _type;
 
+	m_comWipe->m_enable.SetValue(true);
 	switch (m_typeWipe)
 	{
 	case E_TYPE_WIPE::GAME_WIPE_CLOSE:
@@ -70,14 +84,16 @@ void ComWipeManager::StartWipe(E_TYPE_WIPE _type)
 			m_comWipe->m_wipeSize.SetValue(0.0f);
 			m_comWipe->m_wipeFlag.SetValue(false);
 			m_timeCounter = 0.0f;
+			m_sizeCount = 0.0f;
+
+			m_comWipe->m_wipeVector.SetValue(1.0f, 0.0f);
 		}
 		else
 		{
-			m_comWipe->m_wipeSize.SetValue(maxsize);
+			m_comWipe->m_wipeSize.SetValue(0.0f);
 			m_comWipe->m_wipeFlag.SetValue(true);
+			m_comWipe->m_wipeVector.SetValue(1.0f, 1.0f);
 		}
-
-		m_comWipe->m_wipeVector.SetValue(1.0f, 1.0f);
 
 		m_comWipe->LoadTexture("Operation.png");
 		break;
@@ -90,11 +106,15 @@ void ComWipeManager::StartWipe(E_TYPE_WIPE _type)
 			m_comWipe->m_wipeSize.SetValue(0.0f);
 			m_comWipe->m_wipeFlag.SetValue(false);
 			m_timeCounter = 0.0f;
+			m_sizeCount = 0.0f;
+
+			m_comWipe->m_wipeVector.SetValue(1.0f, 0.0f);
 		}
 		else
 		{
-			m_comWipe->m_wipeSize.SetValue(maxsize);
+			m_comWipe->m_wipeSize.SetValue(0.0f);
 			m_comWipe->m_wipeFlag.SetValue(true);
+			m_comWipe->m_wipeVector.SetValue(1.0f, 1.0f);
 		}
 
 		m_comWipe->LoadTexture("Point.png");
@@ -134,7 +154,7 @@ void ComWipeManager::UpdateWipeClose()
 	if (m_sizeCount < SCREEN_WIDTH)
 	{
 		m_sizeCount += addsize;
-		m_comWipe->m_wipeSpeed.SetValue(addsize);
+		m_comWipe->m_wipeSpeed.SetValue(m_wipeSpeed);
 	}
 	else
 	{
@@ -164,12 +184,12 @@ void ComWipeManager::UpdateWipeOpen()
 
 	if (m_timeCounter > maxtime)
 	{
-		float addsize = static_cast<float>(m_wipeSpeed *CTimer::GetInstance().m_deltaTime.GetValue());
-		addsize *= -1.0f;
+		float addsize = static_cast<float>(m_wipeSpeed * CTimer::GetInstance().m_deltaTime.GetValue());
+
 
 		if (m_sizeCount > 0)
 		{
-			m_comWipe->m_wipeSpeed.SetValue(addsize);
+			m_comWipe->m_wipeSpeed.SetValue(m_wipeSpeed);
 			m_sizeCount += addsize;
 		}
 		else

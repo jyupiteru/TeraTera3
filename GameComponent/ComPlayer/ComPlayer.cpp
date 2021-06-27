@@ -6,6 +6,7 @@
 
 #include "ComPlayer.h"
 #include "../ComGameManager/ComGameManager.h"
+#include "../ComWipeManager/ComWipeManager.h"
 
 void ComPlayer::Init()
 {
@@ -27,8 +28,6 @@ void ComPlayer::Ready()
     m_comAnimation = m_gameObject->GetComponent<Com3DAnimationAssimp>();
     m_comAnimation->ChangeAnimation("falling");
 
-
-    m_fallCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
     m_flagIsStandGround = false;
 }
 
@@ -41,7 +40,12 @@ void ComPlayer::Update()
     {
     case E_PLAYERFLOW::READY:
         //落下処理
-        m_gameObject->m_transform->m_vector.SetValue(0.0f, -15.0f*static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue()), 0.0f);
+
+        //ワイプはすでに終わっているか？
+        if (ComWipeManager::GetInstance().GetNowWipeType() == E_TYPE_WIPE::END)
+        {
+            m_gameObject->m_transform->m_vector.SetValue(0.0f, -15.0f * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue()), 0.0f);
+        }
         break;
 
     case E_PLAYERFLOW::GAME:
@@ -110,7 +114,7 @@ void ComPlayer::OnTriggerStay3D(GameObject *obj)
 
 void ComPlayer::PlayerMove()
 {
-    DirectX::XMFLOAT3 vec = { 0.0f, 0.0f, 0.0f };
+    DirectX::XMFLOAT3 vec = {0.0f, 0.0f, 0.0f};
 
     bool flagmove = false;
 
@@ -118,7 +122,7 @@ void ComPlayer::PlayerMove()
 
     float nowangle = 0.0f;
 
-    {//移動処理
+    { //移動処理
         if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_A))
         {
             flagmove = true;
@@ -209,7 +213,6 @@ void ComPlayer::ChangeAnimation()
         case E_FLAG_ANIMATIONPLAYER::RUNING:
             m_comAnimation->ChangeAnimation("run");
             break;
-
 
         case E_FLAG_ANIMATIONPLAYER::JUMP_NOW:
             m_comAnimation->ChangeAnimation("falling");
