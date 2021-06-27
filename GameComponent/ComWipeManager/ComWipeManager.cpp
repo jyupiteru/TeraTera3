@@ -187,10 +187,10 @@ void ComWipeManager::UpdateWipeOpen()
 		float addsize = static_cast<float>(m_wipeSpeed * CTimer::GetInstance().m_deltaTime.GetValue());
 
 
-		if (m_sizeCount > 0)
+		if (m_sizeCount > -150)
 		{
 			m_comWipe->m_wipeSpeed.SetValue(m_wipeSpeed);
-			m_sizeCount += addsize;
+			m_sizeCount -= addsize;
 		}
 		else
 		{

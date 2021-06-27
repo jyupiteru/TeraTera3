@@ -62,6 +62,6 @@ void ComTitleManager::Update()
     else if (ComWipeManager::GetInstance().GetNowWipeType() == E_TYPE_WIPE::GAME_WIPE_OPEN)
     {
         //ゲームシーンへの遷移
-        // CSceneManager::GetInstance().LoadScene("SceneGame1");
+        CSceneManager::GetInstance().LoadScene("SceneGame1");
     }
 }
