@@ -24,6 +24,8 @@
 
 #include "ComTitleManager/ComTitleManager.h"
 
+#include "ComWipeManager/ComWipeManager.h"
+
 #include "ComCoin/ComCoin.h"
 
 #include "ComCoinManager/ComCoinManager.h"

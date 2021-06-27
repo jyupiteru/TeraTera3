@@ -8,7 +8,7 @@ void CSceneTitle::Init()
 #endif
 
     { //ステージ（ドーム表示）
-        if (GameObject* skydome = GameObject::Find("skydome"); skydome == nullptr)
+        if (GameObject *skydome = GameObject::Find("skydome"); skydome == nullptr)
         {
             skydome = GameObject::MakeNewObject("skydome", E_TYPE_OBJECT::NONE);
             skydome->AddPackage<Package3DModelObject>();
@@ -48,14 +48,14 @@ void CSceneTitle::Init()
     }*/
 
     {
-        GameObject* player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
+        GameObject *player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
         player->m_transform->m_worldPosition.SetValue(8.0f, 0.0f, -2.0f);
         player->m_transform->m_angle.SetValue(0.0f, 140.0f, 0.0f);
         player->m_transform->m_size.SetValue(8.0f, 8.0f, 8.0f);
         player->GetComponent<Com3DModelAssimp>()->LoadModelData("Player/idle_run.fbx", "Player/");
         //player->AddComponent<ComPlayerTitle>();
 
-        Com3DAnimationAssimp* anim = player->AddComponent<Com3DAnimationAssimp>();
+        Com3DAnimationAssimp *anim = player->AddComponent<Com3DAnimationAssimp>();
 
         anim->LoadAnimation("idle", "Player/idle_run.fbx");
         anim->SetAnimationName("idle", 0, "idle");
@@ -95,7 +95,7 @@ void CSceneTitle::Init()
         camera->m_objectUpdatePriority.SetValue(-1);
     }
     {
-        GameObject* datamanager = GameObject::Find("DataManager");
+        GameObject *datamanager = GameObject::Find("DataManager");
         if (datamanager == nullptr)
         {
             datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
@@ -105,14 +105,23 @@ void CSceneTitle::Init()
         datamanager->GetComponent<ComDataManager>()->LoadScore();
     }
     {
-        GameObject* titlemanager = GameObject::MakeNewObject("titlemanager", E_TYPE_OBJECT::SYSTEM);
+        GameObject *titlemanager = GameObject::MakeNewObject("titlemanager", E_TYPE_OBJECT::SYSTEM);
         titlemanager->AddComponent<ComTitleManager>();
+    }
+    {
+        GameObject *wipemanager = GameObject::Find("WipeManager");
+        if (wipemanager == nullptr)
+        {
+            wipemanager = GameObject::MakeNewObject("WipeManager", E_TYPE_OBJECT::UI);
+            wipemanager->RemoveComponent<Com2DTexture>();
+            wipemanager->AddComponent<ComWipeManager>();
+            wipemanager->DontDestroyOnLoad();
+        }
     }
 }
 
 void CSceneTitle::Uninit()
 {
-
 }
 
 void CSceneTitle::Update()
@@ -120,7 +129,8 @@ void CSceneTitle::Update()
     if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
     {
         //ゲームシーンへの遷移
-        CSceneManager::GetInstance().LoadScene("SceneGame1");
+        // CSceneManager::GetInstance().LoadScene("SceneGame1");
+        ComWipeManager::GetInstance().StartWipe(E_TYPE_WIPE::GAME_WIPE_CLOSE);
     }
 }
 

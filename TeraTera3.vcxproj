@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponent\ComWipeManager\ComWipeManager.h" />
     <ClInclude Include="GameComponent\ComCoin\ComCoin.h" />
     <ClInclude Include="GameComponent\ComCoinManager\ComCoinManager.h" />
     <ClInclude Include="GameComponent\ComTitleManager\ComTitleManager.h" />
@@ -256,6 +257,7 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameComponent\ComWipeManager\ComWipeManager.cpp" />
     <ClCompile Include="GameComponent\ComCoin\ComCoin.cpp" />
     <ClCompile Include="GameComponent\ComCoinManager\ComCoinManager.cpp" />
     <ClCompile Include="GameComponent\ComTitleManager\ComTitleManager.cpp" />
