@@ -9,6 +9,7 @@
 #include "../ComTimer/ComTimer.h"
 #include "../ComDataManager/ComDataManager.h"
 #include "../ComMapManager/ComMapManager.h"
+#include "../ComWipeManager/ComWipeManager.h"
 
 ComGameManager *ComGameManager::m_instance = nullptr;
 
@@ -72,10 +73,17 @@ void ComGameManager::UpdateFlow()
         ComMapManager::GetInstance().SetMapGameOver();
         break;
     case E_GAMEFLOW::END:
-        ComDataManager::GetInstance().m_maxTime.SetValue(ComTimer::GetInstance().m_maxTimeCount.GetValue());
-        ComDataManager::GetInstance().m_nowCount.SetValue(ComTimer::GetInstance().m_nowCount.GetValue());
 
-        CSceneManager::GetInstance().LoadScene("SceneResult");
+        if (ComWipeManager::GetInstance().GetNowWipeType() == E_TYPE_WIPE::END)
+        {
+            ComWipeManager::GetInstance().StartWipe(E_TYPE_WIPE::RESULT_WIPE_CLOSE);
+            ComDataManager::GetInstance().m_maxTime.SetValue(ComTimer::GetInstance().m_maxTimeCount.GetValue());
+            ComDataManager::GetInstance().m_nowCount.SetValue(ComTimer::GetInstance().m_nowCount.GetValue());
+        }
+        else if (ComWipeManager::GetInstance().GetNowWipeType() == E_TYPE_WIPE::RESULT_WIPE_OPEN)
+        {
+            CSceneManager::GetInstance().LoadScene("SceneResult");
+        }
         break;
     }
 }
