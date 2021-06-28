@@ -3,7 +3,7 @@
 void CSceneGame1::Init()
 {
 #ifndef _DEBUG
-    CDebugLog::GetInstance().m_flagSurvival.SetValue(false);
+    CDebugLog::GetInstance().m_flagActive.SetValue(false);
     CImGuiManager::GetInstance().m_flagSurvival.SetValue(false);
 #endif // DEBUG
 

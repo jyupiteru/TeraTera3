@@ -4,7 +4,7 @@ void CSceneTitle::Init()
 {
 #ifndef _DEBUG
     CImGuiManager::GetInstance().m_flagSurvival.SetValue(false);
-    CDebugLog::GetInstance().m_flagSurvival.SetValue(false);
+    CDebugLog::GetInstance().m_flagActive.SetValue(false);
 #endif
 
     { //ステージ（ドーム表示）
@@ -20,7 +20,7 @@ void CSceneTitle::Init()
         }
     }
 
-    
+
 
     {
         GameObject *player = GameObject::MakeNewObject("player", E_TYPE_OBJECT::MODEL3D);
