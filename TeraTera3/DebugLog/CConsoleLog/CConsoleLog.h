@@ -70,7 +70,6 @@ public:
     friend CDebugLog;
 
 private:
-    void Update();
 
     /**
      * @brief デバッグ用の文を表示するクラス
