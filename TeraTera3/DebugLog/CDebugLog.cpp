@@ -36,7 +36,7 @@ void CDebugLog::Delete(bool _flag)
 
 void CDebugLog::Update()
 {
-   /* if (m_flagActive.GetValue() != m_flagNowActive)
+    /* if (m_flagActive.GetValue() != m_flagNowActive)
     {
         if (m_flagActive.GetValue() == false)
         {
@@ -50,9 +50,7 @@ void CDebugLog::Update()
 
             CConsoleLog::GetInstance().m_flagActive.SetValue(true);
         }
-    }
-
-    CConsoleLog::GetInstance().Update();*/
+    };*/
 }
 
 //================================================================================================

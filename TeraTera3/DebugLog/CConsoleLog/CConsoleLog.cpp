@@ -16,6 +16,8 @@ CConsoleLog *CConsoleLog::m_instance = nullptr;
 
 void CConsoleLog::Init()
 {
+#ifdef _DEBUG
+
     //コンソールの起動
     if (!AttachConsole(ATTACH_PARENT_PROCESS))
     {
@@ -27,6 +29,8 @@ void CConsoleLog::Init()
     m_handleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
     m_handleInput = GetStdHandle(STD_INPUT_HANDLE);
     m_flagActive.SetValue(true);
+
+#endif
 }
 
 //================================================================================================
@@ -34,38 +38,13 @@ void CConsoleLog::Init()
 
 void CConsoleLog::Uninit()
 {
+#ifdef _DEBUG
+
     if (m_flagNowActive == false)
     {
         FreeConsole(); //コンソールの終了
     }
-}
-
-//================================================================================================
-//================================================================================================
-
-void CConsoleLog::Update()
-{
-    //if (m_flagActive.GetValue() != m_flagNowActive)
-    //{
-    //    if (m_flagActive.GetValue() == false)
-    //    { //破棄フラグがついている
-
-    //        m_flagNowActive = false;
-    //        FreeConsole();
-    //    }
-    //    else
-    //    { //生存に変更している
-    //        m_flagNowActive = true;
-
-    //        if (!AttachConsole(ATTACH_PARENT_PROCESS))
-    //        {
-    //            // エクスプローラから起動した場合は新規にコンソールを割り当てる
-    //            AllocConsole();
-    //        }
-    //        freopen_s(&fp, "CONOUT$", "w", stdout);
-    //        freopen_s(&fp, "CONIN$", "r", stdin);
-    //    }
-    //}
+#endif
 }
 
 //================================================================================================
@@ -73,6 +52,8 @@ void CConsoleLog::Update()
 
 void CConsoleLog::Draw(std::string_view _sentence, E_COLOR_INFO _color)
 {
+#ifdef _DEBUG
+
     //TODO 色変更をできるようにしておく！
 
     //4桁数までのログ数を表示可能に
@@ -85,6 +66,7 @@ void CConsoleLog::Draw(std::string_view _sentence, E_COLOR_INFO _color)
     std::cout << " Msg:" << _sentence.data() << std::endl;
 
     m_count++;
+#endif
 }
 
 //================================================================================================
