@@ -62,8 +62,8 @@ void GameObject::Uninit()
 
 void GameObject::Update()
 {
-	auto tmpreadylist = m_listComponentReady;
-	m_listComponentReady.clear();
+	auto tmpreadylist = m_listReadyComponent;
+	m_listReadyComponent.clear();
 	//ここ参照にしたかったけどするとmake_pairで値をとられる？のでなしに
 	for (auto &itr : tmpreadylist)
 	{

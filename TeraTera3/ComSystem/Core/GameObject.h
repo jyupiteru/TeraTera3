@@ -81,6 +81,27 @@ class GameObject
     std::unordered_map<std::type_index, std::shared_ptr<ComponentBase>> m_pListComponent;
 
     /**
+     * @brief Readyを一度通すために使用するリスト
+     * @n Init時に登録
+     */
+    std::vector<std::type_index> m_listReadyComponent;
+
+    /**
+     * @brief 削除するコンポーネントを一時的に保持するリスト
+     */
+    std::vector<std::type_index> m_listUpdateComponent;
+
+    /**
+     * @brief 削除するコンポーネントを一時的に保持するリスト
+     */
+    std::vector<std::type_index> m_listDrawComponent;
+
+    /**
+     * @brief 削除するコンポーネントを一時的に保持するリスト
+     */
+    std::vector<std::type_index> m_listEraseComponent;
+
+    /**
      * @brief 子オブジェクトを管理するためのコンテナ
      * @details Destroyを使えば削除できるが作成時のObjectをなくすと削除できないので注意
      */
@@ -90,17 +111,6 @@ class GameObject
      * @brief 子オブジェクト呼び出し用のstring型キーを管理するためのコンテナ
      */
     std::unordered_map<std::string, int> m_pListChildObjectName;
-
-    /**
-     * @brief Readyを一度通すために使用するリスト
-     * @n Init時に登録
-     */
-    std::vector<std::type_index> m_listComponentReady;
-
-    /**
-     * @brief 削除するコンポーネントを一時的に保持するリスト
-     */
-    std::vector<std::type_index> m_listEraseComponent;
 
     /**
      * @brief このオブジェクトはシーンをまたいでも存在するかどうか
@@ -117,7 +127,7 @@ class GameObject
      * @brief m_objIDを決めるためのカウンタ
      */
     static int m_classCount;
-    
+
     /**
      * @brief 親オブジェクトのアクティブかどうかを保持する変数
      */
@@ -271,7 +281,7 @@ public:
 
             m_pListComponent[typeid(component)] = com; //ここでエラーが起こったのならcomponentを継承していないクラスが入っている
 
-            m_listComponentReady.push_back(typeid(component));
+            m_listReadyComponent.push_back(typeid(component));
 
             //イベント確認と登録の処理 ここではcom(継承後アドレス)を渡す
             CEventSystem::GetInstance().SetComponentToEvent(this, com.get());
@@ -379,7 +389,7 @@ public:
                 itr.second->Init();
                 itr.second->SetComponentID(itr.second.get());
 
-                m_listComponentReady.push_back(itr.first);
+                m_listReadyComponent.push_back(itr.first);
 
                 //イベント確認と登録の処理 ここではcom(継承後アドレス)を渡す
                 CEventSystem::GetInstance().SetComponentToEvent(this, itr.second.get());

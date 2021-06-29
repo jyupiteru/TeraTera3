@@ -8,4 +8,5 @@ Gameフォルダ以下のブランチで各種ゲームを開発しています�
 
 
 
-DirectX11-Templateのリポジトリにおいてあるフレームワークは前のバージョンになっています。
+[DirectX11-Template](https://github.com/jyupiteru/template-DirectX11)は前バージョンになっています。
+
