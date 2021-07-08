@@ -62,8 +62,8 @@ void GameObject::Uninit()
 
 void GameObject::Update()
 {
-	auto tmpreadylist = m_listComponentReady;
-	m_listComponentReady.clear();
+	auto tmpreadylist = m_listReadyComponent;
+	m_listReadyComponent.clear();
 	//ここ参照にしたかったけどするとmake_pairで値をとられる？のでなしに
 	for (auto &itr : tmpreadylist)
 	{
@@ -71,19 +71,77 @@ void GameObject::Update()
 		if (m_pListComponent.contains(itr))
 		{
 			m_pListComponent[itr]->Ready();
+			m_listNonActiveComponent.emplace_back(itr);
 		}
 	}
 	tmpreadylist.clear();
 
-	//自分のコンポーネントのUpdate回し
-	for (const auto &itr : m_pListComponent)
+	//非アクティブからアクティブになっているものがない確認
+	for (auto itr = m_listNonActiveComponent.begin(); itr != m_listNonActiveComponent.end();)
 	{
-		//このコンポーネントはアクティブかどうか
-		if (itr.second->m_enable.GetValue())
+		ComponentBase *component = m_pListComponent[*itr].get();
+		//アクティブになったか？
+		if (component->m_enable.GetValue() == true)
 		{
-			itr.second->Update();
+			if (component->m_flagUpdate)
+			{
+				m_pListUpdateComponent.emplace(component->m_updateAndDrawOrder.GetValue(), *itr);
+			}
+
+			if (component->m_flagDraw)
+			{
+				m_pListDrawComponent.emplace(component->m_updateAndDrawOrder.GetValue(), *itr);
+			}
+
+			itr = m_listNonActiveComponent.erase(itr);
+		}
+		else
+		{
+			itr++;
 		}
 	}
+
+	//自分のコンポーネントのUpdate回し
+	for (auto itr = m_pListUpdateComponent.begin(); itr != m_pListUpdateComponent.end();)
+	{
+		ComponentBase *component = m_pListComponent[itr->second].get();
+
+		//このコンポーネントはアクティブか？
+		if (component->m_enable.GetValue())
+		{
+			component->Update();
+
+			//更新処理をオーバーライドしていないか？
+			if (!component->m_flagUpdate)
+			{
+				itr = m_pListUpdateComponent.erase(itr);
+			}
+			else
+			{
+				itr++;
+			}
+		}
+		else
+		{ //非アクティブになっている
+
+			m_listNonActiveComponent.push_back(itr->second);
+
+			//描画のリストからも削除
+			for (auto drawitr = m_pListDrawComponent.begin(); drawitr != m_pListDrawComponent.end(); itr++)
+			{
+				if (drawitr->second == itr->second)
+				{
+					m_pListDrawComponent.erase(drawitr);
+					break;
+				}
+			}
+
+			itr = m_pListUpdateComponent.erase(itr);
+		}
+	}
+
+	EraseComponent();
+
 	//親オブジェクトが存在しているか？
 	if (m_pParentObject != nullptr)
 	{
@@ -104,11 +162,21 @@ void GameObject::Update()
 void GameObject::Draw()
 {
 	//自分のDraw回し
-	for (auto &itr : m_pListComponent)
+	for (auto itr = m_pListDrawComponent.begin(); itr != m_pListDrawComponent.end();)
 	{
-		if (itr.second->m_enable.GetValue())
+		ComponentBase *component = m_pListComponent[itr->second].get();
+
+		//アクティブかどうかはUpdateのほうで判断して排除
+
+		//描画フラグは立っているか？
+		if (component->m_flagDraw == true)
 		{
-			itr.second->Draw();
+			component->Draw();
+			itr++;
+		}
+		else
+		{
+			itr = m_pListDrawComponent.erase(itr);
 		}
 	}
 }
@@ -208,6 +276,54 @@ void GameObject::EraseComponent()
 		for (auto &itr : eraselist)
 		{
 			CEventSystem::GetInstance().EraseComponentFromEvent(this, m_pListComponent[itr].get());
+
+			ComponentBase *component = m_pListComponent[itr].get();
+
+			//Readyリストからの削除
+			for (auto itr2 = m_listReadyComponent.begin(); itr2 != m_listReadyComponent.end(); itr2++)
+			{
+				if (itr == *itr2)
+				{
+					m_listReadyComponent.erase(itr2);
+					break;
+				}
+			}
+
+			if (component->m_enable.GetValue())
+			{
+				//Updateリストからの削除
+				for (auto updateitr = m_pListUpdateComponent.begin(); updateitr != m_pListUpdateComponent.end(); updateitr++)
+				{
+					if (itr == updateitr->second)
+					{
+						m_pListUpdateComponent.erase(updateitr);
+						break;
+					}
+				}
+
+				//Drawリストからの削除
+				for (auto drawitr = m_pListDrawComponent.begin(); drawitr != m_pListDrawComponent.end(); drawitr++)
+				{
+					if (itr == drawitr->second)
+					{
+						m_pListDrawComponent.erase(drawitr);
+						break;
+					}
+				}
+			}
+			else
+			{
+				//非アクティブリストからの削除
+				for (auto itr2 = m_listNonActiveComponent.begin(); itr2 != m_listNonActiveComponent.end(); itr2++)
+				{
+					if (itr == *itr2)
+					{
+						m_listNonActiveComponent.erase(itr2);
+						break;
+					}
+				}
+			}
+
 			m_pListComponent[itr]->Uninit();
 			//コンポーネントの所有権を放棄（ほかでshared_ptrのままで保持しているとそっちは消えない）
 			m_pListComponent[itr].reset();
