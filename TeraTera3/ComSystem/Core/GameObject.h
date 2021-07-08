@@ -82,19 +82,26 @@ class GameObject
 
     /**
      * @brief Readyを一度通すために使用するリスト
-     * @n Init時に登録
+     * @n Init時で登録、Update前に消える
      */
     std::vector<std::type_index> m_listReadyComponent;
 
     /**
-     * @brief 削除するコンポーネントを一時的に保持するリスト
+     * @brief Updateを通るコンポーネントのリスト
+     * @details type_indexキーはクラスの型情報のこと
      */
-    std::vector<std::type_index> m_listUpdateComponent;
+    std::vector<std::type_index> m_pListUpdateComponent;
 
     /**
-     * @brief 削除するコンポーネントを一時的に保持するリスト
+     * @brief Drawを通るコンポ―ネントのリスト
+     * @details type_indexキーはクラスの型情報のこと
      */
-    std::vector<std::type_index> m_listDrawComponent;
+    std::vector<std::type_index> m_pListDrawComponent;
+
+    /**
+     * @brief 非アクティブなコンポーネントを管理するリスト
+     */
+    std::vector<std::type_index> m_listNonActiveComponent;
 
     /**
      * @brief 削除するコンポーネントを一時的に保持するリスト

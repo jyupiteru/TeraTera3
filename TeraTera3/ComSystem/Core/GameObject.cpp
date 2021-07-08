@@ -78,8 +78,9 @@ void GameObject::Update()
 	//自分のコンポーネントのUpdate回し
 	for (const auto &itr : m_pListComponent)
 	{
-		//このコンポーネントはアクティブかどうか
-		if (itr.second->m_enable.GetValue())
+		//このコンポーネントはアクティブか?&&このコンポーネントはUpdateをオーバーライドしているか?
+		if (itr.second->m_enable.GetValue() &&
+			itr.second->m_flagUpdate)
 		{
 			itr.second->Update();
 		}
