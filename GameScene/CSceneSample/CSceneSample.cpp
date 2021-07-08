@@ -293,10 +293,11 @@ void CSceneSample::Update()
     }
     if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_LSHIFT))
     {
-        bool flag = CDebugLog::GetInstance().m_flagActive.GetValue();
-        CDebugLog::GetInstance().m_flagActive.SetValue(!flag);
-        /*auto obj = GameObject::Find("chara");
-        obj->m_activeFlag.SetValue(!obj->m_activeFlag.GetValue());*/
+        /*bool flag = CDebugLog::GetInstance().m_flagActive.GetValue();
+        CDebugLog::GetInstance().m_flagActive.SetValue(!flag);*/
+        auto obj = GameObject::Find("chara");
+        obj->m_activeFlag.SetValue(true);
+        obj->GetComponent<Com2DText>()->m_enable.SetValue(!obj->GetComponent<Com2DText>()->m_enable.GetValue());
     }
 
     //if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))
