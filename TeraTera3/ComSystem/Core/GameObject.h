@@ -87,16 +87,16 @@ class GameObject
     std::vector<std::type_index> m_listReadyComponent;
 
     /**
-     * @brief Updateを通るコンポーネントのリスト
-     * @details type_indexキーはクラスの型情報のこと
+     * @brief Updateを通るコンポーネントのリスト オーバーライドしていないものは削除される
+     * @details 実行優先順位、コンポーネントキー
      */
-    std::vector<std::type_index> m_pListUpdateComponent;
+    std::multimap<int, std::type_index> m_pListUpdateComponent;
 
     /**
-     * @brief Drawを通るコンポ―ネントのリスト
-     * @details type_indexキーはクラスの型情報のこと
+     * @brief Drawを通るコンポ―ネントのリスト オーバーライドしていないものは削除される
+     * @details 実行優先順位、コンポーネントキー
      */
-    std::vector<std::type_index> m_pListDrawComponent;
+    std::multimap<int, std::type_index> m_pListDrawComponent;
 
     /**
      * @brief 非アクティブなコンポーネントを管理するリスト

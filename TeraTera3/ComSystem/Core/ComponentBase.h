@@ -40,8 +40,14 @@ class ComponentBase
      */
     static std::unordered_map<std::type_index, int> m_listComponentID;
 
+    /**
+     * @brief Updateがオーバーライドされているという証拠の変数 されていないとfalseになり更新処理が通らなくなる
+     */
     bool m_flagUpdate = true;
 
+    /**
+     * @brief Drawがオーバーライドされているという証拠の変数 されていないとfalseになり描画処理が通らなくなる
+     */
     bool m_flagDraw = true;
 
 public:
