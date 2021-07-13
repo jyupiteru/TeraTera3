@@ -27,7 +27,6 @@
  * @n たくさん出るので注意(FPSかなり落ちます)
  */
 //#define FLAG_DEBUGLOG_CHECKNOTFRUSTUMTYPE
-#endif
 
 //
 
