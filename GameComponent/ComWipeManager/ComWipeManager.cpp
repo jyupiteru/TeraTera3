@@ -71,62 +71,65 @@ ComWipeManager &ComWipeManager::GetInstance()
 
 void ComWipeManager::StartWipe(E_TYPE_WIPE _type)
 {
-	float maxsize = SCREEN_WIDTH;
-	m_typeWipe = _type;
-
-	m_comWipe->m_enable.SetValue(true);
-
-	//開始させたいワイプの種類ごとに処理を分ける
-	switch (m_typeWipe)
+	if (m_typeWipe == E_TYPE_WIPE::END || m_typeWipe == E_TYPE_WIPE::GAME_WIPE_CLOSE || m_typeWipe == E_TYPE_WIPE::RESULT_WIPE_CLOSE)
 	{
-	case E_TYPE_WIPE::GAME_WIPE_CLOSE:
-	case E_TYPE_WIPE::GAME_WIPE_OPEN:
+		float maxsize = SCREEN_WIDTH;
+		m_typeWipe = _type;
 
-		if (m_typeWipe == E_TYPE_WIPE::GAME_WIPE_CLOSE)
+		m_comWipe->m_enable.SetValue(true);
+
+		//開始させたいワイプの種類ごとに処理を分ける
+		switch (m_typeWipe)
 		{
-			m_comWipe->m_wipeSize.SetValue(0.0f);
-			m_comWipe->m_wipeFlag.SetValue(false);
-			m_timeCounter = 0.0f;
-			m_sizeCount = 0.0f;
+		case E_TYPE_WIPE::GAME_WIPE_CLOSE:
+		case E_TYPE_WIPE::GAME_WIPE_OPEN:
 
-			m_comWipe->m_wipeVector.SetValue(1.0f, 0.0f);
+			if (m_typeWipe == E_TYPE_WIPE::GAME_WIPE_CLOSE)
+			{
+				m_comWipe->m_wipeSize.SetValue(0.0f);
+				m_comWipe->m_wipeFlag.SetValue(false);
+				m_timeCounter = 0.0f;
+				m_sizeCount = 0.0f;
+
+				m_comWipe->m_wipeVector.SetValue(1.0f, 0.0f);
+			}
+			else
+			{
+				m_comWipe->m_wipeSize.SetValue(0.0f);
+				m_comWipe->m_wipeFlag.SetValue(true);
+				m_comWipe->m_wipeVector.SetValue(1.0f, 1.0f);
+			}
+			m_waitTime = 0.5f;
+			m_wipeSpeed = 400.0f;
+			m_comWipe->LoadTexture("Operation.png");
+			break;
+
+		case E_TYPE_WIPE::RESULT_WIPE_CLOSE:
+		case E_TYPE_WIPE::RESULT_WIPE_OPEN:
+
+			if (m_typeWipe == E_TYPE_WIPE::RESULT_WIPE_CLOSE)
+			{
+				m_comWipe->m_wipeSize.SetValue(0.0f);
+				m_comWipe->m_wipeFlag.SetValue(false);
+				m_timeCounter = 0.0f;
+				m_sizeCount = 0.0f;
+
+				m_comWipe->m_wipeVector.SetValue(1.0f, 0.0f);
+			}
+			else
+			{
+				m_comWipe->m_wipeSize.SetValue(0.0f);
+				m_comWipe->m_wipeFlag.SetValue(true);
+				m_comWipe->m_wipeVector.SetValue(1.0f, 1.0f);
+			}
+
+			m_waitTime = 0.5f;
+			m_wipeSpeed = 600.0f;
+			m_comWipe->LoadTexture("Point.png");
+			break;
+		default:
+			break;
 		}
-		else
-		{
-			m_comWipe->m_wipeSize.SetValue(0.0f);
-			m_comWipe->m_wipeFlag.SetValue(true);
-			m_comWipe->m_wipeVector.SetValue(1.0f, 1.0f);
-		}
-		m_waitTime = 0.5f;
-		m_wipeSpeed = 400.0f;
-		m_comWipe->LoadTexture("Operation.png");
-		break;
-
-	case E_TYPE_WIPE::RESULT_WIPE_CLOSE:
-	case E_TYPE_WIPE::RESULT_WIPE_OPEN:
-
-		if (m_typeWipe == E_TYPE_WIPE::RESULT_WIPE_CLOSE)
-		{
-			m_comWipe->m_wipeSize.SetValue(0.0f);
-			m_comWipe->m_wipeFlag.SetValue(false);
-			m_timeCounter = 0.0f;
-			m_sizeCount = 0.0f;
-
-			m_comWipe->m_wipeVector.SetValue(1.0f, 0.0f);
-		}
-		else
-		{
-			m_comWipe->m_wipeSize.SetValue(0.0f);
-			m_comWipe->m_wipeFlag.SetValue(true);
-			m_comWipe->m_wipeVector.SetValue(1.0f, 1.0f);
-		}
-
-		m_waitTime = 0.5f;
-		m_wipeSpeed = 600.0f;
-		m_comWipe->LoadTexture("Point.png");
-		break;
-	default:
-		break;
 	}
 }
 
