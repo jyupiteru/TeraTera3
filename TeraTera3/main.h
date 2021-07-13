@@ -2,8 +2,6 @@
  * @file    main.h
  * @author  jupiter
  * @brief   すべての元のファイル
- * @version 1.0
- * @date    2020-07-11
  */
 
 #pragma once

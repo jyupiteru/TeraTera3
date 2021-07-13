@@ -2,8 +2,6 @@
  * @file Com3DModelAssimp.cpp
  * @author jupiter
  * @brief Com3DModelAssimpの実装の一部が書かれたcpp
- * @version 1.0
- * @date 2020-08-08
  */
 
 #define NOMINMAX

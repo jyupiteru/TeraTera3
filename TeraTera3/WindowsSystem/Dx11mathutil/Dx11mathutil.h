@@ -1,10 +1,6 @@
 ﻿/**
  * @file 	Dx11mathutil.h
- * @author 	？？？
  * @brief 	計算用の関数が集められたヘッダ
- * @version 1.0
- * @todo	要解析、コメント追加
- * @date 	2020-07-19
  */
 
 #pragma once

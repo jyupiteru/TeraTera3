@@ -1,9 +1,6 @@
 ﻿/**
  * @file 	Dx11mathutil.cpp
- * @author 	???
  * @brief 	計算用の関数が集められたcpp
- * @version 1.0
- * @date 	2020-07-19
  */
 #include "DX11mathutil.h"
 

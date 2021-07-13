@@ -2,7 +2,6 @@
  * @file ComCamera.cpp
  * @author jupiter
  * @brief ComCameraが記述されたcpp
- * @date 2020-08-22
  */
 
 #include "../../../Core/GameObject.h"

@@ -2,8 +2,6 @@
  * @file GameObject.cpp
  * @author jupiter
  * @brief GameObjectクラスの実装の一部を記述したcpp
- * @version 1.0
- * @date 2020-08-07
  */
 
 #include "GameObject.h"
