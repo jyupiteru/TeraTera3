@@ -3,8 +3,6 @@
  * @file ComShader.h
  * @author jupiter
  * @brief ComShaderクラスが記述されたヘッダ
- * @version 1.0
- * @date 2020-08-07
  */
 
 #include <unordered_map>

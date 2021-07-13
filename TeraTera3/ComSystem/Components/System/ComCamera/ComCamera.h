@@ -2,7 +2,6 @@
  * @file ComCamera.h
  * @author jupiter
  * @brief ComCameraが記述されたヘッダ
- * @date 2020-08-22
  */
 #include <memory>
 #include "../../../Core/ComponentBase.h"

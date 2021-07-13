@@ -2,7 +2,6 @@
  * @file Com3DBillBoard.cpp
  * @author jupiter
  * @brief Com3DBillBoardが載っているcpp
- * @date 2020-08-25
  */
 
 #include <DirectXMath.h>

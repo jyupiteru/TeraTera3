@@ -2,7 +2,6 @@
  * @file Com3DTexture.h
  * @author jupiter
  * @brief Textureコンポーネントが記述されたヘッダ
- * @date 2020-08-21
  */
 
 #include <d3d11.h>

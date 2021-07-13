@@ -2,7 +2,6 @@
  * @file CContainer.h
  * @author jupiter ()
  * @brief CContainerクラスの宣言を記述したヘッダ
- * @date 2021-03-08
  */
 
 #include <unordered_map>

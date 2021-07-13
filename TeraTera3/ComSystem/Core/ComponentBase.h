@@ -2,8 +2,6 @@
  * @file ComponentBase.h
  * @author jupiter
  * @brief コンポーネントの親クラスの記述されたヘッダ
- * @version 1.0
- * @date 2020-08-07
  */
 
 #include <string_view>

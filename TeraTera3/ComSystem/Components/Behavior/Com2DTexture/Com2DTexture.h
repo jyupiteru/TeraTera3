@@ -2,7 +2,6 @@
  * @file Com2DTexture.h
  * @author jupiter
  * @brief Com2DTextureは乗っているヘッダ
- * @date 2020-08-25
  */
 #include < memory>
 

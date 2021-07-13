@@ -2,8 +2,6 @@
  * @file 	game.cpp
  * @author jupiter
  * @brief 	ゲームの本体ループ処理等記述しているcpp
- * @version 1.0
- * @date 	2020-07-11
  */
 #include "game.h"
 
