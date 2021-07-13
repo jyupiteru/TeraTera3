@@ -71,7 +71,9 @@ ComWipeManager &ComWipeManager::GetInstance()
 
 void ComWipeManager::StartWipe(E_TYPE_WIPE _type)
 {
-	if (m_typeWipe == E_TYPE_WIPE::END || m_typeWipe == E_TYPE_WIPE::GAME_WIPE_CLOSE || m_typeWipe == E_TYPE_WIPE::RESULT_WIPE_CLOSE)
+	if (m_typeWipe == E_TYPE_WIPE::END ||
+		(m_typeWipe == E_TYPE_WIPE::GAME_WIPE_CLOSE&& _type == E_TYPE_WIPE::GAME_WIPE_OPEN )||
+		(m_typeWipe == E_TYPE_WIPE::RESULT_WIPE_CLOSE && _type == E_TYPE_WIPE::RESULT_WIPE_OPEN))
 	{
 		float maxsize = SCREEN_WIDTH;
 		m_typeWipe = _type;
