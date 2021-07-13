@@ -106,7 +106,95 @@ void ComShadow::DrawShadowMap()
 	// デバイスコンテキスト取得
 	ID3D11DeviceContext *devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
-	//ここ追加すること
+	// レンダリングターゲットビュー、デプスステンシルビューを設定
+	ID3D11RenderTargetView *rtv[] = {g_DepthMapRTV.Get()};
+	devcontext->OMSetRenderTargets(1, rtv, g_DSTexDSV.Get());
+
+	// ビューポートを設定
+	D3D11_VIEWPORT vp;
+	vp.Width = DEPTHTEX_WIDTH;
+	vp.Height = DEPTHTEX_HEIGHT;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	devcontext->RSSetViewports(1, &vp);
+
+	// ターゲットバッファクリア
+	devcontext->ClearRenderTargetView(g_DepthMapRTV.Get(), ClearColor);
+	// Zバッファクリア
+	devcontext->ClearDepthStencilView(g_DSTexDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	//各シェーダーのセット
+	m_comShader->SetVertexShader();
+	m_comShader->SetPixelShader();
+
+	//車道マップではライト目線のカメラを用意する必要があるのでライト座標取得でやる
+	DirectX::XMFLOAT3 lightpos;
+
+	//ライトの座標(ぢレクションライトの方向)を取得 & 正規化
+	auto [light_x, light_y, light_z] = m_comLight->m_lightDirection.GetValue();
+	lightpos = DirectX::XMFLOAT3(light_x, light_y, light_z);
+	DirectX::XMVECTOR v;
+	v = DirectX::XMLoadFloat3(&lightpos);
+	v = DirectX::XMVector3Normalize(v);
+	DirectX::XMStoreFloat3(&lightpos, v);
+
+	lightpos.x *= 100;
+	lightpos.z *= 100;
+	lightpos.y *= 100;
+
+	DirectX::XMFLOAT4 l;
+	l.x = lightpos.x;
+	l.y = lightpos.y;
+	l.z = lightpos.z;
+	l.w = 1.0f;
+	light.SetLightPos(l);
+	light.Update();
+
+	//車道マップを生成するために光源からみたカメラを生成する
+	ALIGN16 DirectX::XMVECTOR eye = DirectX::XMVectorSet(lightpos.x, lightpos.y, lightpos.z, 0.0f);
+	ALIGN16 DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	ALIGN16 DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+	ALIGN16 DirectX::XMMATRIX camera;
+	camera = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(eye, at, up));
+
+	// ビュー変換行列をセット（光源位置からのカメラ）
+	ConstantBufferShadowmap cb;
+	XMStoreFloat4x4(&cb.ViewFromLight, camera);
+
+	// 光源カメラ用のプロジェクション変換行列
+	float nearclip = 10.0f;
+	float farclip = 300.0f; // ファークリップの値がおかしくてバグった
+	float Aspect = 1.0f;
+	float Fov = DirectX::XM_PI / 3;
+
+	ALIGN16 DirectX::XMMATRIX ProjectionFromLight;
+
+	ProjectionFromLight = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(Fov, Aspect, nearclip, farclip));
+	DirectX::XMStoreFloat4x4(&cb.ProjectionFromLight, ProjectionFromLight); // プロジェクション変換行列をセット
+
+	// スクリーン座標をＵＶ座標に変換する行列
+	DirectX::XMStoreFloat4x4(&cb.ScreenToUVCoord, DirectX::XMMatrixTranspose(g_uvmatrix));
+
+	// 定数バッファに反映させる
+	D3D11_MAPPED_SUBRESOURCE pData;
+
+	HRESULT hr = devcontext->Map(g_ConstantBufferShadowmap.Get(),
+								 0,
+								 D3D11_MAP_WRITE_DISCARD,
+								 0,
+								 &pData);
+	if (SUCCEEDED(hr))
+	{
+		memcpy_s(pData.pData, pData.RowPitch, (void *)(&cb), sizeof(ConstantBufferShadowmap));
+		devcontext->Unmap(g_ConstantBufferShadowmap.Get(), 0);
+	}
+
+	// 定数バッファを8番スロットにセット
+	devcontext->PSSetConstantBuffers(8, 1, g_ConstantBufferShadowmap.GetAddressOf());
+	devcontext->VSSetConstantBuffers(8, 1, g_ConstantBufferShadowmap.GetAddressOf());
 
 	//影を描画したいオブジェクトの描画処理を行いテクスチャを生成
 	for (auto itr : m_listObjectDrawFunction)
