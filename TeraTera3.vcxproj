@@ -147,6 +147,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CShadow.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\System\ComShadow\ComShadow.h" />
     <ClInclude Include="TeraTera3\System\CTextureManager\CTextureManager.h" />
     <ClInclude Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.h" />
     <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.h" />
@@ -243,6 +245,8 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CShadow.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\System\ComShadow\ComShadow.cpp" />
     <ClCompile Include="TeraTera3\System\CTextureManager\CTextureManager.cpp" />
     <ClCompile Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.cpp" />
     <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.cpp" />

@@ -2,8 +2,6 @@
  * @file ComShader.cpp
  * @author jupiter
  * @brief ComShaderの処理の一部が書かれたcpp
- * @version 1.0
- * @date 2020-08-07
  */
 #include "ComShader.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"

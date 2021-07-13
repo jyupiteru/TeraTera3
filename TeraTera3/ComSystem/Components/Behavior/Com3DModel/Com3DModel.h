@@ -2,8 +2,6 @@
  * @file Com3DModel.h
  * @author jupiter
  * @brief Com3DModelクラスが記述されたヘッダ
- * @version 1.0
- * @date 2020-08-08
  */
 
 #include <d3d11.h>

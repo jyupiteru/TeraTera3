@@ -2,7 +2,6 @@
  * @file Com2DTexture.cpp
  * @author jupiter
  * @brief Com2DTextureクラスの処理が書かれたcpp
- * @date 2020-08-27
  */
 #include "Com2DTexture.h"
 

@@ -2,7 +2,6 @@
  * @file Com3DTexture.cpp
  * @author jupiter
  * @brief Com3DTextureが記述されたcpp
- * @date 2020-08-22
  */
 #include "Com3DTexture.h"
 
