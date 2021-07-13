@@ -2,8 +2,6 @@
  * @file main.cpp
  * @author jupiter
  * @brief メイン処理
- * @version 1.0
- * @date 2020-07-11
  */
 
 #include "main.h"

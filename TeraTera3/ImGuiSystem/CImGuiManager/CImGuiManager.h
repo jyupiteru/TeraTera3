@@ -111,6 +111,8 @@ public:
      */
     CVector<bool> m_flagSurvival;
 
+public:
+
     /**
      * @brief ImGuiの初期化処理
      */
@@ -140,6 +142,7 @@ public:
     {
         return *m_instance;
     }
+
     //メニュー系
 
     /**

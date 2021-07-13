@@ -2,8 +2,6 @@
  * @file CMatrix.h
  * @author jupiter
  * @brief 	行列管理、計算用のクラスの書いてあるヘッダ
- * @version 1.1
- * @date 2020-07-16
  */
 
 #include <DirectXMath.h>

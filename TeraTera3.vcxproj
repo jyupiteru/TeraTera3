@@ -161,6 +161,7 @@
     <ClInclude Include="GameComponent\ComPlayer\ComPlayer.h" />
     <ClInclude Include="GameComponent\ComGameManager\ComGameManager.h" />
     <ClInclude Include="GameComponent\ComMapManager\ComMapManager.h" />
+    <ClInclude Include="TeraTera3\ComSystem\Components\System\ComShadow\ComShadow.h" />
     <ClInclude Include="TeraTera3\System\CTextureManager\CTextureManager.h" />
     <ClInclude Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.h" />
     <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.h" />
@@ -269,6 +270,7 @@
     <ClCompile Include="GameComponent\ComPlayer\ComPlayer.cpp" />
     <ClCompile Include="GameComponent\ComGameManager\ComGameManager.cpp" />
     <ClCompile Include="GameComponent\ComMapManager\ComMapManager.cpp" />
+    <ClCompile Include="TeraTera3\ComSystem\Components\System\ComShadow\ComShadow.cpp" />
     <ClCompile Include="TeraTera3\System\CTextureManager\CTextureManager.cpp" />
     <ClCompile Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.cpp" />
     <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.cpp" />

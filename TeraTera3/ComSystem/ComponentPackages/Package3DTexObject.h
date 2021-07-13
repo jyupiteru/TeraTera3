@@ -2,7 +2,6 @@
  * @file Package3DTexObject.h
  * @author jupiter
  * @brief 画像表示用のパッケージを記述したヘッダ
- * @date 2020-08-22
  */
 #include "../Core/PackageBase.h"
 

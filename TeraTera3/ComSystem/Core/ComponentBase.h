@@ -2,8 +2,6 @@
  * @file ComponentBase.h
  * @author jupiter
  * @brief コンポーネントの親クラスの記述されたヘッダ
- * @version 1.0
- * @date 2020-08-07
  */
 
 #include <string_view>
@@ -40,6 +38,16 @@ class ComponentBase
      */
     static std::unordered_map<std::type_index, int> m_listComponentID;
 
+    /**
+     * @brief Updateがオーバーライドされているという証拠の変数 されていないとfalseになり更新処理が通らなくなる
+     */
+    bool m_flagUpdate = true;
+
+    /**
+     * @brief Drawがオーバーライドされているという証拠の変数 されていないとfalseになり描画処理が通らなくなる
+     */
+    bool m_flagDraw = true;
+
 public:
     friend GameObject;
     friend PackageBase;
@@ -66,11 +74,18 @@ public:
     GameObject *m_gameObject = nullptr;
 
     /**
+     * @brief 更新処理と描画処理のオブジェクトのコンポーネント内での優先順位
+     */
+    CVector<int> m_updateAndDrawOrder;
+
+public:
+    /**
      * @brief  CComponentBaseの生成時処理
      */
     ComponentBase()
     {
         m_enable.SetValue(true);
+        m_updateAndDrawOrder.SetValue(0);
     };
 
     /**
@@ -90,25 +105,26 @@ public:
     virtual void Uninit(){};
 
     /**
-     * @brief 有効になった後1回だけ通る処理
+     * @brief 有効になった後Update前で1回だけ通る処理
      */
     virtual void Ready(){};
 
     /**
-     * @brief ImGui描画時に表示、変更させたい内容を入れた処理
-     * @note ここの処理みたいにオーバーライドされていない時に消す処理を追加したらジョブシステム作成できるかも？
-     */
-    virtual void ImGuiDraw(unsigned int windowid);
-
-    /**
      * @brief アップデート処理
+     * @n 継承後にオーバーライドされていなければ通らなくなる
      */
-    virtual void Update(){};
+    virtual void Update();
 
     /**
      * @brief 描画処理
+     * @n 継承後にオーバーライドされていなければ通らなくなる
      */
-    virtual void Draw(){};
+    virtual void Draw();
+
+    /**
+     * @brief ImGui描画時に表示、変更させたい内容を入れた処理
+     */
+    virtual void ImGuiDraw(unsigned int windowid);
 
     /**
      * @brief オブジェクトを削除するメソッド
