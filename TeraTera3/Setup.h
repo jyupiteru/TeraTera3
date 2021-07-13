@@ -8,29 +8,7 @@
 #pragma once
 
 ///フラグをつける際の注意事項
-///DebugLogに描画系は描画数（ほぼ生成するオブジェクト数）に応じてFPSかなり落ちます(マルチスレッドではないので)
 ///
-
-#ifdef _DEBUG
-
-/**
- * @brief デバッグ用のログを出力するフラグ
- * @details 基本上の_DEBUGがあり これがあるとデバッグ時のみ機能
- */
-#define FLAG_DEBUGLOG
-
-#endif
-
-/**
- * @brief デバッグ時にFPSを表示するかどうか しないならコメントアウト
- */
-#define FLAG_FPS
-
-/**
- * @brief デバッグ時に表示しているオブジェクトの数を表示するフラグ
- * @n フラスタムカリングを適用し描画したオブジェクト数も表示
- */
-#define FLAG_OBJECTNUM
 
 /**
  * @brief 衝突判定の処理をのぞくフラグ(処理計測用) 基本コメントアウト
@@ -38,23 +16,6 @@
 //#define FLAG_STOP_COLLISION
 
 //DEBUGLOG系
-
-#ifdef FLAG_DEBUGLOG
-
-/**
- * @brief DebugLogにObjectGeneratorのUpdateにかかった時間を表示するフラグです
- */
-#define FLAG_DEBUGLOG_UPDATETIME
-
-/**
- * @brief DebugLogにObjectGeneratorのDrawにかかった時間を表示するフラグです
- */
-#define FLAG_DEBUGLOG_DRAWTIME
-
-/**
- * @brief DebugLogに当たり判定にかかった時間を表示するフラグ
- */
-#define FLAG_DEBUGLOG_COLLISIONTIME
 
 /**
  * @brief 当たり判定の上限(MAX_COLLISIONNUM)に達したオブジェクトを表示するフラグ
@@ -75,7 +36,7 @@
 #define CLASS_NAME TEXT("AppClass")
 
 //!@brief	ウインドウのところに出る名前
-#define WINDOW_NAME TEXT("DX11 Template")
+#define WINDOW_NAME TEXT("TeraTera3")
 
 //!@brief	フルスクリーンにするかどうか
 #define FULLSCREEN false

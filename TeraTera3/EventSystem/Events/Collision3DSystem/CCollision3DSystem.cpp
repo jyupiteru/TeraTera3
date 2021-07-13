@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <tuple>
 
-
 #include "../../../Setup.h"
 #include "../../../ComSystem/ComSystem.h"
 #include "../../../ComSystem/Components/Util/CCollisionBase.h"
@@ -18,7 +17,7 @@
 #include "../../../ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../../../Timer/CTimer.h"
 
-CCollision3DSystem* CCollision3DSystem::m_instance = nullptr;
+CCollision3DSystem *CCollision3DSystem::m_instance = nullptr;
 
 using namespace DirectX;
 
@@ -51,8 +50,6 @@ void CCollision3DSystem::Update()
 
     m_collisionTime = CTimer::GetInstance().GetProgressTime();
 
-    //宣言されていたら消える
-#ifndef FLAG_STOP_COLLISION
     //辺りをとる際の比率 √2がちょうどいい気もする
     const float colliderjudgerate = 1.45f;
 
@@ -74,10 +71,10 @@ void CCollision3DSystem::Update()
 
             //各当たり判定の一番小さい(座標的に左手前？)のxの大きさを格納する
             list_x.push_back(std::make_pair(itr.second.second->m_colliderMatrix._41 - halfsize,
-                std::make_tuple(itr.second.second->m_colliderMatrix._42 - halfsize,
-                    itr.second.second->m_colliderMatrix._43 - halfsize,
-                    halfsize,
-                    itr.first)));
+                                            std::make_tuple(itr.second.second->m_colliderMatrix._42 - halfsize,
+                                                            itr.second.second->m_colliderMatrix._43 - halfsize,
+                                                            halfsize,
+                                                            itr.first)));
         }
     }
 
@@ -144,7 +141,7 @@ void CCollision3DSystem::Update()
                         if (!judge1 && !judge2)
                         { //Collisionイベント(貫通なし) 両方貫通しないオブジェクト
 
-                            //todo 解凍すること
+                            //todo CollisionStar3Dが未完成なので凍結 解凍すること
 
                             //vectorで動いていた場合めり込んでるかもしれないので戻す
                             // obj1->m_transform->m_vector *= -1;
@@ -190,8 +187,6 @@ void CCollision3DSystem::Update()
     m_collisionTime = CTimer::GetInstance().GetProgressTime() - m_collisionTime;
 
     list_x.clear();
-
-#endif
 }
 
 //================================================================================================
