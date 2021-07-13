@@ -174,7 +174,7 @@ void IsInFrustum(const DirectX::XMFLOAT3 &pos, const DirectX::XMFLOAT4X4 &matrix
  * @param pos 位置座標（ワールド）
  * @param matrix ビュー変換行列＊プロジェクション変換行列
  * @param ans 6面との距離
- * @param plane 
+ * @param plane
  * @return true フラスタム内
  * @return false フラスタム外
  */
@@ -191,7 +191,7 @@ bool IsInFrustum(const DirectX::XMFLOAT3 &pos, const DirectX::XMFLOAT4X4 &matrix
  * @return true フラスタム内
  * @return false フラスタム外
  */
-bool IsInFrustum(const XMFLOAT3 &pos, float radius, const XMFLOAT4X4 &matrix, float ans[], bool canseeflag[], tagPLANE *plane); // 平面方程式;
+bool IsInFrustum(const DirectX::XMFLOAT3 &pos, float radius, const DirectX::XMFLOAT4X4 &matrix, float ans[], bool canseeflag[], tagPLANE *plane); // 平面方程式;
 
 /**
  * @brief プロジェクション変換行列からフラスタムの６平面を取り出す
