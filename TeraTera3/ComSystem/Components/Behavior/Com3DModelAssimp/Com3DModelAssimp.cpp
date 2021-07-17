@@ -52,12 +52,12 @@ void Com3DModelAssimp::Init()
             {"BONEINDEX", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"BONEWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
         };
-    unsigned int numElements = ARRAYSIZE(layout);
+    unsigned int numelements = ARRAYSIZE(layout);
 
     //アニメーションのは読み込んでいないか?
     if (auto comanim = m_gameObject->GetComponent<Com3DAnimationAssimp>(); comanim == nullptr)
     {
-        m_pShader->LoadVertexShader("VSAssimpModel.fx", layout, numElements, true);
+        m_pShader->LoadVertexShader("VSAssimpModel.fx", layout, numelements, true);
     }
     m_pShader->LoadPixelShader("PSAssimpDefault.fx", true);
 }

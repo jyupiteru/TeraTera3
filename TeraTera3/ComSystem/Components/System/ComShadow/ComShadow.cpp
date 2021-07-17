@@ -9,6 +9,8 @@
 
 ComShadow *ComShadow::m_instance = nullptr;
 
+using namespace DirectX;
+
 void ComShadow::Init()
 {
 	if (m_instance == nullptr)
@@ -48,9 +50,9 @@ void ComShadow::Ready()
 		{
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
-	unsigned int numElements = ARRAYSIZE(layout);
+	unsigned int numelements = ARRAYSIZE(layout);
 
-	m_comShader->LoadVertexShader("VSShadow.fx", layout, numElements);
+	m_comShader->LoadVertexShader("VSShadow.fx", layout, numelements);
 	m_comShader->LoadPixelShader("PSShadow.fx");
 
 	//ライトコンポーネントを取得
@@ -98,6 +100,99 @@ void ComShadow::RemoveDrawFunction(std::string_view _objname)
 //================================================================================================
 //================================================================================================
 
+void ComShadow::InitDepth()
+{
+
+	ID3D11Device *device;
+	device = CDirectXGraphics::GetInstance().GetDXDevice();
+
+	//深度マップテクスチャーを作成
+	D3D11_TEXTURE2D_DESC desc;
+	ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
+	desc.Width = m_depthWidth;
+	desc.Height = m_depthHeight;
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	desc.Format = DXGI_FORMAT_R32_FLOAT;
+	desc.CPUAccessFlags = 0; // CPUからのアクセスなし
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+	desc.MiscFlags = 0; // その他設定なし
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Usage = D3D11_USAGE_DEFAULT; // デフォルトの使用法
+
+	// シェーダ リソース ビューの作成
+	D3D11_SHADER_RESOURCE_VIEW_DESC srDesc;
+	srDesc.Format = DXGI_FORMAT_R32_FLOAT; // フォーマット
+
+	srDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
+	srDesc.Texture2D.MostDetailedMip = 0;				// 最初のミップマップ レベル
+	srDesc.Texture2D.MipLevels = -1;					// すべてのミップマップ レベル
+
+	// 2Dテクスチャを生成
+	HRESULT hr = device->CreateTexture2D(
+		&desc,			 // 作成する2Dテクスチャの設定
+		nullptr,		 //
+		&g_DepthMapTex); // 作成したテクスチャを受け取る変数
+	if (FAILED(hr))
+		MessageBox(nullptr, "CreateTexture error", "Error", MB_OK);
+
+	// シェーダ リソース ビューの生成
+	hr = device->CreateShaderResourceView(
+		g_DepthMapTex.Get(), // アクセスするテクスチャ リソース
+		&srDesc,			 // シェーダ リソース ビューの設定
+		&g_DepthMapSRV);	 // ＳＲＶ受け取る変数
+	if (FAILED(hr))
+		MessageBox(nullptr, "SRV error", "Error", MB_OK);
+
+	// レンダーターゲットビュー生成
+	hr = device->CreateRenderTargetView(
+		g_DepthMapTex.Get(), // ２Ｄテクスチャ
+		nullptr,			 // ＲＴＶの設定（今回はなし）
+		&g_DepthMapRTV);	 // ＲＴＶを受け取る変数
+	if (FAILED(hr))
+		MessageBox(nullptr, "RTV error", "Error", MB_OK);
+
+	//デプスステンシルビュー用のテクスチャーを作成
+	D3D11_TEXTURE2D_DESC descDepth;
+	descDepth.Width = m_depthWidth;
+	descDepth.Height = m_depthHeight;
+	descDepth.MipLevels = 1;
+	descDepth.ArraySize = 1;
+	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
+
+	descDepth.SampleDesc.Count = 1;
+	descDepth.SampleDesc.Quality = 0;
+	descDepth.Usage = D3D11_USAGE_DEFAULT;
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	descDepth.CPUAccessFlags = 0;
+	descDepth.MiscFlags = 0;
+
+	hr = device->CreateTexture2D(&descDepth, nullptr, &g_DSTex);
+	if (FAILED(hr))
+	{
+		MessageBox(nullptr, "CreateTexture2D error", "error", MB_OK);
+		return;
+	}
+
+	//そのテクスチャーに対しデプスステンシルビュー(DSV)を作成
+	hr = device->CreateDepthStencilView(g_DSTex.Get(), nullptr, &g_DSTexDSV);
+	if (FAILED(hr))
+	{
+		MessageBox(nullptr, "CreateDepthStencilView error", "error", MB_OK);
+		return;
+	}
+
+	// 定数バッファ生成
+	sts = CreateConstantBufferWrite(
+		device,
+		sizeof(ConstantBufferShadowmap),
+		&g_ConstantBufferShadowmap); // シャドウマップ用定数バッファ
+}
+
+//================================================================================================
+//================================================================================================
+
 void ComShadow::DrawShadowMap()
 {
 	// ターゲットバッファクリア
@@ -112,8 +207,8 @@ void ComShadow::DrawShadowMap()
 
 	// ビューポートを設定
 	D3D11_VIEWPORT vp;
-	vp.Width = DEPTHTEX_WIDTH;
-	vp.Height = DEPTHTEX_HEIGHT;
+	vp.Width = m_depthWidth;
+	vp.Height = m_depthHeight;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0;

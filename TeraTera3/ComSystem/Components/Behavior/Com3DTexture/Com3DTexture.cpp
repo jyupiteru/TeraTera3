@@ -54,14 +54,14 @@ void Com3DTexture::Ready()
             {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
 
-    unsigned int numElements = ARRAYSIZE(layout);
+    unsigned int numelements = ARRAYSIZE(layout);
 
     m_pShader = m_gameObject->GetComponent<ComShader>();
     if (m_pShader == nullptr)
     {
         m_pShader = m_gameObject->AddComponent<ComShader>();
     }
-    m_pShader->LoadVertexShader("VS3DTex.fx", layout, numElements, true);
+    m_pShader->LoadVertexShader("VS3DTex.fx", layout, numelements, true);
     m_pShader->LoadPixelShader("PSTexWithColor.fx", true);
 
     if (auto [x, y, z] = m_gameObject->m_transform->m_size.GetValue(); z == 0.0f)

@@ -30,9 +30,9 @@ void ComShader::Init()
             {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
 
-        unsigned int numElements = ARRAYSIZE(layout);
+        unsigned int numelements = ARRAYSIZE(layout);
 
-        LoadVertexShader("VS.fx", layout, numElements, true);
+        LoadVertexShader("VS.fx", layout, numelements, true);
     }
 
     if (m_keyPixelShader.empty())

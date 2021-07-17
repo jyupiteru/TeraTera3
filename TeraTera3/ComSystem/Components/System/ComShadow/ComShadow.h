@@ -27,6 +27,12 @@ class ComShadow : public ComponentBase
 	std::unordered_map<std::string, std::function<void(void)>> m_listObjectDrawFunction;
 
 	/**
+	 * @brief 深度バッファ用の裏バッファの縦横のサイズ
+	 */
+	const int m_depthWidth = 4096 * 2;
+	const int m_depthHeight = 4096 * 2;
+
+	/**
 	 * @brief 各種コンポーネントへの簡易アクセス用変数
 	 */
 	ComShader *m_comShader = nullptr;
@@ -55,6 +61,8 @@ public:
 	void RemoveDrawFunction(std::string_view _objname);
 
 private:
+	void InitDepth();
+
 	/**
 	 * @brief シャドウマップを描画する処理
 	 */

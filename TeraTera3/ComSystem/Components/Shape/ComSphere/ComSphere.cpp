@@ -31,7 +31,7 @@ void ComSphere::Init()
 			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 			{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
-	unsigned int numElements = ARRAYSIZE(layout);
+	unsigned int numelements = ARRAYSIZE(layout);
 
 	//専用シェーダの読み込み
 	m_pComShader = m_gameObject->GetComponent<ComShader>();
@@ -39,7 +39,7 @@ void ComSphere::Init()
 	{
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
-	m_pComShader->LoadVertexShader("VS3DShape.fx", layout, numElements, true);
+	m_pComShader->LoadVertexShader("VS3DShape.fx", layout, numelements, true);
 	m_pComShader->LoadPixelShader("PSOnlyColor.fx", true);
 }
 
