@@ -16,6 +16,15 @@ void CSceneSample::Init()
         skydome->m_transform->m_size.SetValue(10, 10, 10);
     }
 
+    {
+        auto shadow = GameObject::Find("Shadow");
+        if (shadow == nullptr)
+        {
+            shadow = GameObject::MakeNewObject("Shadow", E_TYPE_OBJECT::SYSTEM);
+            shadow->AddComponent<ComShadow>();
+        }
+    }
+
     //{
     //    auto ui = GameObject::MakeNewObject("ui", E_TYPE_OBJECT::UI);
     //    // ui->GetComponent<Com2DTexture>()->LoadTexture("airplane.png");

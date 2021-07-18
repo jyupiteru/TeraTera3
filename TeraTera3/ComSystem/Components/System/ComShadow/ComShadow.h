@@ -4,9 +4,11 @@
  * @brief ComShadowの宣言が記載されたヘッダ
  */
 
-#include "../../../../ComSystem/ComSystem.h"
-#include "../../Behavior/ComShader/ComShader.h"
-#include "../ComLight/ComLight.h"
+#include <d3d11.h>
+#include "../../../Core/ComponentBase.h"
+
+class ComLight;
+class ComShader;
 
 #pragma once
 
@@ -84,7 +86,7 @@ class ComShadow : public ComponentBase
 	/**
 	 * @brief DSV
 	 */
-	ID3D11DepthStencilView *m_dSTexDSV =nullptr;
+	ID3D11DepthStencilView *m_dSTexDSV = nullptr;
 
 public:
 	ComShadow(){};
@@ -107,6 +109,8 @@ public:
 	 * @param _objname 削除対象のオブジェクト
 	 */
 	void RemoveDrawFunction(std::string_view _objname);
+
+	static ComShadow &GetInstance();
 
 private:
 	void InitDepth();

@@ -6,6 +6,8 @@
 
 #include "ComShadow.h"
 #include "../../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../Behavior/ComShader/ComShader.h"
+#include "../ComLight/ComLight.h"
 
 ComShadow *ComShadow::m_instance = nullptr;
 
@@ -18,7 +20,8 @@ void ComShadow::Init()
 		m_instance = this;
 
 		//描画は一番初めにしないといけないのでこれで
-		m_gameObject->m_drawLayer.SetValue(-1000); this->m_gameObject->DontDestroyOnLoad();
+		m_gameObject->m_drawLayer.SetValue(-1000);
+		this->m_gameObject->DontDestroyOnLoad();
 	}
 	else
 	{ //複数読み込むことはないため
@@ -53,8 +56,8 @@ void ComShadow::Ready()
 		};
 	unsigned int numelements = ARRAYSIZE(layout);
 
-	m_comShader->LoadVertexShader("VSShadow.fx", layout, numelements);
-	m_comShader->LoadPixelShader("PSShadow.fx");
+	m_comShader->LoadVertexShader("VSShadowMap.fx", layout, numelements);
+	m_comShader->LoadPixelShader("PSShadowMap.fx");
 
 	//ライトコンポーネントを取得
 	m_comLight = GameObject::Find("Light")->GetComponent<ComLight>();
@@ -101,6 +104,14 @@ void ComShadow::RemoveDrawFunction(std::string_view _objname)
 //================================================================================================
 //================================================================================================
 
+ComShadow &ComShadow::GetInstance()
+{
+	return *m_instance;
+}
+
+//================================================================================================
+//================================================================================================
+
 void ComShadow::InitDepth()
 {
 
@@ -132,8 +143,8 @@ void ComShadow::InitDepth()
 
 	// 2Dテクスチャを生成
 	HRESULT hr = device->CreateTexture2D(
-		&desc,			 // 作成する2Dテクスチャの設定
-		nullptr,		 //
+		&desc,			   // 作成する2Dテクスチャの設定
+		nullptr,		   //
 		&m_shadowTexture); // 作成したテクスチャを受け取る変数
 	if (FAILED(hr))
 	{
@@ -143,8 +154,8 @@ void ComShadow::InitDepth()
 	// シェーダ リソース ビューの生成
 	hr = device->CreateShaderResourceView(
 		m_shadowTexture, // アクセスするテクスチャ リソース
-		&srdesc,			 // シェーダ リソース ビューの設定
-		&m_srv);	 // ＳＲＶ受け取る変数
+		&srdesc,		 // シェーダ リソース ビューの設定
+		&m_srv);		 // ＳＲＶ受け取る変数
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, "SRV error", "Error", MB_OK);
@@ -152,9 +163,9 @@ void ComShadow::InitDepth()
 
 	// レンダーターゲットビュー生成
 	hr = device->CreateRenderTargetView(
-		m_shadowTexture, // ２Ｄテクスチャ
-		nullptr,			 // ＲＴＶの設定
-		&m_shadowTarget);	 // ＲＴＶを受け取る変数
+		m_shadowTexture,  // ２Ｄテクスチャ
+		nullptr,		  // ＲＴＶの設定
+		&m_shadowTarget); // ＲＴＶを受け取る変数
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, "RTV error", "Error", MB_OK);
@@ -215,7 +226,7 @@ void ComShadow::DrawShadowMap()
 	ID3D11DeviceContext *devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
 	// レンダリングターゲットビュー、デプスステンシルビューを設定
-	ID3D11RenderTargetView *rtv[] = { m_shadowTarget};
+	ID3D11RenderTargetView *rtv[] = {m_shadowTarget};
 	devcontext->OMSetRenderTargets(1, rtv, m_dSTexDSV);
 
 	// ビューポートを設定
@@ -288,8 +299,7 @@ void ComShadow::DrawShadowMap()
 		0.5f, 0.0f, 0.0f, 0.0f,
 		0.0f, -0.5f, 0.0f, 0.0f,
 		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f, 1.0f
-	);
+		0.5f, 0.5f, 0.0f, 1.0f);
 
 	// スクリーン座標をＵＶ座標に変換する行列
 	DirectX::XMStoreFloat4x4(&cb.ScreenToUVCoord, DirectX::XMMatrixTranspose(mtxtoscreen));
@@ -314,8 +324,8 @@ void ComShadow::DrawShadowMap()
 	devcontext->VSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
 
 	//影を描画したいオブジェクトの描画処理を行いテクスチャを生成
-	for (auto itr : m_listObjectDrawFunction)
+	/*for (auto itr : m_listObjectDrawFunction)
 	{
 		itr.second();
-	}
+	}*/
 }
