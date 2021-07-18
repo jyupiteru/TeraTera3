@@ -16,6 +16,27 @@
 class ComShadow : public ComponentBase
 {
 	/**
+	 * @brief GPU側に渡す情報
+	 */
+	struct tagConstantShadowBuffer
+	{
+		/**
+		 * @brief 光源の位置カメラ
+		 */
+		DirectX::XMFLOAT4X4 ViewFromLight;
+
+		/**
+		 * @brief 光源の位置カメラに対応したプロジェクション変換行列
+		 */
+		DirectX::XMFLOAT4X4 ProjectionFromLight;
+
+		/**
+		 * @brief スクリーン座標をテクスチャ座標空間に変換
+		 */
+		DirectX::XMFLOAT4X4 ScreenToUVCoord;
+	};
+
+	/**
 	 * @brief シングルトン用の変数
 	 */
 	static ComShadow *m_instance;
@@ -37,6 +58,33 @@ class ComShadow : public ComponentBase
 	 */
 	ComShader *m_comShader = nullptr;
 	ComLight *m_comLight = nullptr;
+
+	/**
+	 * @brief 影の画像
+	 */
+	ID3D11Texture2D *m_shadowTexture = nullptr;
+
+	/**
+	 * @brief SRV
+	 */
+	ID3D11ShaderResourceView *m_srv = nullptr;
+
+	ID3D11RenderTargetView *m_shadowTarget = nullptr;
+
+	/**
+	 * @brief 影用の定数バッファ
+	 */
+	ID3D11Buffer *m_constantShadowBuffer = nullptr;
+
+	/**
+	 * @brief テクスチャ??
+	 */
+	ID3D11Texture2D *m_dSTexture = nullptr;
+
+	/**
+	 * @brief DSV
+	 */
+	ID3D11DepthStencilView *m_dSTexDSV =nullptr;
 
 public:
 	ComShadow(){};

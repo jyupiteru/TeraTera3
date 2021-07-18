@@ -18,7 +18,7 @@ void ComShadow::Init()
 		m_instance = this;
 
 		//描画は一番初めにしないといけないのでこれで
-		m_gameObject->m_drawLayer.SetValue(-1000);
+		m_gameObject->m_drawLayer.SetValue(-1000); this->m_gameObject->DontDestroyOnLoad();
 	}
 	else
 	{ //複数読み込むことはないため
@@ -32,6 +32,7 @@ void ComShadow::Init()
 void ComShadow::Uninit()
 {
 	m_instance = nullptr;
+	m_listObjectDrawFunction.clear();
 }
 
 //================================================================================================
@@ -122,36 +123,42 @@ void ComShadow::InitDepth()
 	desc.Usage = D3D11_USAGE_DEFAULT; // デフォルトの使用法
 
 	// シェーダ リソース ビューの作成
-	D3D11_SHADER_RESOURCE_VIEW_DESC srDesc;
-	srDesc.Format = DXGI_FORMAT_R32_FLOAT; // フォーマット
+	D3D11_SHADER_RESOURCE_VIEW_DESC srdesc;
+	srdesc.Format = DXGI_FORMAT_R32_FLOAT; // フォーマット
 
-	srDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
-	srDesc.Texture2D.MostDetailedMip = 0;				// 最初のミップマップ レベル
-	srDesc.Texture2D.MipLevels = -1;					// すべてのミップマップ レベル
+	srdesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
+	srdesc.Texture2D.MostDetailedMip = 0;				// 最初のミップマップ レベル
+	srdesc.Texture2D.MipLevels = -1;					// すべてのミップマップ レベル
 
 	// 2Dテクスチャを生成
 	HRESULT hr = device->CreateTexture2D(
 		&desc,			 // 作成する2Dテクスチャの設定
 		nullptr,		 //
-		&g_DepthMapTex); // 作成したテクスチャを受け取る変数
+		&m_shadowTexture); // 作成したテクスチャを受け取る変数
 	if (FAILED(hr))
+	{
 		MessageBox(nullptr, "CreateTexture error", "Error", MB_OK);
+	}
 
 	// シェーダ リソース ビューの生成
 	hr = device->CreateShaderResourceView(
-		g_DepthMapTex.Get(), // アクセスするテクスチャ リソース
-		&srDesc,			 // シェーダ リソース ビューの設定
-		&g_DepthMapSRV);	 // ＳＲＶ受け取る変数
+		m_shadowTexture, // アクセスするテクスチャ リソース
+		&srdesc,			 // シェーダ リソース ビューの設定
+		&m_srv);	 // ＳＲＶ受け取る変数
 	if (FAILED(hr))
+	{
 		MessageBox(nullptr, "SRV error", "Error", MB_OK);
+	}
 
 	// レンダーターゲットビュー生成
 	hr = device->CreateRenderTargetView(
-		g_DepthMapTex.Get(), // ２Ｄテクスチャ
-		nullptr,			 // ＲＴＶの設定（今回はなし）
-		&g_DepthMapRTV);	 // ＲＴＶを受け取る変数
+		m_shadowTexture, // ２Ｄテクスチャ
+		nullptr,			 // ＲＴＶの設定
+		&m_shadowTarget);	 // ＲＴＶを受け取る変数
 	if (FAILED(hr))
+	{
 		MessageBox(nullptr, "RTV error", "Error", MB_OK);
+	}
 
 	//デプスステンシルビュー用のテクスチャーを作成
 	D3D11_TEXTURE2D_DESC descDepth;
@@ -168,7 +175,7 @@ void ComShadow::InitDepth()
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
 
-	hr = device->CreateTexture2D(&descDepth, nullptr, &g_DSTex);
+	hr = device->CreateTexture2D(&descDepth, nullptr, &m_dSTexture);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, "CreateTexture2D error", "error", MB_OK);
@@ -176,7 +183,7 @@ void ComShadow::InitDepth()
 	}
 
 	//そのテクスチャーに対しデプスステンシルビュー(DSV)を作成
-	hr = device->CreateDepthStencilView(g_DSTex.Get(), nullptr, &g_DSTexDSV);
+	hr = device->CreateDepthStencilView(m_dSTexture, nullptr, &m_dSTexDSV);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, "CreateDepthStencilView error", "error", MB_OK);
@@ -184,10 +191,16 @@ void ComShadow::InitDepth()
 	}
 
 	// 定数バッファ生成
-	sts = CreateConstantBufferWrite(
+	bool sts = CreateConstantBufferWrite(
 		device,
-		sizeof(ConstantBufferShadowmap),
-		&g_ConstantBufferShadowmap); // シャドウマップ用定数バッファ
+		sizeof(tagConstantShadowBuffer),
+		&m_constantShadowBuffer); // シャドウマップ用定数バッファ
+
+	if (sts)
+	{
+		MessageBox(nullptr, "CreateConstantBufferWrite error", "error", MB_OK);
+		return;
+	}
 }
 
 //================================================================================================
@@ -202,13 +215,13 @@ void ComShadow::DrawShadowMap()
 	ID3D11DeviceContext *devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
 	// レンダリングターゲットビュー、デプスステンシルビューを設定
-	ID3D11RenderTargetView *rtv[] = {g_DepthMapRTV.Get()};
-	devcontext->OMSetRenderTargets(1, rtv, g_DSTexDSV.Get());
+	ID3D11RenderTargetView *rtv[] = { m_shadowTarget};
+	devcontext->OMSetRenderTargets(1, rtv, m_dSTexDSV);
 
 	// ビューポートを設定
 	D3D11_VIEWPORT vp;
-	vp.Width = m_depthWidth;
-	vp.Height = m_depthHeight;
+	vp.Width = static_cast<float>(m_depthWidth);
+	vp.Height = static_cast<float>(m_depthHeight);
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0;
@@ -216,9 +229,9 @@ void ComShadow::DrawShadowMap()
 	devcontext->RSSetViewports(1, &vp);
 
 	// ターゲットバッファクリア
-	devcontext->ClearRenderTargetView(g_DepthMapRTV.Get(), ClearColor);
+	devcontext->ClearRenderTargetView(m_shadowTarget, ClearColor);
 	// Zバッファクリア
-	devcontext->ClearDepthStencilView(g_DSTexDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	devcontext->ClearDepthStencilView(m_dSTexDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	//各シェーダーのセット
 	m_comShader->SetVertexShader();
@@ -244,8 +257,8 @@ void ComShadow::DrawShadowMap()
 	l.y = lightpos.y;
 	l.z = lightpos.z;
 	l.w = 1.0f;
-	light.SetLightPos(l);
-	light.Update();
+	/*light.SetLightPos(l);
+	light.Update();*/
 
 	//車道マップを生成するために光源からみたカメラを生成する
 	ALIGN16 DirectX::XMVECTOR eye = DirectX::XMVectorSet(lightpos.x, lightpos.y, lightpos.z, 0.0f);
@@ -256,7 +269,7 @@ void ComShadow::DrawShadowMap()
 	camera = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(eye, at, up));
 
 	// ビュー変換行列をセット（光源位置からのカメラ）
-	ConstantBufferShadowmap cb;
+	tagConstantShadowBuffer cb;
 	XMStoreFloat4x4(&cb.ViewFromLight, camera);
 
 	// 光源カメラ用のプロジェクション変換行列
@@ -271,25 +284,34 @@ void ComShadow::DrawShadowMap()
 	DirectX::XMStoreFloat4x4(&cb.ProjectionFromLight, ProjectionFromLight); // プロジェクション変換行列をセット
 
 	// スクリーン座標をＵＶ座標に変換する行列
-	DirectX::XMStoreFloat4x4(&cb.ScreenToUVCoord, DirectX::XMMatrixTranspose(g_uvmatrix));
+	ALIGN16 XMMATRIX mtxtoscreen = XMMATRIX(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f
+	);
+
+	// スクリーン座標をＵＶ座標に変換する行列
+	DirectX::XMStoreFloat4x4(&cb.ScreenToUVCoord, DirectX::XMMatrixTranspose(mtxtoscreen));
 
 	// 定数バッファに反映させる
 	D3D11_MAPPED_SUBRESOURCE pData;
 
-	HRESULT hr = devcontext->Map(g_ConstantBufferShadowmap.Get(),
+	//上書き？
+	HRESULT hr = devcontext->Map(m_constantShadowBuffer,
 								 0,
 								 D3D11_MAP_WRITE_DISCARD,
 								 0,
 								 &pData);
 	if (SUCCEEDED(hr))
 	{
-		memcpy_s(pData.pData, pData.RowPitch, (void *)(&cb), sizeof(ConstantBufferShadowmap));
-		devcontext->Unmap(g_ConstantBufferShadowmap.Get(), 0);
+		memcpy_s(pData.pData, pData.RowPitch, (void *)(&cb), sizeof(tagConstantShadowBuffer));
+		devcontext->Unmap(m_constantShadowBuffer, 0);
 	}
 
 	// 定数バッファを8番スロットにセット
-	devcontext->PSSetConstantBuffers(8, 1, g_ConstantBufferShadowmap.GetAddressOf());
-	devcontext->VSSetConstantBuffers(8, 1, g_ConstantBufferShadowmap.GetAddressOf());
+	devcontext->PSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
+	devcontext->VSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
 
 	//影を描画したいオブジェクトの描画処理を行いテクスチャを生成
 	for (auto itr : m_listObjectDrawFunction)
