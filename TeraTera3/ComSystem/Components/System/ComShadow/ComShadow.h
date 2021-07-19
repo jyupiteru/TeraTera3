@@ -110,7 +110,7 @@ public:
 	 */
 	void RemoveDrawFunction(std::string_view _objname);
 
-	static ComShadow &GetInstance();
+	static ComShadow *GetInstance();
 
 private:
 	void InitDepth();

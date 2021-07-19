@@ -61,6 +61,8 @@ void ComShadow::Ready()
 
 	//ライトコンポーネントを取得
 	m_comLight = GameObject::Find("Light")->GetComponent<ComLight>();
+
+	InitDepth();
 }
 
 //================================================================================================
@@ -104,9 +106,9 @@ void ComShadow::RemoveDrawFunction(std::string_view _objname)
 //================================================================================================
 //================================================================================================
 
-ComShadow &ComShadow::GetInstance()
+ComShadow *ComShadow::GetInstance()
 {
-	return *m_instance;
+	return m_instance;
 }
 
 //================================================================================================
@@ -207,7 +209,7 @@ void ComShadow::InitDepth()
 		sizeof(tagConstantShadowBuffer),
 		&m_constantShadowBuffer); // シャドウマップ用定数バッファ
 
-	if (sts)
+	if (!sts)
 	{
 		MessageBox(nullptr, "CreateConstantBufferWrite error", "error", MB_OK);
 		return;
