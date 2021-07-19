@@ -21,28 +21,7 @@
  */
 class ComShader final : public ComponentBase
 {
-private:
-    /**
-	 * @brief バーテックスシェーダー管理用のSTL
-	 */
-    static std::unordered_map<std::string, ID3D11VertexShader *> m_pVertexShaders;
 
-    /**
-	 * @brief ピクセルシェーダーの管理用のSTL
-	 */
-    static std::unordered_map<std::string, ID3D11PixelShader *> m_pPixelShaders;
-
-    /**
-	 * @brief layout管理用のSTL キーはバーテックスと一緒
-	 */
-    static std::unordered_map<std::string, ID3D11InputLayout *> m_pLayout;
-
-    /**
-	 * @brief クラスの総生成数
-	 */
-    static int m_classCount;
-
-public:
     /**
 	 * @brief バーテックスシェーダ、layoutを連想配列より引き出すときのキー
 	 */
@@ -53,13 +32,11 @@ public:
 	 */
     std::string m_keyPixelShader;
 
+public:
     /**
 	 * @brief  CShaderの生成時処理
 	 */
-    ComShader()
-    {
-        m_classCount++;
-    };
+    ComShader(){};
 
     /**
 	 * @brief CShaderの破棄時処理
@@ -100,10 +77,11 @@ public:
     /**
      * @brief 頂点シェーダーを変更する処理 LoadVertexShaderはレイアウト等がいるので追加しました。
      * @param _shadername 変更したい読み込み済みシェーダーの名前
+     * @param _foldername フォルダの名前 デフォルトはDefaultVertex
      * @return true 成功
      * @return false 失敗 まだ読み込めていない
      */
-    bool ChangeVertexShader(std::string_view _shadername);
+    bool ChangeVertexShader(std::string_view _shadername, std::string_view _foldername = "DefaultVertex");
 
     //Set系
     /**

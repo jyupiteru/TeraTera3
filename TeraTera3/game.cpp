@@ -14,6 +14,7 @@
 #include "SceneSystem/CSceneManager/CSceneManager.h"
 #include "ResourceContainer/CContainer.h"
 #include "System/CTextureManager/CTextureManager.h"
+#include "ShaderManager/CShaderManager.h"
 
 using namespace DirectX;
 
@@ -74,6 +75,9 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	// DIRECTINPUT初期化
 	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
 	CDebugLog::GetInstance().Draw("Set DirectInput");
+
+	CShaderManager::Create();
+	CDebugLog::GetInstance().Draw("Set ShaderManager");
 
 	//ImGuiを管理するかマネージャーの生成と初期化
 	CImGuiManager::Create();
@@ -232,5 +236,6 @@ void GameUninit()
 	CContainer::Delete(true);
 	CTextureManager::Delete(true);
 	CImGuiManager::Delete(true);
+	CShaderManager::Delete(true);
 	CDirectXGraphics::Delete(true);
 }

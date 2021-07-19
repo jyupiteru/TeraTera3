@@ -7,7 +7,6 @@
 #include "ComSphere.h"
 #include "../../DefaultComponents.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../System/ComShadow/ComShadow.h"
 
 using namespace DirectX;
 
@@ -86,8 +85,6 @@ void ComSphere::Ready()
 		}
 	}
 	m_classCounter++;
-
-	ComShadow::GetInstance()->SetDrawShadowFuction(m_gameObject->m_objectName,std::bind(&ComSphere::DrawShadow, this));
 }
 
 //================================================================================================
@@ -120,12 +117,6 @@ void ComSphere::Uninit()
 			m_pVertexBuffer->Release();
 			m_pVertexBuffer = nullptr;
 		}
-	}
-
-	//削除しておく
-	if (auto shader = ComShadow::GetInstance(); shader != nullptr)
-	{
-		shader.RemoveDrawFunction(m_gameObject->m_objectName);
 	}
 }
 

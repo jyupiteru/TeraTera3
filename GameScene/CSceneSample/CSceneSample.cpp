@@ -17,12 +17,12 @@ void CSceneSample::Init()
     }
 
     {
-        auto shadow = GameObject::Find("Shadow");
+        /*auto shadow = GameObject::Find("Shadow");
         if (shadow == nullptr)
         {
             shadow = GameObject::MakeNewObject("Shadow", E_TYPE_OBJECT::SYSTEM);
             shadow->AddComponent<ComShadow>();
-        }
+        }*/
     }
 
     //{
