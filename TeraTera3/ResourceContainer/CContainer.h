@@ -51,7 +51,7 @@ class CContainer final
 public:
     static void Create();
 
-    static void Delete(bool _flag=false);
+    static void Delete(bool _flag = false);
 
     static CContainer &GetInstance();
 

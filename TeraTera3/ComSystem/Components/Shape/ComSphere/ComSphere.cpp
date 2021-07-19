@@ -298,3 +298,25 @@ void ComSphere::Normalize(XMFLOAT3 vector, XMFLOAT3 &Normal)
 	v = XMVector3Normalize(v); // 正規化
 	XMStoreFloat3(&Normal, v); // XMVECTOR=>XMFLOAT3
 }
+
+//================================================================================================
+//================================================================================================
+
+void ComSphere::DrawShadow()
+{
+	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
+	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
+
+	ID3D11DeviceContext *device = CDirectXGraphics::GetInstance().GetImmediateContext();
+	// 頂点バッファをセットする
+	unsigned int stride = sizeof(tagVertex);
+	unsigned offset = 0;
+	device->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
+
+	device->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);	   // インデックスバッファをセット
+	device->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // トポロジーをセット（旧プリミティブタイプ）
+
+	device->DrawIndexed(m_facenum * 3, // 描画するインデックス数（面数×３）
+						0,			   // 最初のインデックスバッファの位置
+						0);			   // 頂点バッファの最初から使う
+}

@@ -1,87 +1,66 @@
-﻿/**
- * @file ComShadow.cpp
+﻿
+/**
+ * @file CShadowManager.cpp
  * @author jupiter ()
- * @brief ComShadowクラスの実装が記載されたcpp
+ * @brief CShadowManagerクラスの実装が記載されたcpp
  */
 
-#include "ComShadow.h"
-#include "../../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
-#include "../../Behavior/ComShader/ComShader.h"
-#include "../ComLight/ComLight.h"
+#include "CShadowManager.h"
+#include "../ShaderManager/CShaderManager.h"
+#include "../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
+#include "../ComSystem/Core/Cores.h"
+#include "../ComSystem/Components/System/ComLight/ComLight.h"
 
-ComShadow *ComShadow::m_instance = nullptr;
+CShadowManager *CShadowManager::m_instance = nullptr;
 
 using namespace DirectX;
 
-void ComShadow::Init()
+void CShadowManager::Create()
 {
 	if (m_instance == nullptr)
 	{
-		m_instance = this;
+		m_instance = new CShadowManager();
 
-		//描画は一番初めにしないといけないのでこれで
-		m_gameObject->m_drawLayer.SetValue(-1000);
-		this->m_gameObject->DontDestroyOnLoad();
-	}
-	else
-	{ //複数読み込むことはないため
-		this->m_gameObject->RemoveComponent<ComShadow>();
+		// 頂点データの定義
+		D3D11_INPUT_ELEMENT_DESC layout[] =
+			{
+				{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			};
+		unsigned int numelements = ARRAYSIZE(layout);
+
+		CShaderManager::GetInstance().LoadVertexShader("VSShadowMap.fx", layout, numelements);
+		CShaderManager::GetInstance().LoadPixelShader("PSShadowMap.fx");
+
+		m_instance->InitDepth();
+
 	}
 }
 
 //================================================================================================
 //================================================================================================
 
-void ComShadow::Uninit()
+void CShadowManager::Delete(bool _flag)
 {
-	m_instance = nullptr;
-	m_listObjectDrawFunction.clear();
-}
-
-//================================================================================================
-//================================================================================================
-
-void ComShadow::Ready()
-{
-	m_comShader = this->m_gameObject->GetComponent<ComShader>();
-	if (m_comShader == nullptr)
+	if (_flag)
 	{
-		m_comShader = m_gameObject->AddComponent<ComShader>();
+		m_instance->m_listObjectDrawFunction.clear();
+		delete m_instance;
+		m_instance = nullptr;
 	}
-
-	// 頂点データの定義
-	D3D11_INPUT_ELEMENT_DESC layout[] =
-		{
-			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		};
-	unsigned int numelements = ARRAYSIZE(layout);
-
-	m_comShader->LoadVertexShader("VSShadowMap.fx", layout, numelements);
-	m_comShader->LoadPixelShader("PSShadowMap.fx");
-
-	//ライトコンポーネントを取得
-	m_comLight = GameObject::Find("Light")->GetComponent<ComLight>();
 }
 
 //================================================================================================
 //================================================================================================
 
-void ComShadow::Update()
+CShadowManager &CShadowManager::GetInstance()
 {
+	return *m_instance;
 }
 
 //================================================================================================
 //================================================================================================
 
-void ComShadow::Draw()
-{
-	DrawShadowMap();
-}
-
-//================================================================================================
-//================================================================================================
-
-void ComShadow::SetDrawShadowFuction(std::string_view _objname, std::function<void(void)> _function)
+void CShadowManager::SetDrawShadowFuction(std::string_view _objname, std::function<void(void)> _function)
 {
 	//まだセットしていないか？
 	if (!m_listObjectDrawFunction.contains(_objname.data()))
@@ -93,7 +72,7 @@ void ComShadow::SetDrawShadowFuction(std::string_view _objname, std::function<vo
 //================================================================================================
 //================================================================================================
 
-void ComShadow::RemoveDrawFunction(std::string_view _objname)
+void CShadowManager::RemoveDrawFunction(std::string_view _objname)
 {
 	if (m_listObjectDrawFunction.contains(_objname.data()))
 	{
@@ -104,15 +83,20 @@ void ComShadow::RemoveDrawFunction(std::string_view _objname)
 //================================================================================================
 //================================================================================================
 
-ComShadow &ComShadow::GetInstance()
+void CShadowManager::CreateShadowMap()
 {
-	return *m_instance;
+	if (m_comLight == nullptr)
+	{
+		m_comLight = GameObject::Find("Light")->GetComponent<ComLight>();
+	}
+
+	DrawShadowMap();
 }
 
 //================================================================================================
 //================================================================================================
 
-void ComShadow::InitDepth()
+void CShadowManager::InitDepth()
 {
 
 	ID3D11Device *device;
@@ -207,7 +191,7 @@ void ComShadow::InitDepth()
 		sizeof(tagConstantShadowBuffer),
 		&m_constantShadowBuffer); // シャドウマップ用定数バッファ
 
-	if (sts)
+	if (!sts)
 	{
 		MessageBox(nullptr, "CreateConstantBufferWrite error", "error", MB_OK);
 		return;
@@ -217,7 +201,7 @@ void ComShadow::InitDepth()
 //================================================================================================
 //================================================================================================
 
-void ComShadow::DrawShadowMap()
+void CShadowManager::DrawShadowMap()
 {
 	// ターゲットバッファクリア
 	float ClearColor[4] = {1.0f, 1.0f, 1.0f, 1.0f}; //red,green,blue,alpha
@@ -245,8 +229,8 @@ void ComShadow::DrawShadowMap()
 	devcontext->ClearDepthStencilView(m_dSTexDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	//各シェーダーのセット
-	m_comShader->SetVertexShader();
-	m_comShader->SetPixelShader();
+	CShaderManager::GetInstance().SetVertexShader("VSShadowMap.fx");
+	CShaderManager::GetInstance().SetPixelShader("PSShadowMap.fx");
 
 	//車道マップではライト目線のカメラを用意する必要があるのでライト座標取得でやる
 	DirectX::XMFLOAT3 lightpos;
@@ -281,7 +265,7 @@ void ComShadow::DrawShadowMap()
 
 	// ビュー変換行列をセット（光源位置からのカメラ）
 	tagConstantShadowBuffer cb;
-	XMStoreFloat4x4(&cb.ViewFromLight, camera);
+	DirectX::XMStoreFloat4x4(&cb.ViewFromLight, camera);
 
 	// 光源カメラ用のプロジェクション変換行列
 	float nearclip = 10.0f;
@@ -295,7 +279,7 @@ void ComShadow::DrawShadowMap()
 	DirectX::XMStoreFloat4x4(&cb.ProjectionFromLight, ProjectionFromLight); // プロジェクション変換行列をセット
 
 	// スクリーン座標をＵＶ座標に変換する行列
-	ALIGN16 XMMATRIX mtxtoscreen = XMMATRIX(
+	ALIGN16 DirectX::XMMATRIX mtxtoscreen = DirectX::XMMATRIX(
 		0.5f, 0.0f, 0.0f, 0.0f,
 		0.0f, -0.5f, 0.0f, 0.0f,
 		0.0f, 0.0f, 1.0f, 0.0f,

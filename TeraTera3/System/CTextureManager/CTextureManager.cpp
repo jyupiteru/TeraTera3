@@ -18,10 +18,11 @@ void CTextureManager::Delete(bool _flag)
 	if (_flag)
 	{
 		//リソースを開放
-		for (auto itr : m_instance->m_pListTextureData)
+		for (auto &itr : m_instance->m_pListTextureData)
 		{
 			itr.second->srv->Release();
 			itr.second->textureData->Release();
+			delete itr.second;
 		}
 		m_instance->m_pListTextureData.clear();
 

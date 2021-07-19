@@ -1,22 +1,26 @@
 ﻿/**
- * @file ComShadow.h
+ * @file CShadowManager.h
  * @author jupiter ()
- * @brief ComShadowの宣言が記載されたヘッダ
+ * @brief CShadowManagerクラスの宣言が記載されたヘッダ
  */
-
-#include <d3d11.h>
-#include "../../../Core/ComponentBase.h"
-
-class ComLight;
-class ComShader;
 
 #pragma once
 
+#include <d3d11.h>
+#include <DirectXMath.h>
+#include <string.h>
+#include <unordered_map>
+#include <functional>
+#include <string_view>
+
+class ComLight;
+
 /**
- * @brief 影を扱うクラス
+ * @brief 影を表示するのに必要なシャドウマップを生成するクラス
  */
-class ComShadow : public ComponentBase
+class CShadowManager final
 {
+
 	/**
 	 * @brief GPU側に渡す情報
 	 */
@@ -38,10 +42,7 @@ class ComShadow : public ComponentBase
 		DirectX::XMFLOAT4X4 ScreenToUVCoord;
 	};
 
-	/**
-	 * @brief シングルトン用の変数
-	 */
-	static ComShadow *m_instance;
+	static CShadowManager *m_instance;
 
 	/**
 	 * @brief 影を描画したいオブジェクトの描画のみの関数を管理する変数
@@ -58,7 +59,6 @@ class ComShadow : public ComponentBase
 	/**
 	 * @brief 各種コンポーネントへの簡易アクセス用変数
 	 */
-	ComShader *m_comShader = nullptr;
 	ComLight *m_comLight = nullptr;
 
 	/**
@@ -88,14 +88,13 @@ class ComShadow : public ComponentBase
 	 */
 	ID3D11DepthStencilView *m_dSTexDSV = nullptr;
 
+	CShadowManager(){};
+	~CShadowManager(){};
+
 public:
-	ComShadow(){};
-	~ComShadow(){};
-	void Init() override;
-	void Uninit() override;
-	void Ready() override;
-	void Update() override;
-	void Draw() override;
+	static void Create();
+	static void Delete(bool _flag = false);
+	static CShadowManager &GetInstance();
 
 	/**
 	 * @brief 影を描画する際に使用する描画のみをする関数をセットする処理
@@ -110,7 +109,10 @@ public:
 	 */
 	void RemoveDrawFunction(std::string_view _objname);
 
-	static ComShadow &GetInstance();
+	/**
+	 * @brief シャドウマップを生成しセットする処理
+	 */
+	void CreateShadowMap();
 
 private:
 	void InitDepth();
