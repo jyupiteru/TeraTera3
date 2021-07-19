@@ -15,6 +15,7 @@
 #include "ResourceContainer/CContainer.h"
 #include "System/CTextureManager/CTextureManager.h"
 #include "ShaderManager/CShaderManager.h"
+#include "ShadowManager/CShadowManager.h"
 
 using namespace DirectX;
 
@@ -78,6 +79,10 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 
 	CShaderManager::Create();
 	CDebugLog::GetInstance().Draw("Set ShaderManager");
+
+	CShadowManager::Create();
+	CDebugLog::GetInstance().Draw("Set ShadowManager");
+
 
 	//ImGuiを管理するかマネージャーの生成と初期化
 	CImGuiManager::Create();
@@ -211,6 +216,8 @@ void GameUpdate(float fps)
 
 void GameDraw()
 {
+	//CShadowManager::GetInstance().CreateShadowMap();
+
 	// ターゲットバッファクリア
 	float clearcolor[4] = {0.0f, 0.0f, 1.0f, 1.0f}; //red,green,blue,alpha
 
@@ -243,4 +250,5 @@ void GameUninit()
 	CImGuiManager::Delete(true);
 	CShaderManager::Delete(true);
 	CDirectXGraphics::Delete(true);
+	CShadowManager::Delete(true);
 }

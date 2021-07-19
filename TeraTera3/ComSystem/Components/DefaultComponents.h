@@ -21,7 +21,6 @@
 
 #include "System/ComCamera/ComCamera.h"
 #include "System/ComLight/ComLight.h"
-#include "System/ComShadow/ComShadow.h"
 
 #include "Shape/ComBox/ComBox.h"
 #include "Shape/ComSphere/ComSphere.h"
