@@ -16,8 +16,8 @@
 #pragma once
 
 /**
- * @brief シェーダ処理を管理するコンポーネントクラス
- * @todo まだリソースコンテナに追加できていないのですること
+ * @brief シェーダー関連の処理をおこなうコンポーネントクラス
+ * @n シェーダーを管理しているのはCShaderManagerクラス
  */
 class ComShader final : public ComponentBase
 {
@@ -44,16 +44,8 @@ public:
     ~ComShader(){};
 
 public:
-    /**
-	 * @brief デフォルトのシェーダ読み込み処理
-	 */
     virtual void Init() override;
-
-    /**
-	 * @brief 連想配列削除処理 このクラスを使用しているクラスが0で処理が通る
-	 */
     virtual void Uninit() override;
-
     virtual void ImGuiDraw(unsigned int windowid) override;
 
     /**
@@ -68,11 +60,11 @@ public:
 
     /**
 	 * @brief 			ピクセルシェーダ生成処理
-	 * @param psfile 	Shaderフォルダに入っている生成したいピクセルシェーダのパスを入れる
-     * @param flag このままキーをセットするかどうか デフォルトはtrue
+	 * @param _psfile 	Shaderフォルダに入っている生成したいピクセルシェーダのパスを入れる
+     * @param _flag このままキーをセットするかどうか デフォルトはtrue
      * @param _Foldername 読み込むシェーダーを格納しているフォルダ名 デフォルトはDefaultPixel
 	 */
-    void LoadPixelShader(std::string psfile, bool _flag = true, std::string_view _foldername = "DefaultPixel");
+    void LoadPixelShader(std::string _psfile, bool _flag = true, std::string_view _foldername = "DefaultPixel");
 
     /**
      * @brief 頂点シェーダーを変更する処理 LoadVertexShaderはレイアウト等がいるので追加しました。
@@ -85,12 +77,9 @@ public:
 
     //Set系
     /**
-	 * @brief バーテックスシェーダをセットする処理
+	 * @brief キーを使用してバーテックスシェーダをセットする処理
 	 */
-    void SetVertexShader()
-    {
-        SetVertexShader(m_keyVertexShader);
-    }
+    void SetVertexShader();
 
     /**
      * @brief 指定して頂点シェーダをセットする処理
@@ -99,33 +88,13 @@ public:
     void SetVertexShader(std::string key);
 
     /**
-	 * @brief ピクセルシェーダをセットする処理
+	 * @brief キーを使用してピクセルシェーダをセットする処理
 	 */
-    void SetPixelShader()
-    {
-        SetPixelShader(m_keyPixelShader);
-    }
+    void SetPixelShader();
 
+    /**
+     * @brief 指定してピクセルシェーダーをセットする処理
+     * @param key セットしたいピクセルシェーダ
+     */
     void SetPixelShader(std::string key);
-
-    //Get系
-    /**
-	 * @brief 				バーテックスシェーダとlayoutを他のオブジェクトに渡す処理
-	 * @details				MakeVertexShaderで受け取る
-	 * @return std::string 	キーを渡す
-	 */
-    [[nodiscard]] std::string GetVertexShader()
-    {
-        return m_keyVertexShader;
-    }
-
-    /**
-	 * @brief 				ピクセルシェーダを他のオブジェクトに渡す処理
-	 * @details				MakePixekShaderで受け取る
-	 * @return std::string 	ピクセルシェーダのキー
-	 */
-    [[nodiscard]] std::string GetPixelShader()
-    {
-        return m_keyPixelShader;
-    }
 };
