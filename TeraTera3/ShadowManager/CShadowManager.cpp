@@ -91,6 +91,26 @@ void CShadowManager::CreateShadowMap()
 	}
 
 	DrawShadowMap();
+
+
+	// デバイスコンテキスト取得
+	ID3D11DeviceContext* devcontext;
+	devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
+
+	// レンダリングターゲットビュー、デプスステンシルビューを設定
+	ID3D11RenderTargetView* rtv[] = { CDirectXGraphics::GetInstance().GetRenderTargetView() };
+	devcontext->OMSetRenderTargets(1, rtv, CDirectXGraphics::GetInstance().GetDepthStencilView());
+
+	// ビューポートを設定
+	D3D11_VIEWPORT vp;
+
+	vp.Width = static_cast<float>(CDirectXGraphics::GetInstance().GetWidth());
+	vp.Height = static_cast<float>(CDirectXGraphics::GetInstance().GetHeight());
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	devcontext->RSSetViewports(1, &vp);
 }
 
 //================================================================================================
@@ -229,8 +249,8 @@ void CShadowManager::DrawShadowMap()
 	devcontext->ClearDepthStencilView(m_dSTexDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	//各シェーダーのセット
-	CShaderManager::GetInstance().SetVertexShader("VSShadowMap.fx");
-	CShaderManager::GetInstance().SetPixelShader("PSShadowMap.fx");
+	CShaderManager::GetInstance().SetVertexShader("DefaultVertex/VSShadowMap.fx");
+	CShaderManager::GetInstance().SetPixelShader("DefaultPixel/PSShadowMap.fx");
 
 	//車道マップではライト目線のカメラを用意する必要があるのでライト座標取得でやる
 	DirectX::XMFLOAT3 lightpos;

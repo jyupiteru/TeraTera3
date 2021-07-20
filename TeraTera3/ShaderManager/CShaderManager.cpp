@@ -24,25 +24,23 @@ void CShaderManager::Delete(bool _flag)
 {
 	if (_flag)
 	{
-		for (auto& itr : m_instance->m_pVertexShaders)
+		for (auto &itr : m_instance->m_pVertexShaders)
 		{
 			itr.second->Release();
 		}
 		m_instance->m_pVertexShaders.clear();
 
-
-		for (auto& itr : m_instance->m_pPixelShaders)
+		for (auto &itr : m_instance->m_pPixelShaders)
 		{
 			itr.second->Release();
 		}
 		m_instance->m_pPixelShaders.clear();
 
-		for (auto& itr : m_instance->m_pLayout)
+		for (auto &itr : m_instance->m_pLayout)
 		{
 			itr.second->Release();
 		}
 		m_instance->m_pLayout.clear();
-
 
 		delete m_instance;
 		m_instance = nullptr;

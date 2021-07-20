@@ -216,7 +216,7 @@ void GameUpdate(float fps)
 
 void GameDraw()
 {
-	//CShadowManager::GetInstance().CreateShadowMap();
+	CShadowManager::GetInstance().CreateShadowMap();
 
 	// ターゲットバッファクリア
 	float clearcolor[4] = {0.0f, 0.0f, 1.0f, 1.0f}; //red,green,blue,alpha

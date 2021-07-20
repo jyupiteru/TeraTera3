@@ -58,13 +58,13 @@ public:
 
 	/**
      * @brief 指定して頂点シェーダをセットする処理
-     * @param key セットしたい頂点シェーダの名前
+     * @param key セットしたい頂点シェーダの名前 フォルダ名必須
      */
 	void SetVertexShader(std::string key);
 
 	/**
 	 * @brief キー以外の特定のシェーダーをセットする処理
-	 * @param key セットしたいピクセルシェーダーの名前
+	 * @param key セットしたいピクセルシェーダーの名前 フォルダ名必須
 	 */
 	void SetPixelShader(std::string key);
 
