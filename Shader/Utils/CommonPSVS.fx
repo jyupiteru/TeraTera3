@@ -5,6 +5,7 @@
 #define _HLSL_COMMON_
 
 Texture2D g_Tex : register(t0);				// テクスチャ
+Texture2D g_ShadowMap : register(t0);				// 影のテクスチャ
 SamplerState g_SamplerLinear : register(s0);	// サンプラー
 
 cbuffer ConstantBufferWorld : register(b0)

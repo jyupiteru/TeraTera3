@@ -32,7 +32,6 @@ void CShadowManager::Create()
 		CShaderManager::GetInstance().LoadPixelShader("PSShadowMap.fx");
 
 		m_instance->InitDepth();
-
 	}
 }
 
@@ -92,13 +91,12 @@ void CShadowManager::CreateShadowMap()
 
 	DrawShadowMap();
 
-
 	// デバイスコンテキスト取得
-	ID3D11DeviceContext* devcontext;
+	ID3D11DeviceContext *devcontext;
 	devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
 
 	// レンダリングターゲットビュー、デプスステンシルビューを設定
-	ID3D11RenderTargetView* rtv[] = { CDirectXGraphics::GetInstance().GetRenderTargetView() };
+	ID3D11RenderTargetView *rtv[] = {CDirectXGraphics::GetInstance().GetRenderTargetView()};
 	devcontext->OMSetRenderTargets(1, rtv, CDirectXGraphics::GetInstance().GetDepthStencilView());
 
 	// ビューポートを設定
@@ -111,6 +109,13 @@ void CShadowManager::CreateShadowMap()
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
 	devcontext->RSSetViewports(1, &vp);
+
+	// 定数バッファを8番スロットにセット
+	devcontext->PSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
+	devcontext->VSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
+
+	// depthmapをセット
+	devcontext->PSSetShaderResources(1, 1, &m_srv);
 }
 
 //================================================================================================
@@ -124,7 +129,7 @@ void CShadowManager::InitDepth()
 
 	//深度マップテクスチャーを作成
 	D3D11_TEXTURE2D_DESC desc;
-	ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
+	ZeroMemory(&desc, sizeof(desc));
 	desc.Width = m_depthWidth;
 	desc.Height = m_depthHeight;
 	desc.MipLevels = 1;
@@ -328,8 +333,8 @@ void CShadowManager::DrawShadowMap()
 	devcontext->VSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
 
 	//影を描画したいオブジェクトの描画処理を行いテクスチャを生成
-	/*for (auto itr : m_listObjectDrawFunction)
+	for (auto itr : m_listObjectDrawFunction)
 	{
 		itr.second();
-	}*/
+	}
 }

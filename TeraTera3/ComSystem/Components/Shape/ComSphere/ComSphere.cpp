@@ -7,6 +7,7 @@
 #include "ComSphere.h"
 #include "../../DefaultComponents.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
+#include "../../../../ShadowManager/CShadowManager.h"
 
 using namespace DirectX;
 
@@ -40,7 +41,7 @@ void ComSphere::Init()
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
 	m_pComShader->LoadVertexShader("VS3DShape.fx", layout, numelements, true);
-	m_pComShader->LoadPixelShader("PSOnlyColor.fx", true);
+	m_pComShader->LoadPixelShader("PSPhongAndShadow.fx", true);
 }
 
 //================================================================================================
@@ -85,6 +86,8 @@ void ComSphere::Ready()
 		}
 	}
 	m_classCounter++;
+
+	CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&ComSphere::DrawShadow, this));
 }
 
 //================================================================================================
@@ -118,6 +121,9 @@ void ComSphere::Uninit()
 			m_pVertexBuffer = nullptr;
 		}
 	}
+
+	//削除しておく
+	CShadowManager::GetInstance().RemoveDrawFunction(m_gameObject->m_objectName);
 }
 
 //================================================================================================

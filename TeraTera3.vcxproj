@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameScene\CSceneSample3\CSceneSample3.h" />
     <ClInclude Include="TeraTera3\ShadowManager\CShadowManager.h" />
     <ClInclude Include="TeraTera3\ShaderManager\CShaderManager.h" />
     <ClInclude Include="TeraTera3\System\CTextureManager\CTextureManager.h" />
@@ -245,6 +246,7 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameScene\CSceneSample3\CSceneSample3.cpp" />
     <ClCompile Include="TeraTera3\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="TeraTera3\ShaderManager\CShaderManager.cpp" />
     <ClCompile Include="TeraTera3\System\CTextureManager\CTextureManager.cpp" />

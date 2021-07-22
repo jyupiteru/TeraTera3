@@ -10,6 +10,7 @@
 #include "../../../../WindowsSystem/CDirectXGraphics/CDirectxGraphics.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
 #include "../../Behavior/ComTransform/ComTransform.h"
+#include "../../../../ShadowManager/CShadowManager.h"
 
 using namespace DirectX;
 
@@ -65,7 +66,7 @@ void ComBox::Init()
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
 	m_pComShader->LoadVertexShader("VS3dShape.fx", layout, numelements, true);
-	m_pComShader->LoadPixelShader("PSOnlyColor.fx", true);
+	m_pComShader->LoadPixelShader("PSOnlyColorWithShadow.fx", true);
 
 	m_comCount++;
 }

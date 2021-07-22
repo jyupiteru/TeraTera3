@@ -83,7 +83,6 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CShadowManager::Create();
 	CDebugLog::GetInstance().Draw("Set ShadowManager");
 
-
 	//ImGuiを管理するかマネージャーの生成と初期化
 	CImGuiManager::Create();
 	CImGuiManager::GetInstance().Init(hwnd);
@@ -216,13 +215,13 @@ void GameUpdate(float fps)
 
 void GameDraw()
 {
-	CShadowManager::GetInstance().CreateShadowMap();
-
 	// ターゲットバッファクリア
 	float clearcolor[4] = {0.0f, 0.0f, 1.0f, 1.0f}; //red,green,blue,alpha
 
 	// レンダリング前処理
 	CDirectXGraphics::GetInstance().BeforeDraw(clearcolor);
+
+	CShadowManager::GetInstance().CreateShadowMap();
 
 	//シーンに存在しているオブジェクトのDrawをぶん回し
 	CSceneManager::GetInstance().Draw();
