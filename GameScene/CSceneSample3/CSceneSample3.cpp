@@ -30,15 +30,15 @@ void CSceneSample3::Init()
         auto stage = GameObject::MakeNewObject("stage", E_TYPE_OBJECT::MODEL3D);
         stage->RemoveComponent<Com3DModelAssimp>();
         stage->AddComponent<ComBox>();
-        stage->m_transform->m_worldPosition.SetValue(0, -50, 0);
+        stage->m_transform->m_worldPosition.SetValue(0, -30, 0);
         stage->m_transform->m_size.SetValue(200, 10, 200);
         stage->m_transform->m_color.SetValue(160, 160, 160, 1.0f);
     }
 
     { //1体目のアニメーションモデル
         auto model2 = GameObject::MakeNewObject("animmodel", E_TYPE_OBJECT::MODEL3D);
-        model2->m_transform->m_worldPosition.SetValue(0, -30, 30);
-        model2->m_transform->m_size.SetValue(30, 30, 30);
+        model2->m_transform->m_worldPosition.SetValue(0, -20, 30);
+        model2->m_transform->m_size.SetValue(20, 20, 20);
         model2->m_transform->m_angle.SetValue(0, 0, 0);
         //model2->m_transform->m_color.SetValue(160, 160, 160, 0.5f);
         model2->AddComponent<Test2>();
@@ -55,8 +55,8 @@ void CSceneSample3::Init()
         auto Sphere = GameObject::MakeNewObject("Sphere", E_TYPE_OBJECT::MODEL3D);
         Sphere->RemoveComponent<Com3DModelAssimp>();
         Sphere->AddComponent<ComSphere>();
-        Sphere->m_transform->m_worldPosition.SetValue(40, -30, 30);
-        Sphere->m_transform->m_size.SetValue(30, 30, 30);
+        Sphere->m_transform->m_worldPosition.SetValue(40, -10, 30);
+        Sphere->m_transform->m_size.SetValue(20, 20, 20);
         Sphere->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
         //Sphere2->GetComponent<ComShader>()->LoadPixelShader("PSPhong.fx", true);
     }
@@ -102,45 +102,45 @@ void CSceneSample3::Uninit()
 void CSceneSample3::Update()
 {
     auto camera = GameObject::Find("Camera");
-    auto obj = GameObject::Find("PointLight");
+    auto obj = GameObject::Find("model");
 
-    //if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_A))
-    //{
-    //    obj->m_transform->m_angle.AddValue(0, 1, 0);
-    //}
-    //if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_D))
-    //{
-    //    obj->m_transform->m_angle.AddValue(0, -1, 0);
-    //}
-    //if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_W))
-    //{
-    //    obj->m_transform->m_angle.AddValue(-1, 0, 0);
-    //}
-    //if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_S))
-    //{
-    //    obj->m_transform->m_angle.AddValue(1, 0, 0);
-    //}
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_A))
+    {
+       obj->m_transform->m_angle.AddValue(0, 1, 0);
+    }
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_D))
+    {
+       obj->m_transform->m_angle.AddValue(0, -1, 0);
+    }
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_W))
+    {
+       obj->m_transform->m_angle.AddValue(-1, 0, 0);
+    }
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_S))
+    {
+       obj->m_transform->m_angle.AddValue(1, 0, 0);
+    }
 
-    //{
+    {
 
-    //    obj->m_transform->m_vector.SetValue(0, 0, 0);
-    //    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_UPARROW))
-    //    {
-    //        obj->m_transform->m_vector.SetValue(0, 1, 0);
-    //    }
-    //    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_DOWNARROW))
-    //    {
-    //        obj->m_transform->m_vector.SetValue(0, -1, 0);
-    //    }
-    //    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_RIGHTARROW))
-    //    {
-    //        obj->m_transform->m_vector.SetValue(1, 0, 0);
-    //    }
-    //    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_LEFTARROW))
-    //    {
-    //        obj->m_transform->m_vector.SetValue(-1, 0, 0);
-    //    }
-    //}
+       obj->m_transform->m_vector.SetValue(0, 0, 0);
+       if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_UPARROW))
+       {
+           obj->m_transform->m_vector.SetValue(0, 1, 0);
+       }
+       if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_DOWNARROW))
+       {
+           obj->m_transform->m_vector.SetValue(0, -1, 0);
+       }
+       if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_RIGHTARROW))
+       {
+           obj->m_transform->m_vector.SetValue(1, 0, 0);
+       }
+       if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_LEFTARROW))
+       {
+           obj->m_transform->m_vector.SetValue(-1, 0, 0);
+       }
+    }
 
     //if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
     //{

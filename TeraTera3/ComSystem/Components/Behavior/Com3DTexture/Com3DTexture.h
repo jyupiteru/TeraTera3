@@ -96,6 +96,13 @@ public:
 	virtual void Ready() override;
 
 	virtual void Draw() override;
+	
+	/**
+	 * @brief 描画処理その2
+	 * @n 画像を指定して描画 そのほかの処理と違う処理
+	 * @param _texturedate 描画したい画像のデータ(シェーダーに渡すやつ)
+	 */
+	void Draw(ID3D11ShaderResourceView *_texturedate);
 
 	virtual void ImGuiDraw(unsigned int windowid) override;
 

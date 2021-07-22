@@ -75,6 +75,18 @@ void Com3DTexture::Ready()
 
 void Com3DTexture::Draw()
 {
+    auto data = CTextureManager::GetInstance().GetTextureData(m_keyTexture);
+
+    ID3D11ShaderResourceView* srv = data->srv;
+
+    Draw(srv);
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::Draw(ID3D11ShaderResourceView *_texturedate)
+{
 
     SetVertex();
     m_pShader->SetVertexShader();
@@ -107,15 +119,11 @@ void Com3DTexture::Draw()
     // インデックスバッファをセット
     devcontext->IASetIndexBuffer(m_idxbuffer, DXGI_FORMAT_R32_UINT, 0);
 
-    auto data = CTextureManager::GetInstance().GetTextureData(m_keyTexture);
-
-    ID3D11ShaderResourceView *srv = data->srv;
-
     // PSにSRVをセット
     devcontext->PSSetShaderResources(
-        0,     //t0レジスタ
-        1,     //個数
-        &srv); //SRV
+        0,              //t0レジスタ
+        1,              //個数
+        &_texturedate); //SRV
 
     // PSに定数バッファをセット
     devcontext->PSSetConstantBuffers(

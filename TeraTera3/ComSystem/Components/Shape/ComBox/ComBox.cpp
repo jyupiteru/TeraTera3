@@ -65,7 +65,7 @@ void ComBox::Init()
 	{
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
-	m_pComShader->LoadVertexShader("VS3dShape.fx", layout, numelements, true);
+	m_pComShader->LoadVertexShader("VSShadow.fx", layout, numelements, true);
 	m_pComShader->LoadPixelShader("PSOnlyColorWithShadow.fx", true);
 
 	m_comCount++;

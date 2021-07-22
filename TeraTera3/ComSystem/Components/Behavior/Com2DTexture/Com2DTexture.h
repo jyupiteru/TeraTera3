@@ -43,22 +43,16 @@ public:
 	 */
 	~Com2DTexture(){};
 
-	/**
-     * @brief 初期処理
-     */
 	virtual void Init() override;
-
-	/**
-     * @brief 破棄処理
-     */
 	virtual void Uninit() override;
-
 	virtual void Ready() override;
+	virtual void Draw() override;
 
 	/**
-     * @brief 描画処理
-     */
-	virtual void Draw() override;
+	 * @brief 描画処理その２
+	 * @param _texturedata 描画したいシェーダーに渡す？画像データ
+	 */
+	virtual void Draw(ID3D11ShaderResourceView *_texturedata);
 
 	virtual void ImGuiDraw(unsigned int windowid) override;
 
