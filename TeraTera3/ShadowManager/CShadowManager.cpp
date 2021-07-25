@@ -10,6 +10,7 @@
 #include "../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
 #include "../ComSystem/Core/Cores.h"
 #include "../ComSystem/Components/System/ComLight/ComLight.h"
+#include "../WindowsSystem/Shader/Shader.h"
 
 CShadowManager *CShadowManager::m_instance = nullptr;
 
@@ -261,7 +262,7 @@ void CShadowManager::DrawShadowMap()
 	DirectX::XMFLOAT3 lightpos;
 
 	//ライトの座標(ぢレクションライトの方向)を取得 & 正規化
-	auto [light_x, light_y, light_z] = m_comLight->m_lightDirection.GetValue();
+	auto [light_x, light_y, light_z] = m_comLight->m_gameObject->m_transform->m_worldPosition.GetValue();
 	lightpos = DirectX::XMFLOAT3(light_x, light_y, light_z);
 	DirectX::XMVECTOR v;
 	v = DirectX::XMLoadFloat3(&lightpos);
@@ -271,14 +272,6 @@ void CShadowManager::DrawShadowMap()
 	lightpos.x *= 100;
 	lightpos.z *= 100;
 	lightpos.y *= 100;
-
-	DirectX::XMFLOAT4 l;
-	l.x = lightpos.x;
-	l.y = lightpos.y;
-	l.z = lightpos.z;
-	l.w = 1.0f;
-	/*light.SetLightPos(l);
-	light.Update();*/
 
 	//車道マップを生成するために光源からみたカメラを生成する
 	ALIGN16 DirectX::XMVECTOR eye = DirectX::XMVectorSet(lightpos.x, lightpos.y, lightpos.z, 0.0f);

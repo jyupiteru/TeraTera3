@@ -133,7 +133,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	}
 	{
 		// 平行光源初期化
-		DirectX::XMFLOAT3 lightdir = {1, -1, 1}; // 平行光源の方向をセット
+		DirectX::XMFLOAT3 lightdir = {100, 100, 0}; // 平行光源の方向をセット
 		//シーンに設置するライトを生成
 		auto light = GameObject::MakeNewObject("Light", E_TYPE_OBJECT::NONE);
 
@@ -141,7 +141,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		comlight->m_ambientColor.SetValue(60, 60, 60);
 		comlight->m_directionalColor.SetValue(155, 155, 155);
 
-		comlight->m_lightDirection.SetValue(lightdir.x, lightdir.y, lightdir.z);
+		light->m_transform->m_worldPosition.SetValue(lightdir.x, lightdir.y, lightdir.z);
 
 		light->m_objectUpdatePriority.SetValue(-20);
 		light->DontDestroyOnLoad();
