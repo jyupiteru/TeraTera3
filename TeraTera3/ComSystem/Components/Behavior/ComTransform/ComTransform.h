@@ -7,7 +7,7 @@
 #include "../../../Core/ComponentBase.h"
 
 #include "../../../../System/CVector.h"
-#include "../../../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
+#include "../../../../System/Dx11mathutil/Dx11mathutil.h"
 
 #include <memory>
 #pragma once

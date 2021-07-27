@@ -7,9 +7,9 @@
 
 #include "../ComTransform/ComTransform.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../WindowsSystem/DX11Settransform.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
-#include "../../../../System/CTextureManager/CTextureManager.h"
+#include "../../../../System/DX11Settransform.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/CTextureManager/CTextureManager.h"
 
 using namespace DirectX;
 
@@ -54,14 +54,14 @@ void Com3DTexture::Ready()
             {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
 
-    unsigned int numElements = ARRAYSIZE(layout);
+    unsigned int numelements = ARRAYSIZE(layout);
 
     m_pShader = m_gameObject->GetComponent<ComShader>();
     if (m_pShader == nullptr)
     {
         m_pShader = m_gameObject->AddComponent<ComShader>();
     }
-    m_pShader->LoadVertexShader("VS3DTex.fx", layout, numElements, true);
+    m_pShader->LoadVertexShader("VS3DTex.fx", layout, numelements, true);
     m_pShader->LoadPixelShader("PSTexWithColor.fx", true);
 
     if (auto [x, y, z] = m_gameObject->m_transform->m_size.GetValue(); z == 0.0f)
@@ -75,6 +75,9 @@ void Com3DTexture::Ready()
 
 void Com3DTexture::Draw()
 {
+    auto data = CTextureManager::GetInstance().GetTextureData(m_keyTexture);
+
+    ID3D11ShaderResourceView *srv = data->srv;
 
     SetVertex();
     m_pShader->SetVertexShader();
@@ -106,10 +109,6 @@ void Com3DTexture::Draw()
 
     // インデックスバッファをセット
     devcontext->IASetIndexBuffer(m_idxbuffer, DXGI_FORMAT_R32_UINT, 0);
-
-    auto data = CTextureManager::GetInstance().GetTextureData(m_keyTexture);
-
-    ID3D11ShaderResourceView *srv = data->srv;
 
     // PSにSRVをセット
     devcontext->PSSetShaderResources(
@@ -200,6 +199,55 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
         memcpy_s(pData.pData, pData.RowPitch, (void *)(&material), sizeof(ConstantBufferMaterial));
         CDirectXGraphics::GetInstance().GetImmediateContext()->Unmap(m_cbuffer, 0);
     }
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::ChangeTextureNum(DirectX::XMFLOAT2 num)
+{
+    m_textureNum = {(num.x), (num.y)};
+    SetUV();
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::SetTextureRate(DirectX::XMFLOAT2 num)
+{
+    m_textureRate = num;
+    SetUV();
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::SetTextureRateNumber(DirectX::XMFLOAT2 num)
+{
+    m_textureRate = {(float)(1.0f / num.x), (float)(1.0f / num.y)};
+    SetUV();
+}
+
+//================================================================================================
+//================================================================================================
+
+bool Com3DTexture::SetTextureKey(std::string_view _texturename)
+{
+    //セット済みか？
+    if (CTextureManager::GetInstance().GetTextureData(_texturename.data()))
+    {
+        m_keyTexture = _texturename.data();
+        return true;
+    }
+    return false;
+}
+
+//================================================================================================
+//================================================================================================
+
+std::string Com3DTexture::GetTextureKey()
+{
+    return m_keyTexture;
 }
 
 //================================================================================================

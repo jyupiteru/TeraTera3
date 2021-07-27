@@ -4,8 +4,6 @@
  * @brief CSceneManagerが記載されたヘッダ
  */
 #include <memory>
-
-#include "../../Setup.h"
 #include <unordered_map>
 
 #pragma once

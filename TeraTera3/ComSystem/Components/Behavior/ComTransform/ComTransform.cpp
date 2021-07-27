@@ -7,7 +7,7 @@
 #include "ComTransform.h"
 #include <memory>
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 
 using namespace DirectX;
 

@@ -6,7 +6,7 @@
 
 #include "../../../Core/ComponentBase.h"
 #include "../../Behavior/Com2DTexture/Com2DTexture.h"
-#include "../../../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
+#include "../../../../System/Dx11mathutil/Dx11mathutil.h"
 
 #pragma once
 
@@ -38,7 +38,6 @@ class ComWipe : public Com2DTexture
 	 * @brief シェーダに情報を渡すのに必要な定数バッファ
 	 */
 	ID3D11Buffer *m_wideDataBuffer = nullptr;
-
 
 	/**
 	 * @brief シェーダーに渡す情報を格納する変数

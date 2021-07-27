@@ -7,7 +7,8 @@
 
 #include "../ComTransform/ComTransform.h"
 #include "../../../../System/CMatrix/CMatrix.h"
-#include "../../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../../../System/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../../../Managers/CTextureManager/CTextureManager.h"
 
 ConstantBufferViewPort Com2DTexture::m_screenData;
 
@@ -52,13 +53,13 @@ void Com2DTexture::Ready()
             {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
 
-    unsigned int numElements = ARRAYSIZE(layout);
+    unsigned int numelements = ARRAYSIZE(layout);
     m_pShader = m_gameObject->GetComponent<ComShader>();
     if (m_pShader == nullptr)
     {
         m_pShader = m_gameObject->AddComponent<ComShader>();
     }
-    m_pShader->LoadVertexShader("VSUITex.fx", layout, numElements, true);
+    m_pShader->LoadVertexShader("VSUITex.fx", layout, numelements, true);
     m_pShader->LoadPixelShader("PSTexWithColor.fx", true);
 }
 
@@ -148,11 +149,11 @@ void Com2DTexture::SetVertex()
     if (m_vertexbuffer == nullptr)
     {
         // 頂点バッファ作成（後で変更可能なもの）
-        bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(),   //デバイス
-                                           sizeof(tagVertex), //ストライド（1頂点当たりのバイト数）
-                                           4,                 //頂点数
-                                           m_vertex,          //初期化データの先頭アドレス
-                                           &m_vertexbuffer);  //頂点バッファ
+        bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
+                                           sizeof(tagVertex),                             //ストライド（1頂点当たりのバイト数）
+                                           4,                                             //頂点数
+                                           m_vertex,                                      //初期化データの先頭アドレス
+                                           &m_vertexbuffer);                              //頂点バッファ
         if (!sts)
         {
             MessageBox(nullptr, "Com3DTexture SetVertex Error", "error", MB_OK);

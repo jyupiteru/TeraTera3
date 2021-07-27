@@ -133,4 +133,9 @@ protected:
 	 * @param Normal 正規化後の変数
 	 */
     void Normalize(DirectX::XMFLOAT3 vector, DirectX::XMFLOAT3 &Normal);
+
+    /**
+     * @brief 影を描画するのに使用する処理
+     */
+    void DrawShadow();
 };

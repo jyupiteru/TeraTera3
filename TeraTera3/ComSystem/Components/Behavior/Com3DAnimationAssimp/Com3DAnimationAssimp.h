@@ -7,7 +7,7 @@
 #include "../../Behavior/Com3DModelAssimp/Com3DModelAssimp.h"
 #include "../../../Core/ComponentBase.h"
 #include "../../../../System/AssimpModel/CAssimpAnimationData/CAssimpAnimationData.h"
-#include "../../../../ResourceContainer/CContainer.h"
+#include "../../../../Managers/ResourceContainer/CContainer.h"
 
 #pragma once
 

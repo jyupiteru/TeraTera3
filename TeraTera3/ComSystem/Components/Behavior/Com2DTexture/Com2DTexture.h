@@ -43,21 +43,9 @@ public:
 	 */
 	~Com2DTexture(){};
 
-	/**
-     * @brief 初期処理
-     */
 	virtual void Init() override;
-
-	/**
-     * @brief 破棄処理
-     */
 	virtual void Uninit() override;
-
 	virtual void Ready() override;
-
-	/**
-     * @brief 描画処理
-     */
 	virtual void Draw() override;
 
 	virtual void ImGuiDraw(unsigned int windowid) override;

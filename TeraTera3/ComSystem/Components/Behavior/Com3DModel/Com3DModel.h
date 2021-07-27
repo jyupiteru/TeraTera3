@@ -11,8 +11,8 @@
 #include "../../../Core/Cores.h"
 #include "../ComShader/ComShader.h"
 
-#include "../../../../WindowsSystem/Model/DatFIle/DatFile.h"
-#include "../../../../ResourceContainer/CContainer.h"
+#include "../../../../System/Model/DatFIle/DatFile.h"
+#include "../../../../Managers/ResourceContainer/CContainer.h"
 
 #pragma once
 

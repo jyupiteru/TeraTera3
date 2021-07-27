@@ -4,14 +4,13 @@
  * @brief CImGuiManagerの宣言が記載されたヘッダ
  */
 
-#include "../../../ThirdParty/ImGui/imgui.h"
-#include "../../../ThirdParty/ImGui/imgui_impl_dx11.h"
-#include "../../../ThirdParty/ImGui/imgui_impl_win32.h"
+#include "../../../../ThirdParty/ImGui/imgui.h"
+#include "../../../../ThirdParty/ImGui/imgui_impl_dx11.h"
+#include "../../../../ThirdParty/ImGui/imgui_impl_win32.h"
 
 #include "../ImGuiHelperFunctions.h"
-#include "../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
 #include "CImGuiHelper/CImGuiHelper.h"
-#include "../../System/CVector.h"
+#include "../../../System/CVector.h"
 
 #include <string>
 #include <map>

@@ -5,6 +5,7 @@
 #define _HLSL_COMMON_
 
 Texture2D g_Tex : register(t0);				// テクスチャ
+Texture2D g_ShadowMap : register(t1);				// 影のテクスチャ
 SamplerState g_SamplerLinear : register(s0);	// サンプラー
 
 cbuffer ConstantBufferWorld : register(b0)
@@ -33,7 +34,7 @@ cbuffer ConstantBufferMaterial : register(b3)
 struct tagDirectionalLight
 {
 	//正規化済みの方向ベクトル
-	float4 LightDirection;	
+	float4 LightDirection;
 
 	//0.0~1.0fの変換済みの色情報
 	float4 LightColor;
@@ -92,22 +93,42 @@ cbuffer ConstantBufferBoneMatrix : register(b6)
 
 cbuffer ConstantBufferWipe : register(b7)
 {
-	float wipeSize;	//現在のワイプのサイズ 表示をさせない範囲
+	//現在のワイプのサイズ 表示をさせない範囲
+	float wipeSize;
 
-	float2 wipeVector;	//ワイプの方向(正規化済み)
-	
-	float wipeFlag;		//ワイプが開けるか、閉まるか決めるフラグ
+	//ワイプの方向(正規化済み)
+	float2 wipeVector;
+
+	//ワイプが開けるか、閉まるか決めるフラグ
+	float wipeFlag;
+}
+
+cbuffer ConstantBufferShadowMap : register(b8)
+{
+	//光源の位置カメラ
+	matrix viewFromLight;
+
+	//光源の位置カメラに対応したプロジェクション変換行列
+	matrix projectionFromLight;
+
+	//スクリーン座標をライトからのテクスチャ座標空間に変換する行列
+	matrix screenToUVCoord;
 }
 
 //頂点シェーダー => ピクセルシェーダーに渡す構造体
+//これ各シェーダーごとに分けたほうがよさそう？ 変数増えすぎ
 struct VS_OUTPUT
 {
 	//座標
-	float4 Pos : SV_POSITION;	//座標 変換済み
-	float4 Color : COLOR0;		//色
-	float2 Tex : TEXCOORD;		//UV
-	float4 WPos : TEXCOORD1;	//ワールド座標
-	float4 Normal : TEXCOORD2;	//法線 正規化まだ
+	float4 Pos 				: SV_POSITION;	//座標 変換済み
+	float4 Color			: COLOR0;		//色
+	float2 Tex 				: TEXCOORD;		//UV
+	float4 WPos				: TEXCOORD1;	//ワールド座標
+	float4 Normal 			: TEXCOORD2;	//法線 正規化まだ
+	float4 LPos				: TEXCOORD3;	//
+	float4 LengthFromLight	: TEXCOORD4;	//ライトからの距離
+	float4 ShadowTex		: TEXCOORD5;	//シャドウマップを参照するＵＶ座標
+	float4 Depth			: TEXCOORD6;	//深度
 };
 
 #endif

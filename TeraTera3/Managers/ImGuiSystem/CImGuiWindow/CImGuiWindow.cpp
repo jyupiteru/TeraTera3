@@ -6,7 +6,7 @@
 
 #include "CImGuiWindow.h"
 #include "../CImGuiManager/CImGuiManager.h"
-#include "../../Setup.h"
+#include "../../../Setup.h"
 #include "../CImGuiManager/CImGuiHelper/CImGuiHelper.h"
 
 #include <bitset>

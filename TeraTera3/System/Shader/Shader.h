@@ -62,7 +62,7 @@ HRESULT CompileShaderFromFile(const char *szFileName, LPCSTR szEntryPoint, LPCST
  * @param szEntryPoint
  * @param szShaderModel
  * @param layout
- * @param numElements
+ * @param numelements
  * @param ppVertexShader
  * @param ppVertexLayout
  * @return true 成功
@@ -73,7 +73,7 @@ bool CreateVertexShader(ID3D11Device *device,
 						LPCSTR szEntryPoint,
 						LPCSTR szShaderModel,
 						D3D11_INPUT_ELEMENT_DESC *layout,
-						unsigned int numElements,
+						unsigned int numelements,
 						ID3D11VertexShader **ppVertexShader,
 						ID3D11InputLayout **ppVertexLayout);
 /**
@@ -228,7 +228,7 @@ bool CreateSRVfromTGAFile(const char *filename, ID3D11Device *device, ID3D11Reso
  * @return true 成功
  * @return false 失敗
  */
-bool CreateSRVfromWICFile(const char *filename,  ID3D11Device * device, ID3D11DeviceContext *device11Context, ID3D11Resource **resource, ID3D11ShaderResourceView **srv);
+bool CreateSRVfromWICFile(const char *filename, ID3D11Device *device, ID3D11DeviceContext *device11Context, ID3D11Resource **resource, ID3D11ShaderResourceView **srv);
 
 /**
  * @brief DDSファイルを読み込みシェーダーリソースビュー―を作成する

@@ -5,10 +5,11 @@
  */
 #include "CSceneManager.h"
 
-#include "../../../GameScene/SceneSetter.h"
-#include "../../ComSystem/Core/ObjectGenerator.h"
-#include "../../DebugLog/CDebugLog.h"
-#include "../../../Thirdparty/ImGui/imgui.h"
+#include "../../../Setup.h"
+#include "../../../DebugLog/CDebugLog.h"
+#include "../../../ComSystem/Core/ObjectGenerator.h"
+#include "../../../../GameScene/SceneSetter.h"
+#include "../../../../Thirdparty/ImGui/imgui.h"
 
 #include "../CScene.h"
 

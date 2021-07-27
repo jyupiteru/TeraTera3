@@ -11,9 +11,9 @@
 #include "../../../Core/ComponentBase.h"
 #include "../ComShader/ComShader.h"
 
-// #include "../../../../WindowsSystem/Model/Assimp/ModelData/ModelData.h"
+// #include "../../../../System/Model/Assimp/ModelData/ModelData.h"
 #include "../../../../System/AssimpModel/CAssimpModelData/CAssimpModelData.h"
-#include "../../../../ResourceContainer/CContainer.h"
+#include "../../../../Managers/ResourceContainer/CContainer.h"
 
 #pragma once
 
@@ -166,4 +166,9 @@ protected:
      * @param nowmin 現在の小さい値
      */
     void CheckVolume(float num, float &nowmax, float &nowmin);
+
+    /**
+     * @brief 影を描画する際に使用する処理
+     */
+    void DrawShadow();
 };

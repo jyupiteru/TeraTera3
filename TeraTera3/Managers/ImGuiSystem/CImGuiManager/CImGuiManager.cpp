@@ -7,7 +7,8 @@
 #include "CImGuiManager.h"
 #include "../CImGuiWindow/CImGuiWindow.h"
 #include "CImGuiHelper/CImGuiHelper.h"
-#include "../../Setup.h"
+#include "../../../Setup.h"
+#include "../../../System/CDirectXGraphics/CDirectXGraphics.h"
 
 CImGuiManager *CImGuiManager::m_instance = nullptr;
 

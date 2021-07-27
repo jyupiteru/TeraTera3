@@ -4,11 +4,11 @@
 #include <assimp/cimport.h>
 #include <unordered_map>
 #include <vector>
-#include "../../../WindowsSystem/Shader/Shader.h"
+#include "../../../System/Shader/Shader.h"
 #include "CAssimpModelData.h"
 #include "../AssimpVertexsData.h"
-#include "../../../WindowsSystem/DX11Settransform.h"
-#include "../../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
+#include "../../../System/DX11Settransform.h"
+#include "../../../System/Dx11mathutil/Dx11mathutil.h"
 
 const int INTERPOLATENUM = 3; // 補間数
 
