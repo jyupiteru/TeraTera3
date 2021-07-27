@@ -303,7 +303,7 @@ void CShadowManager::DrawShadowMap()
 
 	// 光源カメラ用のプロジェクション変換行列
 	float nearclip = 10.0f;
-	float farclip = 300.0f; // ファークリップの値がおかしくてバグった
+	float farclip = 5000.0f;
 	float Aspect = 1.0f;
 	float Fov = DirectX::XM_PI / 3;
 

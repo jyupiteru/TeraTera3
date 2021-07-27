@@ -5,7 +5,7 @@
 #define _HLSL_COMMON_
 
 Texture2D g_Tex : register(t0);				// テクスチャ
-Texture2D g_ShadowMap : register(t0);				// 影のテクスチャ
+Texture2D g_ShadowMap : register(t1);				// 影のテクスチャ
 SamplerState g_SamplerLinear : register(s0);	// サンプラー
 
 cbuffer ConstantBufferWorld : register(b0)
@@ -111,7 +111,7 @@ cbuffer ConstantBufferShadowMap : register(b8)
 	//光源の位置カメラに対応したプロジェクション変換行列
 	matrix projectionFromLight;
 
-	//スクリーン座標をテクスチャ座標空間に変換
+	//スクリーン座標をライトからのテクスチャ座標空間に変換する行列
 	matrix screenToUVCoord;
 }
 
