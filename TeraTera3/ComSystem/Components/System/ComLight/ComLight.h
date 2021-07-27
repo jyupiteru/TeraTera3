@@ -5,13 +5,15 @@
  * @version 1.0
  */
 #include <DirectXMath.h>
+#include <d3d11.h>
 
 #include "../../../Core/ComponentBase.h"
-#include "../ComCamera/ComCamera.h"
+#include "../../../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
 
 #pragma once
 
 class ComSphere;
+class ComCamera;
 
 /**
  * @brief ディレクショナルライトを使用するのに必要な情報を集めた構造体
@@ -89,6 +91,7 @@ ALIGN16 struct tagConstantBufferLight
 
 /**
  * @brief ゲーム内の光を管理するコンポーネント
+ * @n オブジェクトの座標をもとに光の方向を管理します
  */
 class ComLight : public ComponentBase
 {
@@ -116,13 +119,6 @@ class ComLight : public ComponentBase
      ComSphere *m_pComSphere = nullptr;
 
 public:
-
-     /**
-     * @brief ディレクションライトの方向情報
-     * @n どの角度からあたるかなどを入れる めんどくさかったらライトの座標入れてもいいかも?(正規化するので)
-     */
-     CVector3<float> m_lightDirection;
-
      /**
      * @brief ディレクションライトの色
      * @n 各種モデル等に反映される

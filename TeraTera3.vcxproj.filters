@@ -297,7 +297,13 @@
     <ClInclude Include="TeraTera3\System\CTextureManager\CTextureManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ComSystem\Components\System\ComShadow\ComShadow.h">
+    <ClInclude Include="TeraTera3\ShaderManager\CShaderManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TeraTera3\ShadowManager\CShadowManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene\CSceneSample3\CSceneSample3.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -506,7 +512,13 @@
     <ClCompile Include="TeraTera3\System\CTextureManager\CTextureManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\ComSystem\Components\System\ComShadow\ComShadow.cpp">
+    <ClCompile Include="TeraTera3\ShaderManager\CShaderManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\ShadowManager\CShadowManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene\CSceneSample3\CSceneSample3.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

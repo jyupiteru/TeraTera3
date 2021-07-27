@@ -146,7 +146,7 @@ HRESULT CompileShaderFromFile(const char *szFileName, LPCSTR szEntryPoint, LPCST
 //================================================================================================
 //================================================================================================
 
-bool CreateVertexShader(ID3D11Device *device, const char *szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, D3D11_INPUT_ELEMENT_DESC *layout, unsigned int numElements, ID3D11VertexShader **ppVertexShader, ID3D11InputLayout **ppVertexLayout)
+bool CreateVertexShader(ID3D11Device *device, const char *szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, D3D11_INPUT_ELEMENT_DESC *layout, unsigned int numelements, ID3D11VertexShader **ppVertexShader, ID3D11InputLayout **ppVertexLayout)
 {
 
 	HRESULT hr;
@@ -177,7 +177,7 @@ bool CreateVertexShader(ID3D11Device *device, const char *szFileName, LPCSTR szE
 	// 頂点データ定義生成
 	hr = device->CreateInputLayout(
 		layout,
-		numElements,
+		numelements,
 		ShaderObject,
 		ShaderObjectSize,
 		ppVertexLayout);

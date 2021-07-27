@@ -76,10 +76,10 @@ void Com3DAnimationAssimp::Ready()
             {"BONEINDEX", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"BONEWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
         };
-    unsigned int numElements = ARRAYSIZE(layout);
+    unsigned int numelements = ARRAYSIZE(layout);
 
     ComShader *shader = this->m_gameObject->GetComponent<ComShader>();
-    shader->LoadVertexShader("VSOneskin.fx", layout, numElements, true);
+    shader->LoadVertexShader("VSOneskin.fx", layout, numelements, true);
 }
 
 //================================================================================================

@@ -13,6 +13,7 @@
 #include "../../../../WindowsSystem/DX11Settransform.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
 #include "../Com3DAnimationAssimp/Com3DAnimationAssimp.h"
+#include "../../../../ShadowManager/CShadowManager.h"
 
 CListResource *Com3DModelAssimp::m_pListModel;
 
@@ -52,14 +53,15 @@ void Com3DModelAssimp::Init()
             {"BONEINDEX", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"BONEWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
         };
-    unsigned int numElements = ARRAYSIZE(layout);
+    unsigned int numelements = ARRAYSIZE(layout);
 
     //アニメーションのは読み込んでいないか?
     if (auto comanim = m_gameObject->GetComponent<Com3DAnimationAssimp>(); comanim == nullptr)
     {
-        m_pShader->LoadVertexShader("VSAssimpModel.fx", layout, numElements, true);
+        m_pShader->LoadVertexShader("VSAssimpModel.fx", layout, numelements, true);
     }
     m_pShader->LoadPixelShader("PSAssimpDefault.fx", true);
+    CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&Com3DModelAssimp::DrawShadow, this));
 }
 
 //================================================================================================
@@ -77,6 +79,8 @@ void Com3DModelAssimp::Uninit()
     {
         m_pListModel = nullptr;
     }
+
+    CShadowManager::GetInstance().RemoveDrawFunction(m_gameObject->m_objectName);
 }
 
 //================================================================================================
@@ -133,13 +137,11 @@ void Com3DModelAssimp::Draw()
 {
     if (m_pNowModelData != nullptr)
     {
-        auto [color_r, color_g, color_b, color_a] = m_gameObject->m_transform->m_color.GetValue();
-
         m_pShader->SetPixelShader();
         m_pShader->SetVertexShader();
 
-        // モデル描画
-        m_pNowModelData->modeldata.Draw((DirectX::XMFLOAT4X4 &)m_modelMatrix, m_animationData, DirectX::XMFLOAT4(color_r, color_g, color_b, color_a));
+        //処理は同じなので
+        DrawShadow();
     }
 }
 
@@ -267,4 +269,15 @@ void Com3DModelAssimp::CheckVolume(float num, float &nowmax, float &nowmin)
     {
         nowmin = num;
     }
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DModelAssimp::DrawShadow()
+{
+    auto [color_r, color_g, color_b, color_a] = m_gameObject->m_transform->m_color.GetValue();
+
+    // モデル描画
+    m_pNowModelData->modeldata.Draw((DirectX::XMFLOAT4X4 &)m_modelMatrix, m_animationData, DirectX::XMFLOAT4(color_r, color_g, color_b, color_a));
 }
