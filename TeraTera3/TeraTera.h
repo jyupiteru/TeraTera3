@@ -9,14 +9,18 @@
 
 #include "ComSystem/ComSystem.h"
 
-#include "WindowsSystem/CDirectInput.h"
-
-#include "SceneSystem/CSceneManager/CSceneManager.h"
-
-#include "Timer/CTimer.h"
+#include "System/CDirectInput.h"
 
 #include "DebugLog/CDebugLog.h"
 
-#include "ResourceContainer/CContainer.h"
+#include "Managers/ImGuiSystem/ImGuiHeaders.h"
 
-#include "ImGuiSystem/ImGuiHeaders.h"
+#include "Managers/ResourceContainer/CContainer.h"
+
+#include "Managers/SceneSystem/CSceneManager/CSceneManager.h"
+
+#include "Managers/ShaderManager/CShaderManager.h"
+
+#include "Managers/ShadowManager/CShadowManager.h"
+
+#include "Timer/CTimer.h"

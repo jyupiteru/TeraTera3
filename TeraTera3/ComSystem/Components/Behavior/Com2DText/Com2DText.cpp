@@ -5,9 +5,9 @@
  */
 #include "Com2DText.h"
 #include "../../../../Setup.h"
-#include "../../../../WindowsSystem/DX11Settransform.h"
+#include "../../../../System/DX11Settransform.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../ComTransform/ComTransform.h"
 
 std::unordered_map<std::string, ID3D11ShaderResourceView *> Com2DText::m_pListSRV;
@@ -65,7 +65,7 @@ void Com2DText::Init()
             {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
 
-    unsigned int numElements = ARRAYSIZE(layout);
+    unsigned int numelements = ARRAYSIZE(layout);
 
     LoadFontTexture("FontImage.dds");
 
@@ -113,13 +113,13 @@ void Com2DText::Ready()
             {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
 
-    unsigned int numElements = ARRAYSIZE(layout);
+    unsigned int numelements = ARRAYSIZE(layout);
     m_pShader = m_gameObject->GetComponent<ComShader>();
     if (m_pShader == nullptr)
     {
         m_pShader = m_gameObject->AddComponent<ComShader>();
     }
-    m_pShader->LoadVertexShader("VSUItex.fx", layout, numElements, true);
+    m_pShader->LoadVertexShader("VSUItex.fx", layout, numelements, true);
     m_pShader->LoadPixelShader("PSTexWithColor.fx", true);
 }
 
@@ -160,7 +160,6 @@ void Com2DText::Draw()
 
     //これをONにすると強制的にほかのものに上書きできる(一番手前になる)
     CDirectXGraphics::GetInstance().TurnOffZbuffer();
-
 
     unsigned int stride = sizeof(tagVertex); // ストライドをセット（１頂点当たりのバイト数）
     unsigned offset = 0;                     // オフセット値をセット
@@ -244,15 +243,15 @@ void Com2DText::LoadFontTexture(std::string_view fontname)
 
     if (!m_pListFontTexture.contains(m_keyFontTexture))
     {
-        ID3D11ShaderResourceView* srv = nullptr;
-        ID3D11Resource* texres = nullptr;
+        ID3D11ShaderResourceView *srv = nullptr;
+        ID3D11Resource *texres = nullptr;
 
         // SRV生成
         sts = CreateSRVfromFile(folder.c_str(), //画像ファイル名
-            CDirectXGraphics::GetInstance().GetDXDevice(),
-            CDirectXGraphics::GetInstance().GetImmediateContext(),
-            &texres,
-            &srv);
+                                CDirectXGraphics::GetInstance().GetDXDevice(),
+                                CDirectXGraphics::GetInstance().GetImmediateContext(),
+                                &texres,
+                                &srv);
         if (!sts)
         {
             MessageBox(nullptr, TEXT("CreateSRVfromFile error"), TEXT("error"), MB_OK);

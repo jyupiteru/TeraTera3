@@ -8,7 +8,6 @@
 #include <typeindex>
 #include <typeinfo>
 #include <memory>
-#include "../Setup.h"
 #include "CListResource.h"
 
 #pragma once
@@ -51,7 +50,7 @@ class CContainer final
 public:
     static void Create();
 
-    static void Delete(bool _flag=false);
+    static void Delete(bool _flag = false);
 
     static CContainer &GetInstance();
 

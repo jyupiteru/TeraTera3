@@ -30,25 +30,25 @@
     <ClInclude Include="TeraTera3\TeraTera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\CDirectXGraphics\CDirectXGraphics.h">
+    <ClInclude Include="TeraTera3\System\CDirectXGraphics\CDirectXGraphics.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.h">
+    <ClInclude Include="TeraTera3\System\Dx11mathutil\Dx11mathutil.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.h">
+    <ClInclude Include="TeraTera3\System\Model\DatFIle\DatFile.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Model\DatFileLoader\DatFileLoader.h">
+    <ClInclude Include="TeraTera3\System\Model\DatFileLoader\DatFileLoader.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\Shader\Shader.h">
+    <ClInclude Include="TeraTera3\System\Shader\Shader.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\CDirectInput.h">
+    <ClInclude Include="TeraTera3\System\CDirectInput.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\WindowsSystem\DX11Settransform.h">
+    <ClInclude Include="TeraTera3\System\DX11Settransform.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ThirdParty\ImGui\imconfig.h">
@@ -75,31 +75,31 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.h">
+    <ClInclude Include="TeraTera3\Managers\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.h">
+    <ClInclude Include="TeraTera3\Managers\ImGuiSystem\CImGuiManager\CImGuiManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ImGuiSystem\CImGuiWindow\CImGuiWindow.h">
+    <ClInclude Include="TeraTera3\Managers\ImGuiSystem\CImGuiWindow\CImGuiWindow.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ImGuiSystem\ImGuiHeaders.h">
+    <ClInclude Include="TeraTera3\Managers\ImGuiSystem\ImGuiHeaders.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ImGuiSystem\ImGuiHelperFunctions.h">
+    <ClInclude Include="TeraTera3\Managers\ImGuiSystem\ImGuiHelperFunctions.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ResourceContainer\CContainer.h">
+    <ClInclude Include="TeraTera3\Managers\ResourceContainer\CContainer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ResourceContainer\CListResource.h">
+    <ClInclude Include="TeraTera3\Managers\ResourceContainer\CListResource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\SceneSystem\CSceneManager\CSceneManager.h">
+    <ClInclude Include="TeraTera3\Managers\SceneSystem\CSceneManager\CSceneManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\SceneSystem\CScene.h">
+    <ClInclude Include="TeraTera3\Managers\SceneSystem\CScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="TeraTera3\System\CMatrix\CMatrix.h">
@@ -294,10 +294,16 @@
     <ClInclude Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\System\CTextureManager\CTextureManager.h">
+    <ClInclude Include="TeraTera3\Managers\CTextureManager\CTextureManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\ComSystem\Components\System\ComShadow\ComShadow.h">
+    <ClInclude Include="TeraTera3\Managers\ShaderManager\CShaderManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TeraTera3\Managers\ShadowManager\CShadowManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene\CSceneSample3\CSceneSample3.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -311,25 +317,25 @@
     <ClCompile Include="TeraTera3\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\CDirectXGraphics\CDirectXGraphics.cpp">
+    <ClCompile Include="TeraTera3\System\CDirectXGraphics\CDirectXGraphics.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\Dx11mathutil\Dx11mathutil.cpp">
+    <ClCompile Include="TeraTera3\System\Dx11mathutil\Dx11mathutil.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\Model\DatFIle\DatFile.cpp">
+    <ClCompile Include="TeraTera3\System\Model\DatFIle\DatFile.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\Model\DatFileLoader\DatFileLoader.cpp">
+    <ClCompile Include="TeraTera3\System\Model\DatFileLoader\DatFileLoader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\Model\DDSTextureLoader.cpp">
+    <ClCompile Include="TeraTera3\System\Model\DDSTextureLoader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\Shader\Shader.cpp">
+    <ClCompile Include="TeraTera3\System\Shader\Shader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\WindowsSystem\WICTextureLoader.cpp">
+    <ClCompile Include="TeraTera3\System\WICTextureLoader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="ThirdParty\ImGui\imgui.cpp">
@@ -350,19 +356,19 @@
     <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.cpp">
+    <ClCompile Include="TeraTera3\Managers\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiManager\CImGuiManager.cpp">
+    <ClCompile Include="TeraTera3\Managers\ImGuiSystem\CImGuiManager\CImGuiManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\ImGuiSystem\CImGuiWindow\CImGuiWindow.cpp">
+    <ClCompile Include="TeraTera3\Managers\ImGuiSystem\CImGuiWindow\CImGuiWindow.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\ResourceContainer\CContainer.cpp">
+    <ClCompile Include="TeraTera3\Managers\ResourceContainer\CContainer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\SceneSystem\CSceneManager\CSceneManager.cpp">
+    <ClCompile Include="TeraTera3\Managers\SceneSystem\CSceneManager\CSceneManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\System\CMatrix\CMatrix.cpp">
@@ -503,10 +509,16 @@
     <ClCompile Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\System\CTextureManager\CTextureManager.cpp">
+    <ClCompile Include="TeraTera3\Managers\CTextureManager\CTextureManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\ComSystem\Components\System\ComShadow\ComShadow.cpp">
+    <ClCompile Include="TeraTera3\Managers\ShaderManager\CShaderManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TeraTera3\Managers\ShadowManager\CShadowManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene\CSceneSample3\CSceneSample3.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

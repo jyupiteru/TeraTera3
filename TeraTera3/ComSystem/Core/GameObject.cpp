@@ -11,9 +11,9 @@
 #include "ComponentBase.h"
 #include "../Components/Behavior/ComTransform/ComTransform.h"
 #include "../../../ThirdParty/ImGui/imgui.h"
-#include "../../ImGuiSystem/ImGuiHeaders.h"
-#include "../../ImGuiSystem/ImGuiHelperFunctions.h"
-#include "../../WindowsSystem/CDirectInput.h"
+#include "../../Managers/ImGuiSystem/ImGuiHeaders.h"
+#include "../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../System/CDirectInput.h"
 #include "../../EventSystem/CEventSystem.h"
 
 int GameObject::m_classCount = 0;

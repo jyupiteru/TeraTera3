@@ -5,6 +5,7 @@
  */
 
 #include "CContainer.h"
+#include "../../Setup.h"
 
 CContainer *CContainer::m_instance = nullptr;
 

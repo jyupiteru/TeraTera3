@@ -6,10 +6,10 @@
 
 #define NOMINMAX
 
-#include "../Setup.h"
-#include "../TeraTera.h"
-#include "../../GameComponent/GameComponents.h"
-#include "../WindowsSystem/CDirectInput.h"
+#include "../../Setup.h"
+#include "../../TeraTera.h"
+#include "../../System/CDirectInput.h"
+#include "../../../GameComponent/GameComponents.h"
 
 #pragma once
 
