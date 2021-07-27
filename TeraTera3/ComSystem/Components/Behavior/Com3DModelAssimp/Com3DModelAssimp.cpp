@@ -10,10 +10,10 @@
 #include "../../../../System/CMatrix/CMatrix.h"
 #include "../../../Core/GameObject.h"
 #include "../ComTransform/ComTransform.h"
-#include "../../../../WindowsSystem/DX11Settransform.h"
+#include "../../../../System/DX11Settransform.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
 #include "../Com3DAnimationAssimp/Com3DAnimationAssimp.h"
-#include "../../../../ShadowManager/CShadowManager.h"
+#include "../../../../Managers/ShadowManager/CShadowManager.h"
 
 CListResource *Com3DModelAssimp::m_pListModel;
 

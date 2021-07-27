@@ -7,7 +7,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "../TeraTera3/SceneSystem/CScene.h"
+#include "../TeraTera3/Managers/SceneSystem/CScene.h"
 
 #include "CSceneSample/CSceneSample.h"
 #include "CSceneSample2/CSceneSample2.h"

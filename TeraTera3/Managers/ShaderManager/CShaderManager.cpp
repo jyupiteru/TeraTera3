@@ -1,16 +1,15 @@
-/**
+﻿/**
  * @file CShaderManager.cpp
  * @author jupiter ()
  * @brief CShaderManagerクラスの実装が書かれているcpp
  */
 
 #include "CShaderManager.h"
-#include "../WindowsSystem/Shader/Shader.h"
-#include "../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../System/Shader/Shader.h"
+#include "../../System/CDirectXGraphics/CDirectXGraphics.h"
 #include "../../ThirdParty/ImGui/imgui.h"
 
 CShaderManager *CShaderManager::m_instance = nullptr;
-
 
 void CShaderManager::Create()
 {

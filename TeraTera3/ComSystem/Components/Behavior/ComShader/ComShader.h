@@ -10,8 +10,8 @@
 #include "../../../Core/ComponentBase.h"
 #include "../../../Core/GameObject.h"
 
-#include "../../../../WindowsSystem/Shader/Shader.h"
-#include "../../../../ResourceContainer/CContainer.h"
+#include "../../../../System/Shader/Shader.h"
+#include "../../../../Managers/ResourceContainer/CContainer.h"
 
 #pragma once
 

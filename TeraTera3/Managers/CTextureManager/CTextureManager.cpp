@@ -1,7 +1,12 @@
-﻿
+﻿/**
+ * @file CTextureManager.cpp
+ * @author jupiter ()
+ * @brief CTextureManagerクラスの実装が記載されているcpp
+ */
+
 #include "CTextureManager.h"
-#include "../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
-#include "../../WindowsSystem/Shader/Shader.h"
+#include "../../System/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../System/Shader/Shader.h"
 
 CTextureManager *CTextureManager::m_instance = nullptr;
 

@@ -6,16 +6,16 @@
 #include "game.h"
 
 #include "Timer/CTimer.h"
-#include "ImGuiSystem/ImGuiHeaders.h"
+#include "Managers/ImGuiSystem/ImGuiHeaders.h"
 #include "EventSystem/CEventSystem.h"
 #include "DebugLog/CDebugLog.h"
 #include "ComSystem/ComSystem.h"
 #include "ComSystem/Core/ObjectGenerator.h"
-#include "SceneSystem/CSceneManager/CSceneManager.h"
-#include "ResourceContainer/CContainer.h"
-#include "System/CTextureManager/CTextureManager.h"
-#include "ShaderManager/CShaderManager.h"
-#include "ShadowManager/CShadowManager.h"
+#include "Managers/SceneSystem/CSceneManager/CSceneManager.h"
+#include "Managers/ResourceContainer/CContainer.h"
+#include "Managers/CTextureManager/CTextureManager.h"
+#include "Managers/ShaderManager/CShaderManager.h"
+#include "Managers/ShadowManager/CShadowManager.h"
 
 using namespace DirectX;
 

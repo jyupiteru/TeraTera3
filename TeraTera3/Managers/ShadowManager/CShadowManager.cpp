@@ -7,12 +7,12 @@
 
 #include "CShadowManager.h"
 #include "../ShaderManager/CShaderManager.h"
-#include "../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
-#include "../ComSystem/Core/Cores.h"
-#include "../ComSystem/Components/System/ComLight/ComLight.h"
-#include "../WindowsSystem/Shader/Shader.h"
+#include "../CTextureManager/CTextureManager.h"
+#include "../../ComSystem/Core/Cores.h"
+#include "../../ComSystem/Components/System/ComLight/ComLight.h"
+#include "../../System/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../System/Shader/Shader.h"
 #include "../../ThirdParty/ImGui/imgui.h"
-#include"../System/CTextureManager/CTextureManager.h"
 
 CShadowManager *CShadowManager::m_instance = nullptr;
 

@@ -14,8 +14,8 @@
 
 #include "CAssimpScene/CAssimpScene.h"
 #include "Cmesh/CMesh.h"
-#include "../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
 #include "../CAssimpAnimationData/CAssimpAnimationData.h"
+#include "../../CDirectXGraphics/CDirectXGraphics.h"
 
 class Com3DModelAssimp;
 

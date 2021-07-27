@@ -1,4 +1,9 @@
-﻿
+﻿/**
+ * @file CTextureManager.h
+ * @author jupiter ()
+ * @brief CTextureManagerクラスの宣言が記載されているヘッダ
+ */
+
 #include <string_view>
 #include <unordered_map>
 #include <d3d11.h>

@@ -5,9 +5,9 @@
  */
 #include "Com2DText.h"
 #include "../../../../Setup.h"
-#include "../../../../WindowsSystem/DX11Settransform.h"
+#include "../../../../System/DX11Settransform.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../ComTransform/ComTransform.h"
 
 std::unordered_map<std::string, ID3D11ShaderResourceView *> Com2DText::m_pListSRV;

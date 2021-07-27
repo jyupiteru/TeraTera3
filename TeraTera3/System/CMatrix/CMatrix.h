@@ -6,7 +6,7 @@
 
 #include <DirectXMath.h>
 
-#include "../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
+#include "../Dx11mathutil/Dx11mathutil.h"
 
 #pragma once
 

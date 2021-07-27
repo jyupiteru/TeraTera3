@@ -4,9 +4,7 @@
  * @brief ImGuiWindowの宣言が記載されているヘッダ
  */
 
-#include "../../../Thirdparty/ImGui/imgui.h"
-#include "../../../Thirdparty//ImGui/imgui_impl_dx11.h"
-#include "../../../Thirdparty//ImGui/imgui_impl_win32.h"
+#include "../../../../Thirdparty/ImGui/imgui.h"
 
 #include <string>
 #include <functional>

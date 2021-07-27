@@ -11,9 +11,9 @@
 #include "../../../Core/ComponentBase.h"
 #include "../ComShader/ComShader.h"
 
-// #include "../../../../WindowsSystem/Model/Assimp/ModelData/ModelData.h"
+// #include "../../../../System/Model/Assimp/ModelData/ModelData.h"
 #include "../../../../System/AssimpModel/CAssimpModelData/CAssimpModelData.h"
-#include "../../../../ResourceContainer/CContainer.h"
+#include "../../../../Managers/ResourceContainer/CContainer.h"
 
 #pragma once
 

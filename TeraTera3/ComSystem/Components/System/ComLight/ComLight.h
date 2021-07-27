@@ -8,7 +8,7 @@
 #include <d3d11.h>
 
 #include "../../../Core/ComponentBase.h"
-#include "../../../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
+#include "../../../../System/Dx11mathutil/Dx11mathutil.h"
 
 #pragma once
 

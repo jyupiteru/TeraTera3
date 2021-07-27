@@ -5,7 +5,7 @@
  */
 
 #include "ComWipe.h"
-#include "../../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../../../System/CDirectXGraphics/CDirectXGraphics.h"
 #include "../../../../Timer/CTimer.h"
 
 void ComWipe::Init()

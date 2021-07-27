@@ -8,7 +8,6 @@
 #include <typeindex>
 #include <typeinfo>
 #include <memory>
-#include "../Setup.h"
 #include "CListResource.h"
 
 #pragma once

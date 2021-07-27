@@ -5,8 +5,8 @@
  */
 #include "ComShader.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
-#include "../../../../ShaderManager/CShaderManager.h"
+#include "../../../../System/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../../../Managers/ShaderManager/CShaderManager.h"
 
 using namespace std;
 

@@ -7,10 +7,10 @@
 #include "ComBox.h"
 #include "../../DefaultComponents.h"
 
-#include "../../../../WindowsSystem/CDirectXGraphics/CDirectxGraphics.h"
+#include "../../../../System/CDirectXGraphics/CDirectxGraphics.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
 #include "../../Behavior/ComTransform/ComTransform.h"
-#include "../../../../ShadowManager/CShadowManager.h"
+#include "../../../../Managers/ShadowManager/CShadowManager.h"
 
 using namespace DirectX;
 

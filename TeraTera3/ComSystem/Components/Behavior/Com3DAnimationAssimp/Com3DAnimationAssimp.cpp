@@ -11,7 +11,7 @@
 #include "../../../../Setup.h"
 #include "../../../../Timer/CTimer.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 
 /**
  * @brief アニメーションデータをモデルごとに格納、管理する変数

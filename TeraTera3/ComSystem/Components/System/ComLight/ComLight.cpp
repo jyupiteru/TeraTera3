@@ -6,7 +6,7 @@
  */
 #include "ComLight.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../../../Core/GameObject.h"
 #include "../ComCamera/ComCamera.h"
 #include "../../Shape/ComSphere/ComSphere.h"

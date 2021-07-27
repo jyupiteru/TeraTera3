@@ -7,7 +7,7 @@
 #include "../../../Core/GameObject.h"
 #include "ComCamera.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 
 using namespace DirectX;
 

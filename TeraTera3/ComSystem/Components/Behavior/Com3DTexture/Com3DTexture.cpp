@@ -7,9 +7,9 @@
 
 #include "../ComTransform/ComTransform.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../WindowsSystem/DX11Settransform.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
-#include "../../../../System/CTextureManager/CTextureManager.h"
+#include "../../../../System/DX11Settransform.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/CTextureManager/CTextureManager.h"
 
 using namespace DirectX;
 

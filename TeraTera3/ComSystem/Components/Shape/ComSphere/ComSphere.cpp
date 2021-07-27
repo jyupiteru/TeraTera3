@@ -7,7 +7,7 @@
 #include "ComSphere.h"
 #include "../../DefaultComponents.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../ShadowManager/CShadowManager.h"
+#include "../../../../Managers/ShadowManager/CShadowManager.h"
 
 using namespace DirectX;
 
