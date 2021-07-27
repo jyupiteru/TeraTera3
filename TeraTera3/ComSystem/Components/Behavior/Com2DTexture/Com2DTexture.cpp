@@ -68,18 +68,6 @@ void Com2DTexture::Ready()
 
 void Com2DTexture::Draw()
 {
-    auto data = CTextureManager::GetInstance().GetTextureData(m_keyTexture);
-
-    ID3D11ShaderResourceView *srv = data->srv;
-
-    Draw(srv);
-}
-
-//================================================================================================
-//================================================================================================
-
-void Com2DTexture::Draw(ID3D11ShaderResourceView *_texturedata)
-{
     DirectX::XMFLOAT3 trans = {0, 0, 0};
     DirectX::XMFLOAT4X4 mtx;
 
@@ -96,7 +84,7 @@ void Com2DTexture::Draw(ID3D11ShaderResourceView *_texturedata)
     //これをONにすると強制的にほかのものに上書きできる(一番手前になる)
     CDirectXGraphics::GetInstance().TurnOffZbuffer();
 
-    Com3DTexture::Draw(_texturedata);
+    Com3DTexture::Draw();
 
     CDirectXGraphics::GetInstance().TurnOnZBuffer();
 }

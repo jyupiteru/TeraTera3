@@ -13,6 +13,9 @@ VS_OUTPUT main(	float4 Pos		: POSITION,
 	output.Pos = mul(output.Pos, View);
 	output.Pos = mul(output.Pos, Projection);
 
+	output.LPos = Pos;
+	output.LPos.w = 0.0f;
+
 	float4 N = Normal;
 	N.w = 0.0f;					// 法線はベクトルなのでＷの値を０にする。
 

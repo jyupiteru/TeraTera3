@@ -166,4 +166,9 @@ protected:
      * @param nowmin 現在の小さい値
      */
     void CheckVolume(float num, float &nowmax, float &nowmin);
+
+    /**
+     * @brief 影を描画する際に使用する処理
+     */
+    void DrawShadow();
 };

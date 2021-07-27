@@ -66,11 +66,6 @@ class CShadowManager final
 	 */
 	ID3D11Texture2D *m_shadowTexture = nullptr;
 
-	/**
-	 * @brief SRV
-	 */
-	ID3D11ShaderResourceView *m_srv = nullptr;
-
 	ID3D11RenderTargetView *m_shadowTarget = nullptr;
 
 	/**
@@ -113,6 +108,12 @@ public:
 	 * @brief シャドウマップを生成しセットする処理
 	 */
 	void CreateShadowMap();
+
+	/**
+	 * @brief 影の描画対象になったいるオブジェクト名を表示する処理
+	 * @param unsigned int ウインドウのID
+	 */
+	void ImGuiDraw(unsigned int);
 
 private:
 	void InitDepth();

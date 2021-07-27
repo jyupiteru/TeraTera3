@@ -125,7 +125,7 @@ struct VS_OUTPUT
 	float2 Tex 				: TEXCOORD;		//UV
 	float4 WPos				: TEXCOORD1;	//ワールド座標
 	float4 Normal 			: TEXCOORD2;	//法線 正規化まだ
-	float4 LPos				: TEXCOORD3;	//ライトの座標
+	float4 LPos				: TEXCOORD3;	//
 	float4 LengthFromLight	: TEXCOORD4;	//ライトからの距離
 	float4 ShadowTex		: TEXCOORD5;	//シャドウマップを参照するＵＶ座標
 	float4 Depth			: TEXCOORD6;	//深度

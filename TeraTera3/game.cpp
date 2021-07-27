@@ -133,7 +133,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	}
 	{
 		// 平行光源初期化
-		DirectX::XMFLOAT3 lightdir = {100, 100, 0}; // 平行光源の方向をセット
+		DirectX::XMFLOAT3 lightdir = {0, 100, 0}; // 平行光源の方向をセット
 		//シーンに設置するライトを生成
 		auto light = GameObject::MakeNewObject("Light", E_TYPE_OBJECT::NONE);
 
@@ -163,6 +163,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
 		CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CEventSystem::GetInstance(), "Menu");
 		CImGuiManager::GetInstance().SetImGuiFunction("Timer", &CTimer::GetInstance(), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("ShadowManager", &CShadowManager::GetInstance(), "Menu");
 
 		//ImGuiの初期の欄で表示する内容を登録
 		windowdata->SetImGuiFunction("Menu", "Project Property", true);

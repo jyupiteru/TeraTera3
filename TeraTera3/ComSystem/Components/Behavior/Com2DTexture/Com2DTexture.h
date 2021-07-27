@@ -48,12 +48,6 @@ public:
 	virtual void Ready() override;
 	virtual void Draw() override;
 
-	/**
-	 * @brief 描画処理その２
-	 * @param _texturedata 描画したいシェーダーに渡す？画像データ
-	 */
-	virtual void Draw(ID3D11ShaderResourceView *_texturedata);
-
 	virtual void ImGuiDraw(unsigned int windowid) override;
 
 	virtual void SetVertex() override;

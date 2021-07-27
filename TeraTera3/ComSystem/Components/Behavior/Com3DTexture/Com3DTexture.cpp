@@ -77,16 +77,7 @@ void Com3DTexture::Draw()
 {
     auto data = CTextureManager::GetInstance().GetTextureData(m_keyTexture);
 
-    ID3D11ShaderResourceView* srv = data->srv;
-
-    Draw(srv);
-}
-
-//================================================================================================
-//================================================================================================
-
-void Com3DTexture::Draw(ID3D11ShaderResourceView *_texturedate)
-{
+    ID3D11ShaderResourceView *srv = data->srv;
 
     SetVertex();
     m_pShader->SetVertexShader();
@@ -121,9 +112,9 @@ void Com3DTexture::Draw(ID3D11ShaderResourceView *_texturedate)
 
     // PSにSRVをセット
     devcontext->PSSetShaderResources(
-        0,              //t0レジスタ
-        1,              //個数
-        &_texturedate); //SRV
+        0,     //t0レジスタ
+        1,     //個数
+        &srv); //SRV
 
     // PSに定数バッファをセット
     devcontext->PSSetConstantBuffers(
@@ -208,6 +199,55 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
         memcpy_s(pData.pData, pData.RowPitch, (void *)(&material), sizeof(ConstantBufferMaterial));
         CDirectXGraphics::GetInstance().GetImmediateContext()->Unmap(m_cbuffer, 0);
     }
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::ChangeTextureNum(DirectX::XMFLOAT2 num)
+{
+    m_textureNum = {(num.x), (num.y)};
+    SetUV();
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::SetTextureRate(DirectX::XMFLOAT2 num)
+{
+    m_textureRate = num;
+    SetUV();
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::SetTextureRateNumber(DirectX::XMFLOAT2 num)
+{
+    m_textureRate = {(float)(1.0f / num.x), (float)(1.0f / num.y)};
+    SetUV();
+}
+
+//================================================================================================
+//================================================================================================
+
+bool Com3DTexture::SetTextureKey(std::string_view _texturename)
+{
+    //セット済みか？
+    if (CTextureManager::GetInstance().GetTextureData(_texturename.data()))
+    {
+        m_keyTexture = _texturename.data();
+        return true;
+    }
+    return false;
+}
+
+//================================================================================================
+//================================================================================================
+
+std::string Com3DTexture::GetTextureKey()
+{
+    return m_keyTexture;
 }
 
 //================================================================================================

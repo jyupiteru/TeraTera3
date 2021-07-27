@@ -11,6 +11,8 @@
 #include "../ComSystem/Core/Cores.h"
 #include "../ComSystem/Components/System/ComLight/ComLight.h"
 #include "../WindowsSystem/Shader/Shader.h"
+#include "../../ThirdParty/ImGui/imgui.h"
+#include"../System/CTextureManager/CTextureManager.h"
 
 CShadowManager *CShadowManager::m_instance = nullptr;
 
@@ -115,8 +117,26 @@ void CShadowManager::CreateShadowMap()
 	devcontext->PSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
 	devcontext->VSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
 
+	tagTextureData* texture =  CTextureManager::GetInstance().GetTextureData("ShadowTexture");
+
 	// depthmapをセット
-	devcontext->PSSetShaderResources(1, 1, &m_srv);
+	devcontext->PSSetShaderResources(1, 1, &texture->srv);
+}
+
+//================================================================================================
+//================================================================================================
+
+void CShadowManager::ImGuiDraw(unsigned int)
+{
+	//影を描画しているオブジェクトを表示する
+	if (ImGui::TreeNode("Draw Shadow Object"))
+	{
+		for (auto &itr : m_listObjectDrawFunction)
+		{
+			ImGui::BulletText(itr.first.c_str());
+		}
+		ImGui::TreePop();
+	}
 }
 
 //================================================================================================
@@ -161,11 +181,13 @@ void CShadowManager::InitDepth()
 		MessageBox(nullptr, "CreateTexture error", "Error", MB_OK);
 	}
 
+	ID3D11ShaderResourceView* srv;
+
 	// シェーダ リソース ビューの生成
 	hr = device->CreateShaderResourceView(
 		m_shadowTexture, // アクセスするテクスチャ リソース
 		&srdesc,		 // シェーダ リソース ビューの設定
-		&m_srv);		 // ＳＲＶ受け取る変数
+		&srv);		 // ＳＲＶ受け取る変数
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, "SRV error", "Error", MB_OK);
@@ -180,6 +202,8 @@ void CShadowManager::InitDepth()
 	{
 		MessageBox(nullptr, "RTV error", "Error", MB_OK);
 	}
+
+	CTextureManager::GetInstance().SetTexture("ShadowTexture", srv, nullptr);
 
 	//デプスステンシルビュー用のテクスチャーを作成
 	D3D11_TEXTURE2D_DESC descDepth;
@@ -264,14 +288,6 @@ void CShadowManager::DrawShadowMap()
 	//ライトの座標(ぢレクションライトの方向)を取得 & 正規化
 	auto [light_x, light_y, light_z] = m_comLight->m_gameObject->m_transform->m_worldPosition.GetValue();
 	lightpos = DirectX::XMFLOAT3(light_x, light_y, light_z);
-	DirectX::XMVECTOR v;
-	v = DirectX::XMLoadFloat3(&lightpos);
-	v = DirectX::XMVector3Normalize(v);
-	DirectX::XMStoreFloat3(&lightpos, v);
-
-	lightpos.x *= 100;
-	lightpos.z *= 100;
-	lightpos.y *= 100;
 
 	//車道マップを生成するために光源からみたカメラを生成する
 	ALIGN16 DirectX::XMVECTOR eye = DirectX::XMVectorSet(lightpos.x, lightpos.y, lightpos.z, 0.0f);

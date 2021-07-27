@@ -87,7 +87,7 @@ void ComSphere::Ready()
 	}
 	m_classCounter++;
 
-	CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&ComSphere::DrawShadow, this));
+	//CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&ComSphere::DrawShadow, this));
 }
 
 //================================================================================================
@@ -123,7 +123,7 @@ void ComSphere::Uninit()
 	}
 
 	//削除しておく
-	CShadowManager::GetInstance().RemoveDrawFunction(m_gameObject->m_objectName);
+	//CShadowManager::GetInstance().RemoveDrawFunction(m_gameObject->m_objectName);
 }
 
 //================================================================================================

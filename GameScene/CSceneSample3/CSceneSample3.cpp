@@ -79,6 +79,12 @@ void CSceneSample3::Init()
     //}
 
     {
+        auto shadowtexture = GameObject::MakeNewObject("ShadowTexture", E_TYPE_OBJECT::UI);
+        shadowtexture->m_transform->m_worldPosition.SetValue((500 + 250) / 2, (300 + 150) / 2, 1);
+        shadowtexture->m_transform->m_size.SetValue(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, 1);
+    }
+
+    {
         auto camera = GameObject::Find("Camera");
         auto com = camera->GetComponent<ComCamera>()->m_typeFixed = E_TYPE_FIXED::MODELLOOKAT;
         camera->m_transform->m_worldPosition.SetValue(0, 0, 0);
@@ -103,57 +109,64 @@ void CSceneSample3::Update()
 {
     auto camera = GameObject::Find("Camera");
     auto obj = GameObject::Find("model");
+    auto light = GameObject::Find("Light");
 
     if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_A))
     {
-       obj->m_transform->m_angle.AddValue(0, 1, 0);
+        obj->m_transform->m_angle.AddValue(0, 1, 0);
     }
     if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_D))
     {
-       obj->m_transform->m_angle.AddValue(0, -1, 0);
+        obj->m_transform->m_angle.AddValue(0, -1, 0);
     }
     if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_W))
     {
-       obj->m_transform->m_angle.AddValue(-1, 0, 0);
+        obj->m_transform->m_angle.AddValue(-1, 0, 0);
     }
     if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_S))
     {
-       obj->m_transform->m_angle.AddValue(1, 0, 0);
+        obj->m_transform->m_angle.AddValue(1, 0, 0);
     }
 
     {
 
-       obj->m_transform->m_vector.SetValue(0, 0, 0);
-       if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_UPARROW))
-       {
-           obj->m_transform->m_vector.SetValue(0, 1, 0);
-       }
-       if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_DOWNARROW))
-       {
-           obj->m_transform->m_vector.SetValue(0, -1, 0);
-       }
-       if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_RIGHTARROW))
-       {
-           obj->m_transform->m_vector.SetValue(1, 0, 0);
-       }
-       if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_LEFTARROW))
-       {
-           obj->m_transform->m_vector.SetValue(-1, 0, 0);
-       }
+        obj->m_transform->m_vector.SetValue(0, 0, 0);
+        if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_UPARROW))
+        {
+            obj->m_transform->m_vector.SetValue(0, 1, 0);
+        }
+        if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_DOWNARROW))
+        {
+            obj->m_transform->m_vector.SetValue(0, -1, 0);
+        }
+        if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_RIGHTARROW))
+        {
+            obj->m_transform->m_vector.SetValue(1, 0, 0);
+        }
+        if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_LEFTARROW))
+        {
+            obj->m_transform->m_vector.SetValue(-1, 0, 0);
+        }
     }
 
-    //if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
-    //{
-    //    //シーンのロード
-    //    CSceneManager::GetInstance().LoadScene("SceneSample");
-    //    //GameObject::Find("ui")->GetComponent<Test>()->Reset();
-    //    //GameObject::Find("ui3")->m_transform->m_size.AddValue(1, 1, 1);
-    //    //GameObject::Find("model2")->m_transform->m_angle.AddValue(1, 1, 0);
-    //}
-    //if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))
-    //{
-    //    GameObject::Find("ui3")->m_transform->m_angle.AddValue(0, 0, 1);
-    //}
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_1))
+    {
+        light->m_transform->m_worldPosition.AddValue(-1, 0, 0);
+    }
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_2))
+    {
+        light->m_transform->m_worldPosition.AddValue(1, 0, 0);
+    }
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_3))
+    {
+        light->m_transform->m_worldPosition.AddValue(0, 0, 1);
+    }
+    if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_4))
+    {
+        light->m_transform->m_worldPosition.AddValue(0, 0, -1);
+    }
+
+    GameObject::Find("ShadowTexture")->GetComponent<Com2DTexture>()->SetTextureKey("ShadowTexture");
 }
 
 void CSceneSample3::Draw()

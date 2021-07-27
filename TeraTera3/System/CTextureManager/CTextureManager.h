@@ -48,11 +48,23 @@ public:
 	/**
 	 * @brief テクスチャを読み込む処理
 	 * @param _texturename 読み込むテクスチャの名前
-	 * @param _foldername テクスチャを配置しているフォルダ名 デフォルトでAssets/Texture/
+	 * @param _foldername テクスチャを配置しているフォルダ名 デフォルトでAssets/Textures/
 	 * @return true 読み込み成功
 	 * @return false 読み込み失敗 読み込み済み
 	 */
 	bool LoadTexture(std::string_view _texturename, std::string_view _foldername = "Assets/Textures/");
+
+	/**
+	 * @brief テクスチャを独自で読み込んだ場合にセットする方法
+	 * @n フォルダ指定の方法で取得しないように注意すること！ 
+	 * @n セット時にAssets/Textures/に配置してあることになります(注意！)
+	 * @param _texturename セットしたいテクスチャの名前
+	 * @param _srv srv情報 
+	 * @param _resource 
+	 * @return true 成功
+	 * @return false 失敗
+	 */
+	bool SetTexture(std::string_view _texturename, ID3D11ShaderResourceView *_srv, ID3D11Resource *_resource);
 
 	/**
 	 * @brief 読み込んだテクスチャを取得する処理
