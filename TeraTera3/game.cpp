@@ -133,7 +133,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	}
 	{
 		// 平行光源初期化
-		DirectX::XMFLOAT3 lightdir = {0, 100, 0}; // 平行光源の方向をセット
+		DirectX::XMFLOAT3 lightdir = {0, 100, -50};
 		//シーンに設置するライトを生成
 		auto light = GameObject::MakeNewObject("Light", E_TYPE_OBJECT::NONE);
 
