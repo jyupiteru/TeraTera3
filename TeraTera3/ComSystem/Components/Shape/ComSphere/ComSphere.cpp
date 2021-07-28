@@ -41,7 +41,7 @@ void ComSphere::Init()
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
 	m_pComShader->LoadVertexShader("VS3DShape.fx", layout, numelements, true);
-	m_pComShader->LoadPixelShader("PSPhongAndShadow.fx", true);
+	m_pComShader->LoadPixelShader("PSPhong.fx", true);
 }
 
 //================================================================================================

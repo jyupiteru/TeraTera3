@@ -13,7 +13,7 @@
 #include "ComSystem/Core/ObjectGenerator.h"
 #include "Managers/SceneSystem/CSceneManager/CSceneManager.h"
 #include "Managers/ResourceContainer/CContainer.h"
-#include "Managers/CTextureManager/CTextureManager.h"
+#include "Managers/TextureManager/CTextureManager.h"
 #include "Managers/ShaderManager/CShaderManager.h"
 #include "Managers/ShadowManager/CShadowManager.h"
 

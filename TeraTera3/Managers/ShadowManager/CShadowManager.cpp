@@ -7,7 +7,7 @@
 
 #include "CShadowManager.h"
 #include "../ShaderManager/CShaderManager.h"
-#include "../CTextureManager/CTextureManager.h"
+#include "../TextureManager/CTextureManager.h"
 #include "../../ComSystem/Core/Cores.h"
 #include "../../ComSystem/Components/System/ComLight/ComLight.h"
 #include "../../System/CDirectXGraphics/CDirectXGraphics.h"
@@ -117,7 +117,7 @@ void CShadowManager::CreateShadowMap()
 	devcontext->PSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
 	devcontext->VSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
 
-	tagTextureData* texture =  CTextureManager::GetInstance().GetTextureData("ShadowTexture");
+	tagTextureData *texture = CTextureManager::GetInstance().GetTextureData("ShadowTexture");
 
 	// depthmapをセット
 	devcontext->PSSetShaderResources(1, 1, &texture->srv);
@@ -181,13 +181,13 @@ void CShadowManager::InitDepth()
 		MessageBox(nullptr, "CreateTexture error", "Error", MB_OK);
 	}
 
-	ID3D11ShaderResourceView* srv;
+	ID3D11ShaderResourceView *srv;
 
 	// シェーダ リソース ビューの生成
 	hr = device->CreateShaderResourceView(
 		m_shadowTexture, // アクセスするテクスチャ リソース
 		&srdesc,		 // シェーダ リソース ビューの設定
-		&srv);		 // ＳＲＶ受け取る変数
+		&srv);			 // ＳＲＶ受け取る変数
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, "SRV error", "Error", MB_OK);
