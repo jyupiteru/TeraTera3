@@ -33,6 +33,20 @@ void CSceneSample3::Init()
         stage->m_transform->m_worldPosition.SetValue(0, -30, 0);
         stage->m_transform->m_size.SetValue(200, 10, 200);
         stage->m_transform->m_color.SetValue(160, 160, 160, 1.0f);
+
+        //影を反映させる特殊なシェーダーを適用
+        auto shader = stage->GetComponent<ComShader>();
+        // 頂点データの定義
+        D3D11_INPUT_ELEMENT_DESC layout[] =
+        {
+            {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        };
+        unsigned int numelements = ARRAYSIZE(layout);
+
+        shader->LoadVertexShader("VSShadow.fx", layout, numelements, true);
+        shader->LoadPixelShader("PSOnlyColorWithShadow.fx");
     }
 
     { //1体目のアニメーションモデル
@@ -44,6 +58,7 @@ void CSceneSample3::Init()
         model2->AddComponent<Test2>();
         auto assimp = model2->GetComponent<Com3DModelAssimp>();
         assimp->LoadModelData("Player/idle_run.fbx", "Player/");
+        assimp->m_flagDrawShadow = true;
 
         auto collider = model2->AddComponent<ComBoxCollider3D>();
         //collider->m_draw = true;
@@ -52,33 +67,16 @@ void CSceneSample3::Init()
         collider->m_draw = true;
     }
     {
-        auto Sphere = GameObject::MakeNewObject("Sphere", E_TYPE_OBJECT::MODEL3D);
-        Sphere->RemoveComponent<Com3DModelAssimp>();
-        Sphere->AddComponent<ComSphere>();
-        Sphere->m_transform->m_worldPosition.SetValue(40, -10, 30);
-        Sphere->m_transform->m_size.SetValue(20, 20, 20);
-        Sphere->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
+        auto sphere = GameObject::MakeNewObject("Sphere", E_TYPE_OBJECT::MODEL3D);
+        sphere->RemoveComponent<Com3DModelAssimp>();
+        sphere->AddComponent<ComSphere>();
+        sphere->m_transform->m_worldPosition.SetValue(40, -10, 30);
+        sphere->m_transform->m_size.SetValue(20, 20, 20);
+        sphere->m_transform->m_color.SetValue(256, 256, 256, 1.0f);
         //Sphere2->GetComponent<ComShader>()->LoadPixelShader("PSPhong.fx", true);
     }
 
-    //{ //1体目のアニメーションモデル
-    //    auto model2 = GameObject::MakeNewObject("animmodel3", E_TYPE_OBJECT::MODEL3D);
-    //    model2->m_transform->m_worldPosition.SetValue(0, -30, -100);
-    //    model2->m_transform->m_size.SetValue(100, 100, 100);
-    //    model2->m_transform->m_angle.SetValue(0, 0, 0);
-    //    //model2->m_transform->m_vector.SetValue(-1, 0, 0);
-    //    model2->AddComponent<Test2>();
-    //    auto assimp = model2->GetComponent<Com3DModelAssimp>();
-    //    assimp->LoadModelData("Player/idle_run.fbx", "Player/");
-
-    //    auto collider = model2->AddComponent<ComBoxCollider3D>();
-    //    //collider->m_draw = true;
-    //    collider->m_isFirstJustSize = true;
-    //    collider->m_isTrigger.SetValue(true);
-    //    collider->m_draw = true;
-    //}
-
-    {
+    {//シャドウマップの描画
         auto shadowtexture = GameObject::MakeNewObject("ShadowTexture", E_TYPE_OBJECT::UI);
         shadowtexture->m_transform->m_worldPosition.SetValue((500 + 250) / 2, (300 + 150) / 2, 1);
         shadowtexture->m_transform->m_size.SetValue(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, 1);

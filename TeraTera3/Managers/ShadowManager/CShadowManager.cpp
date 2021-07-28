@@ -77,7 +77,7 @@ void CShadowManager::SetDrawShadowFuction(std::string_view _objname, std::functi
 void CShadowManager::RemoveDrawFunction(std::string_view _objname)
 {
 	if (m_listObjectDrawFunction.contains(_objname.data()))
-	{
+	{ //存在するので削除
 		m_listObjectDrawFunction.erase(_objname.data());
 	}
 }

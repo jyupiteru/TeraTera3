@@ -76,6 +76,10 @@ void ComBox::Init()
 
 void ComBox::Ready()
 {
+	if (m_flagDrawShadow)
+	{ //影の描画対象なので関数をセットする
+		CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&ComBox::DrawShadow, this));
+	}
 }
 
 //================================================================================================
@@ -98,6 +102,8 @@ void ComBox::Uninit()
 			m_pVertexBuffer = nullptr;
 		}
 	}
+
+	CShadowManager::GetInstance().RemoveDrawFunction(this->m_gameObject->m_objectName);
 }
 
 //================================================================================================
@@ -118,24 +124,10 @@ void ComBox::Draw()
 {
 	ChangeColor();
 
-	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
-	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
-
 	m_pComShader->SetPixelShader();
 	m_pComShader->SetVertexShader();
 
-	ID3D11DeviceContext *devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
-	// 頂点バッファをセットする
-	unsigned int stride = sizeof(tagVertex);
-	unsigned offset = 0;
-	devcontext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
-
-	devcontext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);	   // インデックスバッファをセット
-	devcontext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // トポロジーをセット（旧プリミティブタイプ）
-
-	devcontext->DrawIndexed(m_facenum * 3, // 描画するインデックス数（面数×３）
-							0,			   // 最初のインデックスバッファの位置
-							0);			   // 頂点バッファの最初から使う
+	DrawShadow();
 }
 
 //================================================================================================
@@ -292,4 +284,26 @@ void ComBox::Normalize(XMFLOAT3 vector, XMFLOAT3 &Normal)
 	v = XMLoadFloat3(&vector); // XMFLOAT3=>XMVECTOR
 	v = XMVector3Normalize(v); // 正規化
 	XMStoreFloat3(&Normal, v); // XMVECTOR=>XMFLOAT3
+}
+
+//================================================================================================
+//================================================================================================
+
+void ComBox::DrawShadow()
+{
+	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
+	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
+
+	ID3D11DeviceContext *devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
+	// 頂点バッファをセットする
+	unsigned int stride = sizeof(tagVertex);
+	unsigned offset = 0;
+	devcontext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
+
+	devcontext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);	   // インデックスバッファをセット
+	devcontext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // トポロジーをセット（旧プリミティブタイプ）
+
+	devcontext->DrawIndexed(m_facenum * 3, // 描画するインデックス数（面数×３）
+							0,			   // 最初のインデックスバッファの位置
+							0);			   // 頂点バッファの最初から使う
 }

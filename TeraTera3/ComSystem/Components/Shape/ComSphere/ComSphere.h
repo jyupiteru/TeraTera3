@@ -101,6 +101,12 @@ public:
      */
     CVector<unsigned int> m_divY;
 
+    /**
+     * @brief 影の描画対象にするかを指定するフラグ 描画するならReady前にtrueにすること
+     */
+    bool m_flagDrawShadow = false;
+
+public:
     virtual void Init();
 
     virtual void Ready();

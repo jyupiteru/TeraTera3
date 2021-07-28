@@ -110,6 +110,12 @@ public:
     CVector3<float> m_localPosition;
 
     /**
+     * @brief 影の描画対象にするかを指定するフラグ 描画するならReady前にtrueにすること
+     */
+    bool m_flagDrawShadow = false;
+
+public:
+    /**
      * @brief  Com3DModelの生成時処理
      */
     Com3DModelAssimp(){};
@@ -139,19 +145,13 @@ public:
      * @brief モデルのキー取得処理
      * @return std::string このモデルのアクセスキー（読み込みパス）
      */
-    [[nodiscard]] std::string GetModelKey()
-    {
-        return m_keyModel;
-    }
+    [[nodiscard]] std::string GetModelKey();
 
     /**
      * @brief モデルの情報を取得する処理
      * @return std::shared_ptr<ModelData>& 取得したいモデルの情報
      */
-    [[nodiscard]] tagAssimpModelData const &GetModelData()
-    {
-        return *m_pNowModelData;
-    }
+    [[nodiscard]] tagAssimpModelData const &GetModelData();
 
 protected:
     /**
