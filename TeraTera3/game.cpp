@@ -222,7 +222,7 @@ void GameDraw()
 	// レンダリング前処理
 	CDirectXGraphics::GetInstance().BeforeDraw(clearcolor);
 
-	CShadowManager::GetInstance().CreateShadowMap();
+	CShadowManager::GetInstance().Update();
 
 	//シーンに存在しているオブジェクトのDrawをぶん回し
 	CSceneManager::GetInstance().Draw();

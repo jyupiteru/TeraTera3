@@ -21,6 +21,14 @@ CCollision3DSystem *CCollision3DSystem::m_instance = nullptr;
 
 using namespace DirectX;
 
+CCollision3DSystem::~CCollision3DSystem()
+{
+    Uninit();
+}
+
+//================================================================================================
+//================================================================================================
+
 void CCollision3DSystem::Uninit()
 {
     //ID-当たり判定
@@ -36,6 +44,14 @@ void CCollision3DSystem::Uninit()
         itr = m_ListCollisionFunction.erase(itr);
     }
     m_ListCollisionFunction.clear();
+
+    m_listObject.clear();
+
+    for (auto itr = m_list3DCollisionObjects.begin(); itr != m_list3DCollisionObjects.end();)
+    {
+        itr->second.clear();
+    }
+    m_list3DCollisionObjects.clear();
 }
 
 //================================================================================================
@@ -54,39 +70,46 @@ void CCollision3DSystem::Update()
     const float colliderjudgerate = 1.45f;
 
     //検索中にそれぞれのリスト(しかもソート済み)が必要になるのでvectorではなく挿入時にソート済みになるmultimapを使用
-    //x、 y,z,最大の半径,idの順番
-    std::vector<std::pair<float, std::tuple<float, float, float, int>>> list_x;
+    //x、＜y,z,最大の半径,id、部位名＞の順番
+    std::vector<std::pair<float, std::tuple<float, float, float, int, std::string>>> list_x;
 
-    std::vector<int> list_id;
+    //id - 部位名の順番
+    std::vector<std::pair<int, std::string>> list_id;
 
     for (auto &itr : m_list3DCollisionObjects)
     {
-        //このオブジェクトは生きているか?
-        if (itr.second.first->m_activeFlag.GetValue())
+        //このオブジェクトは有効か?
+        if (m_listObject[itr.first]->m_activeFlag.GetValue())
         {
-            float halfsize = itr.second.second->m_biggetSize * 0.5f;
+            //それぞれの部位を登録
+            for (auto &itr2 : itr.second)
+            {
+                float halfsize = itr2.second->m_biggetSize * 0.5f;
 
-            //回転していた場合に取りうる最小の半径？
-            halfsize *= colliderjudgerate;
+                //回転していた場合に取りうる最小の半径？
+                halfsize *= colliderjudgerate;
 
-            //各当たり判定の一番小さい(座標的に左手前？)のxの大きさを格納する
-            list_x.push_back(std::make_pair(itr.second.second->m_colliderMatrix._41 - halfsize,
-                                            std::make_tuple(itr.second.second->m_colliderMatrix._42 - halfsize,
-                                                            itr.second.second->m_colliderMatrix._43 - halfsize,
-                                                            halfsize,
-                                                            itr.first)));
+                //各当たり判定の一番小さい(座標的に左手前？)のxの大きさを格納する
+                list_x.push_back(std::make_pair(itr2.second->m_colliderMatrix._41 - halfsize,
+                                                std::make_tuple(itr2.second->m_colliderMatrix._42 - halfsize,
+                                                                itr2.second->m_colliderMatrix._43 - halfsize,
+                                                                halfsize,
+                                                                itr.first,
+                                                                itr2.first)));
+            }
         }
     }
 
     sort(list_x.begin(), list_x.end());
 
     //Sweep and Pruneの簡易実装(たぶん)
+    //整列 => 左手前↓から順に衝突判定
 
-    //todo 少し処理の軽減をしたがかなり重いなので何かしらの対策する！
+    //todo 少し処理の軽減をしたがかなり重い、なので何かしらの対策する！
     for (auto itr = list_x.begin(); itr != list_x.end(); ++itr)
     {
         auto obj1_x = itr->first;
-        auto &[obj1_y, obj1_z, obj1_halfsize, obj1_id] = itr->second;
+        auto [obj1_y, obj1_z, obj1_halfsize, obj1_id, obj1_collidername] = itr->second;
 
         auto itr2 = itr;
         ++itr2;
@@ -101,8 +124,8 @@ void CCollision3DSystem::Update()
             //obj1のx範囲にあるものをリストに登録
             for (; itr2 != list_x.end(); ++itr2)
             {
-                auto obj2_x = itr->first;
-                auto [obj2_y, obj2_z, obj2_halfsize, obj2_id] = itr2->second;
+                float obj2_x = itr->first;
+                auto [obj2_y, obj2_z, obj2_halfsize, obj2_id, obj2_collidername] = itr2->second;
 
                 //範囲外以外を登録
                 //本来ならy軸のソートも行うらしいがfor文の増加、DebugじのFPS低下につながるのでここで全処理を行います(releaseはFPS低下なぜかしない)
@@ -115,9 +138,12 @@ void CCollision3DSystem::Update()
 
                     //z軸の条件
                     obj1_z + (obj1_halfsize * 2) > obj2_z &&
-                    obj1_z < obj2_z + obj2_halfsize * 2)
+                    obj1_z < obj2_z + obj2_halfsize * 2 &&
+
+                    //同一のオブジェクトからの登録ではないという条件(ないとおそらくAssimp系動くだけで止まる)
+                    obj1_id != obj2_id)
                 {
-                    list_id.push_back(obj2_id);
+                    list_id.push_back(std::make_pair(obj2_id, obj2_collidername));
                 }
                 else if (obj1_x + (obj1_halfsize * 2) <= obj2_x)
                 {
@@ -131,12 +157,12 @@ void CCollision3DSystem::Update()
                 //設定した衝突判定の上限内であるか
                 if (collisioncounter < MAX_COLLISIONNUM)
                 {
-                    auto [obj1, obj1collider] = m_list3DCollisionObjects[obj1_id];
-                    auto [obj2, obj2collider] = m_list3DCollisionObjects[itr_id];
+                    CCollisionBase *obj1collider = m_list3DCollisionObjects[obj1_id][obj1_collidername];
+                    CCollisionBase *obj2collider = m_list3DCollisionObjects[itr_id.first][itr_id.second];
                     if (CheckCollisionDetection(*obj1collider, *obj2collider))
                     {
-                        auto judge1 = obj1collider->m_isTrigger.GetValue();
-                        auto judge2 = obj2collider->m_isTrigger.GetValue();
+                        bool judge1 = obj1collider->m_isTrigger.GetValue();
+                        bool judge2 = obj2collider->m_isTrigger.GetValue();
 
                         if (!judge1 && !judge2)
                         { //Collisionイベント(貫通なし) 両方貫通しないオブジェクト
@@ -160,8 +186,8 @@ void CCollision3DSystem::Update()
                             //同じときのみ当たり判定
 
                             //当たり判定時の各コンポーネントの対象の関数ポインタをリストから引っ張ってくる
-                            RunCollisionDetection(obj1, obj2, E_COLLISION3D_EVENT::TRIGGER_STAY);
-                            RunCollisionDetection(obj2, obj1, E_COLLISION3D_EVENT::TRIGGER_STAY);
+                            RunCollisionDetection(obj1_id, itr_id.first, E_COLLISION3D_EVENT::TRIGGER_STAY);
+                            RunCollisionDetection(itr_id.first, obj1_id, E_COLLISION3D_EVENT::TRIGGER_STAY);
                         }
                         ++collisioncounter;
 
@@ -171,10 +197,6 @@ void CCollision3DSystem::Update()
                 else
                 { //これ以上のものはいない(一定範囲外である)or当たり判定の上限に達した
                     m_reachMax++;
-#ifdef FLAG_DEBUGLOG_COLLISIONLIMITOBJECT
-                    std::string str = std::to_string(id) + "is reached" + std::to_string(MAX_COLLISIONNUM) + "\n";
-                    DebugLog::Draw(str);
-#endif
                     break;
                 }
             }
@@ -245,82 +267,82 @@ void CCollision3DSystem::ImGuiDrawDetails(unsigned int windowid)
 void CCollision3DSystem::ImGuiDrawCollisionObjects(unsigned int windowid)
 {
 
-    std::string hide_objectname = CImGuiHelper::GetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "hideobject");
+    //std::string hide_objectname = CImGuiHelper::GetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "hideobject");
 
-    //何も選択されたことがないのなら何もなくす
-    if (hide_objectname == "None")
-    {
-        hide_objectname = "";
-    }
+    ////何も選択されたことがないのなら何もなくす
+    //if (hide_objectname == "None")
+    //{
+    //    hide_objectname = "";
+    //}
 
-    //強制的にキャスト(エラー出るかも)
-    auto input_hidename = (char *)hide_objectname.c_str();
+    ////強制的にキャスト(エラー出るかも)
+    //auto input_hidename = (char *)hide_objectname.c_str();
 
-    //描画時のフィルター用 TABを押しながら打っていることを確認
-    struct TextFilters
-    {
-        static int FilterImGuiLetters(ImGuiInputTextCallbackData *data)
-        {
-            if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_TAB))
-                return 0;
-            return 1;
-        }
-    };
+    ////描画時のフィルター用 TABを押しながら打っていることを確認
+    //struct TextFilters
+    //{
+    //    static int FilterImGuiLetters(ImGuiInputTextCallbackData *data)
+    //    {
+    //        if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_TAB))
+    //            return 0;
+    //        return 1;
+    //    }
+    //};
 
-    //テキストを取得する
-    ImGui::InputText("filter", input_hidename, sizeof(input_hidename),
-                     ImGuiInputTextFlags_CallbackCharFilter, TextFilters::FilterImGuiLetters);
+    ////テキストを取得する
+    //ImGui::InputText("filter", input_hidename, sizeof(input_hidename),
+    //                 ImGuiInputTextFlags_CallbackCharFilter, TextFilters::FilterImGuiLetters);
 
-    //次のものを同じ行に描画する?
-    ImGui::SameLine();
-    HelpMarker((const char *)u8"検索したい衝突対象のオブジェクト名を入れると絞り込み可能、TABを押しながら打つこと");
+    ////次のものを同じ行に描画する?
+    //ImGui::SameLine();
+    //HelpMarker((const char *)u8"検索したい衝突対象のオブジェクト名を入れると絞り込み可能、TABを押しながら打つこと");
 
-    //登録と取得のし直し
-    CImGuiHelper::SetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "hideobject", input_hidename);
-    hide_objectname = CImGuiHelper::GetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "hideobject");
+    ////登録と取得のし直し
+    //CImGuiHelper::SetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "hideobject", input_hidename);
+    //hide_objectname = CImGuiHelper::GetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "hideobject");
 
-    std::string selectobject = CImGuiHelper::GetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "selectobject");
+    //std::string selectobject = CImGuiHelper::GetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "selectobject");
 
-    int selectobjid = -1;
+    //int selectobjid = -1;
 
-    if (ImGui::BeginListBox("Collision Objects"))
-    {
-        //全オブジェクトぶん回し
-        for (auto &itr : m_list3DCollisionObjects)
-        {
-            std::string objname = itr.second.first->m_objectName;
+    //if (ImGui::BeginListBox("Collision Objects"))
+    //{
+    //    //全オブジェクトぶん回し
+    //    for (auto &itr : m_list3DCollisionObjects)
+    //    {
+    //        std::string objname = itr.second.first->m_objectName;
 
-            //選択されているものか 同じならtrue
-            const bool is_selected = (selectobject == objname);
+    //        //選択されているものか 同じならtrue
+    //        const bool is_selected = (selectobject == objname);
 
-            //隠すフラグがたっていないかor絞り込みは機能していないか
-            if (objname.find(hide_objectname) != std::string::npos || hide_objectname == "")
-            {
-                //1コメの引数が表示する内容、２個目が選択されたか？
-                if (ImGui::Selectable(objname.c_str(), is_selected))
-                {
-                    selectobject = objname;
-                    //登録内容の更新
-                    CImGuiHelper::SetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "selectobject", objname);
-                }
+    //        //隠すフラグがたっていないかor絞り込みは機能していないか
+    //        if (objname.find(hide_objectname) != std::string::npos || hide_objectname == "")
+    //        {
+    //            //1コメの引数が表示する内容、２個目が選択されたか？
+    //            if (ImGui::Selectable(objname.c_str(), is_selected))
+    //            {
+    //                selectobject = objname;
+    //                //登録内容の更新
+    //                CImGuiHelper::SetWindowDisplayContent(windowid, "collisionsystem3d_imgui", "selectobject", objname);
+    //            }
 
-                //選択されたか
-                if (is_selected)
-                {
-                    //選択されている場所をデフォルトにする
-                    ImGui::SetItemDefaultFocus();
-                    selectobjid = itr.first;
-                }
-            }
-        }
-        ImGui::EndListBox();
-    }
+    //            //選択されたか
+    //            if (is_selected)
+    //            {
+    //                //選択されている場所をデフォルトにする
+    //                ImGui::SetItemDefaultFocus();
+    //                selectobjid = itr.first;
+    //            }
+    //        }
+    //    }
+    //    ImGui::EndListBox();
+    //}
 
-    //すでに何か選択しているか(対象は存在するか)
-    if (m_list3DCollisionObjects.contains(selectobjid))
-    {
-        ImGuiDrawCollisionObjectDetails(windowid, selectobjid);
-    }
+    ////すでに何か選択しているか(対象は存在するか)
+    //if (m_list3DCollisionObjects.contains(selectobjid))
+    //{
+    //    ImGuiDrawCollisionObjectDetails(windowid, selectobjid);
+    //}
 }
 
 //================================================================================================
@@ -341,6 +363,8 @@ void CCollision3DSystem::EraseCollisionObject(int objid)
         m_list3DCollisionObjects.erase(objid);
     }
 
+    m_listObject.erase(objid);
+
     //残っていないか
     if (m_ListCollisionFunction.contains(objid))
     {
@@ -359,18 +383,6 @@ void CCollision3DSystem::EraseCollisionObject(int objid)
 int CCollision3DSystem::GetObjectID(GameObject *obj)
 {
     return obj->m_objID;
-}
-
-//================================================================================================
-//================================================================================================
-
-void CCollision3DSystem::RunCollisionEvent(GameObject *target, GameObject *hitobject, E_COLLISION3D_EVENT type)
-{
-    auto objid = GetObjectID(target);
-    for (auto &itr : m_ListCollisionFunction[objid][type])
-    {
-        itr.second(hitobject);
-    }
 }
 
 //================================================================================================
@@ -398,8 +410,11 @@ bool CCollision3DSystem::CheckCollisionDetection(const CCollisionBase &obj1colli
 //================================================================================================
 //================================================================================================
 
-void CCollision3DSystem::RunCollisionDetection(GameObject *obj1, GameObject *obj2, E_COLLISION3D_EVENT type)
+void CCollision3DSystem::RunCollisionDetection(int obj1id, int obj2id, E_COLLISION3D_EVENT type)
 {
+    GameObject *obj1 = m_listObject[obj1id];
+    GameObject *obj2 = m_listObject[obj2id];
+
     for (auto itr : m_ListCollisionFunction[obj1->m_objID][type])
     {
 
