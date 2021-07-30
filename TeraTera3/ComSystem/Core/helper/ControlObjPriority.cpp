@@ -97,10 +97,14 @@ void ControlObjectPriority::UpdateListNonActive()
 
 void ControlObjectPriority::UpdateListObjectUpdate()
 {
-    for (auto itr = m_listObjectWaitAddUpdate.begin(); itr != m_listObjectWaitAddUpdate.end();itr++)
+    for (auto itr = m_listObjectWaitAddUpdate.begin(); itr != m_listObjectWaitAddUpdate.end(); itr++)
     {
         int id = *itr;
-        SetObjectUpdateOrder(*GameObject::Find(id));
+        GameObject *obj = GameObject::Find(id);
+        if (obj != nullptr)
+        {
+            SetObjectUpdateOrder(*obj);
+        }
     }
     m_listObjectWaitAddUpdate.clear();
 }
