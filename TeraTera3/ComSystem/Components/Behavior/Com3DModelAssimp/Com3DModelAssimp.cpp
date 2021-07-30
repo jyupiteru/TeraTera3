@@ -61,7 +61,6 @@ void Com3DModelAssimp::Init()
         m_pShader->LoadVertexShader("VSAssimpModel.fx", layout, numelements, true);
     }
     m_pShader->LoadPixelShader("PSAssimpDefault.fx", true);
-    CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&Com3DModelAssimp::DrawShadow, this));
 }
 
 //================================================================================================
@@ -88,6 +87,10 @@ void Com3DModelAssimp::Uninit()
 
 void Com3DModelAssimp::Ready()
 {
+    if (m_flagDrawShadow)
+    { //影の描画対象なので関数をセットする
+        CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&Com3DModelAssimp::DrawShadow, this));
+    }
 }
 
 //================================================================================================
@@ -200,6 +203,22 @@ void Com3DModelAssimp::LoadModelData(std::string modelname, std::string texturef
     m_gameObject->m_transform->m_offsetSize.SetValue(m_pNowModelData->max_x - m_pNowModelData->min_x,
                                                      m_pNowModelData->max_y - m_pNowModelData->min_y,
                                                      m_pNowModelData->max_z - m_pNowModelData->min_z);
+}
+
+//================================================================================================
+//================================================================================================
+
+std::string Com3DModelAssimp::GetModelKey()
+{
+    return m_keyModel;
+}
+
+//================================================================================================
+//================================================================================================
+
+tagAssimpModelData const &Com3DModelAssimp::GetModelData()
+{
+    return *m_pNowModelData;
 }
 
 //================================================================================================

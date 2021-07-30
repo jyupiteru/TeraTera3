@@ -9,7 +9,7 @@
 #include "../../../../../ThirdParty/ImGui/imgui.h"
 #include "../../../../System/DX11Settransform.h"
 #include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
-#include "../../../../Managers/CTextureManager/CTextureManager.h"
+#include "../../../../Managers/TextureManager/CTextureManager.h"
 
 using namespace DirectX;
 

@@ -7,7 +7,7 @@
 
 #include "CShadowManager.h"
 #include "../ShaderManager/CShaderManager.h"
-#include "../CTextureManager/CTextureManager.h"
+#include "../TextureManager/CTextureManager.h"
 #include "../../ComSystem/Core/Cores.h"
 #include "../../ComSystem/Components/System/ComLight/ComLight.h"
 #include "../../System/CDirectXGraphics/CDirectXGraphics.h"
@@ -62,6 +62,51 @@ CShadowManager &CShadowManager::GetInstance()
 //================================================================================================
 //================================================================================================
 
+void CShadowManager::Update()
+{
+	//アクティブか？
+	if (m_flagActive.GetValue())
+	{
+		if (m_comLight == nullptr)
+		{
+			m_comLight = GameObject::Find("Light")->GetComponent<ComLight>();
+		}
+
+		DrawShadowMap();
+
+		// デバイスコンテキスト取得
+		ID3D11DeviceContext *devcontext;
+		devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
+
+		// レンダリングターゲットビュー、デプスステンシルビューを設定
+		ID3D11RenderTargetView *rtv[] = {CDirectXGraphics::GetInstance().GetRenderTargetView()};
+		devcontext->OMSetRenderTargets(1, rtv, CDirectXGraphics::GetInstance().GetDepthStencilView());
+
+		// ビューポートを設定
+		D3D11_VIEWPORT vp;
+
+		vp.Width = static_cast<float>(CDirectXGraphics::GetInstance().GetWidth());
+		vp.Height = static_cast<float>(CDirectXGraphics::GetInstance().GetHeight());
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0;
+		vp.TopLeftY = 0;
+		devcontext->RSSetViewports(1, &vp);
+
+		// 定数バッファを8番スロットにセット
+		devcontext->PSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
+		devcontext->VSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
+
+		tagTextureData *texture = CTextureManager::GetInstance().GetTextureData("ShadowTexture");
+
+		// depthmapをセット
+		devcontext->PSSetShaderResources(1, 1, &texture->srv);
+	}
+}
+
+//================================================================================================
+//================================================================================================
+
 void CShadowManager::SetDrawShadowFuction(std::string_view _objname, std::function<void(void)> _function)
 {
 	//まだセットしていないか？
@@ -77,7 +122,7 @@ void CShadowManager::SetDrawShadowFuction(std::string_view _objname, std::functi
 void CShadowManager::RemoveDrawFunction(std::string_view _objname)
 {
 	if (m_listObjectDrawFunction.contains(_objname.data()))
-	{
+	{ //存在するので削除
 		m_listObjectDrawFunction.erase(_objname.data());
 	}
 }
@@ -85,49 +130,12 @@ void CShadowManager::RemoveDrawFunction(std::string_view _objname)
 //================================================================================================
 //================================================================================================
 
-void CShadowManager::CreateShadowMap()
-{
-	if (m_comLight == nullptr)
-	{
-		m_comLight = GameObject::Find("Light")->GetComponent<ComLight>();
-	}
-
-	DrawShadowMap();
-
-	// デバイスコンテキスト取得
-	ID3D11DeviceContext *devcontext;
-	devcontext = CDirectXGraphics::GetInstance().GetImmediateContext();
-
-	// レンダリングターゲットビュー、デプスステンシルビューを設定
-	ID3D11RenderTargetView *rtv[] = {CDirectXGraphics::GetInstance().GetRenderTargetView()};
-	devcontext->OMSetRenderTargets(1, rtv, CDirectXGraphics::GetInstance().GetDepthStencilView());
-
-	// ビューポートを設定
-	D3D11_VIEWPORT vp;
-
-	vp.Width = static_cast<float>(CDirectXGraphics::GetInstance().GetWidth());
-	vp.Height = static_cast<float>(CDirectXGraphics::GetInstance().GetHeight());
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	devcontext->RSSetViewports(1, &vp);
-
-	// 定数バッファを8番スロットにセット
-	devcontext->PSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
-	devcontext->VSSetConstantBuffers(8, 1, &m_constantShadowBuffer);
-
-	tagTextureData* texture =  CTextureManager::GetInstance().GetTextureData("ShadowTexture");
-
-	// depthmapをセット
-	devcontext->PSSetShaderResources(1, 1, &texture->srv);
-}
-
-//================================================================================================
-//================================================================================================
-
 void CShadowManager::ImGuiDraw(unsigned int)
 {
+	bool flag = m_flagActive.GetValue();
+	ImGui::Checkbox("Stop DrawShadow", &flag);
+	m_flagActive.SetValue(flag);
+
 	//影を描画しているオブジェクトを表示する
 	if (ImGui::TreeNode("Draw Shadow Object"))
 	{
@@ -181,13 +189,13 @@ void CShadowManager::InitDepth()
 		MessageBox(nullptr, "CreateTexture error", "Error", MB_OK);
 	}
 
-	ID3D11ShaderResourceView* srv;
+	ID3D11ShaderResourceView *srv;
 
 	// シェーダ リソース ビューの生成
 	hr = device->CreateShaderResourceView(
 		m_shadowTexture, // アクセスするテクスチャ リソース
 		&srdesc,		 // シェーダ リソース ビューの設定
-		&srv);		 // ＳＲＶ受け取る変数
+		&srv);			 // ＳＲＶ受け取る変数
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, "SRV error", "Error", MB_OK);

@@ -166,7 +166,7 @@
     <ClInclude Include="GameScene\CSceneSample3\CSceneSample3.h" />
     <ClInclude Include="TeraTera3\Managers\ShadowManager\CShadowManager.h" />
     <ClInclude Include="TeraTera3\Managers\ShaderManager\CShaderManager.h" />
-    <ClInclude Include="TeraTera3\Managers\CTextureManager\CTextureManager.h" />
+    <ClInclude Include="TeraTera3\Managers\TextureManager\CTextureManager.h" />
     <ClInclude Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.h" />
     <ClInclude Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.h" />
     <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAnimationData.h" />
@@ -277,7 +277,7 @@
     <ClCompile Include="GameScene\CSceneSample3\CSceneSample3.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShaderManager\CShaderManager.cpp" />
-    <ClCompile Include="TeraTera3\Managers\CTextureManager\CTextureManager.cpp" />
+    <ClCompile Include="TeraTera3\Managers\TextureManager\CTextureManager.cpp" />
     <ClCompile Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.cpp" />
     <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\ComLightPoint\ComLightPoint.cpp" />
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpAnimationData\CAssimpAnimationData.cpp" />

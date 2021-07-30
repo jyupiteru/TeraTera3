@@ -13,7 +13,7 @@
 #include "ComSystem/Core/ObjectGenerator.h"
 #include "Managers/SceneSystem/CSceneManager/CSceneManager.h"
 #include "Managers/ResourceContainer/CContainer.h"
-#include "Managers/CTextureManager/CTextureManager.h"
+#include "Managers/TextureManager/CTextureManager.h"
 #include "Managers/ShaderManager/CShaderManager.h"
 #include "Managers/ShadowManager/CShadowManager.h"
 
@@ -222,7 +222,7 @@ void GameDraw()
 	// レンダリング前処理
 	CDirectXGraphics::GetInstance().BeforeDraw(clearcolor);
 
-	CShadowManager::GetInstance().CreateShadowMap();
+	CShadowManager::GetInstance().Update();
 
 	//シーンに存在しているオブジェクトのDrawをぶん回し
 	CSceneManager::GetInstance().Draw();

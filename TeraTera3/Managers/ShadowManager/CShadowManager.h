@@ -13,6 +13,8 @@
 #include <functional>
 #include <string_view>
 
+#include"../../System/CVector.h"
+
 class ComLight;
 
 /**
@@ -83,13 +85,26 @@ class CShadowManager final
 	 */
 	ID3D11DepthStencilView *m_dSTexDSV = nullptr;
 
+private:
 	CShadowManager(){};
 	~CShadowManager(){};
+
+public:
+	/**
+	 * @brief このマネージャーのアクティブ等を管理するフラグ
+	 * @n 途中でfalseにしても影の更新処理が止まるだけなので注意
+	 */
+	CVector<bool> m_flagActive;
 
 public:
 	static void Create();
 	static void Delete(bool _flag = false);
 	static CShadowManager &GetInstance();
+
+	/**
+	 * @brief シャドウマップを生成しセットする処理
+	 */
+	void Update();
 
 	/**
 	 * @brief 影を描画する際に使用する描画のみをする関数をセットする処理
@@ -103,11 +118,6 @@ public:
 	 * @param _objname 削除対象のオブジェクト
 	 */
 	void RemoveDrawFunction(std::string_view _objname);
-
-	/**
-	 * @brief シャドウマップを生成しセットする処理
-	 */
-	void CreateShadowMap();
 
 	/**
 	 * @brief 影の描画対象になったいるオブジェクト名を表示する処理
