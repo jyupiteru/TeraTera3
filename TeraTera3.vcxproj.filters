@@ -294,7 +294,7 @@
     <ClInclude Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TeraTera3\Managers\CTextureManager\CTextureManager.h">
+    <ClInclude Include="TeraTera3\Managers\TextureManager\CTextureManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="TeraTera3\Managers\ShaderManager\CShaderManager.h">
@@ -509,7 +509,7 @@
     <ClCompile Include="TeraTera3\ComSystem\Components\Custom\ComWipe\ComWipe.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TeraTera3\Managers\CTextureManager\CTextureManager.cpp">
+    <ClCompile Include="TeraTera3\Managers\TextureManager\CTextureManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\Managers\ShaderManager\CShaderManager.cpp">

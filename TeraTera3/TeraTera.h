@@ -23,4 +23,6 @@
 
 #include "Managers/ShadowManager/CShadowManager.h"
 
+#include "Managers/TextureManager/CTextureManager.h"
+
 #include "Timer/CTimer.h"

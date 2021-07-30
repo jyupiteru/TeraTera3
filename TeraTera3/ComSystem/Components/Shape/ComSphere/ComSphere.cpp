@@ -41,7 +41,7 @@ void ComSphere::Init()
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
 	m_pComShader->LoadVertexShader("VS3DShape.fx", layout, numelements, true);
-	m_pComShader->LoadPixelShader("PSPhongAndShadow.fx", true);
+	m_pComShader->LoadPixelShader("PSPhong.fx", true);
 }
 
 //================================================================================================
@@ -87,7 +87,10 @@ void ComSphere::Ready()
 	}
 	m_classCounter++;
 
-	//CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&ComSphere::DrawShadow, this));
+	if (m_flagDrawShadow)
+	{ //影の描画対象なので関数をセットする
+		CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&ComSphere::DrawShadow, this));
+	}
 }
 
 //================================================================================================
@@ -123,7 +126,7 @@ void ComSphere::Uninit()
 	}
 
 	//削除しておく
-	//CShadowManager::GetInstance().RemoveDrawFunction(m_gameObject->m_objectName);
+	CShadowManager::GetInstance().RemoveDrawFunction(m_gameObject->m_objectName);
 }
 
 //================================================================================================
@@ -136,21 +139,8 @@ void ComSphere::Draw()
 	m_pComShader->SetPixelShader();
 	m_pComShader->SetVertexShader();
 
-	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
-	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
-
-	ID3D11DeviceContext *device = CDirectXGraphics::GetInstance().GetImmediateContext();
-	// 頂点バッファをセットする
-	unsigned int stride = sizeof(tagVertex);
-	unsigned offset = 0;
-	device->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
-
-	device->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);	   // インデックスバッファをセット
-	device->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // トポロジーをセット（旧プリミティブタイプ）
-
-	device->DrawIndexed(m_facenum * 3, // 描画するインデックス数（面数×３）
-						0,			   // 最初のインデックスバッファの位置
-						0);			   // 頂点バッファの最初から使う
+	//処理は共通なので
+	DrawShadow();
 }
 
 //================================================================================================

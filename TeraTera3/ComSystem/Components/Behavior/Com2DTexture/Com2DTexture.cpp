@@ -8,7 +8,7 @@
 #include "../ComTransform/ComTransform.h"
 #include "../../../../System/CMatrix/CMatrix.h"
 #include "../../../../System/CDirectXGraphics/CDirectXGraphics.h"
-#include "../../../../Managers/CTextureManager/CTextureManager.h"
+#include "../../../../Managers/TextureManager/CTextureManager.h"
 
 ConstantBufferViewPort Com2DTexture::m_screenData;
 

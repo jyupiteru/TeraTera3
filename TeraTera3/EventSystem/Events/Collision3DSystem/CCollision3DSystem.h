@@ -59,34 +59,41 @@ class CCollision3DSystem
     std::unordered_map<int, std::unordered_map<E_COLLISION3D_EVENT, std::unordered_map<int, std::function<void(GameObject *)>>>> m_ListCollisionFunction;
 
     /**
-     * @brief 3Dの当たり判定をとるオブジェクトのリスト
-     * @n オブジェクトID-tuple(オブジェクト(通知用)、サイズ取得用、当たり判定調整用)
+     * @brief 衝突時に渡すオブジェクトのペア
+     * @n ID,オブジェクト
      */
-    std::unordered_map<int, std::pair<GameObject *, CCollisionBase *>> m_list3DCollisionObjects;
+    std::unordered_map<int, GameObject *> m_listObject;
 
+    /**
+     * @brief 3Dの当たり判定をとるオブジェクトのリスト
+     * @n オブジェクトID-＜部位名、その部位の衝突判定の情報＞
+     */
+    std::unordered_map<int, std::unordered_map<std::string, CCollisionBase *>> m_list3DCollisionObjects;
+
+    /**
+     * @brief ImGuiでの総衝突回数描画用変数
+     */
     unsigned int m_collisionCounter = 0;
 
+    /**
+     * 衝突にかかった時間を表示する用の変数
+    */
     float m_collisionTime = 0.0f;
 
+    /**
+     * @brief 衝突回数の上限に達した回数
+     */
     unsigned int m_reachMax = 0;
 
-    static CCollision3DSystem* m_instance;
+    static CCollision3DSystem *m_instance;
 
 public:
     CCollision3DSystem(){};
-    ~CCollision3DSystem()
-    {
-        Uninit();
-    }
-
+    ~CCollision3DSystem();
     void Uninit();
-
     void Update();
-
     static void Create();
-
     static void Delete(bool _flag = false);
-
     static [[nodiscard]] CCollision3DSystem &GetInstance();
 
     void ImGuiDraw(unsigned int windowid);
@@ -98,7 +105,7 @@ public:
     void ImGuiDrawCollisionObjectDetails(unsigned int windowid, int objid);
 
     /**
-     * @brief 当たり判定があるか判断するためのメソッド
+     * @brief 当たり判定時の処理があるか判断するためのメソッド
      * @tparam componenttype コンポーネントを継承している
      * @param obj オブジェクトのアドレス
      * @param component 判定したいコンポーネントのアドレス
@@ -111,7 +118,7 @@ public:
         //以下随時当たり判定判断する関数追加
         AddOnTriggerEnter3D(objid, component);
         AddOnTriggerStay3D(objid, component);
-        //当たり判定をこの中でとるためにゲームオブジェクトを登録する処理？がいる
+        //当たり判定をこの中でとるためにゲームオブジェクトを登録する処理がいる
     }
 
     /**
@@ -154,14 +161,20 @@ public:
     /**
      * @brief 当たり判定を行うオブジェクトを登録する処理
      * @details 当たり判定の関数を登録する処理は別
-     * @param obj 登録したいオブジェクトのアドレス
-     * @param component 登録したいcollderコンポーネント
+     * @param _obj 当たり判定の関数を登録する処理は別
+     * @param _collidername 衝突判定範囲の名前？ これによって区分けする(異なれば複数登録できる)
+     * @param _component 登録したいcollderコンポーネント
      */
     template <IsColliderComponent type>
-    void SetCollisionObject(GameObject *obj, type *component)
+    void SetCollisionObject(GameObject *_obj, std::string _collidername, type *_component)
     {
-        auto id = GetObjectID(obj);
-        m_list3DCollisionObjects[id] = std::make_pair(obj, component);
+        auto id = GetObjectID(_obj);
+        m_list3DCollisionObjects[id][_collidername] = _component;
+
+        if (!m_listObject.contains(id))
+        { //未登録なので
+            m_listObject[id] = _obj;
+        }
     }
 
     /**
@@ -178,14 +191,6 @@ private:
      * @return int オブジェクトのid
      */
     [[nodiscard]] int GetObjectID(GameObject *obj);
-
-    /**
-     * @brief 当たった時に呼び出すメソッド
-     * @param target 関数を呼びしたいほうのオブジェクト
-     * @param hitobject 渡したい（当たった）オブジェクト
-     * @param type 当たり判定の種類
-     */
-    void RunCollisionEvent(GameObject *target, GameObject *hitobject, E_COLLISION3D_EVENT type);
 
     /**
      * @brief OnTriggerEnter3Dがコンポーネント内にある時入る処理
@@ -253,12 +258,12 @@ private:
     [[nodiscard]] bool CheckCollisionDetection(const CCollisionBase &obj1collider, const CCollisionBase &obj2collider);
 
     /**
-     * @brief コンポーネントの当たり判定の関数を呼び出す処理
-     * @param obj1 当たり判定をとりたいオブジェクト
-     * @param obj2 当たった時に渡したいオブジェクト
-     * @param type どの当たり判定の種類か
+     * @brief コンポーネントの衝突判定時の関数を呼び出す処理
+     * @param obj1id 衝突されたオブジェクト
+     * @param obj2id 衝突したオブジェクト
+     * @param type どの種類の判定か？
      */
-    void RunCollisionDetection(GameObject *obj1, GameObject *obj2, E_COLLISION3D_EVENT type);
+    void RunCollisionDetection(int obj1id, int obj2id, E_COLLISION3D_EVENT type);
 
     /**
      * @brief 箱と箱の当たり判定をとる処理 OBB
@@ -291,11 +296,10 @@ private:
     [[nodiscard]] bool CompareLength(const CCollisionBase &collider1, const CCollisionBase &collider2,
                                      const DirectX::XMFLOAT3 &pvecSeparate, const DirectX::XMFLOAT3 &pvecDistance);
 
-
     //失敗用処理
-    void AddOnTriggerEnter3D(...) {};
-    void AddOnCollisionStay3D(...) {};
-    void AddOnCollisionEnter3D(...) {};
-    void AddOnTriggerStay3D(...) {};
-    void SetCollisionObject(...) {};
+    void AddOnTriggerEnter3D(...){};
+    void AddOnCollisionStay3D(...){};
+    void AddOnCollisionEnter3D(...){};
+    void AddOnTriggerStay3D(...){};
+    void SetCollisionObject(...){};
 };
