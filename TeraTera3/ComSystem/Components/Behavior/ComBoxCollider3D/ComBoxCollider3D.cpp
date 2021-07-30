@@ -34,7 +34,7 @@ void ComBoxCollider3D::Ready()
     if (m_gameObject->m_typeObject == E_TYPE_OBJECT::MODEL3D)
     {
         //このオブジェクトを当たり判定リストに登録
-        CCollision3DSystem::GetInstance().SetCollisionObject(this->m_gameObject,"All", this);
+        CCollision3DSystem::GetInstance().SetCollisionObject(this->m_gameObject,"OnlyBox", this);
 
         //todo のちに解凍
         //if (!this->m_gameObject->GetComponent<ComRigidBody3D>())
