@@ -186,7 +186,9 @@ void ComCoinManager::CreateCoinObject()
     coin->m_transform->m_color.SetValue(255, 241, 0, 1.0f);
 
     //各コンポーネントの設定
-    coin->GetComponent<Com3DModelAssimp>()->LoadModelData("Coin/Coin.fbx", "Coin/");
+    Com3DModelAssimp* commodel = coin->GetComponent<Com3DModelAssimp>();
+    commodel->LoadModelData("Coin/Coin.fbx", "Coin/");
+    commodel->m_flagDrawShadow = true;
 
     coin->m_activeFlag.SetValue(false);
     ComCoin *comcoin = coin->AddComponent<ComCoin>();
@@ -200,6 +202,7 @@ void ComCoinManager::CreateCoinObject()
     collider->m_isTrigger.SetValue(true);
     collider->m_isFirstJustSize = true;
 
+    //デバッグ時なら衝突範囲を描画する
 #ifdef _DEBUG
     collider->m_draw = true;
 #endif // _DEBUG

@@ -138,9 +138,22 @@ GameObject *ComMapManager::MakeMapObj(std::string_view _objname)
     m_listMapObject.push_back(obj);
 
     obj->m_typeObject = E_TYPE_OBJECT::MODEL3D;
-    obj->AddComponent<ComShader>();
+
     obj->AddComponent<ComBox>();
     auto collider = obj->AddComponent<ComBoxCollider3D>();
+
+    ComShader* comshader =  obj->GetComponent<ComShader>();
+    // 頂点データの定義
+    D3D11_INPUT_ELEMENT_DESC layout[] =
+    {
+        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+    };
+    unsigned int numelements = ARRAYSIZE(layout);
+    comshader->LoadVertexShader("VSShadow.fx", layout, numelements, true);
+    comshader->LoadPixelShader("PSOnlyColorWithShadow.fx");
+
     collider->m_isTrigger.SetValue(true);
     collider->m_isFirstJustSize = true;
 

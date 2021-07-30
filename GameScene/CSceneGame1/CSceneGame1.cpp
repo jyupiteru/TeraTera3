@@ -8,6 +8,7 @@ void CSceneGame1::Init()
 #endif // DEBUG
 
     CDebugLog::GetInstance().Draw("init");
+    CShadowManager::GetInstance().m_flagActive.SetValue(true);
 
     { //ステージ（ドーム表示）
         if (GameObject *skydome = GameObject::Find("skydome"); skydome == nullptr)
@@ -114,6 +115,10 @@ void CSceneGame1::Init()
             datamanager->DontDestroyOnLoad();
             datamanager->AddComponent<ComDataManager>();
         }
+    }
+    {
+        GameObject* light = GameObject::Find("Light");
+        light->m_transform->m_worldPosition.SetValue(0, 100, -10);
     }
 }
 
