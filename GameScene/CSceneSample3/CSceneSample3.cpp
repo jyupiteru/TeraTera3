@@ -6,6 +6,7 @@
 
 void CSceneSample3::Init()
 {
+    CShadowManager::GetInstance().m_flagActive.SetValue(true);
 
     CDebugLog::GetInstance().Draw("init");
     { //ステージ（ドーム表示）

@@ -13,9 +13,10 @@
 #include <functional>
 #include <string_view>
 
-#include"../../System/CVector.h"
+#include "../../System/CVector.h"
 
 class ComLight;
+class ComponentBase;
 
 /**
  * @brief 影を表示するのに必要なシャドウマップを生成するクラス
@@ -48,9 +49,9 @@ class CShadowManager final
 
 	/**
 	 * @brief 影を描画したいオブジェクトの描画のみの関数を管理する変数
-	 * @n オブジェクト名、描画関数
+	 * @n オブジェクト名、コンポーネントへのポインタ
 	 */
-	std::unordered_map<std::string, std::function<void(void)>> m_listObjectDrawFunction;
+	std::unordered_map<std::string, ComponentBase *> m_listObjectDrawFunction;
 
 	/**
 	 * @brief 深度バッファ用の裏バッファの縦横のサイズ
@@ -109,9 +110,9 @@ public:
 	/**
 	 * @brief 影を描画する際に使用する描画のみをする関数をセットする処理
 	 * @n bindを使用すること
-	 * @param _function セットしたい関数
+	 * @param _component 影の描画をするコンポーネント
 	 */
-	void SetDrawShadowFuction(std::string_view _objname, std::function<void(void)> _function);
+	void SetDrawShadowFuction(std::string_view _objname, ComponentBase *_component);
 
 	/**
 	 * @brief 関数を削除する処理

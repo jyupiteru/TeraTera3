@@ -89,7 +89,7 @@ void Com3DModelAssimp::Ready()
 {
     if (m_flagDrawShadow)
     { //影の描画対象なので関数をセットする
-        CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&Com3DModelAssimp::DrawShadow, this));
+        CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, this);
     }
 }
 

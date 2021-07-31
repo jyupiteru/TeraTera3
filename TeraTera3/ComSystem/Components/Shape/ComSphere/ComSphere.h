@@ -143,5 +143,5 @@ protected:
     /**
      * @brief 影を描画するのに使用する処理
      */
-    void DrawShadow();
+    void DrawShadow() override;
 };
