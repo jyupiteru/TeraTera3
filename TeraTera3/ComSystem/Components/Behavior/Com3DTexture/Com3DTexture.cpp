@@ -2,20 +2,14 @@
  * @file Com3DTexture.cpp
  * @author jupiter
  * @brief Com3DTextureが記述されたcpp
- * @date 2020-08-22
  */
 #include "Com3DTexture.h"
 
 #include "../ComTransform/ComTransform.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../WindowsSystem/DX11Settransform.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
-
-std::unordered_map<std::string, ID3D11ShaderResourceView *> Com3DTexture::m_pListSRV;
-
-std::unordered_map<std::string, ID3D11Resource *> Com3DTexture::m_pListTexture;
-
-int Com3DTexture::m_classCount = 0;
+#include "../../../../System/DX11Settransform.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/TextureManager/CTextureManager.h"
 
 using namespace DirectX;
 
@@ -35,8 +29,6 @@ void Com3DTexture::Init()
     m_typeComponent.SetValue(E_TYPE_COMPONENT::OBJECT3D);
 
     this->LoadTexture("System/white.png", E_TYPE_TEXTUREOBJ::VERTICAL);
-
-    m_classCount++;
 }
 
 //================================================================================================
@@ -48,18 +40,6 @@ void Com3DTexture::Uninit()
     {
         m_screenBuffer->Release();
         m_screenBuffer = nullptr;
-    }
-    m_classCount--;
-    if (m_classCount <= 0)
-    {
-        if (m_pListSRV.empty() == false)
-        {
-            m_pListSRV.clear();
-        }
-        if (m_pListTexture.empty() == false)
-        {
-            m_pListTexture.clear();
-        }
     }
 }
 
@@ -74,14 +54,14 @@ void Com3DTexture::Ready()
             {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}};
 
-    unsigned int numElements = ARRAYSIZE(layout);
+    unsigned int numelements = ARRAYSIZE(layout);
 
     m_pShader = m_gameObject->GetComponent<ComShader>();
     if (m_pShader == nullptr)
     {
         m_pShader = m_gameObject->AddComponent<ComShader>();
     }
-    m_pShader->LoadVertexShader("VS3DTex.fx", layout, numElements, true);
+    m_pShader->LoadVertexShader("VS3DTex.fx", layout, numelements, true);
     m_pShader->LoadPixelShader("PSTexWithColor.fx", true);
 
     if (auto [x, y, z] = m_gameObject->m_transform->m_size.GetValue(); z == 0.0f)
@@ -95,6 +75,9 @@ void Com3DTexture::Ready()
 
 void Com3DTexture::Draw()
 {
+    auto data = CTextureManager::GetInstance().GetTextureData(m_keyTexture);
+
+    ID3D11ShaderResourceView *srv = data->srv;
 
     SetVertex();
     m_pShader->SetVertexShader();
@@ -126,8 +109,6 @@ void Com3DTexture::Draw()
 
     // インデックスバッファをセット
     devcontext->IASetIndexBuffer(m_idxbuffer, DXGI_FORMAT_R32_UINT, 0);
-
-    ID3D11ShaderResourceView *srv = m_pListSRV[m_keyTexture];
 
     // PSにSRVをセット
     devcontext->PSSetShaderResources(
@@ -178,9 +159,9 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
 
     // インデックスバッファ生成
     bool sts = CreateIndexBuffer(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
-                                 4,               //インデックス数
-                                 idx,             //初期化データの先頭アドレス
-                                 &m_idxbuffer);   //インデックスバッファ
+                                 4,                                             //インデックス数
+                                 idx,                                           //初期化データの先頭アドレス
+                                 &m_idxbuffer);                                 //インデックスバッファ
     if (!sts)
     {
         MessageBox(nullptr, TEXT("CreateIndexBuffer error"), TEXT("error"), MB_OK);
@@ -197,28 +178,10 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
 
     m_keyTexture = texturename;
 
-    std::string folder = "Assets/Textures/";
-
-    folder += texturename;
-
-    if (!m_pListTexture.contains(m_keyTexture))
+    //読み込んだことはあるか？
+    if (!CTextureManager::GetInstance().GetTextureData(m_keyTexture))
     {
-        ID3D11ShaderResourceView *srv = nullptr;
-        ID3D11Resource *texres = nullptr;
-
-        // SRV生成
-        sts = CreateSRVfromFile(folder.c_str(), //画像ファイル名
-            CDirectXGraphics::GetInstance().GetDXDevice(),
-            CDirectXGraphics::GetInstance().GetImmediateContext(),
-                                &texres,
-                                &srv);
-        if (!sts)
-        {
-            MessageBox(nullptr, TEXT("CreateSRVfromFile error"), TEXT("error"), MB_OK);
-        }
-
-        m_pListSRV[m_keyTexture] = srv;
-        m_pListTexture[m_keyTexture] = texres;
+        CTextureManager::GetInstance().LoadTexture(m_keyTexture);
     }
 
     // マテリアル
@@ -236,6 +199,55 @@ void Com3DTexture::LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ textur
         memcpy_s(pData.pData, pData.RowPitch, (void *)(&material), sizeof(ConstantBufferMaterial));
         CDirectXGraphics::GetInstance().GetImmediateContext()->Unmap(m_cbuffer, 0);
     }
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::ChangeTextureNum(DirectX::XMFLOAT2 num)
+{
+    m_textureNum = {(num.x), (num.y)};
+    SetUV();
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::SetTextureRate(DirectX::XMFLOAT2 num)
+{
+    m_textureRate = num;
+    SetUV();
+}
+
+//================================================================================================
+//================================================================================================
+
+void Com3DTexture::SetTextureRateNumber(DirectX::XMFLOAT2 num)
+{
+    m_textureRate = {(float)(1.0f / num.x), (float)(1.0f / num.y)};
+    SetUV();
+}
+
+//================================================================================================
+//================================================================================================
+
+bool Com3DTexture::SetTextureKey(std::string_view _texturename)
+{
+    //セット済みか？
+    if (CTextureManager::GetInstance().GetTextureData(_texturename.data()))
+    {
+        m_keyTexture = _texturename.data();
+        return true;
+    }
+    return false;
+}
+
+//================================================================================================
+//================================================================================================
+
+std::string Com3DTexture::GetTextureKey()
+{
+    return m_keyTexture;
 }
 
 //================================================================================================
@@ -313,11 +325,11 @@ void Com3DTexture::SetVertex()
     if (m_vertexbuffer == nullptr)
     {
         // 頂点バッファ作成（後で変更可能な）
-        bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(),   //デバイス
-                                           sizeof(tagVertex), //ストライド（1頂点当たりのバイト数）
-                                           4,                 //頂点数
-                                           m_vertex,          //初期化データの先頭アドレス
-                                           &m_vertexbuffer);  //頂点バッファ
+        bool sts = CreateVertexBufferWrite(CDirectXGraphics::GetInstance().GetDXDevice(), //デバイス
+                                           sizeof(tagVertex),                             //ストライド（1頂点当たりのバイト数）
+                                           4,                                             //頂点数
+                                           m_vertex,                                      //初期化データの先頭アドレス
+                                           &m_vertexbuffer);                              //頂点バッファ
         if (!sts)
         {
             MessageBox(nullptr, "Com3DTexture SetVertex Error", "error", MB_OK);

@@ -101,6 +101,12 @@ public:
      */
     CVector<unsigned int> m_divY;
 
+    /**
+     * @brief 影の描画対象にするかを指定するフラグ 描画するならReady前にtrueにすること
+     */
+    bool m_flagDrawShadow = false;
+
+public:
     virtual void Init();
 
     virtual void Ready();
@@ -133,4 +139,9 @@ protected:
 	 * @param Normal 正規化後の変数
 	 */
     void Normalize(DirectX::XMFLOAT3 vector, DirectX::XMFLOAT3 &Normal);
+
+    /**
+     * @brief 影を描画するのに使用する処理
+     */
+    void DrawShadow() override;
 };

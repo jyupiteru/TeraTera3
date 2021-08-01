@@ -2,7 +2,6 @@
  * @file Package3DModelObject.h
  * @author jupiter
  * @brief Package4DModelを記述したヘッダ
- * @date 2020-08-22
  */
 #include "../Core/PackageBase.h"
 

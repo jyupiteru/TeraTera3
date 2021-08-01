@@ -34,7 +34,7 @@ void ComBoxCollider3D::Ready()
     if (m_gameObject->m_typeObject == E_TYPE_OBJECT::MODEL3D)
     {
         //このオブジェクトを当たり判定リストに登録
-        CCollision3DSystem::GetInstance().SetCollisionObject(this->m_gameObject, this);
+        CCollision3DSystem::GetInstance().SetCollisionObject(this->m_gameObject, "OnlyBox", this);
 
         //todo のちに解凍
         //if (!this->m_gameObject->GetComponent<ComRigidBody3D>())
@@ -70,6 +70,9 @@ void ComBoxCollider3D::Draw()
 {
     if (m_colliderObject != nullptr)
     {
+        //フラグによってセットを変える
+        m_colliderObject->m_activeFlag.SetValue(m_draw);
+
         if (m_draw)
         {
             //そもそもtransformを通させないことで行列を更新させない(でもtransformの値を取得されたら確実にバグ)
@@ -78,10 +81,6 @@ void ComBoxCollider3D::Draw()
             //Updateの更新順位をこのオブジェクトより後にすることでTransformの書き換えを防ぐ？
             m_colliderObject->m_objectUpdatePriority.SetValue(m_gameObject->m_objectDrawPriority.GetValue() + 1);
             m_colliderObject->m_transform->m_color.SetValue(m_color.GetValue());
-        }
-        else
-        {
-            m_colliderObjectBox->m_enable.SetValue(false);
         }
     }
 }

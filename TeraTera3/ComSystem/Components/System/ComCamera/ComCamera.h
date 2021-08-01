@@ -2,14 +2,13 @@
  * @file ComCamera.h
  * @author jupiter
  * @brief ComCameraが記述されたヘッダ
- * @date 2020-08-22
  */
 #include <memory>
 #include "../../../Core/ComponentBase.h"
 #include "../../Behavior/ComTransform/ComTransform.h"
 
 #include "../../../../System/CVector.h"
-#include "../../../../WindowsSystem/DX11Settransform.h"
+#include "../../../../System/DX11Settransform.h"
 #include "../../../../System/CMatrix/CMatrix.h"
 
 #pragma once

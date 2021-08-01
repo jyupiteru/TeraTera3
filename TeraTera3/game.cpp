@@ -2,19 +2,20 @@
  * @file 	game.cpp
  * @author jupiter
  * @brief 	ゲームの本体ループ処理等記述しているcpp
- * @version 1.0
- * @date 	2020-07-11
  */
 #include "game.h"
 
 #include "Timer/CTimer.h"
-#include "ImGuiSystem/ImGuiHeaders.h"
+#include "Managers/ImGuiSystem/ImGuiHeaders.h"
 #include "EventSystem/CEventSystem.h"
 #include "DebugLog/CDebugLog.h"
 #include "ComSystem/ComSystem.h"
 #include "ComSystem/Core/ObjectGenerator.h"
-#include "SceneSystem/CSceneManager/CSceneManager.h"
-#include "ResourceContainer/CContainer.h"
+#include "Managers/SceneSystem/CSceneManager/CSceneManager.h"
+#include "Managers/ResourceContainer/CContainer.h"
+#include "Managers/TextureManager/CTextureManager.h"
+#include "Managers/ShaderManager/CShaderManager.h"
+#include "Managers/ShadowManager/CShadowManager.h"
 
 using namespace DirectX;
 
@@ -45,9 +46,11 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CDebugLog::Create();
 
 	CDebugLog::GetInstance().Draw("DebugLog is Start");
-	CDebugLog::GetInstance().Draw("Use TeraTera ver3 Framework");
+	CDebugLog::GetInstance().Draw("Use TeraTera Ver3 Framework");
 
 	CContainer::Create();
+
+	CTextureManager::Create();
 
 	bool sts;
 
@@ -74,6 +77,12 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CDirectInput::GetInstance().Init(hinst, hwnd, width, height);
 	CDebugLog::GetInstance().Draw("Set DirectInput");
 
+	CShaderManager::Create();
+	CDebugLog::GetInstance().Draw("Set ShaderManager");
+
+	CShadowManager::Create();
+	CDebugLog::GetInstance().Draw("Set ShadowManager");
+
 	//ImGuiを管理するかマネージャーの生成と初期化
 	CImGuiManager::Create();
 	CImGuiManager::GetInstance().Init(hwnd);
@@ -83,30 +92,28 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	unsigned int windowid = CImGuiManager::GetInstance().CreateImGuiWindow();
 	auto windowdata = CImGuiManager::GetInstance().GetImGuiWindow(windowid);
 
-	//大きさを1/3にしたいので計算
-	int size_ = SCREEN_WIDTH / 3;
-	int sizecount = 0;
-	while (sizecount * 50 < size_)
 	{
-		sizecount++;
+		//大きさを1/3にしたいので計算
+		int size_ = SCREEN_WIDTH / 3;
+		int sizecount = 0;
+		while (sizecount * 50 < size_)
+		{
+			sizecount++;
+		}
+
+		//ウインドウの座標を変更
+		windowdata->m_firstSize.x = static_cast<float>(sizecount * 50);
+		windowdata->m_firstSize.y = static_cast<float>(SCREEN_HEIGHT);
+
+		windowdata->m_firstCenterPosition.x = static_cast<float>(SCREEN_WIDTH) - windowdata->m_firstSize.x / 2.0f;
+		windowdata->m_firstCenterPosition.y = windowdata->m_firstSize.y / 2.0f;
 	}
-
-	//ウインドウの座標を変更
-	windowdata->m_firstSize.x = static_cast<float>(sizecount * 50);
-	windowdata->m_firstSize.y = static_cast<float>(SCREEN_HEIGHT);
-
-	windowdata->m_firstCenterPosition.x = static_cast<float>(SCREEN_WIDTH) - windowdata->m_firstSize.x / 2.0f;
-	windowdata->m_firstCenterPosition.y = windowdata->m_firstSize.y / 2.0f;
 
 	CEventSystem::Create();
 	CDebugLog::GetInstance().Draw("Set EventSystem");
 
 	ObjectGenerator::Create();
 	CDebugLog::GetInstance().Draw("Set ObjectGenerator");
-
-	CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDrawObjects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("DrawLayer", std::bind(&ObjectGenerator::ImGuiDrawDrawLayer, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
 
 	{
 		// カメラ変換行列初期化
@@ -126,7 +133,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	}
 	{
 		// 平行光源初期化
-		DirectX::XMFLOAT3 lightdir = {1, -1, 1}; // 平行光源の方向をセット
+		DirectX::XMFLOAT3 lightdir = {0, 100, -50};
 		//シーンに設置するライトを生成
 		auto light = GameObject::MakeNewObject("Light", E_TYPE_OBJECT::NONE);
 
@@ -134,7 +141,7 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 		comlight->m_ambientColor.SetValue(60, 60, 60);
 		comlight->m_directionalColor.SetValue(155, 155, 155);
 
-		comlight->m_lightDirection.SetValue(lightdir.x, lightdir.y, lightdir.z);
+		light->m_transform->m_worldPosition.SetValue(lightdir.x, lightdir.y, lightdir.z);
 
 		light->m_objectUpdatePriority.SetValue(-20);
 		light->DontDestroyOnLoad();
@@ -146,20 +153,32 @@ bool GameInit(HINSTANCE hinst, HWND hwnd, int width, int height, bool fullscreen
 	CSceneManager::Create();
 	CDebugLog::GetInstance().Draw("Set CSceneManager");
 
-	CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
-	CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CEventSystem::GetInstance(), "Menu");
+	{
+		//デバッグの表示欄に登録する処理
+		CImGuiManager::GetInstance().SetImGuiFunction("ObjectList", &ObjectGenerator::GetInstance(), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("Objects", std::bind(&ObjectGenerator::ImGuiDrawObjects, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("DrawLayer", std::bind(&ObjectGenerator::ImGuiDrawDrawLayer, &ObjectGenerator::GetInstance(), std::placeholders::_1), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("ShaderData", &CShaderManager::GetInstance(), "Menu");
 
-	windowdata->SetImGuiFunction("Menu", "Project Property", true);
-	windowdata->SetImGuiFunction("Menu", "Window Details", true);
-	windowdata->SetImGuiFunction("Menu", "ObjectList", true);
-	windowdata->SetImGuiFunction("Menu", "Objects", true);
-	windowdata->SetImGuiFunction("Menu", "SceneList", true);
-	windowdata->SetImGuiFunction("Menu", "EventSystem", true);
+		CImGuiManager::GetInstance().SetImGuiFunction("SceneList", &CSceneManager::GetInstance(), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("EventSystem", &CEventSystem::GetInstance(), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("Timer", &CTimer::GetInstance(), "Menu");
+		CImGuiManager::GetInstance().SetImGuiFunction("ShadowManager", &CShadowManager::GetInstance(), "Menu");
+
+		//ImGuiの初期の欄で表示する内容を登録
+		windowdata->SetImGuiFunction("Menu", "Project Property", true);
+		windowdata->SetImGuiFunction("Menu", "Window Details", true);
+		windowdata->SetImGuiFunction("Menu", "ObjectList", true);
+		windowdata->SetImGuiFunction("Menu", "Objects", true);
+		windowdata->SetImGuiFunction("Menu", "SceneList", true);
+		windowdata->SetImGuiFunction("Menu", "EventSystem", true);
+	}
 
 	//GameのInit後にやらないと読み込み処理の時間が反映されてしまうので
 	CTimer::GetInstance().Update();
 
 	CDebugLog::GetInstance().Draw("End GameInit");
+
 	return true;
 }
 
@@ -188,6 +207,8 @@ void GameUpdate(float fps)
 
 	//シーンに存在しているオブジェクトのUpdateをぶん回し
 	CSceneManager::GetInstance().Update();
+
+	CDebugLog::GetInstance().Update();
 }
 
 //================================================================================================
@@ -200,6 +221,8 @@ void GameDraw()
 
 	// レンダリング前処理
 	CDirectXGraphics::GetInstance().BeforeDraw(clearcolor);
+
+	CShadowManager::GetInstance().Update();
 
 	//シーンに存在しているオブジェクトのDrawをぶん回し
 	CSceneManager::GetInstance().Draw();
@@ -223,6 +246,9 @@ void GameUninit()
 	ObjectGenerator::Delete(true);
 	CEventSystem::Delete(true);
 	CContainer::Delete(true);
+	CTextureManager::Delete(true);
 	CImGuiManager::Delete(true);
+	CShaderManager::Delete(true);
 	CDirectXGraphics::Delete(true);
+	CShadowManager::Delete(true);
 }

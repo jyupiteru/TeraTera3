@@ -1,5 +1,5 @@
 ﻿
-#include "../../TeraTera3/SceneSystem/CScene.h"
+#include "../../TeraTera3/Managers/SceneSystem/CScene.h"
 
 #pragma once
 

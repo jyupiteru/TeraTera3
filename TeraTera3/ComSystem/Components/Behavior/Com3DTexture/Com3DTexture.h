@@ -2,7 +2,6 @@
  * @file Com3DTexture.h
  * @author jupiter
  * @brief Textureコンポーネントが記述されたヘッダ
- * @date 2020-08-21
  */
 
 #include <d3d11.h>
@@ -50,25 +49,9 @@ protected:
 	E_TYPE_TEXTUREOBJ m_typeTexture = E_TYPE_TEXTUREOBJ::DEPTH;
 
 	/**
-	 * @brief SRV管理用のSTL
-	 * @details pair型を使えばコンテナ1個になるけど長くなるので要検討
-	 */
-	static std::unordered_map<std::string, ID3D11ShaderResourceView *> m_pListSRV;
-
-	/**
-	 * @brief テクスチャ管理用のSTL
-	 */
-	static std::unordered_map<std::string, ID3D11Resource *> m_pListTexture;
-
-	/**
 	 * @brief テクスチャ、SRV管理用のキー
 	 */
 	std::string m_keyTexture;
-
-	/**
-	 * @brief このクラス生成数を管理するためのメンバ
-	 */
-	static int m_classCount;
 
 	/**
 	 * @brief 頂点バッファ
@@ -118,43 +101,37 @@ public:
 
 	/**
 	 * @brief 画像読み込み処理
-	 * @param texturename 読み込みたい画像名(assets/textureファイルの中に入っている物)
+	 * @param texturename 読み込みたい画像名(Assets/Textureファイルの中に入っている物)
 	 * @param texturetype E_TYPE_TEXTUREOBJ型 オブジェクト生成方向を指定
 	 */
 	void LoadTexture(std::string texturename, E_TYPE_TEXTUREOBJ texturetype);
 
 	//!@brief				テクスチャの場所変更
 	//!@param	num			左上が1,1として指定
-	void ChangeTextureNum(DirectX::XMFLOAT2 num)
-	{
-		m_textureNum = {(num.x), (num.y)};
-		SetUV();
-	}
+	void ChangeTextureNum(DirectX::XMFLOAT2 num);
 
 	//!@brief				テクスチャの一枚当たりの割合指定 ％で
 	//!@param	num			指定したい割合を入れる
-	void SetTextureRate(DirectX::XMFLOAT2 num)
-	{
-		m_textureRate = num;
-		SetUV();
-	}
+	void SetTextureRate(DirectX::XMFLOAT2 num);
 
 	//!@brief				テクスチャを何分割するか指定　何枚に分けるみたいな
 	//!@param	num			何枚に分けたいか入れる
-	void SetTextureRateNumber(DirectX::XMFLOAT2 num)
-	{
-		m_textureRate = {(float)(1.0f / num.x), (float)(1.0f / num.y)};
-		SetUV();
-	}
+	void SetTextureRateNumber(DirectX::XMFLOAT2 num);
+
+	/**
+	 * @brief 特殊な方法で読み込んだテクスチャを名前からセットする処理
+	 * @n フォルダ経由の読み込みならLoadのほうですること
+	 * @param _texturename テクスチャの名前
+	 * @return true 成功
+	 * @return false 失敗
+	 */
+	bool SetTextureKey(std::string_view _texturename);
 
 	/**
 	 * @brief テクスチャ検索用キーの取得
 	 * @return std::string 取得したいキー
 	 */
-	[[nodiscard]] std::string GetTextureData()
-	{
-		return m_keyTexture;
-	}
+	[[nodiscard]] std::string GetTextureKey();
 
 protected:
 	/**

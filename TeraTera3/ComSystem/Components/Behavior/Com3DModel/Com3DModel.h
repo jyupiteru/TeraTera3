@@ -2,8 +2,6 @@
  * @file Com3DModel.h
  * @author jupiter
  * @brief Com3DModelクラスが記述されたヘッダ
- * @version 1.0
- * @date 2020-08-08
  */
 
 #include <d3d11.h>
@@ -13,8 +11,8 @@
 #include "../../../Core/Cores.h"
 #include "../ComShader/ComShader.h"
 
-#include "../../../../WindowsSystem/Model/DatFIle/DatFile.h"
-#include "../../../../ResourceContainer/CContainer.h"
+#include "../../../../System/Model/DatFIle/DatFile.h"
+#include "../../../../Managers/ResourceContainer/CContainer.h"
 
 #pragma once
 

@@ -82,4 +82,6 @@ public:
 	 * @return CTimer& 実体
 	 */
 	static [[nodiscard]] CTimer &GetInstance();
+
+	void ImGuiDraw(unsigned int);
 };

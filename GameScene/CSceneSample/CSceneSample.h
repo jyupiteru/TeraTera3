@@ -3,7 +3,7 @@
  * @author jupiter
  * @brief CSceneSampleが記載されたヘッダ
  */
-#include "../../TeraTera3/SceneSystem/CScene.h"
+#include "../../TeraTera3/Managers/SceneSystem/CScene.h"
 
 #pragma once
 /**

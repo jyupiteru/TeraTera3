@@ -6,10 +6,11 @@
  */
 #include "ComLight.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../../../Core/GameObject.h"
-#include "../../Behavior/ComTransform/ComTransform.h"
+#include "../ComCamera/ComCamera.h"
 #include "../../Shape/ComSphere/ComSphere.h"
+#include "../../Behavior/ComTransform/ComTransform.h"
 #include "../../Behavior/Com3DModelAssimp/Com3DModelAssimp.h"
 #include "../../Behavior/ComLightPoint/ComLightPoint.h"
 
@@ -84,7 +85,7 @@ void ComLight::UpdateLight()
         //方向情報を格納して正規化する
         std::tie(cb.directionalLight.directionalLightDirection.x,
                  cb.directionalLight.directionalLightDirection.y,
-                 cb.directionalLight.directionalLightDirection.z) = m_lightDirection.GetValue();
+                 cb.directionalLight.directionalLightDirection.z) = m_gameObject->m_transform->m_worldPosition.GetValue();
         DX11Vec3Normalize(cb.directionalLight.directionalLightDirection, cb.directionalLight.directionalLightDirection);
 
         //ディレクショナルライトの色情報を格納
@@ -135,8 +136,8 @@ void ComLight::UpdateLight()
         //ポイントライトの値は設定されていないか?
         if (pointflag == true)
         {
-            cb.pointLight.pointLightColor = { 0.0f, 0.0f, 0.0f,0.0f };
-            cb.pointLight.pointLightPosition = { 0.0f, 0.0f, 0.0f,0.0f };
+            cb.pointLight.pointLightColor = {0.0f, 0.0f, 0.0f, 0.0f};
+            cb.pointLight.pointLightPosition = {0.0f, 0.0f, 0.0f, 0.0f};
             cb.pointLight.pointLightRange = 0.0f;
         }
     }
@@ -159,7 +160,7 @@ void ComLight::UpdateLight()
     }
 
     cb.directionalLight.pad = 0.0f;
-    cb.pointLight.pad = { 0.0f,0.0f,0.0f };
+    cb.pointLight.pad = {0.0f, 0.0f, 0.0f};
     cb.pad3 = 0.0f;
 
     //情報を上書き

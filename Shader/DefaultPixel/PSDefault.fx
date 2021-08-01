@@ -19,7 +19,7 @@ float4 main(VS_OUTPUT input) : SV_Target
 	float4 specularLig = CalcPhongSpecular(DirectionalLight.LightDirection,DirectionalLight.LightColor,input.WPos,input.Normal,EyePos ,5.0f);
 	
 	//ポイントライトからピクセルまでの光の方向ベクトルを計算
-	float4 ligDirection = input.WPos - PointLight.LightPosition;
+	float4 ligDirection = input.WPos - PointLight.lightPosition;
 	ligDirection = normalize(ligDirection);
 
 	//ポイントライトからの

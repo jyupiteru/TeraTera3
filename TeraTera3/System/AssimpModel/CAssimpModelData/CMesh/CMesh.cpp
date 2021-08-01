@@ -5,10 +5,10 @@
 #include <DirectXMath.h>
 #include <string>
 #include <unordered_map>
-#include "../../../../WindowsSystem/CDirectXGraphics/CDirectXGraphics.h"
-#include "../../../../WindowsSystem/Shader/Shader.h"
+#include "../../../../System/CDirectXGraphics/CDirectXGraphics.h"
+#include "../../../../System/Shader/Shader.h"
 #include "CMesh.h"
-#include "../../../../WindowsSystem/Dx11mathutil/Dx11mathutil.h"
+#include "../../../../System/Dx11mathutil/Dx11mathutil.h"
 
 using namespace std;
 using namespace DirectX;

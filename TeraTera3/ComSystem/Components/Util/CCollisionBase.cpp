@@ -1,7 +1,7 @@
 ﻿
 #include "CCollisionBase.h"
 #include "../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 
 void CCollisionBase::ImGuiDraw(unsigned int windowid)
 {

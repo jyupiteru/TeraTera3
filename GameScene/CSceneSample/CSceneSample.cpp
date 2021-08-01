@@ -16,6 +16,15 @@ void CSceneSample::Init()
         skydome->m_transform->m_size.SetValue(10, 10, 10);
     }
 
+    {
+        /*auto shadow = GameObject::Find("Shadow");
+        if (shadow == nullptr)
+        {
+            shadow = GameObject::MakeNewObject("Shadow", E_TYPE_OBJECT::SYSTEM);
+            shadow->AddComponent<ComShadow>();
+        }*/
+    }
+
     //{
     //    auto ui = GameObject::MakeNewObject("ui", E_TYPE_OBJECT::UI);
     //    // ui->GetComponent<Com2DTexture>()->LoadTexture("airplane.png");
@@ -192,6 +201,14 @@ void CSceneSample::Init()
     //    //box2->m_activeFlag.SetValue(false);
     //}
     {
+        auto wipe = GameObject::MakeNewObject("Wipe", E_TYPE_OBJECT::UI);
+        wipe->m_transform->m_size.SetValue(SCREEN_WIDTH, SCREEN_HEIGHT, 1);
+        wipe->m_transform->m_color.SetValue(256, 0, 256, 1.0f);
+        wipe->RemoveComponent<Com2DTexture>();
+        wipe->AddComponent<ComWipe>();
+
+    }
+    {
         auto camera = GameObject::Find("Camera");
         auto com = camera->GetComponent<ComCamera>()->m_typeFixed = E_TYPE_FIXED::MODELLOOKAT;
         camera->m_transform->m_worldPosition.SetValue(0, 0, 0);
@@ -222,8 +239,8 @@ void CSceneSample::Uninit()
 
 void CSceneSample::Update()
 {
-    auto animmodel = GameObject::Find("animmodel");
-    animmodel->m_transform->m_vector.SetValue(-60 * CTimer::GetInstance().m_deltaTime.GetValue(), 0, 0);
+    /*auto animmodel = GameObject::Find("animmodel");
+    animmodel->m_transform->m_vector.SetValue(-60 * CTimer::GetInstance().m_deltaTime.GetValue(), 0, 0);*/
 
     auto camera = GameObject::Find("camera");
     auto obj = GameObject::Find("model");
@@ -285,8 +302,11 @@ void CSceneSample::Update()
     }
     if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_LSHIFT))
     {
+        /*bool flag = CDebugLog::GetInstance().m_flagActive.GetValue();
+        CDebugLog::GetInstance().m_flagActive.SetValue(!flag);*/
         auto obj = GameObject::Find("chara");
-        obj->m_activeFlag.SetValue(!obj->m_activeFlag.GetValue());
+        obj->m_activeFlag.SetValue(true);
+        obj->GetComponent<Com2DText>()->m_enable.SetValue(!obj->GetComponent<Com2DText>()->m_enable.GetValue());
     }
 
     //if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))

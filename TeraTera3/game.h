@@ -17,9 +17,9 @@
 
 #include "Setup.h"
 
-#include "WindowsSystem/CDirectInput.h"
-#include "WindowsSystem/DX11Settransform.h"
-#include "WindowsSystem/dx11mathutil/Dx11mathutil.h"
+#include "System/CDirectInput.h"
+#include "System/DX11Settransform.h"
+#include "System/dx11mathutil/Dx11mathutil.h"
 
 //#ifdef _DEBUG
 //#define _CRTDBG_MAP_ALLOC

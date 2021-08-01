@@ -2,8 +2,6 @@
  * @file CMatrix.cpp
  * @author jupiter
  * @brief 	CMatrixの処理が書かれているcpp
- * @version 1.1
- * @date 2020-07-19
  */
 
 #include "CMatrix.h"

@@ -11,9 +11,9 @@
 #include "../../../Core/ComponentBase.h"
 #include "../ComShader/ComShader.h"
 
-// #include "../../../../WindowsSystem/Model/Assimp/ModelData/ModelData.h"
+// #include "../../../../System/Model/Assimp/ModelData/ModelData.h"
 #include "../../../../System/AssimpModel/CAssimpModelData/CAssimpModelData.h"
-#include "../../../../ResourceContainer/CContainer.h"
+#include "../../../../Managers/ResourceContainer/CContainer.h"
 
 #pragma once
 
@@ -110,6 +110,12 @@ public:
     CVector3<float> m_localPosition;
 
     /**
+     * @brief 影の描画対象にするかを指定するフラグ 描画するならReady前にtrueにすること
+     */
+    bool m_flagDrawShadow = false;
+
+public:
+    /**
      * @brief  Com3DModelの生成時処理
      */
     Com3DModelAssimp(){};
@@ -139,19 +145,13 @@ public:
      * @brief モデルのキー取得処理
      * @return std::string このモデルのアクセスキー（読み込みパス）
      */
-    [[nodiscard]] std::string GetModelKey()
-    {
-        return m_keyModel;
-    }
+    [[nodiscard]] std::string GetModelKey();
 
     /**
      * @brief モデルの情報を取得する処理
      * @return std::shared_ptr<ModelData>& 取得したいモデルの情報
      */
-    [[nodiscard]] tagAssimpModelData const &GetModelData()
-    {
-        return *m_pNowModelData;
-    }
+    [[nodiscard]] tagAssimpModelData const &GetModelData();
 
 protected:
     /**
@@ -166,4 +166,9 @@ protected:
      * @param nowmin 現在の小さい値
      */
     void CheckVolume(float num, float &nowmax, float &nowmin);
+
+    /**
+     * @brief 影を描画する際に使用する処理
+     */
+    void DrawShadow() override;
 };

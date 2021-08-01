@@ -10,9 +10,9 @@
 #include "../Components/Behavior/Com2DText/Com2DText.h"
 #include "../Components/System/ComCamera/ComCamera.h"
 #include "../../../ThirdParty/ImGui/imgui.h"
-#include "../../ImGuiSystem/CImGuiManager/CImGuiHelper/CImGuiHelper.h"
-#include "../../ImGuiSystem/ImGuiHelperFunctions.h"
-#include "../../WindowsSystem/CDirectInput.h"
+#include "../../Managers/ImGuiSystem/CImGuiManager/CImGuiHelper/CImGuiHelper.h"
+#include "../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../System/CDirectInput.h"
 #include "../../Timer/CTimer.h"
 #include "../../EventSystem/CEventSystem.h"
 
@@ -167,7 +167,7 @@ void ObjectGenerator::Draw()
 
 									std::string layer;
 									layer = "NoOpa : ";
-									layer += "Dis : " +std::to_string(itr3.first);
+									layer += "Dis : " + std::to_string(itr3.first);
 									layer += " : ";
 									layer += (*obj)->m_objectName;
 									m_listDrawLayer.push_back(layer);

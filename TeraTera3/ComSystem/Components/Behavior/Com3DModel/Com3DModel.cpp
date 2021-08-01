@@ -2,12 +2,10 @@
  * @file Com3DModel.cpp
  * @author jupiter
  * @brief Com3DModelの実装の一部が書かれたcpp
- * @version 1.0
- * @date 2020-08-08
  */
 #include "Com3DModel.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../WindowsSystem/DX11Settransform.h"
+#include "../../../../System/DX11Settransform.h"
 
 using namespace DirectX;
 

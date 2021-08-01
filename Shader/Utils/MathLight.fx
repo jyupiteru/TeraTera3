@@ -19,7 +19,7 @@ float4 CalcLambertDiffuse(float4 _lightdirection, float4 _lightcolor, float4 _no
 
     //内積は同じ方向なら+になり逆ならば-になる
     //法線が光の方向にどれくらい向いているのか知りたいので-1をかける
-    d *= -1;
+    //d *= -1;
 
     //0.0fと比較して大きいほうを返す(0以下はつまり光が当たっていないので)
     d = max(0.0f ,d);
@@ -52,6 +52,9 @@ float4 CalcPhongSpecular(float4 _lightdirection, float4 _lightcolor, float4 _wor
 
 	//どれくらい目に入ってくるかを計算 0以下は0に設定
 	float t = dot(reflectVec,toEyeVec);
+    
+    t *= -1;
+    
 	t = max(0.0, t);
 
 	//累乗を行い鏡面反射の強さを絞る ハイライトの強さをここで絞る

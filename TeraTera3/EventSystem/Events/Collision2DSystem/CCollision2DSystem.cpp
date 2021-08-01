@@ -1,16 +1,14 @@
 ﻿
 #include "CCollision2DSystem.h"
 
-
 #include "../../../Setup.h"
 #include "../../../ComSystem/ComSystem.h"
 #include "../../../ComSystem/Components/Util/CCollisionBase.h"
 #include "../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../WindowsSystem/CDirectInput.h"
-#include "../../../ImGuiSystem/ImGuiHeaders.h"
-#include "../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../System/CDirectInput.h"
+#include "../../../Managers/ImGuiSystem/ImGuiHeaders.h"
+#include "../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 #include "../../../Timer/CTimer.h"
-
 
 std::unordered_map<int, std::unordered_map<E_COLLISION2D_EVENT, std::unordered_map<int, std::function<void(GameObject *)>>>> CCollision2DSystem::m_ListCollisionFunction;
 

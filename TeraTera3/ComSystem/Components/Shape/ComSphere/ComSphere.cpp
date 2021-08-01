@@ -7,6 +7,7 @@
 #include "ComSphere.h"
 #include "../../DefaultComponents.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
+#include "../../../../Managers/ShadowManager/CShadowManager.h"
 
 using namespace DirectX;
 
@@ -31,7 +32,7 @@ void ComSphere::Init()
 			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 			{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
-	unsigned int numElements = ARRAYSIZE(layout);
+	unsigned int numelements = ARRAYSIZE(layout);
 
 	//専用シェーダの読み込み
 	m_pComShader = m_gameObject->GetComponent<ComShader>();
@@ -39,8 +40,8 @@ void ComSphere::Init()
 	{
 		m_pComShader = m_gameObject->AddComponent<ComShader>();
 	}
-	m_pComShader->LoadVertexShader("VS3DShape.fx", layout, numElements, true);
-	m_pComShader->LoadPixelShader("PSOnlyColor.fx", true);
+	m_pComShader->LoadVertexShader("VS3DShape.fx", layout, numelements, true);
+	m_pComShader->LoadPixelShader("PSPhong.fx", true);
 }
 
 //================================================================================================
@@ -85,6 +86,11 @@ void ComSphere::Ready()
 		}
 	}
 	m_classCounter++;
+
+	if (m_flagDrawShadow)
+	{ //影の描画対象なので関数をセットする
+		CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, this);
+	}
 }
 
 //================================================================================================
@@ -118,6 +124,9 @@ void ComSphere::Uninit()
 			m_pVertexBuffer = nullptr;
 		}
 	}
+
+	//削除しておく
+	CShadowManager::GetInstance().RemoveDrawFunction(m_gameObject->m_objectName);
 }
 
 //================================================================================================
@@ -130,21 +139,8 @@ void ComSphere::Draw()
 	m_pComShader->SetPixelShader();
 	m_pComShader->SetVertexShader();
 
-	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
-	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
-
-	ID3D11DeviceContext *device = CDirectXGraphics::GetInstance().GetImmediateContext();
-	// 頂点バッファをセットする
-	unsigned int stride = sizeof(tagVertex);
-	unsigned offset = 0;
-	device->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
-
-	device->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);	   // インデックスバッファをセット
-	device->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // トポロジーをセット（旧プリミティブタイプ）
-
-	device->DrawIndexed(m_facenum * 3, // 描画するインデックス数（面数×３）
-						0,			   // 最初のインデックスバッファの位置
-						0);			   // 頂点バッファの最初から使う
+	//処理は共通なので
+	DrawShadow();
 }
 
 //================================================================================================
@@ -297,4 +293,26 @@ void ComSphere::Normalize(XMFLOAT3 vector, XMFLOAT3 &Normal)
 	v = XMLoadFloat3(&vector); // XMFLOAT3=>XMVECTOR
 	v = XMVector3Normalize(v); // 正規化
 	XMStoreFloat3(&Normal, v); // XMVECTOR=>XMFLOAT3
+}
+
+//================================================================================================
+//================================================================================================
+
+void ComSphere::DrawShadow()
+{
+	XMFLOAT4X4 mtx = m_gameObject->m_transform->GetMatrix();
+	DX11SetTransform::GetInstance()->SetTransform(DX11SetTransform::TYPE::WORLD, mtx);
+
+	ID3D11DeviceContext *device = CDirectXGraphics::GetInstance().GetImmediateContext();
+	// 頂点バッファをセットする
+	unsigned int stride = sizeof(tagVertex);
+	unsigned offset = 0;
+	device->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
+
+	device->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);	   // インデックスバッファをセット
+	device->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // トポロジーをセット（旧プリミティブタイプ）
+
+	device->DrawIndexed(m_facenum * 3, // 描画するインデックス数（面数×３）
+						0,			   // 最初のインデックスバッファの位置
+						0);			   // 頂点バッファの最初から使う
 }

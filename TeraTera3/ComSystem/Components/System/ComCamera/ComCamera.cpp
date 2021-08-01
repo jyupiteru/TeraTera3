@@ -2,13 +2,12 @@
  * @file ComCamera.cpp
  * @author jupiter
  * @brief ComCameraが記述されたcpp
- * @date 2020-08-22
  */
 
 #include "../../../Core/GameObject.h"
 #include "ComCamera.h"
 #include "../../../../../ThirdParty/ImGui/imgui.h"
-#include "../../../../ImGuiSystem/ImGuiHelperFunctions.h"
+#include "../../../../Managers/ImGuiSystem/ImGuiHelperFunctions.h"
 
 using namespace DirectX;
 
