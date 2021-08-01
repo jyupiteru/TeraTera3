@@ -89,7 +89,7 @@ void ComSphere::Ready()
 
 	if (m_flagDrawShadow)
 	{ //影の描画対象なので関数をセットする
-		CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, std::bind(&ComSphere::DrawShadow, this));
+		CShadowManager::GetInstance().SetDrawShadowFuction(m_gameObject->m_objectName, this);
 	}
 }
 

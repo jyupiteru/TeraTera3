@@ -122,6 +122,11 @@ public:
     virtual void Draw();
 
     /**
+     * @brief 影の描画処理
+     */
+    virtual void DrawShadow(){};
+
+    /**
      * @brief ImGui描画時に表示、変更させたい内容を入れた処理
      */
     virtual void ImGuiDraw(unsigned int windowid);

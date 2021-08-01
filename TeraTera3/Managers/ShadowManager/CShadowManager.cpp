@@ -13,6 +13,7 @@
 #include "../../System/CDirectXGraphics/CDirectXGraphics.h"
 #include "../../System/Shader/Shader.h"
 #include "../../ThirdParty/ImGui/imgui.h"
+#include "../../ComSystem/ComSystem.h"
 
 CShadowManager *CShadowManager::m_instance = nullptr;
 
@@ -107,12 +108,12 @@ void CShadowManager::Update()
 //================================================================================================
 //================================================================================================
 
-void CShadowManager::SetDrawShadowFuction(std::string_view _objname, std::function<void(void)> _function)
+void CShadowManager::SetDrawShadowFuction(std::string_view _objname, ComponentBase *_component)
 {
 	//まだセットしていないか？
 	if (!m_listObjectDrawFunction.contains(_objname.data()))
 	{
-		m_listObjectDrawFunction[_objname.data()] = _function;
+		m_listObjectDrawFunction[_objname.data()] = _component;
 	}
 }
 
@@ -352,6 +353,9 @@ void CShadowManager::DrawShadowMap()
 	//影を描画したいオブジェクトの描画処理を行いテクスチャを生成
 	for (auto itr : m_listObjectDrawFunction)
 	{
-		itr.second();
+		if (itr.second->m_gameObject->m_activeFlag.GetValue() && itr.second->m_enable.GetValue())
+		{ //オブジェクトとコンポーネントは有効
+			itr.second->DrawShadow();
+		}
 	}
 }
