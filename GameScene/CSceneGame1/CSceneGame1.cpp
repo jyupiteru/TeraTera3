@@ -29,7 +29,9 @@ void CSceneGame1::Init()
         player->m_transform->m_worldPosition.SetValue(0, 50, 0);
         player->m_transform->m_size.SetValue(10, 10, 10);
         player->AddComponent<ComPlayer>();
-        player->GetComponent<Com3DModelAssimp>()->LoadModelData("Player/idle_run.fbx", "Player/");
+        Com3DModelAssimp* commodel = player->GetComponent<Com3DModelAssimp>();
+        commodel->LoadModelData("Player/idle_run.fbx", "Player/");
+        //commodel->m_flagDrawShadow = true;
 
         auto anim = player->AddComponent<Com3DAnimationAssimp>();
 

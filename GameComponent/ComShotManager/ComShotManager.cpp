@@ -244,7 +244,8 @@ void ComShotManager::CreateShotObject()
 
     //各コンポーネントの設定
     shot->RemoveComponent<Com3DModelAssimp>();
-    shot->AddComponent<ComSphere>();
+    ComSphere* comsphere =  shot->AddComponent<ComSphere>();
+    comsphere->m_flagDrawShadow = true;
     shot->m_transform->m_color.SetValue(125, 125, 255, 1.0f);
     shot->m_activeFlag.SetValue(false);
 
