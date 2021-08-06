@@ -95,9 +95,6 @@ void Com3DAnimationAssimp::Update()
 
         data->modeldata.UpdateAnimation(m_gameObject->m_transform->GetMatrix(), scene,
                                         m_nowAnimation.second, m_pCom3DModel->m_animationData);
-
-        //アニメーションの速度を調整する
-        ChangeAnimationFrame();
     }
 }
 
@@ -340,14 +337,4 @@ bool Com3DAnimationAssimp::ChangeAnimation(std::string groupname, int num)
 void Com3DAnimationAssimp::ResetFrame()
 {
     m_pCom3DModel->m_animationData.m_frame = 0;
-}
-
-//================================================================================================
-//================================================================================================
-
-void Com3DAnimationAssimp::ChangeAnimationFrame()
-{
-    //todo ここ実装まだなので追加すること
-
-    m_frameCounter += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 }
