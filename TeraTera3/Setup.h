@@ -35,7 +35,7 @@
 #define CLASS_NAME TEXT("AppClass")
 
 //!@brief	ウインドウのところに出る名前
-#define WINDOW_NAME TEXT("TeraTera3")
+#define WINDOW_NAME TEXT("TeraTera3 Ver.2108")
 
 //!@brief	フルスクリーンにするかどうか
 #define FULLSCREEN false
