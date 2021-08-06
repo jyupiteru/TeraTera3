@@ -147,6 +147,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponent\ComButtomBox\ComButtomBox.h" />
+    <ClInclude Include="GameComponent\ComCameraCustom\ComCameraCustom.h" />
+    <ClInclude Include="GameComponent\ComFlowManager\ComFlowManager.h" />
+    <ClInclude Include="GameComponent\ComGoal\ComGoal.h" />
+    <ClInclude Include="GameComponent\ComMapMaker\ComMapMaker.h" />
+    <ClInclude Include="GameComponent\ComMapManager\ComMapManager.h" />
+    <ClInclude Include="GameComponent\ComPlayerMove\ComPlayerMove.h" />
+    <ClInclude Include="GameComponent\ComPlayerTitle\ComPlayerTitle.h" />
+    <ClInclude Include="GameComponent\ComStageFall\ComStageFall.h" />
+    <ClInclude Include="GameComponent\ComTimer\ComTimer.h" />
+    <ClInclude Include="GameComponent\ComTitleSelectorMove\ComTitleSelectorMove.h" />
     <ClInclude Include="GameScene\CSceneSample3\CSceneSample3.h" />
     <ClInclude Include="TeraTera3\Managers\ShadowManager\CShadowManager.h" />
     <ClInclude Include="TeraTera3\Managers\ShaderManager\CShaderManager.h" />
@@ -246,6 +257,17 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameComponent\ComButtomBox\ComButtomBox.cpp" />
+    <ClCompile Include="GameComponent\ComCameraCustom\ComCameraCustom.cpp" />
+    <ClCompile Include="GameComponent\ComFlowManager\ComFlowManager.cpp" />
+    <ClCompile Include="GameComponent\ComGoal\ComGoal.cpp" />
+    <ClCompile Include="GameComponent\ComMapMaker\ComMapMaker.cpp" />
+    <ClCompile Include="GameComponent\ComMapManager\ComMapManager.cpp" />
+    <ClCompile Include="GameComponent\ComPlayerMove\ComPlayerMove.cpp" />
+    <ClCompile Include="GameComponent\ComPlayerTitle\ComPlayerTitle.cpp" />
+    <ClCompile Include="GameComponent\ComStageFall\ComStageFall.cpp" />
+    <ClCompile Include="GameComponent\ComTimer\ComTimer.cpp" />
+    <ClCompile Include="GameComponent\ComTitleSelectorMove\ComTitleSelectorMove.cpp" />
     <ClCompile Include="GameScene\CSceneSample3\CSceneSample3.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShaderManager\CShaderManager.cpp" />

@@ -306,6 +306,39 @@
     <ClInclude Include="GameScene\CSceneSample3\CSceneSample3.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="GameComponent\ComButtomBox\ComButtomBox.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComCameraCustom\ComCameraCustom.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComFlowManager\ComFlowManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComGoal\ComGoal.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComMapMaker\ComMapMaker.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComMapManager\ComMapManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComPlayerMove\ComPlayerMove.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComPlayerTitle\ComPlayerTitle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComStageFall\ComStageFall.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComTimer\ComTimer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\ComTitleSelectorMove\ComTitleSelectorMove.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeraTera3\Timer\CTimer.cpp">
@@ -519,6 +552,39 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameScene\CSceneSample3\CSceneSample3.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComButtomBox\ComButtomBox.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComCameraCustom\ComCameraCustom.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComFlowManager\ComFlowManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComGoal\ComGoal.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComMapMaker\ComMapMaker.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComMapManager\ComMapManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComPlayerMove\ComPlayerMove.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComPlayerTitle\ComPlayerTitle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComStageFall\ComStageFall.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComTimer\ComTimer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\ComTitleSelectorMove\ComTitleSelectorMove.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
