@@ -25,17 +25,18 @@ class Com3DModelAssimp;
 struct tagAssimpAnimationData
 {
     /**
-     * @brief フレーム番号
+     * @brief 現在のフレーム数
+     * @n この数字に依存してアニメーションを更新する
      */
     int m_frame = 0;
 
     /**
      * @brief アニメーションの最大フレーム数
      */
-    int m_maxflame = 0;
+    unsigned int m_maxflame = 0;
 
     /**
-     * @brief ???
+     * @brief 1秒あたりのフレーム数
      */
     float m_TickPerSecond;
 
@@ -47,12 +48,12 @@ struct tagAssimpAnimationData
     /**
      * @brief キーフレーム補間用
      */
-    int m_cnt = 0;
+    float m_factor = 0.0f;
 
     /**
-     * @brief キーフレーム補間用
+     * @brief 秒数計測用変数
      */
-    float m_factor = 0.0f;
+    float m_timeCount = 0.0f;
 
     /**
      * @brief ボーンデータ（ノードの名前で参照）
