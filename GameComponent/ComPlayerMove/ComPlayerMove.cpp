@@ -61,9 +61,6 @@ void ComPlayerMove::GetKeyBoard()
     //１秒当たりのスピード
     float movespeed = m_moveSpeed * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
-    //1秒あたりの回転量
-    float rotaionspeed = m_rotateSpeed * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
-
     float vector_z = 0.0f;
     float angle_y = 0.0f;
 
@@ -72,30 +69,72 @@ void ComPlayerMove::GetKeyBoard()
         m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_NOW &&
         m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_END)
     {
-        //回転するか
-        if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_A))
-        {
-            angle_y = rotaionspeed;
-        }
-        else if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_D))
-        {
-            angle_y = -rotaionspeed;
-        }
 
-        //移動するか
-        if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_W))
-        {
-            vector_z = movespeed;
-            if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::RUNING)
+        DirectX::XMFLOAT3 vec = {0.0f, 0.0f, 0.0f};
+
+        //移動処理判定フラグ
+        bool flagmove = false;
+
+        auto [angle_x, angle_y, angle_z] = m_gameObject->m_transform->m_angle.GetValue();
+
+        float nowangle = 0.0f;
+
+        { //移動処理
+            if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_A))
             {
-                //走るアニメーションをセット
-                m_flagNextAnimation = E_FLAG_PLAYERSTATE::RUNING;
-                m_animationflag = false;
+                flagmove = true;
+
+                if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_W))
+                {
+                    nowangle = 45.0f;
+                }
+                else if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_S))
+                {
+                    nowangle = 135.0f;
+                }
+                else
+                {
+                    nowangle = 90.0f;
+                }
+            }
+            else if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_D))
+            {
+                flagmove = true;
+
+                if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_W))
+                {
+                    nowangle = -45.0f;
+                }
+                else if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_S))
+                {
+                    nowangle = -135.0f;
+                }
+                else
+                {
+                    nowangle = -90.0f;
+                }
+            }
+            else if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_W))
+            {
+                nowangle += 0.0f;
+                flagmove = true;
+            }
+            else if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_S))
+            {
+                flagmove = true;
+                nowangle += 180.0f;
             }
         }
-        else if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_S))
+
+        //移動したか？
+        if (flagmove)
         {
-            vector_z = -movespeed;
+            m_gameObject->m_transform->m_angle.SetValue(0, nowangle, 0);
+
+            //速度追加
+
+            vec.z = movespeed;
+
             if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::RUNING)
             {
                 //走るアニメーションをセット
@@ -110,18 +149,15 @@ void ComPlayerMove::GetKeyBoard()
             m_animationflag = false;
         }
 
-    }
+        m_gameObject->m_transform->m_vector.SetValue(vec.x, vec.y, vec.z);
 
-    //ジャンプをしているか
-    if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
-    {
-        m_flagNextAnimation = E_FLAG_PLAYERSTATE::JUMP_START;
-        m_animationflag = false;
+        //ジャンプをしたか？
+        if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
+        {
+            m_flagNextAnimation = E_FLAG_PLAYERSTATE::JUMP_START;
+            m_animationflag = false;
+        }
     }
-
-    //それぞれをセット
-    m_gameObject->m_transform->m_vector.SetValue(0.0f, 0.0f, vector_z);
-    m_gameObject->m_transform->m_angle.AddValue(0.0f, angle_y, 0.0f);
 
     //ジャンプ中か
     if (m_flagNextAnimation == E_FLAG_PLAYERSTATE::JUMP_START ||
