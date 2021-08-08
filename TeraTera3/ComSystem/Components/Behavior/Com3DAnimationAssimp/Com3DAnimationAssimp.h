@@ -78,20 +78,14 @@ class Com3DAnimationAssimp : public ComponentBase
      */
     taglistAssimpAnimation *m_pNowAnimationData = nullptr;
 
-    float m_frameCounter = 0.0f;
-
 public:
     Com3DAnimationAssimp(){};
     ~Com3DAnimationAssimp(){};
 
     virtual void Init() override;
-
     virtual void Uninit() override;
-
     virtual void Ready() override;
-
     virtual void Update() override;
-
     virtual void ImGuiDraw(unsigned int windowid) override;
 
     /**
@@ -165,10 +159,4 @@ public:
      * @brief フレームを0に戻す処理
      */
     void ResetFrame();
-
-protected:
-    /**
-     * @brief アニメーションの速度を調整する処理
-     */
-    void ChangeAnimationFrame();
 };
