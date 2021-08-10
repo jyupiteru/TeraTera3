@@ -52,9 +52,9 @@ void ComPlayerMove::OnTriggerStay3D(GameObject *obj)
     auto [pos_x, pos_y, pos_z] = m_gameObject->m_transform->m_worldPosition.GetValue();
     auto [size_x, size_y, size_z] = m_gameObject->m_transform->m_size.GetValue();
 
-    //箱にめり込んでいるかを計算して確認する
-    if (pos_y - size_y / 2 <= boxpos_y + boxsize_y / 2)
-    {//めり込んでいるので落下を続ける
+    //箱にめり込んでいるかを計算して確認する && そこの衝突判定部分ではないか確認
+    if (pos_y - size_y / 2 <= boxpos_y + boxsize_y / 2 || obj->m_objectName == "buttom")
+    {//めり込んでいる or 衝突したのは底なので落下を続ける
         m_flagIsStandGround = false;
     }
     //ジャンプ中なら終わらせる
@@ -140,9 +140,7 @@ void ComPlayerMove::GetKeyBoard()
 
             vec.z = movespeed;
 
-            if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_START &&
-                m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_NOW &&
-                m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_END &&
+            if (m_flagIsStandGround == true &&
                 m_flagNextAnimation != E_FLAG_PLAYERSTATE::RUNING)
             {
                 //走るアニメーションをセット
@@ -160,9 +158,7 @@ void ComPlayerMove::GetKeyBoard()
         m_gameObject->m_transform->m_vector.SetValue(vec.x, vec.y, vec.z);
 
         //ジャンプをしたか？ && ジャンプ中でないか
-        if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_START &&
-            m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_NOW &&
-            m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_END &&
+        if (m_flagIsStandGround == true &&
             CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
         {
             m_flagNextAnimation = E_FLAG_PLAYERSTATE::JUMP_START;
