@@ -32,7 +32,6 @@ void ComPlayerMove::Update()
     //アニメーションの変更
     ChangeAnimation();
 
-    m_fallCount += CTimer::GetInstance().m_deltaTime.GetValue();
     m_flagIsStandGround = false;
 }
 
@@ -40,7 +39,6 @@ void ComPlayerMove::OnTriggerStay3D(GameObject *obj)
 {
     //地面に触れたので各種初期化
     m_flagIsStandGround = true;
-    m_fallCount = 0.0f;
 
     //ゲームを開始する
     if (m_flagNextAnimation == E_FLAG_PLAYERSTATE::READY)
@@ -61,13 +59,11 @@ void ComPlayerMove::GetKeyBoard()
     //１秒当たりのスピード
     float movespeed = m_moveSpeed * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
-    float vector_z = 0.0f;
-    float angle_y = 0.0f;
-
     //ジャンプ中でない
     if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_START &&
         m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_NOW &&
-        m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_END)
+        m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_END &&
+        m_flagNextAnimation != E_FLAG_PLAYERSTATE::READY)
     {
 
         DirectX::XMFLOAT3 vec = {0.0f, 0.0f, 0.0f};
@@ -116,8 +112,8 @@ void ComPlayerMove::GetKeyBoard()
             }
             else if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_W))
             {
-                nowangle += 0.0f;
                 flagmove = true;
+                nowangle += 0.0f;
             }
             else if (CDirectInput::GetInstance().CheckKeyBuffer(DIK_S))
             {
@@ -156,6 +152,7 @@ void ComPlayerMove::GetKeyBoard()
         {
             m_flagNextAnimation = E_FLAG_PLAYERSTATE::JUMP_START;
             m_animationflag = false;
+            m_fallCount = 0.0f;
         }
     }
 
@@ -163,9 +160,8 @@ void ComPlayerMove::GetKeyBoard()
     if (m_flagNextAnimation == E_FLAG_PLAYERSTATE::JUMP_START ||
         m_flagNextAnimation == E_FLAG_PLAYERSTATE::JUMP_NOW)
     {
-        auto vec_y = MathJump();
-        vec_y *= CTimer::GetInstance().m_deltaTime.GetValue();
-        m_gameObject->m_transform->m_worldPosition.AddValue(0.0f, vec_y, 0.0f);
+        auto pos_y = MathJump();
+        m_gameObject->m_transform->m_worldPosition.AddValue(0.0f, pos_y, 0.0f);
 
         m_gameObject->m_transform->m_vector.SetValue(0.0f, 0.0f, movespeed);
         m_animationflag = true;
@@ -174,7 +170,7 @@ void ComPlayerMove::GetKeyBoard()
     else if (m_flagIsStandGround == false)
     {
         //ジャンプしていないのに地面の上にいない=落下している
-        float speed = m_jumpSpeed * 2.0f * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
+        float speed = 10.0f * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
         m_gameObject->m_transform->m_vector.SetValue(0.0f, -speed, 0.0f);
         m_animationflag = true;
 
@@ -230,14 +226,43 @@ void ComPlayerMove::ChangeAnimation()
 
 float ComPlayerMove::MathJump()
 {
-    //y軸は斜方投射で実装
-
-    const float angle = 60.0f;
-
+    const float angle = 90.0f;
     const float gravity = 9.8f;
 
-    //=-gt+v0sinθ
-    float vec_y = -gravity * m_fallCount + m_jumpSpeed * sin(angle * DirectX::XM_PI / 180);
+    static float lasttime = 0.0f;
 
-    return vec_y;
+    //y軸は斜方投射で実装
+    //float pos_y;
+    //pos_y = m_jumpSpeed * sin(angle * (DirectX::XM_PI / 180));
+    //pos_y -= 0.5f * gravity * m_fallCount * m_fallCount;
+
+    //float pos2_y = 0.0f;
+
+    ////前フレームでのジャンプ元からの高さの計算
+    //pos2_y = m_jumpSpeed * sin(angle * (DirectX::XM_PI / 180));
+    //pos2_y -= 0.5f * gravity * lasttime * lasttime;
+
+
+    //std::string sentence = "pos_y" + std::to_string(pos_y);
+    //CDebugLog::GetInstance().Draw(sentence);
+
+    //sentence = "pos2_y" + std::to_string(pos2_y);
+    //CDebugLog::GetInstance().Draw(sentence);
+
+    //pos_y = pos_y - pos2_y;
+
+    ////pos_y *= CTimer::GetInstance().m_deltaTime.GetValue();
+    //sentence = "last" + std::to_string(pos_y);
+    //CDebugLog::GetInstance().Draw(sentence);
+    ////CDebugLog::GetInstance().Draw(std::to_string(pos_y));
+
+    //lasttime = m_fallCount;
+
+    m_fallCount += CTimer::GetInstance().m_deltaTime.GetValue();
+
+    float pos_y = m_jumpSpeed - 9.8f * m_fallCount;
+
+    pos_y *= static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
+
+    return pos_y;
 }

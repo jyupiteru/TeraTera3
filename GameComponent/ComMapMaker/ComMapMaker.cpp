@@ -135,6 +135,9 @@ void ComMapMaker::MakeMap(int num)
 
 void ComMapMaker::SetMap()
 {
+    //enum classをこの関数内で簡単に使用するために
+    using enum E_MAPCHIP;
+
     //左下を0,0とし通常面を高さ0とする
     int stagemax = 1;
 

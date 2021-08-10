@@ -38,7 +38,7 @@ public:
     /**
      * @brief ジャンプ時の初速度
      */
-    float m_jumpSpeed = 4.0f;
+    float m_jumpSpeed = 5.0f;
 
     /**
      * @brief 1秒当たりの回転量
@@ -105,7 +105,7 @@ private:
 
     /**
      * @brief ジャンプ時のy軸の移動量を計算するメソッド
-     * @return float どれくらい移動するのか
+     * @return float 前回とのy軸差分
      */
     float MathJump();
 };
