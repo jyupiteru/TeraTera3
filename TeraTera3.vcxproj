@@ -147,18 +147,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GameComponent\ComButtomBox\ComButtomBox.h" />
-    <ClInclude Include="GameComponent\ComCameraCustom\ComCameraCustom.h" />
-    <ClInclude Include="GameComponent\ComFlowManager\ComFlowManager.h" />
-    <ClInclude Include="GameComponent\ComGoal\ComGoal.h" />
+    <ClInclude Include="GameScene\CSceneSelect\CsceneSelect.h" />
+    <ClInclude Include="GameComponent\Title\ComSelectManager.h" />
+    <ClInclude Include="GameComponent\ComDataManager\ComDataManager.h" />
+    <ClInclude Include="GameComponent\Game\ComButtomBox.h" />
+    <ClInclude Include="GameComponent\Game\ComCameraCustom.h" />
+    <ClInclude Include="GameComponent\Game\ComFlowManager.h" />
+    <ClInclude Include="GameComponent\Goal\ComGoal.h" />
     <ClInclude Include="GameComponent\ComMapMaker\ComMapMaker.h" />
     <ClInclude Include="GameComponent\ComMapManager\ComMapManager.h" />
-    <ClInclude Include="GameComponent\ComPlayerMove\ComPlayerMove.h" />
-    <ClInclude Include="GameComponent\ComPlayerTitle\ComPlayerTitle.h" />
-    <ClInclude Include="GameComponent\ComStageFall\ComStageFall.h" />
-    <ClInclude Include="GameComponent\ComTimer\ComTimer.h" />
-    <ClInclude Include="GameComponent\ComTitleSelectorMove\ComTitleSelectorMove.h" />
-    <ClInclude Include="GameScene\CSceneSample3\CSceneSample3.h" />
+    <ClInclude Include="GameComponent\Game\ComPlayerMove.h" />
+    <ClInclude Include="GameComponent\Title\ComPlayerTitle.h" />
+    <ClInclude Include="GameComponent\Game\ComStageFall.h" />
+    <ClInclude Include="GameComponent\Game\ComTimer.h" />
+    <ClInclude Include="GameComponent\Title\ComTitleSelectorMove.h" />
     <ClInclude Include="TeraTera3\Managers\ShadowManager\CShadowManager.h" />
     <ClInclude Include="TeraTera3\Managers\ShaderManager\CShaderManager.h" />
     <ClInclude Include="TeraTera3\Managers\TextureManager\CTextureManager.h" />
@@ -171,8 +173,6 @@
     <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h" />
     <ClInclude Include="GameScene\CSceneGame1\CSceneGame1.h" />
     <ClInclude Include="GameScene\CSceneResult\CSceneResult.h" />
-    <ClInclude Include="GameScene\CSceneSample2\CSceneSample2.h" />
-    <ClInclude Include="GameScene\CSceneSample\CSceneSample.h" />
     <ClInclude Include="GameScene\CSceneTitle\CSceneTitle.h" />
     <ClInclude Include="GameScene\SceneSetter.h" />
     <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.h" />
@@ -220,8 +220,6 @@
     <ClInclude Include="TeraTera3\ComSystem\Core\PackageBase.h" />
     <ClInclude Include="TeraTera3\DebugLog\CDebugLog.h" />
     <ClInclude Include="GameComponent\GameComponents.h" />
-    <ClInclude Include="GameComponent\Tests\Test.h" />
-    <ClInclude Include="GameComponent\Tests\Test2.h" />
     <ClInclude Include="TeraTera3\DebugLog\CConsoleLog\CConsoleLog.h" />
     <ClInclude Include="TeraTera3\game.h" />
     <ClInclude Include="TeraTera3\Managers\ImGuiSystem\CImGuiManager\CImGuiHelper\CImGuiHelper.h" />
@@ -257,18 +255,20 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameComponent\ComButtomBox\ComButtomBox.cpp" />
-    <ClCompile Include="GameComponent\ComCameraCustom\ComCameraCustom.cpp" />
-    <ClCompile Include="GameComponent\ComFlowManager\ComFlowManager.cpp" />
-    <ClCompile Include="GameComponent\ComGoal\ComGoal.cpp" />
+    <ClCompile Include="GameScene\CSceneSelect\CsceneSelect.cpp" />
+    <ClCompile Include="GameComponent\Title\ComSelectManager.cpp" />
+    <ClCompile Include="GameComponent\ComDataManager\ComDataManager.cpp" />
+    <ClCompile Include="GameComponent\Game\ComButtomBox.cpp" />
+    <ClCompile Include="GameComponent\Game\ComCameraCustom.cpp" />
+    <ClCompile Include="GameComponent\Game\ComFlowManager.cpp" />
+    <ClCompile Include="GameComponent\Goal\ComGoal.cpp" />
     <ClCompile Include="GameComponent\ComMapMaker\ComMapMaker.cpp" />
     <ClCompile Include="GameComponent\ComMapManager\ComMapManager.cpp" />
-    <ClCompile Include="GameComponent\ComPlayerMove\ComPlayerMove.cpp" />
-    <ClCompile Include="GameComponent\ComPlayerTitle\ComPlayerTitle.cpp" />
-    <ClCompile Include="GameComponent\ComStageFall\ComStageFall.cpp" />
-    <ClCompile Include="GameComponent\ComTimer\ComTimer.cpp" />
-    <ClCompile Include="GameComponent\ComTitleSelectorMove\ComTitleSelectorMove.cpp" />
-    <ClCompile Include="GameScene\CSceneSample3\CSceneSample3.cpp" />
+    <ClCompile Include="GameComponent\Game\ComPlayerMove.cpp" />
+    <ClCompile Include="GameComponent\Title\ComPlayerTitle.cpp" />
+    <ClCompile Include="GameComponent\Game\ComStageFall.cpp" />
+    <ClCompile Include="GameComponent\Game\ComTimer.cpp" />
+    <ClCompile Include="GameComponent\Title\ComTitleSelectorMove.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShaderManager\CShaderManager.cpp" />
     <ClCompile Include="TeraTera3\Managers\TextureManager\CTextureManager.cpp" />
@@ -281,8 +281,6 @@
     <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp" />
     <ClCompile Include="GameScene\CSceneGame1\CSceneGame1.cpp" />
     <ClCompile Include="GameScene\CSceneResult\CSceneResult.cpp" />
-    <ClCompile Include="GameScene\CSceneSample2\CSceneSample2.cpp" />
-    <ClCompile Include="GameScene\CSceneSample\CSceneSample.cpp" />
     <ClCompile Include="GameScene\CSceneTitle\CSceneTitle.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.cpp" />

@@ -98,10 +98,6 @@ void CSceneGame1::Uninit()
 
 void CSceneGame1::Update()
 {
-    if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))
-    {
-        CSceneManager::GetInstance().LoadScene("SceneResult");
-    }
 }
 
 void CSceneGame1::Draw()

@@ -8,17 +8,17 @@
 
 #pragma once
 
-#include "ComCameraCustom/ComCameraCustom.h"
-#include "ComPlayerTitle/ComPlayerTitle.h"
-#include "ComTitleSelectorMove/ComTitleSelectorMove.h"
-
-#include "ComFlowManager/ComFlowManager.h"
 #include "ComMapMaker/ComMapMaker.h"
 #include "ComMapManager/ComMapManager.h"
 
-#include "ComPlayerMove/ComPlayerMove.h"
-#include "ComTimer/ComTimer.h"
-#include "ComGoal/ComGoal.h"
+#include "Title/ComPlayerTitle.h"
+#include "Title/ComTitleSelectorMove.h"
 
-#include "ComButtomBox/ComButtomBox.h"
-#include "ComStageFall/ComStageFall.h"
+#include "Game/ComTimer.h"
+#include "Game/ComButtomBox.h"
+#include "Game/ComFlowManager.h"
+#include "Game/ComStageFall.h"
+#include "Game/ComPlayerMove.h"
+#include "Game/ComCameraCustom.h"
+
+#include "Goal/ComGoal.h"

@@ -9,9 +9,6 @@
 
 #include "../TeraTera3/Managers/SceneSystem/CScene.h"
 
-#include "CSceneSample/CSceneSample.h"
-#include "CSceneSample2/CSceneSample2.h"
-#include "CSceneSample3/CSceneSample3.h"
 #include "CSceneTitle/CSceneTitle.h"
 #include "CSceneGame1/CSceneGame1.h"
 #include "CSceneResult/CSceneResult.h"

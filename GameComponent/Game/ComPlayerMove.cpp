@@ -5,7 +5,7 @@
  */
 
 #include "ComPlayerMove.h"
-#include "../ComFlowManager/ComFlowManager.h"
+#include "ComFlowManager.h"
 
 void ComPlayerMove::Init()
 {
@@ -60,10 +60,7 @@ void ComPlayerMove::GetKeyBoard()
     float movespeed = m_moveSpeed * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
     //ジャンプ中でない
-    if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_START &&
-        m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_NOW &&
-        m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_END &&
-        m_flagNextAnimation != E_FLAG_PLAYERSTATE::READY)
+    if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::READY)
     {
 
         DirectX::XMFLOAT3 vec = {0.0f, 0.0f, 0.0f};
@@ -131,7 +128,10 @@ void ComPlayerMove::GetKeyBoard()
 
             vec.z = movespeed;
 
-            if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::RUNING)
+            if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_START &&
+                m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_NOW &&
+                m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_END &&
+                m_flagNextAnimation != E_FLAG_PLAYERSTATE::RUNING)
             {
                 //走るアニメーションをセット
                 m_flagNextAnimation = E_FLAG_PLAYERSTATE::RUNING;
@@ -147,8 +147,11 @@ void ComPlayerMove::GetKeyBoard()
 
         m_gameObject->m_transform->m_vector.SetValue(vec.x, vec.y, vec.z);
 
-        //ジャンプをしたか？
-        if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
+        //ジャンプをしたか？ && ジャンプ中でないか
+        if (m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_START &&
+            m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_NOW &&
+            m_flagNextAnimation != E_FLAG_PLAYERSTATE::JUMP_END &&
+            CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
         {
             m_flagNextAnimation = E_FLAG_PLAYERSTATE::JUMP_START;
             m_animationflag = false;
@@ -163,7 +166,6 @@ void ComPlayerMove::GetKeyBoard()
         auto pos_y = MathJump();
         m_gameObject->m_transform->m_worldPosition.AddValue(0.0f, pos_y, 0.0f);
 
-        m_gameObject->m_transform->m_vector.SetValue(0.0f, 0.0f, movespeed);
         m_animationflag = true;
     }
     //ジャンプ中ではないのに地面についていないか(つまり落下中)
@@ -231,37 +233,8 @@ float ComPlayerMove::MathJump()
 
     static float lasttime = 0.0f;
 
-    //y軸は斜方投射で実装
-    //float pos_y;
-    //pos_y = m_jumpSpeed * sin(angle * (DirectX::XM_PI / 180));
-    //pos_y -= 0.5f * gravity * m_fallCount * m_fallCount;
-
-    //float pos2_y = 0.0f;
-
-    ////前フレームでのジャンプ元からの高さの計算
-    //pos2_y = m_jumpSpeed * sin(angle * (DirectX::XM_PI / 180));
-    //pos2_y -= 0.5f * gravity * lasttime * lasttime;
-
-
-    //std::string sentence = "pos_y" + std::to_string(pos_y);
-    //CDebugLog::GetInstance().Draw(sentence);
-
-    //sentence = "pos2_y" + std::to_string(pos2_y);
-    //CDebugLog::GetInstance().Draw(sentence);
-
-    //pos_y = pos_y - pos2_y;
-
-    ////pos_y *= CTimer::GetInstance().m_deltaTime.GetValue();
-    //sentence = "last" + std::to_string(pos_y);
-    //CDebugLog::GetInstance().Draw(sentence);
-    ////CDebugLog::GetInstance().Draw(std::to_string(pos_y));
-
-    //lasttime = m_fallCount;
-
     m_fallCount += CTimer::GetInstance().m_deltaTime.GetValue();
-
     float pos_y = m_jumpSpeed - 9.8f * m_fallCount;
-
     pos_y *= static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
     return pos_y;

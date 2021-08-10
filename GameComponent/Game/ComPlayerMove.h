@@ -105,7 +105,7 @@ private:
 
     /**
      * @brief ジャンプ時のy軸の移動量を計算するメソッド
-     * @return float 前回とのy軸差分
+     * @return float y軸移動量
      */
     float MathJump();
 };

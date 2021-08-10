@@ -5,7 +5,7 @@
  */
 
 #include "ComButtomBox.h"
-#include "../ComFlowManager/ComFlowManager.h"
+#include "ComFlowManager.h"
 
 void ComButtomBox::OnTriggerStay3D(GameObject* obj)
 {
