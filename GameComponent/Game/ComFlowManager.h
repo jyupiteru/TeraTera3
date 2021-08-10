@@ -32,11 +32,20 @@ class ComFlowManager : public ComponentBase
      */
     GameObject *m_pPlayer = nullptr;
 
+    /**
+     * @brief 現在のゲームの状況
+     */
     E_FLOW m_nowFlow = E_FLOW::READY;
 
-public:
-    void Ready() override;
+    /**
+     * @brief コンポーネントの実体
+     */
+    static ComFlowManager *m_instance;
 
+public:
+    void Init() override;
+    void Uninit() override;
+    void Ready() override;
     void Update() override;
 
     /**
@@ -44,4 +53,10 @@ public:
      * @param flow どのフローに移行したいか
      */
     void ChangeFlow(E_FLOW flow);
+
+    /**
+     * @brief 実体を取得する処理
+     * @return ComFlowManager* このコンポーネントの実体
+     */
+    static ComFlowManager &GetInstance();
 };

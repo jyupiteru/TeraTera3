@@ -18,6 +18,9 @@ void ComTimer::Ready()
     m_pComText->m_text = std::to_string(m_maxCount);
 }
 
+//================================================================================================
+//================================================================================================
+
 void ComTimer::UpdateTime()
 {
     m_nowCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());

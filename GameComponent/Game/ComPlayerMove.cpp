@@ -46,12 +46,24 @@ void ComPlayerMove::OnTriggerStay3D(GameObject *obj)
         m_pComFlowManager->ChangeFlow(E_FLOW::GAME);
     }
 
+    //プレイヤーと衝突した箱の座標、大きさを取得する
+    auto [boxpos_x, boxpos_y, boxpos_z] = obj->m_transform->m_worldPosition.GetValue();
+    auto [boxsize_x, boxsize_y, boxsize_z] = obj->m_transform->m_size.GetValue();
+    auto [pos_x, pos_y, pos_z] = m_gameObject->m_transform->m_worldPosition.GetValue();
+    auto [size_x, size_y, size_z] = m_gameObject->m_transform->m_size.GetValue();
+
+    //箱にめり込んでいるかを計算して確認する
+    if (pos_y - size_y / 2 <= boxpos_y + boxsize_y / 2)
+    {//めり込んでいるので落下を続ける
+        m_flagIsStandGround = false;
+    }
     //ジャンプ中なら終わらせる
-    if (m_flagNextAnimation == E_FLAG_PLAYERSTATE::JUMP_NOW || m_flagNextAnimation == E_FLAG_PLAYERSTATE::READY)
+    else if (m_flagNextAnimation == E_FLAG_PLAYERSTATE::JUMP_NOW || m_flagNextAnimation == E_FLAG_PLAYERSTATE::READY)
     {
         m_flagNextAnimation = E_FLAG_PLAYERSTATE::JUMP_END;
         m_animationflag = false;
     }
+
 }
 
 void ComPlayerMove::GetKeyBoard()
