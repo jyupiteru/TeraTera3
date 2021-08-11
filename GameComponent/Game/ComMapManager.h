@@ -11,7 +11,7 @@
 class ComMapMaker;
 
 /**
- * @brief マップの情報を管理するコンポーネント
+ * @brief 現在使用しているマップの情報を管理するコンポーネント
  */
 class ComMapManager : public ComponentBase
 {
@@ -25,12 +25,12 @@ public:
     std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, GameObject>>> m_listMapDate;
 
     virtual void Init();
-
     virtual void Uninit();
 
-    virtual void Ready();
-
-    virtual void Update();
-
-    virtual void Draw();
+    /**
+     * @brief マップを生成するメソッド
+     * @param num 生成したいマップのステージ番号
+     * @n 1～
+     */
+    void MakeMap(int num);
 };

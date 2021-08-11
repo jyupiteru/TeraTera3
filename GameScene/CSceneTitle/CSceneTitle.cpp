@@ -74,6 +74,15 @@ void CSceneTitle::Init()
     }
 
     {
+        GameObject* datamanager = GameObject::Find("DataManager");
+        if (datamanager == nullptr)
+        {
+            datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
+            datamanager->AddComponent<ComDataManager>();
+        }
+    }
+
+    {
         auto floor = GameObject::MakeNewObject("floor", E_TYPE_OBJECT::MODEL3D);
         floor->RemoveComponent<Com3DModelAssimp>();
         floor->AddComponent<ComBox>();

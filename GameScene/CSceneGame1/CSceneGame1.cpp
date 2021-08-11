@@ -51,13 +51,8 @@ void CSceneGame1::Init()
 
     {
         auto mapmanager = GameObject::Find("MapManager");
-        if (mapmanager == nullptr)
-        {
-            mapmanager = GameObject::MakeNewObject("MapManager", E_TYPE_OBJECT::SYSTEM);
-            mapmanager->AddComponent<ComMapManager>();
-            mapmanager->AddComponent<ComMapMaker>();
-        }
-        mapmanager->GetComponent<ComMapMaker>()->MakeMap(1);
+        mapmanager = GameObject::MakeNewObject("MapManager", E_TYPE_OBJECT::SYSTEM);
+        mapmanager->AddComponent<ComMapManager>();
     }
 
     {

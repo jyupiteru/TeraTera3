@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "ComMapMaker/ComMapMaker.h"
-#include "ComMapManager/ComMapManager.h"
+#include "ComDataManager/ComDataManager.h"
+
 
 #include "Title/ComPlayerTitle.h"
 #include "Title/ComTitleSelectorMove.h"
@@ -17,8 +17,8 @@
 #include "Game/ComTimer.h"
 #include "Game/ComButtomBox.h"
 #include "Game/ComFlowManager.h"
+#include "Game/ComMapManager.h"
 #include "Game/ComStageFall.h"
 #include "Game/ComPlayerMove.h"
 #include "Game/ComCameraCustom.h"
-
-#include "Goal/ComGoal.h"
+#include "Game/ComGoal.h"

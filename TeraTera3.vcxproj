@@ -147,15 +147,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GameScene\CSceneSelect\CsceneSelect.h" />
+    <ClInclude Include="GameScene\CSceneSelect\CSceneSelect.h" />
     <ClInclude Include="GameComponent\Title\ComSelectManager.h" />
     <ClInclude Include="GameComponent\ComDataManager\ComDataManager.h" />
     <ClInclude Include="GameComponent\Game\ComButtomBox.h" />
     <ClInclude Include="GameComponent\Game\ComCameraCustom.h" />
     <ClInclude Include="GameComponent\Game\ComFlowManager.h" />
-    <ClInclude Include="GameComponent\Goal\ComGoal.h" />
-    <ClInclude Include="GameComponent\ComMapMaker\ComMapMaker.h" />
-    <ClInclude Include="GameComponent\ComMapManager\ComMapManager.h" />
+    <ClInclude Include="GameComponent\Game\ComGoal.h" />
+    <ClInclude Include="GameComponent\Game\ComMapManager.h" />
     <ClInclude Include="GameComponent\Game\ComPlayerMove.h" />
     <ClInclude Include="GameComponent\Title\ComPlayerTitle.h" />
     <ClInclude Include="GameComponent\Game\ComStageFall.h" />
@@ -255,15 +254,14 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameScene\CSceneSelect\CsceneSelect.cpp" />
+    <ClCompile Include="GameScene\CSceneSelect\CSceneSelect.cpp" />
     <ClCompile Include="GameComponent\Title\ComSelectManager.cpp" />
     <ClCompile Include="GameComponent\ComDataManager\ComDataManager.cpp" />
     <ClCompile Include="GameComponent\Game\ComButtomBox.cpp" />
     <ClCompile Include="GameComponent\Game\ComCameraCustom.cpp" />
     <ClCompile Include="GameComponent\Game\ComFlowManager.cpp" />
-    <ClCompile Include="GameComponent\Goal\ComGoal.cpp" />
-    <ClCompile Include="GameComponent\ComMapMaker\ComMapMaker.cpp" />
-    <ClCompile Include="GameComponent\ComMapManager\ComMapManager.cpp" />
+    <ClCompile Include="GameComponent\Game\ComGoal.cpp" />
+    <ClCompile Include="GameComponent\Game\ComMapManager.cpp" />
     <ClCompile Include="GameComponent\Game\ComPlayerMove.cpp" />
     <ClCompile Include="GameComponent\Title\ComPlayerTitle.cpp" />
     <ClCompile Include="GameComponent\Game\ComStageFall.cpp" />

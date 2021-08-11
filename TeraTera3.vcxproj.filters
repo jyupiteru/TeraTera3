@@ -300,13 +300,10 @@
     <ClInclude Include="GameComponent\Game\ComFlowManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\Goal\ComGoal.h">
+    <ClInclude Include="GameComponent\Game\ComGoal.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\ComMapMaker\ComMapMaker.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponent\ComMapManager\ComMapManager.h">
+    <ClInclude Include="GameComponent\Game\ComMapManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="GameComponent\Game\ComPlayerMove.h">
@@ -330,7 +327,7 @@
     <ClInclude Include="GameComponent\Title\ComSelectManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene\CSceneSelect\CsceneSelect.h">
+    <ClInclude Include="GameScene\CSceneSelect\CSceneSelect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -548,13 +545,10 @@
     <ClCompile Include="GameComponent\Game\ComFlowManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponent\Goal\ComGoal.cpp">
+    <ClCompile Include="GameComponent\Game\ComGoal.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponent\ComMapMaker\ComMapMaker.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameComponent\ComMapManager\ComMapManager.cpp">
+    <ClCompile Include="GameComponent\Game\ComMapManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameComponent\Game\ComPlayerMove.cpp">
@@ -578,7 +572,7 @@
     <ClCompile Include="GameComponent\Title\ComSelectManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene\CSceneSelect\CsceneSelect.cpp">
+    <ClCompile Include="GameScene\CSceneSelect\CSceneSelect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
