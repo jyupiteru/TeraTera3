@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file ComDataManager.cpp
  * @author jupiter ()
  * @brief ComDataManagerの実装が記載されたcpp
@@ -15,9 +15,9 @@ ComDataManager *ComDataManager::m_instance = nullptr;
 void ComDataManager::Init()
 {
 	m_stageNum.SetValue(1);
-
 	m_mapSize.SetValue(10.0f);
-	SetMap();
+	LoadMap();
+	//SetMap();
 
 	m_instance = this;
 	this->m_gameObject->DontDestroyOnLoad();
@@ -146,9 +146,6 @@ void ComDataManager::LoadMap()
 
 		std::ifstream mapfile(mapname);
 
-		int depth = 0;
-		int width = 0;
-
 		//読み込みは失敗か？
 		if (!mapfile)
 		{
@@ -160,22 +157,24 @@ void ComDataManager::LoadMap()
 			break;
 		}
 
-		{ //基礎データの読み込み
-			int mapcommondata[3];
+		int depth = 0;
+		std::string str;
 
-			//1行目を取得してstrに格納
-			std::string str;
-			std::getline(mapfile, str);
+		//1行取得して分類格納
+		while (std::getline(mapfile, str))
+		{
 			std::string tmp = "";
 			std::istringstream stream(str);
 
-			int i = 0;
-			//","を除いてstrからtmpに格納
+			int width = 0;
+
 			while (std::getline(stream, tmp, ','))
 			{
-				mapcommondata[i] = std::atoi(tmp.c_str());
-				i++;
+				int objnum = std::atoi(tmp.c_str());
+				m_mapsData[mapnum - 1][depth][width] = static_cast<E_MAPCHIP>(objnum);
+				width++;
 			}
+			depth++;
 		}
 
 		mapnum++;
