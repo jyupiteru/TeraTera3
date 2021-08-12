@@ -38,10 +38,10 @@ public:
 
 	/**
      * @brief すべてのマップの設計図を管理する変数
-     * @n ステージ数、縦、奥、横、種類
+     * @n ステージ数、奥、横、種類
      * @n 下、左、手前から順に描画
      */
-	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, E_MAPCHIP>>>> m_mapsData;
+	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, E_MAPCHIP>>> m_mapsData;
 
 	/**
      * @brief マップに使用するオブジェクトの1辺当たりの大きさ
@@ -57,4 +57,6 @@ private:
      * @brief 各マップの情報をセットする関数
      */
 	void SetMap();
+
+	void LoadMap();
 };
