@@ -9,8 +9,7 @@
 #include "../AssimpVertexsData.h"
 #include "../../../System/DX11Settransform.h"
 #include "../../../System/Dx11mathutil/Dx11mathutil.h"
-
-const int INTERPOLATENUM = 3; // 補間数
+#include "../../../Timer/CTimer.h"
 
 CAssimoModelData::CAssimoModelData()
 {
@@ -68,8 +67,6 @@ void CAssimoModelData::UpdateAnimation(const DirectX::XMFLOAT4X4 &mtxworld, cons
     // アニメーションデータを持っているか？
     if (animationscene->HasAnimations())
     {
-        //アニメーションデータからボーンマトリクス算出
-
         // アニメーションデータ取得
         aiAnimation *animation = animationscene->mAnimations[animno];
 
@@ -98,13 +95,13 @@ void CAssimoModelData::UpdateAnimation(const DirectX::XMFLOAT4X4 &mtxworld, cons
                 f2 = animationdata.m_preFrame % nodeAnim->mNumPositionKeys; //簡易実装
                 aiVector3D pos2 = nodeAnim->mPositionKeys[f2].mValue;
 
-                // 補間
+                // 補間の処理
                 rot1.Interpolate(rot1, rot1, rot2, animationdata.m_factor);
                 pos1.x = pos1.x * (1.0f - animationdata.m_factor) + pos2.x * (animationdata.m_factor);
                 pos1.y = pos1.y * (1.0f - animationdata.m_factor) + pos2.y * (animationdata.m_factor);
                 pos1.z = pos1.z * (1.0f - animationdata.m_factor) + pos2.z * (animationdata.m_factor);
 
-                // ボーン行列を更新
+                // ボーン行列を更新する
                 bone->AnimationMatrix = aiMatrix4x4(
                     aiVector3D(1.0f, 1.0f, 1.0f), // スケール値
                     rot1,                         // 姿勢（クオータニオン）
@@ -124,16 +121,22 @@ void CAssimoModelData::UpdateAnimation(const DirectX::XMFLOAT4X4 &mtxworld, cons
             animationdata.m_listBone);
     }
 
-    if (animationdata.m_cnt % INTERPOLATENUM == 0)
+    //1フレーム当たりの秒数を計算
+    float framepersecond = 1.0f / animationdata.m_TickPerSecond;
+
+    animationdata.m_timeCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
+
+    //経過時間と1フレーム当たりの時間を比較してフレームが更新できるかを計算
+    if (framepersecond < animationdata.m_timeCount)
     {
         animationdata.m_preFrame = animationdata.m_frame;
         animationdata.m_frame++;
         animationdata.m_factor = 0;
+        animationdata.m_timeCount -= framepersecond;
     }
 
-    animationdata.m_factor = 1.0f / (float)(animationdata.m_cnt % INTERPOLATENUM + 1);
-
-    animationdata.m_cnt++;
+    //まだちょっとこれわからない??
+    animationdata.m_factor = 1.0f;
 }
 
 //================================================================================================
@@ -280,17 +283,15 @@ void CAssimoModelData::ChangeAnimation(const aiScene *animationscene, unsigned i
         auto firstnode = animation->mChannels[0];
 
         animationdata.m_maxflame = firstnode->mNumPositionKeys;
-        if (animationdata.m_maxflame < firstnode->mNumRotationKeys)
+        if (animationdata.m_maxflame != firstnode->mNumRotationKeys)
         {
+            //最大フレーム数が異なるので修正
             animationdata.m_maxflame = firstnode->mNumRotationKeys;
         }
 
-        if (animationdata.m_maxflame < firstnode->mNumScalingKeys)
-        {
-            animationdata.m_maxflame = firstnode->mNumScalingKeys;
-        }
+        animationdata.m_timeCount = 0.0f;
 
-        //1秒当たりなんフレームかを取得
+        //1秒当たり何フレームかを取得
         animationdata.m_TickPerSecond = static_cast<float>(animation->mTicksPerSecond);
     }
 }
