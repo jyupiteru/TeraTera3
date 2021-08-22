@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponent\Title\ComTitleManager.h" />
     <ClInclude Include="GameScene\CSceneSelect\CSceneSelect.h" />
     <ClInclude Include="GameComponent\Title\ComSelectManager.h" />
     <ClInclude Include="GameComponent\ComDataManager\ComDataManager.h" />
@@ -254,6 +255,7 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameComponent\Title\ComTitleManager.cpp" />
     <ClCompile Include="GameScene\CSceneSelect\CSceneSelect.cpp" />
     <ClCompile Include="GameComponent\Title\ComSelectManager.cpp" />
     <ClCompile Include="GameComponent\ComDataManager\ComDataManager.cpp" />

@@ -26,11 +26,8 @@ class ComPlayerTitle : public ComponentBase
 public:
     ComPlayerTitle(){};
     ~ComPlayerTitle(){};
-
     void Ready() override;
-
     void Uninit() override;
-
     void Update() override;
 
 private:

@@ -4,7 +4,7 @@ void CSceneTitle::Init()
 {
 #ifndef _DEBUG
     //デバッグじゃないときImGui表示の削除
-    CImGuiManager::GetInstance()->m_flagSurvival.SetValue(false);
+    CImGuiManager::GetInstance().m_flagSurvival.SetValue(false);
 #endif // DEBUG
 
     { //ステージ（ドーム表示）
@@ -74,7 +74,12 @@ void CSceneTitle::Init()
     }
 
     {
-        GameObject* datamanager = GameObject::Find("DataManager");
+        GameObject *titlemanager = GameObject::MakeNewObject("TitleManager", E_TYPE_OBJECT::SYSTEM);
+        titlemanager->AddComponent<ComTitleManager>();
+    }
+
+    {
+        GameObject *datamanager = GameObject::Find("DataManager");
         if (datamanager == nullptr)
         {
             datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
@@ -102,22 +107,22 @@ void CSceneTitle::Init()
     }
 }
 
+//================================================================================================
+//================================================================================================
+
 void CSceneTitle::Uninit()
 {
 }
 
+//================================================================================================
+//================================================================================================
+
 void CSceneTitle::Update()
 {
-    {
-        auto title = GameObject::Find("title");
-        title->m_transform->m_color.AddValue(0, 0, 0, 0.001);
-    }
-
-    if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))
-    {
-        CSceneManager::GetInstance().LoadScene("SceneGame1");
-    }
 }
+
+//================================================================================================
+//================================================================================================
 
 void CSceneTitle::Draw()
 {
