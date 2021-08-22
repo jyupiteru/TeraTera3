@@ -21,11 +21,11 @@ void CSceneTitle::Init()
     }
 
     {
-        auto title = GameObject::MakeNewObject("title", E_TYPE_OBJECT::UI);
+        auto title = GameObject::MakeNewObject("TitleImage", E_TYPE_OBJECT::UI);
         title->GetComponent<Com2DTexture>()->LoadTexture("gametitle.png");
         title->m_transform->m_worldPosition.SetValue(0, SCREEN_HEIGHT / 6 * 2, 0);
         title->m_transform->m_size.SetValue(620.0f, 215.0f, 1.0f);
-        title->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 1.0f);
+        title->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 0.0f);
     }
 
     {
@@ -75,7 +75,8 @@ void CSceneTitle::Init()
 
     {
         GameObject *titlemanager = GameObject::MakeNewObject("TitleManager", E_TYPE_OBJECT::SYSTEM);
-        titlemanager->AddComponent<ComTitleManager>();
+        ComTitleManager *comtitle = titlemanager->AddComponent<ComTitleManager>();
+        comtitle->m_titleImageObj = GameObject::Find("TitleImage");
     }
 
     {

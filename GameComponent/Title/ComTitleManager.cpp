@@ -10,11 +10,9 @@
 
 void ComTitleManager::Update()
 {
-
-	{
-		auto title = GameObject::Find("title");
-		title->m_transform->m_color.AddValue(0, 0, 0, 0.001f);
-	}
+	//タイトル画像を徐々に表示する
+	float speed = 0.2f * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
+	m_titleImageObj->m_transform->m_color.AddValue(0, 0, 0, speed);
 
 	//シーンの移動
 	if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))

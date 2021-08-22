@@ -11,8 +11,14 @@
 /**
  * @brief タイトルの各種処理を管理するマネージェー
  */
-class ComTitleManager :public ComponentBase
+class ComTitleManager : public ComponentBase
 {
+public:
+	/**
+	 * @brief タイトルの画像のオブジェクト
+	 */
+	GameObject *m_titleImageObj = nullptr;
+
 public:
 	ComTitleManager(){};
 	~ComTitleManager(){};
