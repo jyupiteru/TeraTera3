@@ -54,9 +54,8 @@ public:
 
 private:
 	/**
-     * @brief 各マップの情報をセットする関数
-     */
-	void SetMap();
-
+	 * @brief マップを読み込んでくる処理
+	 * @n map〇と書かれているモノを数字順にあるものすべて読み込みしている
+	 */
 	void LoadMap();
 };

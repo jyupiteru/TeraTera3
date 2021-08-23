@@ -25,11 +25,6 @@ public:
 	 */
 	GameObject *m_titleImageObj = nullptr;
 
-	/**
-	 * @brief 現在選択しているステージ
-	 */
-	int m_selectStage = 1;
-
 public:
 	ComTitleManager(){};
 	~ComTitleManager(){};

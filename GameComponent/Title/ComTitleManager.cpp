@@ -7,6 +7,7 @@
  */
 
 #include "ComTitleManager.h"
+#include "../ComDataManager/ComDataManager.h"
 
 void ComTitleManager::Ready()
 {
@@ -34,6 +35,9 @@ void ComTitleManager::Update()
 		bool flag = CImGuiManager::GetInstance().m_flagSurvival.GetValue();
 		CImGuiManager::GetInstance().m_flagSurvival.SetValue(!flag);
 	}
+
+	//ステージ選択の変更
+	SelectStage();
 }
 
 //================================================================================================
@@ -41,12 +45,27 @@ void ComTitleManager::Update()
 
 void ComTitleManager::SelectStage()
 {
-	/*if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RIGHTARROW))
+	int stagenum = ComDataManager::GetInstance().m_stageNum.GetValue();
+
+	if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RIGHTARROW))
 	{
-		CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RIGHTARROW);
+		stagenum++;
 	}
-	else if ()
+	else if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_LEFTARROW))
 	{
-		CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RIGHTARROW)
-	}*/
+		stagenum--;
+	}
+
+	//存在しているステージか？
+	if (ComDataManager::GetInstance().m_mapsData.size() >= stagenum && stagenum >= 1)
+	{
+		ComDataManager::GetInstance().m_stageNum.SetValue(stagenum);
+	}
+	else
+	{
+		stagenum = ComDataManager::GetInstance().m_stageNum.GetValue();
+	}
+
+	m_selectStageText->m_text = "Stage : ";
+	m_selectStageText->m_text += std::to_string(stagenum);
 }
