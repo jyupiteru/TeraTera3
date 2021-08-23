@@ -40,21 +40,22 @@ void ComPlayerMove::OnTriggerStay3D(GameObject *obj)
     //地面に触れたので各種初期化
     m_flagIsStandGround = true;
 
-    //ゲームを開始する
-    if (m_flagNextAnimation == E_FLAG_PLAYERSTATE::READY)
-    {
-        m_pComFlowManager->ChangeFlow(E_FLOW::GAME);
-    }
-
     //プレイヤーと衝突した箱の座標、大きさを取得する
     auto [boxpos_x, boxpos_y, boxpos_z] = obj->m_transform->m_worldPosition.GetValue();
     auto [boxsize_x, boxsize_y, boxsize_z] = obj->m_transform->m_size.GetValue();
     auto [pos_x, pos_y, pos_z] = m_gameObject->m_transform->m_worldPosition.GetValue();
     auto [size_x, size_y, size_z] = m_gameObject->m_transform->m_size.GetValue();
 
+    //ゲームを開始する
+    if (m_flagNextAnimation == E_FLAG_PLAYERSTATE::READY)
+    {
+        m_pComFlowManager->ChangeFlow(E_FLOW::GAME);
+        this->m_gameObject->m_transform->m_worldPosition.SetValue(pos_x, size_y / 2 + boxpos_y + boxsize_y / 2, pos_z);
+    }
+
     //箱にめり込んでいるかを計算して確認する && そこの衝突判定部分ではないか確認
-    if (pos_y - size_y / 2 <= boxpos_y + boxsize_y / 2 || obj->m_objectName == "buttom")
-    {//めり込んでいる or 衝突したのは底なので落下を続ける
+    if (pos_y - size_y / 2 <= boxpos_y + boxsize_y / 2 - boxsize_y * 0.1f || obj->m_objectName == "buttom")
+    { //めり込んでいる or 衝突したのは底なので落下を続ける
         m_flagIsStandGround = false;
     }
     //ジャンプ中なら終わらせる
@@ -63,7 +64,6 @@ void ComPlayerMove::OnTriggerStay3D(GameObject *obj)
         m_flagNextAnimation = E_FLAG_PLAYERSTATE::JUMP_END;
         m_animationflag = false;
     }
-
 }
 
 void ComPlayerMove::GetKeyBoard()
@@ -172,6 +172,13 @@ void ComPlayerMove::GetKeyBoard()
         m_flagNextAnimation == E_FLAG_PLAYERSTATE::JUMP_NOW)
     {
         auto pos_y = MathJump();
+
+        if (m_flagNextAnimation == E_FLAG_PLAYERSTATE::JUMP_START)
+        {
+            //めり込み対策 めり込んでいた場合すぐにキャンセルされてしまうので
+            pos_y *= 1.2f;
+        }
+
         m_gameObject->m_transform->m_worldPosition.AddValue(0.0f, pos_y, 0.0f);
 
         m_animationflag = true;
