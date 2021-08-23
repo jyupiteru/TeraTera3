@@ -14,7 +14,7 @@ ComDataManager *ComDataManager::m_instance = nullptr;
 
 void ComDataManager::Init()
 {
-	m_stageNum.SetValue(1);
+	m_stageNum.SetValue(0);
 	m_mapSize.SetValue(10.0f);
 	LoadMap();
 	//SetMap();
@@ -46,7 +46,7 @@ void ComDataManager::LoadMap()
 {
 
 	std::string mapname;
-	int mapnum = 1;
+	int mapnum = 0;
 
 	while (1)
 	{

@@ -57,7 +57,7 @@ void ComTitleManager::SelectStage()
 	}
 
 	//存在しているステージか？
-	if (ComDataManager::GetInstance().m_mapsData.size() >= stagenum && stagenum >= 1)
+	if (ComDataManager::GetInstance().m_mapsData.size() - 1 >= stagenum && stagenum >= 0)
 	{
 		ComDataManager::GetInstance().m_stageNum.SetValue(stagenum);
 	}
@@ -66,6 +66,14 @@ void ComTitleManager::SelectStage()
 		stagenum = ComDataManager::GetInstance().m_stageNum.GetValue();
 	}
 
-	m_selectStageText->m_text = "Stage : ";
-	m_selectStageText->m_text += std::to_string(stagenum);
+	//チュートリアルステージ用の分岐
+	if (stagenum != 0)
+	{
+		m_selectStageText->m_text = "Stage : ";
+		m_selectStageText->m_text += std::to_string(stagenum);
+	}
+	else
+	{
+		m_selectStageText->m_text = "Tutorial Stage";
+	}
 }

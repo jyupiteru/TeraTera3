@@ -37,9 +37,10 @@ public:
 	CVector<int> m_stageNum;
 
 	/**
-     * @brief すべてのマップの設計図を管理する変数
+     * @brief すべてのマップの設計図を管理する変数 
      * @n ステージ数、奥、横、種類
      * @n 下、左、手前から順に描画
+	 * @n 0はチュートリアル用ステージのため注意
      */
 	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, E_MAPCHIP>>> m_mapsData;
 
