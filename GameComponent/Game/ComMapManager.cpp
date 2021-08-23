@@ -40,10 +40,8 @@ void ComMapManager::MakeMap(int num)
     auto mapdata = ComDataManager::GetInstance().m_mapsData[num - 1];
     auto mapsize = ComDataManager::GetInstance().m_mapSize.GetValue();
 
-    auto [pos_x, pos_y, pos_z] = m_gameObject->m_transform->m_worldPosition.GetValue();
-
     //座標を連動させる
-    auto nowheight_startpos = pos_y;
+    auto nowheight_startpos = 0.0f;
 
     auto depthmax = static_cast<int>(mapdata.size());
 
@@ -73,7 +71,7 @@ void ComMapManager::MakeMap(int num)
             obj->m_typeObject = E_TYPE_OBJECT::MODEL3D;
 
             auto pos_x = nowwidth_startpos + mapsize * itr2.first;
-            auto pos_y = 0;
+            auto pos_y = 0.0f;
             auto pos_z = nowdepth_startpos + mapsize * itr.first;
 
             auto transform = obj->m_transform;
@@ -90,15 +88,14 @@ void ComMapManager::MakeMap(int num)
                 transform->m_worldPosition.SetValue(pos_x, pos_y, pos_z);
                 if (itr2.second == E_MAPCHIP::FLOOR_FALL)
                 {
-                    //ここで分岐による耐久値の設定
-                    if (itr2.first < 20)
-                    { //最初はちょっとずつ難しく
-                        obj->AddComponent<ComStageFall>()->m_count.SetValue(256.0f - itr2.first * 3);
-                    }
-                    else
-                    { //最後はかなり難しく
-                        obj->AddComponent<ComStageFall>()->m_count.SetValue(100);
-                    }
+                    float max = static_cast<float>(depthmax);
+                    float nowpos = static_cast<float>(itr.first);
+                    float rate = nowpos / max;
+                    rate = 1.0f - rate;
+
+                    float hitpoint = 256.0f * rate;
+                    obj->AddComponent<ComStageFall>()->m_count.SetValue(hitpoint);
+
                     //落ちるオブジェクト
 
                     obj->m_transform->m_color.SetValue(2.0f, 200.0f, 200.0f, 1.0f);
