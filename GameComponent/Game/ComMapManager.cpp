@@ -94,6 +94,26 @@ void ComMapManager::MakeMap(int num)
                     rate = 1.0f - rate;
 
                     float hitpoint = 256.0f * rate;
+
+                    //ステージ数によって難易度の調整 小さいほど体力増
+                    if (num < 4)
+                    {
+                        hitpoint += 100.0f - num * 30.0f;
+                    }
+                    else
+                    {
+                        hitpoint -= num * 10;
+                    }
+
+                    if (hitpoint > 256.0f)
+                    {
+                        hitpoint = 256.0f;
+                    }
+                    else if (hitpoint < 40.0f)
+                    {
+                        hitpoint = 40.0f;
+                    }
+
                     obj->AddComponent<ComStageFall>()->m_count.SetValue(hitpoint);
 
                     //落ちるオブジェクト
