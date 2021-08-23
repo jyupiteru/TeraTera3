@@ -13,14 +13,32 @@
  */
 class ComTitleManager : public ComponentBase
 {
+
+	/**
+	 * @brief 選択しているステージ番号を表示するためのコンポーネントへのポインタ
+	 */
+	Com2DText *m_selectStageText = nullptr;
+
 public:
 	/**
 	 * @brief タイトルの画像のオブジェクト
 	 */
 	GameObject *m_titleImageObj = nullptr;
 
+	/**
+	 * @brief 現在選択しているステージ
+	 */
+	int m_selectStage = 1;
+
 public:
 	ComTitleManager(){};
 	~ComTitleManager(){};
+	void Ready() override;
 	void Update() override;
+
+private:
+	/**
+     * @brief ステージを選択する処理
+     */
+	void SelectStage();
 };

@@ -8,6 +8,14 @@
 
 #include "ComTitleManager.h"
 
+void ComTitleManager::Ready()
+{
+	m_selectStageText = GameObject::Find("StageNum")->GetComponent<Com2DText>();
+}
+
+//================================================================================================
+//================================================================================================
+
 void ComTitleManager::Update()
 {
 	//タイトル画像を徐々に表示する
@@ -26,4 +34,19 @@ void ComTitleManager::Update()
 		bool flag = CImGuiManager::GetInstance().m_flagSurvival.GetValue();
 		CImGuiManager::GetInstance().m_flagSurvival.SetValue(!flag);
 	}
+}
+
+//================================================================================================
+//================================================================================================
+
+void ComTitleManager::SelectStage()
+{
+	/*if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RIGHTARROW))
+	{
+		CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RIGHTARROW);
+	}
+	else if ()
+	{
+		CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RIGHTARROW)
+	}*/
 }

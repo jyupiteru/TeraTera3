@@ -23,7 +23,7 @@ void CSceneTitle::Init()
     {
         auto title = GameObject::MakeNewObject("TitleImage", E_TYPE_OBJECT::UI);
         title->GetComponent<Com2DTexture>()->LoadTexture("gametitle.png");
-        title->m_transform->m_worldPosition.SetValue(0, SCREEN_HEIGHT / 6 * 2, 0);
+        title->m_transform->m_worldPosition.SetValue(0, 200, 0);
         title->m_transform->m_size.SetValue(620.0f, 215.0f, 1.0f);
         title->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 0.0f);
     }
@@ -31,7 +31,7 @@ void CSceneTitle::Init()
     {
         auto selectimage = GameObject::MakeNewObject("selectimage", E_TYPE_OBJECT::UI);
         selectimage->GetComponent<Com2DTexture>()->LoadTexture("pressenter.png");
-        selectimage->m_transform->m_worldPosition.SetValue(0.0f, -SCREEN_HEIGHT / 6 * 2, 0.0f);
+        selectimage->m_transform->m_worldPosition.SetValue(0.0f, -200, 0.0f);
         selectimage->m_transform->m_size.SetValue(530.0f, 36.0f, 1.0f);
         selectimage->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 1.0f);
     }
@@ -39,12 +39,24 @@ void CSceneTitle::Init()
     {
         auto selector = GameObject::MakeNewObject("selector", E_TYPE_OBJECT::UI);
         selector->GetComponent<Com2DTexture>()->LoadTexture("selector.png");
-        selector->m_transform->m_worldPosition.SetValue(0.0f, -SCREEN_HEIGHT / 6 * 2, 0.0f);
+        selector->m_transform->m_worldPosition.SetValue(0.0f, -200, 0.0f);
         selector->m_transform->m_size.SetValue(630.0f, 50.0f, 1);
         selector->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 1.0f);
         auto comselect = selector->AddComponent<ComTitleSelectorMove>();
         comselect->m_widthMaxPlusSize = 30.0f;
         comselect->m_plusSizePerSecond = 30.0f;
+    }
+
+    {
+        GameObject *stagenum = GameObject::MakeNewObject("StageNum", E_TYPE_OBJECT::UI);
+        stagenum->m_transform->m_worldPosition.SetValue(0.0f, -100, 0.0f);
+        stagenum->m_transform->m_size.SetValue(500.0f, 100.0f, 1);
+        stagenum->m_transform->m_color.SetValue(0.0f, 0.0f, 0.0f, 1.0f);
+
+        stagenum->RemoveComponent<Com2DTexture>();
+        Com2DText *text = stagenum->AddComponent<Com2DText>();
+        text->m_text = "Stage : 1";
+        text->m_flagSetRate.SetValue(true);
     }
 
     {
