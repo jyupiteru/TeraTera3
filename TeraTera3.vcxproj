@@ -155,7 +155,7 @@
     <ClInclude Include="GameComponent\Game\ComCameraCustom.h" />
     <ClInclude Include="GameComponent\Game\ComFlowManager.h" />
     <ClInclude Include="GameComponent\Game\ComGoal.h" />
-    <ClInclude Include="GameComponent\Game\ComMapManager.h" />
+    <ClInclude Include="GameComponent\Game\ComStageManager.h" />
     <ClInclude Include="GameComponent\Game\ComPlayerMove.h" />
     <ClInclude Include="GameComponent\Title\ComPlayerTitle.h" />
     <ClInclude Include="GameComponent\Game\ComStageFall.h" />
@@ -263,7 +263,7 @@
     <ClCompile Include="GameComponent\Game\ComCameraCustom.cpp" />
     <ClCompile Include="GameComponent\Game\ComFlowManager.cpp" />
     <ClCompile Include="GameComponent\Game\ComGoal.cpp" />
-    <ClCompile Include="GameComponent\Game\ComMapManager.cpp" />
+    <ClCompile Include="GameComponent\Game\ComStageManager.cpp" />
     <ClCompile Include="GameComponent\Game\ComPlayerMove.cpp" />
     <ClCompile Include="GameComponent\Title\ComPlayerTitle.cpp" />
     <ClCompile Include="GameComponent\Game\ComStageFall.cpp" />

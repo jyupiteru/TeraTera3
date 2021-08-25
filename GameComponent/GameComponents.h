@@ -17,7 +17,7 @@
 #include "Game/ComTimer.h"
 #include "Game/ComButtomBox.h"
 #include "Game/ComFlowManager.h"
-#include "Game/ComMapManager.h"
+#include "Game/ComStageManager.h"
 #include "Game/ComStageFall.h"
 #include "Game/ComPlayerMove.h"
 #include "Game/ComCameraCustom.h"

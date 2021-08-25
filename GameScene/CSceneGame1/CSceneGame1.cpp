@@ -50,9 +50,8 @@ void CSceneGame1::Init()
     }
 
     {
-        auto mapmanager = GameObject::Find("MapManager");
-        mapmanager = GameObject::MakeNewObject("MapManager", E_TYPE_OBJECT::SYSTEM);
-        mapmanager->AddComponent<ComMapManager>();
+        auto stagemanager = GameObject::MakeNewObject("MapManager", E_TYPE_OBJECT::SYSTEM);
+        stagemanager->AddComponent<ComStageManager>();
     }
 
     {

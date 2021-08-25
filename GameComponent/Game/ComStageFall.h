@@ -13,6 +13,8 @@
  */
 class ComStageFall : public ComponentBase
 {
+    float m_timeCount = 0.0f;
+
 public:
     /**
      * @brief 床の初期体力

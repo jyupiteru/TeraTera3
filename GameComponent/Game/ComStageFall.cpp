@@ -16,8 +16,10 @@ void ComStageFall::Update()
     float count = m_count.GetValue();
 
     m_gameObject->m_transform->m_color.SetValue(256.0f, count, count, 1.0f);
+
     if (count < 0)
     {
+        m_timeCount;
         float speed = 1.0f * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
         m_gameObject->m_transform->m_vector.AddValue(0, -speed, 0.0f);
         if (auto [pos_x, pos_y, pos_z] = m_gameObject->m_transform->m_worldPosition.GetValue(); pos_y < -100)
@@ -37,5 +39,6 @@ void ComStageFall::OnTriggerStay3D(GameObject *obj)
         const float speed = m_decreaseSpeed.GetValue();
 
         m_count.AddValue(-speed * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue()));
+        m_timeCount += CTimer::GetInstance().m_deltaTime.GetValue();
     }
 }

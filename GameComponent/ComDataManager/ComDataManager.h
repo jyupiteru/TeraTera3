@@ -28,6 +28,25 @@ enum class E_MAPCHIP
  */
 class ComDataManager : public ComponentBase
 {
+	struct tagLoadStageData
+	{
+		/**
+		 * @brief マップの大きさ
+		 */
+		float m_stageChipSize;
+
+		/**
+		 * @brief このマップの耐久値の最大値
+		 */
+		float m_hitPointMax;
+
+		float m_hitPointMin;
+
+		float m_decreaseValue;
+
+		std::unordered_map<int, std::unordered_map<int, E_MAPCHIP>> m_stageData;
+	};
+
 	static ComDataManager *m_instance;
 
 public:
@@ -37,15 +56,15 @@ public:
 	CVector<int> m_stageNum;
 
 	/**
-     * @brief すべてのマップの設計図を管理する変数 
+     * @brief すべてのステージの設計図を管理する変数
      * @n ステージ数、奥、横、種類
      * @n 下、左、手前から順に描画
 	 * @n 0はチュートリアル用ステージのため注意
      */
-	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, E_MAPCHIP>>> m_mapsData;
+	std::unordered_map<int, tagLoadStageData *> m_stagesData;
 
 	/**
-     * @brief マップに使用するオブジェクトの1辺当たりの大きさ
+     * @brief ステージに使用するオブジェクトの1辺当たりの大きさ
      */
 	CVector<float> m_mapSize;
 
@@ -55,8 +74,8 @@ public:
 
 private:
 	/**
-	 * @brief マップを読み込んでくる処理
+	 * @brief ステージを読み込んでくる処理
 	 * @n map〇と書かれているモノを数字順にあるものすべて読み込みしている
 	 */
-	void LoadMap();
+	void LoadStage();
 };

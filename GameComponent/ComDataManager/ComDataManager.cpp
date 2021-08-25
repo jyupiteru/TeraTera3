@@ -14,13 +14,14 @@ ComDataManager *ComDataManager::m_instance = nullptr;
 
 void ComDataManager::Init()
 {
-	m_stageNum.SetValue(0);
-	m_mapSize.SetValue(10.0f);
-	LoadMap();
-	//SetMap();
-
 	m_instance = this;
 	this->m_gameObject->DontDestroyOnLoad();
+
+	m_stageNum.SetValue(0);
+	m_mapSize.SetValue(10.0f);
+	LoadStage();
+	//SetMap();
+
 }
 
 //================================================================================================
@@ -28,6 +29,13 @@ void ComDataManager::Init()
 
 void ComDataManager::Uninit()
 {
+	for (auto itr : m_instance->m_stagesData)
+	{
+		delete itr.second;
+	}
+
+	m_instance->m_stagesData.clear();
+
 	m_instance = nullptr;
 }
 
@@ -42,7 +50,7 @@ ComDataManager &ComDataManager::GetInstance()
 //================================================================================================
 //================================================================================================
 
-void ComDataManager::LoadMap()
+void ComDataManager::LoadStage()
 {
 
 	std::string mapname;
@@ -52,7 +60,7 @@ void ComDataManager::LoadMap()
 	{
 		//マップの名前を設定
 		mapname = "Assets/Maps/";
-		mapname += "map" + std::to_string(mapnum);
+		mapname += "stage" + std::to_string(mapnum);
 		mapname += ".csv";
 
 		std::ifstream mapfile(mapname);
@@ -68,8 +76,33 @@ void ComDataManager::LoadMap()
 			break;
 		}
 
+		m_instance->m_stagesData[mapnum] = new tagLoadStageData();
+
 		int depth = 0;
 		std::string str;
+
+		{ //1行目ステージ情報の取得
+			std::getline(mapfile, str);
+
+			std::string tmp = "";
+			std::istringstream stream(str);
+
+			//最小値
+			std::getline(stream, tmp, ',');
+			m_stagesData[mapnum]->m_hitPointMin = static_cast<float>(std::atoi(tmp.c_str()));
+
+			//最大値
+			std::getline(stream, tmp, ',');
+			m_stagesData[mapnum]->m_hitPointMax = static_cast<float>(std::atoi(tmp.c_str()));
+
+			//減少量
+			std::getline(stream, tmp, ',');
+			m_stagesData[mapnum]->m_decreaseValue = static_cast<float>(std::atoi(tmp.c_str()));
+
+			//大きさ
+			std::getline(stream, tmp, ',');
+			m_stagesData[mapnum]->m_stageChipSize = static_cast<float>(std::atoi(tmp.c_str()));
+		}
 
 		//1行取得して分類格納
 		while (std::getline(mapfile, str))
@@ -82,7 +115,7 @@ void ComDataManager::LoadMap()
 			while (std::getline(stream, tmp, ','))
 			{
 				int objnum = std::atoi(tmp.c_str());
-				m_mapsData[mapnum - 1][depth][width] = static_cast<E_MAPCHIP>(objnum);
+				m_stagesData[mapnum]->m_stageData[depth][width] = static_cast<E_MAPCHIP>(objnum);
 				width++;
 			}
 			depth++;

@@ -1,29 +1,29 @@
 ﻿/**
- * @file ComMapManager.cpp
+ * @file ComStageManager.cpp
  * @author jupiter ()
- * @brief ComMapManagerの実装が記述されたcpp
+ * @brief ComStageManagerの実装が記述されたcpp
  */
 
-#include "ComMapManager.h"
+#include "ComStageManager.h"
 #include "../ComDataManager/ComDataManager.h"
 #include "ComStageFall.h"
 #include "ComGoal.h"
 
-void ComMapManager::Init()
+void ComStageManager::Init()
 {
-    MakeMap(ComDataManager::GetInstance().m_stageNum.GetValue());
+    MakeStage(ComDataManager::GetInstance().m_stageNum.GetValue());
 }
 
 //================================================================================================
 //================================================================================================
 
-void ComMapManager::Uninit()
+void ComStageManager::Uninit()
 {
-    for (auto &itr : m_listMapDate)
+    for (auto &itr : m_listStageDate)
     {
-        for (auto &itr2 : m_listMapDate[itr.first])
+        for (auto &itr2 : itr.second)
         {
-            for (auto &itr3 : m_listMapDate[itr.first][itr2.first])
+            for (auto &itr3 : itr2.second)
             {
                 Destroy(&itr3.second);
             }
@@ -34,23 +34,23 @@ void ComMapManager::Uninit()
 //================================================================================================
 //================================================================================================
 
-void ComMapManager::MakeMap(int num)
+void ComStageManager::MakeStage(int num)
 {
     //生成に必要な情報をそれぞれを取得する
-    auto mapdata = ComDataManager::GetInstance().m_mapsData[num - 1];
-    auto mapsize = ComDataManager::GetInstance().m_mapSize.GetValue();
+    auto stagedata = ComDataManager::GetInstance().m_stagesData[num]->m_stageData;
+    auto mapsize = ComDataManager::GetInstance().m_stagesData[num]->m_stageChipSize;
 
     //座標を連動させる
     auto nowheight_startpos = 0.0f;
 
-    auto depthmax = static_cast<int>(mapdata.size());
+    auto depthmax = static_cast<int>(stagedata.size());
 
     //全長を計算し半分にしてから反転
     float nowdepth_startpos = static_cast<float>(depthmax * mapsize);
     nowdepth_startpos = -1.0f * nowdepth_startpos / 2;
 
     //手前から奥
-    for (auto &itr : mapdata)
+    for (auto &itr : stagedata)
     {
 
         //左から右
