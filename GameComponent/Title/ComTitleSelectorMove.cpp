@@ -15,7 +15,7 @@ void ComTitleSelectorMove::Update()
 {
     auto [size_x, size_y, size_z] = m_gameObject->m_transform->m_size.GetValue();
 
-    auto plussize = m_plusSizePerSecond * CTimer::GetInstance().m_deltaTime.GetValue();
+    float plussize = m_plusSizePerSecond * static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 
     if (m_nowFlow == 1)
     { //拡大
