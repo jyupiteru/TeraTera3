@@ -18,10 +18,8 @@ void ComDataManager::Init()
 	this->m_gameObject->DontDestroyOnLoad();
 
 	m_stageNum.SetValue(0);
-	m_mapSize.SetValue(10.0f);
-	LoadStage();
-	//SetMap();
 
+	LoadStage();
 }
 
 //================================================================================================

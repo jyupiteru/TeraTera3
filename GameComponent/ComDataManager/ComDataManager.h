@@ -31,19 +31,28 @@ class ComDataManager : public ComponentBase
 	struct tagLoadStageData
 	{
 		/**
-		 * @brief マップの大きさ
+		 * @brief ステージのチップの大きさ
 		 */
 		float m_stageChipSize;
 
 		/**
-		 * @brief このマップの耐久値の最大値
+		 * @brief このステージチップの耐久値の最大値
 		 */
 		float m_hitPointMax;
 
+		/**
+		 * @brief このステージチップの耐久値の最小値
+		 */
 		float m_hitPointMin;
 
+		/**
+		 * @brief 1秒あたりの減少値
+		 */
 		float m_decreaseValue;
 
+		/**
+		 * @brief ステージの情報
+		 */
 		std::unordered_map<int, std::unordered_map<int, E_MAPCHIP>> m_stageData;
 	};
 
@@ -62,11 +71,6 @@ public:
 	 * @n 0はチュートリアル用ステージのため注意
      */
 	std::unordered_map<int, tagLoadStageData *> m_stagesData;
-
-	/**
-     * @brief ステージに使用するオブジェクトの1辺当たりの大きさ
-     */
-	CVector<float> m_mapSize;
 
 	virtual void Init() override;
 	virtual void Uninit() override;
