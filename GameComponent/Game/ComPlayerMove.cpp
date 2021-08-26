@@ -248,7 +248,7 @@ float ComPlayerMove::MathJump()
 
     static float lasttime = 0.0f;
 
-    m_fallCount += CTimer::GetInstance().m_deltaTime.GetValue();
+    m_fallCount += static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
     float pos_y = m_jumpSpeed - 9.8f * m_fallCount;
     pos_y *= static_cast<float>(CTimer::GetInstance().m_deltaTime.GetValue());
 

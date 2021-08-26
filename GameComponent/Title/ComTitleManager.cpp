@@ -57,7 +57,7 @@ void ComTitleManager::SelectStage()
 	}
 
 	//存在しているステージか？
-	if (ComDataManager::GetInstance().m_mapsData.size() - 1 >= stagenum && stagenum >= 0)
+	if (ComDataManager::GetInstance().m_stagesData.size() - 1 >= stagenum && stagenum >= 0)
 	{
 		ComDataManager::GetInstance().m_stageNum.SetValue(stagenum);
 	}
