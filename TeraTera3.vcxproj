@@ -148,7 +148,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameComponent\Title\ComTitleManager.h" />
-    <ClInclude Include="GameScene\CSceneSelect\CSceneSelect.h" />
+    <ClInclude Include="GameScene\CSceneGame1.h" />
+    <ClInclude Include="GameScene\CSceneResult.h" />
+    <ClInclude Include="GameScene\CSceneSelect.h" />
     <ClInclude Include="GameComponent\Title\ComSelectManager.h" />
     <ClInclude Include="GameComponent\ComDataManager\ComDataManager.h" />
     <ClInclude Include="GameComponent\Game\ComButtomBox.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="GameComponent\Game\ComStageFall.h" />
     <ClInclude Include="GameComponent\Game\ComTimer.h" />
     <ClInclude Include="GameComponent\Title\ComTitleSelectorMove.h" />
+    <ClInclude Include="GameScene\CSceneTitle.h" />
     <ClInclude Include="TeraTera3\Managers\ShadowManager\CShadowManager.h" />
     <ClInclude Include="TeraTera3\Managers\ShaderManager\CShaderManager.h" />
     <ClInclude Include="TeraTera3\Managers\TextureManager\CTextureManager.h" />
@@ -256,7 +259,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameComponent\Title\ComTitleManager.cpp" />
-    <ClCompile Include="GameScene\CSceneSelect\CSceneSelect.cpp" />
+    <ClCompile Include="GameScene\CSceneGame1.cpp" />
+    <ClCompile Include="GameScene\CSceneResult.cpp" />
+    <ClCompile Include="GameScene\CSceneSelect.cpp" />
     <ClCompile Include="GameComponent\Title\ComSelectManager.cpp" />
     <ClCompile Include="GameComponent\ComDataManager\ComDataManager.cpp" />
     <ClCompile Include="GameComponent\Game\ComButtomBox.cpp" />
@@ -269,6 +274,7 @@
     <ClCompile Include="GameComponent\Game\ComStageFall.cpp" />
     <ClCompile Include="GameComponent\Game\ComTimer.cpp" />
     <ClCompile Include="GameComponent\Title\ComTitleSelectorMove.cpp" />
+    <ClCompile Include="GameScene\CSceneTitle.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShaderManager\CShaderManager.cpp" />
     <ClCompile Include="TeraTera3\Managers\TextureManager\CTextureManager.cpp" />
