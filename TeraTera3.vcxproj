@@ -147,11 +147,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponent\Menu\ComMenuManager.h" />
+    <ClInclude Include="GameComponent\Menu\ComTitleSelectorMove.h" />
     <ClInclude Include="GameComponent\Title\ComTitleManager.h" />
     <ClInclude Include="GameScene\CSceneGame1.h" />
     <ClInclude Include="GameScene\CSceneResult.h" />
-    <ClInclude Include="GameScene\CSceneSelect.h" />
-    <ClInclude Include="GameComponent\Title\ComSelectManager.h" />
+    <ClInclude Include="GameScene\CSceneMenu.h" />
     <ClInclude Include="GameComponent\ComDataManager\ComDataManager.h" />
     <ClInclude Include="GameComponent\Game\ComButtomBox.h" />
     <ClInclude Include="GameComponent\Game\ComCameraCustom.h" />
@@ -162,7 +163,7 @@
     <ClInclude Include="GameComponent\Title\ComPlayerTitle.h" />
     <ClInclude Include="GameComponent\Game\ComStageFall.h" />
     <ClInclude Include="GameComponent\Game\ComTimer.h" />
-    <ClInclude Include="GameComponent\Title\ComTitleSelectorMove.h" />
+    <ClInclude Include="GameScene\CSceneSelect.h" />
     <ClInclude Include="GameScene\CSceneTitle.h" />
     <ClInclude Include="TeraTera3\Managers\ShadowManager\CShadowManager.h" />
     <ClInclude Include="TeraTera3\Managers\ShaderManager\CShaderManager.h" />
@@ -174,9 +175,6 @@
     <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.h" />
     <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpModelData.h" />
     <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h" />
-    <ClInclude Include="GameScene\CSceneGame1\CSceneGame1.h" />
-    <ClInclude Include="GameScene\CSceneResult\CSceneResult.h" />
-    <ClInclude Include="GameScene\CSceneTitle\CSceneTitle.h" />
     <ClInclude Include="GameScene\SceneSetter.h" />
     <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.h" />
     <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.h" />
@@ -258,11 +256,12 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameComponent\Menu\ComMenuManager.cpp" />
+    <ClCompile Include="GameComponent\Menu\ComTitleSelectorMove.cpp" />
     <ClCompile Include="GameComponent\Title\ComTitleManager.cpp" />
     <ClCompile Include="GameScene\CSceneGame1.cpp" />
     <ClCompile Include="GameScene\CSceneResult.cpp" />
-    <ClCompile Include="GameScene\CSceneSelect.cpp" />
-    <ClCompile Include="GameComponent\Title\ComSelectManager.cpp" />
+    <ClCompile Include="GameScene\CSceneMenu.cpp" />
     <ClCompile Include="GameComponent\ComDataManager\ComDataManager.cpp" />
     <ClCompile Include="GameComponent\Game\ComButtomBox.cpp" />
     <ClCompile Include="GameComponent\Game\ComCameraCustom.cpp" />
@@ -273,7 +272,6 @@
     <ClCompile Include="GameComponent\Title\ComPlayerTitle.cpp" />
     <ClCompile Include="GameComponent\Game\ComStageFall.cpp" />
     <ClCompile Include="GameComponent\Game\ComTimer.cpp" />
-    <ClCompile Include="GameComponent\Title\ComTitleSelectorMove.cpp" />
     <ClCompile Include="GameScene\CSceneTitle.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShaderManager\CShaderManager.cpp" />
@@ -285,9 +283,6 @@
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.cpp" />
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpModelData.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp" />
-    <ClCompile Include="GameScene\CSceneGame1\CSceneGame1.cpp" />
-    <ClCompile Include="GameScene\CSceneResult\CSceneResult.cpp" />
-    <ClCompile Include="GameScene\CSceneTitle\CSceneTitle.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.cpp" />
     <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com2DTexture\Com2DTexture.cpp" />

@@ -9,9 +9,9 @@
 
 #include "../TeraTera3/Managers/SceneSystem/CScene.h"
 
-#include "CSceneTitle/CSceneTitle.h"
-#include "CSceneGame1/CSceneGame1.h"
-#include "CSceneResult/CSceneResult.h"
+#include "CSceneTitle.h"
+#include "CSceneGame1.h"
+#include "CSceneResult.h"
 
 #pragma once
 

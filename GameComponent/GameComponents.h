@@ -11,8 +11,9 @@
 #include "ComDataManager/ComDataManager.h"
 
 #include "Title/ComPlayerTitle.h"
-#include "Title/ComTitleSelectorMove.h"
 #include "Title/ComTitleManager.h"
+
+#include "Menu/ComTitleSelectorMove.h"
 
 #include "Game/ComTimer.h"
 #include "Game/ComButtomBox.h"

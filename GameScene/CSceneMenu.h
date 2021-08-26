@@ -1,10 +1,10 @@
 #include "../../TeraTera3/Managers/SceneSystem/CScene.h"
 #pragma once
 
-class SceneMenu : public CScene
+class CSceneMenu : public CScene
 {
 public:
-	SceneMenu() {};
+	CSceneMenu() {};
 	void Init() override;
 	void Uninit() override;
 

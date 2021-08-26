@@ -132,6 +132,10 @@ void CSceneTitle::Uninit()
 
 void CSceneTitle::Update()
 {
+    if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_SPACE))
+    {
+        CSceneManager::GetInstance().LoadScene("SceneMenu");
+    }
 }
 
 //================================================================================================

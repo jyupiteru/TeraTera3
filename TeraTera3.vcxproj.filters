@@ -249,15 +249,6 @@
     <ClInclude Include="GameScene\SceneSetter.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene\CSceneGame1\CSceneGame1.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene\CSceneResult\CSceneResult.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene\CSceneTitle\CSceneTitle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -318,19 +309,10 @@
     <ClInclude Include="GameComponent\Game\ComTimer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\Title\ComTitleSelectorMove.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="GameComponent\ComDataManager\ComDataManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\Title\ComSelectManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene\CSceneSelect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponent\Title\ComTitleManager.h">
+    <ClInclude Include="GameScene\CSceneMenu.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="GameScene\CSceneTitle.h">
@@ -340,6 +322,18 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="GameScene\CSceneResult.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\Title\ComTitleManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\Menu\ComMenuManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent\Menu\ComTitleSelectorMove.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene\CSceneSelect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -509,15 +503,6 @@
     <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene\CSceneGame1\CSceneGame1.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene\CSceneResult\CSceneResult.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene\CSceneTitle\CSceneTitle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -575,19 +560,10 @@
     <ClCompile Include="GameComponent\Game\ComTimer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponent\Title\ComTitleSelectorMove.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="GameComponent\ComDataManager\ComDataManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponent\Title\ComSelectManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene\CSceneSelect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameComponent\Title\ComTitleManager.cpp">
+    <ClCompile Include="GameScene\CSceneMenu.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameScene\CSceneGame1.cpp">
@@ -597,6 +573,15 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameScene\CSceneTitle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\Title\ComTitleManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\Menu\ComMenuManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent\Menu\ComTitleSelectorMove.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
