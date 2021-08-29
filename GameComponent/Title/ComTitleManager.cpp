@@ -18,11 +18,12 @@ void ComTitleManager::Update()
 	//シーンの移動
 	if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))
 	{
-		CSceneManager::GetInstance().LoadScene("SceneGame1");
+		CSceneManager::GetInstance().LoadScene("SceneMenu");
 	}
 
 	//ImGuiの表示切替
-	if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_LSHIFT))
+	if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_LSHIFT) &&
+		CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RSHIFT))
 	{
 		bool flag = CImGuiManager::GetInstance().m_flagSurvival.GetValue();
 		CImGuiManager::GetInstance().m_flagSurvival.SetValue(!flag);

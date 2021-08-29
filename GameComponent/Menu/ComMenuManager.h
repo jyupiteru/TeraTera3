@@ -27,5 +27,8 @@ public:
 	void Update() override;
 
 private:
+	/**
+	 * @brief ステージ選択周りの管理
+	 */
 	void UpdateStageSelect();
 };

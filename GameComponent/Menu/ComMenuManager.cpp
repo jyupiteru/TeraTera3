@@ -17,8 +17,22 @@ void ComMenuManager::Ready()
 
 void ComMenuManager::Update()
 {
+
+	//ImGuiの表示切替
+	if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_LSHIFT) &&
+		CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RSHIFT))
+	{
+		bool flag = CImGuiManager::GetInstance().m_flagSurvival.GetValue();
+		CImGuiManager::GetInstance().m_flagSurvival.SetValue(!flag);
+	}
+
 	//ステージ選択の変更
 	UpdateStageSelect();
+
+	if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))
+	{
+		CSceneManager::GetInstance().LoadScene("SceneGame1");
+	}
 }
 
 //================================================================================================
@@ -47,14 +61,16 @@ void ComMenuManager::UpdateStageSelect()
 		stagenum = ComDataManager::GetInstance().m_stageNum.GetValue();
 	}
 
+	m_selectStageText->m_text = "Play ";
+
 	//チュートリアルステージ用の分岐
 	if (stagenum != 0)
 	{
-		m_selectStageText->m_text = "Stage : ";
+		m_selectStageText->m_text += "Stage : ";
 		m_selectStageText->m_text += std::to_string(stagenum);
 	}
 	else
 	{
-		m_selectStageText->m_text = "Tutorial Stage";
+		m_selectStageText->m_text += "Tutorial Stage";
 	}
 }

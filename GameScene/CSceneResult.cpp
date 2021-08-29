@@ -44,7 +44,7 @@ void CSceneResult::Update()
 {
     if (CDirectInput::GetInstance().CheckKeyBufferTrigger(DIK_RETURN))
     {
-        CSceneManager::GetInstance().LoadScene("SceneTitle");
+        CSceneManager::GetInstance().LoadScene("SceneMenu");
     }
 }
 
