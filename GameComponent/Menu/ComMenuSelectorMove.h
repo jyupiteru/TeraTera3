@@ -1,7 +1,7 @@
 ﻿/**
- * @file ComTitleSelectorMove.h
+ * @file ComMenuSelectorMove.h
  * @author jupiter ()
- * @brief ComTitleSelectorMoveの宣言が書かれたヘッダ
+ * @brief ComMenuSelectorMoveの宣言が書かれたヘッダ
  */
 
 #include "../../TeraTera3/TeraTera.h"
@@ -11,7 +11,7 @@
 /**
  * @brief タイトルに表示するセレクト用の画像の大きさを調整するコンポーネント
  */
-class ComTitleSelectorMove : public ComponentBase
+class ComMenuSelectorMove : public ComponentBase
 {
     /**
      * @brief 最初の大きさ
@@ -35,8 +35,8 @@ public:
      */
     float m_plusSizePerSecond = 10.0f;
 
-    ComTitleSelectorMove(){};
-    ~ComTitleSelectorMove(){};
+    ComMenuSelectorMove(){};
+    ~ComMenuSelectorMove(){};
 
     void Ready();
 

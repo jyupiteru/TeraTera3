@@ -148,7 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameComponent\Menu\ComMenuManager.h" />
-    <ClInclude Include="GameComponent\Menu\ComTitleSelectorMove.h" />
+    <ClInclude Include="GameComponent\Menu\ComMenuSelectorMove.h" />
     <ClInclude Include="GameComponent\Title\ComTitleManager.h" />
     <ClInclude Include="GameScene\CSceneGame1.h" />
     <ClInclude Include="GameScene\CSceneResult.h" />
@@ -257,7 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameComponent\Menu\ComMenuManager.cpp" />
-    <ClCompile Include="GameComponent\Menu\ComTitleSelectorMove.cpp" />
+    <ClCompile Include="GameComponent\Menu\ComMenuSelectorMove.cpp" />
     <ClCompile Include="GameComponent\Title\ComTitleManager.cpp" />
     <ClCompile Include="GameScene\CSceneGame1.cpp" />
     <ClCompile Include="GameScene\CSceneResult.cpp" />

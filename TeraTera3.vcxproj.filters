@@ -330,7 +330,7 @@
     <ClInclude Include="GameComponent\Menu\ComMenuManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponent\Menu\ComTitleSelectorMove.h">
+    <ClInclude Include="GameComponent\Menu\ComMenuSelectorMove.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="GameScene\CSceneSelect.h">
@@ -581,7 +581,7 @@
     <ClCompile Include="GameComponent\Menu\ComMenuManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponent\Menu\ComTitleSelectorMove.cpp">
+    <ClCompile Include="GameComponent\Menu\ComMenuSelectorMove.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

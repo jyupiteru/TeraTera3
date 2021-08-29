@@ -13,7 +13,8 @@
 #include "Title/ComPlayerTitle.h"
 #include "Title/ComTitleManager.h"
 
-#include "Menu/ComTitleSelectorMove.h"
+#include "Menu/ComMenuSelectorMove.h"
+#include "Menu/ComMenuManager.h"
 
 #include "Game/ComTimer.h"
 #include "Game/ComButtomBox.h"
