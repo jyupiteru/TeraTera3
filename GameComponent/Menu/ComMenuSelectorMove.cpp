@@ -1,17 +1,17 @@
 ﻿/**
- * @file ComTitleSelectorMove.cpp
+ * @file ComMenuSelectorMove.cpp
  * @author jupiter ()
- * @brief ComTitleSelectorMoveの実装が書かれたcpp
+ * @brief ComMenuSelectorMoveの実装が書かれたcpp
  */
 
-#include "ComTitleSelectorMove.h"
+#include "ComMenuSelectorMove.h"
 
-void ComTitleSelectorMove::Ready()
+void ComMenuSelectorMove::Ready()
 {
     std::tie(m_firstWidthSize.x, m_firstWidthSize.y, std::ignore) = m_gameObject->m_transform->m_size.GetValue();
 }
 
-void ComTitleSelectorMove::Update()
+void ComMenuSelectorMove::Update()
 {
     auto [size_x, size_y, size_z] = m_gameObject->m_transform->m_size.GetValue();
 
