@@ -38,12 +38,17 @@ void ComStageManager::MakeStage(int num)
 {
     //生成に必要な情報をそれぞれを取得する
     auto stagedata = ComDataManager::GetInstance().m_stagesData[num]->m_stageData;
-    auto mapsize = ComDataManager::GetInstance().m_stagesData[num]->m_stageChipSize;
+    float mapsize = ComDataManager::GetInstance().m_stagesData[num]->m_stageChipSize;
+    float minstrength = ComDataManager::GetInstance().m_stagesData[num]->m_hitPointMin;
+    float maxstrength = ComDataManager::GetInstance().m_stagesData[num]->m_hitPointMax;
+    float decreasevalue = ComDataManager::GetInstance().m_stagesData[num]->m_decreaseValue;
+
+    float strengthdiff = maxstrength - minstrength;
 
     //座標を連動させる
-    auto nowheight_startpos = 0.0f;
+    float nowheight_startpos = 0.0f;
 
-    auto depthmax = static_cast<int>(stagedata.size());
+    int depthmax = static_cast<int>(stagedata.size());
 
     //全長を計算し半分にしてから反転
     float nowdepth_startpos = static_cast<float>(depthmax * mapsize);
@@ -56,7 +61,7 @@ void ComStageManager::MakeStage(int num)
         //左から右
         for (auto &itr2 : itr.second)
         {
-            auto widthmax = static_cast<int>(itr.second.size());
+            int widthmax = static_cast<int>(itr.second.size());
 
             //全長を計算し半分にしてから反転
             float nowwidth_startpos = static_cast<float>((widthmax - 1) * mapsize);
@@ -66,7 +71,7 @@ void ComStageManager::MakeStage(int num)
             objname += ": y " + std::to_string(0);
             objname += ": z " + std::to_string(itr.first);
 
-            auto obj = m_gameObject->AddChildObject(objname, E_TYPE_OBJECT::NONE);
+            GameObject *obj = m_gameObject->AddChildObject(objname, E_TYPE_OBJECT::NONE);
             obj->AddComponent<ComShader>();
             obj->m_typeObject = E_TYPE_OBJECT::MODEL3D;
 
@@ -93,32 +98,18 @@ void ComStageManager::MakeStage(int num)
                     float rate = nowpos / max;
                     rate = 1.0f - rate;
 
-                    float hitpoint = 256.0f * rate;
+                    //(最大値-最小値)*場所による補正 + 最小値
+                    float strength = strengthdiff * rate;
+                    strength += minstrength;
 
-                    //ステージ数によって難易度の調整 小さいほど体力増
-                    if (num < 4)
-                    {
-                        hitpoint += 100.0f - num * 30.0f;
-                    }
-                    else
-                    {
-                        hitpoint -= num * 10;
-                    }
-
-                    if (hitpoint > 256.0f)
-                    {
-                        hitpoint = 256.0f;
-                    }
-                    else if (hitpoint < 40.0f)
-                    {
-                        hitpoint = 40.0f;
-                    }
-
-                    obj->AddComponent<ComStageFall>()->m_count.SetValue(hitpoint);
+                    //各種情報の受け渡し
+                    ComStageFall *comfall = obj->AddComponent<ComStageFall>();
+                    comfall->m_count.SetValue(strength);
+                    comfall->m_decreaseSpeed.SetValue(decreasevalue);
 
                     //落ちるオブジェクト
 
-                    obj->m_transform->m_color.SetValue(2.0f, 200.0f, 200.0f, 1.0f);
+                    obj->m_transform->m_color.SetValue(256.0f, strength, strength, 1.0f);
                 }
                 break;
             case E_MAPCHIP::GOAL:
