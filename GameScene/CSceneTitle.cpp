@@ -29,8 +29,8 @@ void CSceneTitle::Init()
     }
 
     {
-        auto selectimage = GameObject::MakeNewObject("selectimage", E_TYPE_OBJECT::UI);
-        selectimage->GetComponent<Com2DTexture>()->LoadTexture("pressenter.png");
+        auto selectimage = GameObject::MakeNewObject("EnterWithStart", E_TYPE_OBJECT::UI);
+        selectimage->GetComponent<Com2DTexture>()->LoadTexture("EnterWithStart.png");
         selectimage->m_transform->m_worldPosition.SetValue(0.0f, -200, 0.0f);
         selectimage->m_transform->m_size.SetValue(530.0f, 36.0f, 1.0f);
         selectimage->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 1.0f);
