@@ -33,7 +33,7 @@ public:
 	/**
 	* @brief 一番初めに読み込むシーン
 	**/
-	std::string firstSceneName = "SceneTitle";
+	std::string firstSceneName = "SceneMenu";
 
 	/**
 	 * @brief Get the Set Scene object

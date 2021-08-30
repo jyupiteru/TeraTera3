@@ -20,15 +20,26 @@ class ComMenuManager : public ComponentBase
 	 */
 	Com2DText *m_selectStageText = nullptr;
 
+	/**
+	 * @brief セレクトのオブジェクト
+	 */
+	GameObject *m_selecterObject = nullptr;
+
 public:
 	ComMenuManager(){};
 	~ComMenuManager(){};
+	void Init() override;
 	void Ready() override;
 	void Update() override;
 
 private:
 	/**
-	 * @brief ステージ選択周りの管理
+	 * @brief ステージ選択周りのアップデート管理
 	 */
 	void UpdateStageSelect();
+
+	/**
+	 * @brief カスタム、ゲームスタート周りの管理
+	 */
+	void UpdateSelect();
 };

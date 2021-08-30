@@ -9,26 +9,12 @@ void CSceneMenu::Init()
 	}
 
 	{
-		auto selector = GameObject::MakeNewObject("selector", E_TYPE_OBJECT::UI);
-		selector->GetComponent<Com2DTexture>()->LoadTexture("selector.png");
-		selector->m_transform->m_worldPosition.SetValue(0.0f, -200, 0.0f);
-		selector->m_transform->m_size.SetValue(630.0f, 50.0f, 1);
-		selector->m_transform->m_color.SetValue(256.0f, 256.0f, 256.0f, 1.0f);
-		auto comselect = selector->AddComponent<ComMenuSelectorMove>();
-		comselect->m_widthMaxPlusSize = 30.0f;
-		comselect->m_plusSizePerSecond = 30.0f;
-	}
-
-	{
-		GameObject *stagenum = GameObject::MakeNewObject("StageNum", E_TYPE_OBJECT::UI);
-		stagenum->m_transform->m_worldPosition.SetValue(0.0f, -100, 0.0f);
-		stagenum->m_transform->m_size.SetValue(500.0f, 100.0f, 1);
-		stagenum->m_transform->m_color.SetValue(0.0f, 0.0f, 0.0f, 1.0f);
-
-		stagenum->RemoveComponent<Com2DTexture>();
-		Com2DText *text = stagenum->AddComponent<Com2DText>();
-		text->m_text = "Stage : 1";
-		text->m_flagSetRate.SetValue(true);
+		GameObject* datamanager = GameObject::Find("DataManager");
+		if (datamanager == nullptr)
+		{
+			datamanager = GameObject::MakeNewObject("DataManager", E_TYPE_OBJECT::SYSTEM);
+			datamanager->AddComponent<ComDataManager>();
+		}
 	}
 
 	{
