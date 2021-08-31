@@ -21,14 +21,14 @@ void ComMenuManager::Init()
 		comselect->m_plusSizePerSecond = 30.0f;
 	}
 
-	{
-		GameObject *custom = GameObject::MakeNewObject("CustomImage", E_TYPE_OBJECT::UI);
-		custom->m_transform->m_worldPosition.SetValue(0.0f, -100.0f, 0.0f);
-		custom->m_transform->m_size.SetValue(210.0f, 35.0f, 1.0f);
-		custom->GetComponent<Com2DTexture>()->LoadTexture("Custom.png");
-	}
+	// {
+	// 	GameObject *custom = GameObject::MakeNewObject("CustomImage", E_TYPE_OBJECT::UI);
+	// 	custom->m_transform->m_worldPosition.SetValue(0.0f, -100.0f, 0.0f);
+	// 	custom->m_transform->m_size.SetValue(210.0f, 35.0f, 1.0f);
+	// 	custom->GetComponent<Com2DTexture>()->LoadTexture("Custom.png");
+	// }
 
-	{ 
+	{
 		GameObject *startgame = GameObject::MakeNewObject("StartGameImage", E_TYPE_OBJECT::UI);
 		startgame->m_transform->m_worldPosition.SetValue(0.0f, 100.0f, 0.0f);
 		startgame->m_transform->m_size.SetValue(240.0f, 35.0f, 1.0f);
@@ -59,6 +59,13 @@ void ComMenuManager::Init()
 		selectmenu->m_transform->m_worldPosition.SetValue(0.0f, -250.0f, 0.0f);
 		selectmenu->m_transform->m_size.SetValue(703.0f, 31.0f, 1.0f);
 		selectmenu->GetComponent<Com2DTexture>()->LoadTexture("EnterInMenu.png");
+	}
+
+	{ //案内の画像
+		GameObject *selectmenu = GameObject::MakeNewObject("NotForReadyImage", E_TYPE_OBJECT::UI);
+		selectmenu->m_transform->m_worldPosition.SetValue(0.0f, -100.0f, 0.0f);
+		selectmenu->m_transform->m_size.SetValue(348.0f, 31.0f, 1.0f);
+		selectmenu->GetComponent<Com2DTexture>()->LoadTexture("NotImplemented.png");
 	}
 }
 
