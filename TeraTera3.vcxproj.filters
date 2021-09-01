@@ -255,19 +255,19 @@
     <ClInclude Include="GameScene\SceneSetter.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene\CSceneGame1\CSceneGame1.h">
+    <ClInclude Include="GameScene\CSceneGame1.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene\CSceneResult\CSceneResult.h">
+    <ClInclude Include="GameScene\CSceneResult.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene\CSceneSample\CSceneSample.h">
+    <ClInclude Include="GameScene\CSceneSample.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene\CSceneSample2\CSceneSample2.h">
+    <ClInclude Include="GameScene\CSceneSample2.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene\CSceneTitle\CSceneTitle.h">
+    <ClInclude Include="GameScene\CSceneTitle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h">
@@ -303,7 +303,7 @@
     <ClInclude Include="TeraTera3\Managers\ShadowManager\CShadowManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene\CSceneSample3\CSceneSample3.h">
+    <ClInclude Include="GameScene\CSceneSample3.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -473,19 +473,19 @@
     <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene\CSceneGame1\CSceneGame1.cpp">
+    <ClCompile Include="GameScene\CSceneGame1.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene\CSceneResult\CSceneResult.cpp">
+    <ClCompile Include="GameScene\CSceneResult.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene\CSceneSample\CSceneSample.cpp">
+    <ClCompile Include="GameScene\CSceneSample.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene\CSceneSample2\CSceneSample2.cpp">
+    <ClCompile Include="GameScene\CSceneSample2.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene\CSceneTitle\CSceneTitle.cpp">
+    <ClCompile Include="GameScene\CSceneTitle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp">
@@ -518,7 +518,7 @@
     <ClCompile Include="TeraTera3\Managers\ShadowManager\CShadowManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene\CSceneSample3\CSceneSample3.cpp">
+    <ClCompile Include="GameScene\CSceneSample3.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

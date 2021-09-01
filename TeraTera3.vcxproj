@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GameScene\CSceneSample3\CSceneSample3.h" />
+    <ClInclude Include="GameScene\CSceneSample3.h" />
     <ClInclude Include="TeraTera3\Managers\ShadowManager\CShadowManager.h" />
     <ClInclude Include="TeraTera3\Managers\ShaderManager\CShaderManager.h" />
     <ClInclude Include="TeraTera3\Managers\TextureManager\CTextureManager.h" />
@@ -158,11 +158,11 @@
     <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.h" />
     <ClInclude Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpModelData.h" />
     <ClInclude Include="TeraTera3\EventSystem\CEventSystem.h" />
-    <ClInclude Include="GameScene\CSceneGame1\CSceneGame1.h" />
-    <ClInclude Include="GameScene\CSceneResult\CSceneResult.h" />
-    <ClInclude Include="GameScene\CSceneSample2\CSceneSample2.h" />
-    <ClInclude Include="GameScene\CSceneSample\CSceneSample.h" />
-    <ClInclude Include="GameScene\CSceneTitle\CSceneTitle.h" />
+    <ClInclude Include="GameScene\CSceneGame1.h" />
+    <ClInclude Include="GameScene\CSceneResult.h" />
+    <ClInclude Include="GameScene\CSceneSample2.h" />
+    <ClInclude Include="GameScene\CSceneSample.h" />
+    <ClInclude Include="GameScene\CSceneTitle.h" />
     <ClInclude Include="GameScene\SceneSetter.h" />
     <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.h" />
     <ClInclude Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.h" />
@@ -246,7 +246,7 @@
     <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameScene\CSceneSample3\CSceneSample3.cpp" />
+    <ClCompile Include="GameScene\CSceneSample3.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="TeraTera3\Managers\ShaderManager\CShaderManager.cpp" />
     <ClCompile Include="TeraTera3\Managers\TextureManager\CTextureManager.cpp" />
@@ -257,11 +257,11 @@
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CMesh\CMesh.cpp" />
     <ClCompile Include="TeraTera3\System\AssimpModel\CAssimpModelData\CAssimpModelData.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\CEventSystem.cpp" />
-    <ClCompile Include="GameScene\CSceneGame1\CSceneGame1.cpp" />
-    <ClCompile Include="GameScene\CSceneResult\CSceneResult.cpp" />
-    <ClCompile Include="GameScene\CSceneSample2\CSceneSample2.cpp" />
-    <ClCompile Include="GameScene\CSceneSample\CSceneSample.cpp" />
-    <ClCompile Include="GameScene\CSceneTitle\CSceneTitle.cpp" />
+    <ClCompile Include="GameScene\CSceneGame1.cpp" />
+    <ClCompile Include="GameScene\CSceneResult.cpp" />
+    <ClCompile Include="GameScene\CSceneSample2.cpp" />
+    <ClCompile Include="GameScene\CSceneSample.cpp" />
+    <ClCompile Include="GameScene\CSceneTitle.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\COBB.cpp" />
     <ClCompile Include="TeraTera3\EventSystem\Events\CollisionUtil\CSphere.cpp" />
     <ClCompile Include="TeraTera3\ComSystem\Components\Behavior\Com2DTexture\Com2DTexture.cpp" />
