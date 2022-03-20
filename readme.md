@@ -12,5 +12,3 @@ Gameフォルダ以下のブランチで各種ゲームを開発しています�
 
 
 
-[Googleドライブ](https://drive.google.com/drive/folders/1CkEn4MaaCFOQsWo0wkwgumMuE3nl4o3_?usp=sharing)に実行ファイル等を置いています。
-
